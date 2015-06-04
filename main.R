@@ -11,8 +11,15 @@
 # Sourced files
 
 source("GetInitValues.r")
-source("F_dryzone.r")
+source("FluxDryzone.r")
 
+# Define dimensions
+
+n.time        <-
+n.grid.points <-
+n.horizons    <-
+time.step     <-
+depths        <-
 
 ### Inputs =====================================================================
 
