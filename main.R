@@ -1,14 +1,18 @@
 #### main.R
 
-#### Main program file for soil C model
+#### Main program file for soil C Model-1
 
 ### Documentation ==============================================================
-# Soil C dynamics simulated.
+# Simulation of soil C dynamics. This is the main R script that runs the model.
 
 ### Setup ======================================================================
 # Libraries
 
 # Sourced files
+
+source("GetInitValues.r")
+source("F_dryzone.r")
+
 
 ### Inputs =====================================================================
 
@@ -25,22 +29,26 @@ temp_s    <-  # [k] soil temperatrue (array: point x layer x time)
 wc_s      <-  # [m^3 m^-3] soil volumetric water content (array: point x layer x time)
 
 # Load initial state variable values
-LC    <- # [g] labile carbon (array: point x layer)
-RC    <- # [g] recalcitrant carbon (array: point x layer)
-SC_w  <- # [g] soluble carbon in bulk water (array: point x layer)
-SC_s  <- # [g] soluble water sorbed to minerals (array: point x layer)
-SC_m  <- # [g] soluble water local to microbes (array: point x layer)
+LC_0    <- GetInitValues("InitVal_LC_0.csv")   # [g] labile carbon (array: point x layer)
+RC_0    <- GetInitValues("InitVal_RC_0.csv")   # [g] recalcitrant carbon (array: point x layer)
+SC_w_0  <- GetInitValues("InitVal_SC_w_0.csv") # [g] soluble carbon in bulk water (array: point x layer)
+SC_s_0  <- GetInitValues("InitVal_SC_s_0.csv") # [g] soluble water sorbed to minerals (array: point x layer)
+SC_m_0  <- GetInitValues("InitVal_SC_m_0.csv") # [g] soluble water local to microbes (array: point x layer)
   
-### Constants
-  
-# Constant parameters
+### Constant parameters
 phi       <- 0.5    # [m^3 m^-3] assumed pore space - Else obtain from land model
 psi_Rth   <- 15000  # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
 psi_fc    <- 33     # [kPa] Water potential at field capacity
 
 ### Simulation =================================================================
 
-## Loop through spatial dimension
+## Define state variable array
+
+
+
+## Loop through horizontal spatial dimension ====
+
+## Loop through vertical spatial dimension ====
 
 # Spatially variable parameters
 sand_f     <- sand[i, j] # [g g^-1] sand fraction
@@ -50,9 +58,13 @@ psi_sat    <- exp(6.5-1.3 * sand_f) * 1000 # [kPa] Cosby et al. 1984 after conve
 theta_Rth  <- phi * (psi_sat / psi_Rth)^(1 / b) # [kPa] Campbell 1984
 theta_fc   <- phi * (psi_sat / psi_fc)^(1 / b) # [kPa] Campbell 1984
 
+
+## Loop through temporal dimension ====
+
+# Spatio-temporally variable parameters
+
+
 # Calculate flux to dry zones
 
-
-
-
+F_dryzone
 
