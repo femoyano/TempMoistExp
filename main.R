@@ -1,9 +1,19 @@
 #### main.R
 
-#### Main program file for soil C Model-1
-
 ### Documentation ==============================================================
+# Main program file.
+# Soil model: SCM1_h (Soil Carbon Model 1 hourly)
+
 # Simulation of soil C dynamics. This is the main R script that runs the model.
+# Model time step: hourly
+# Processes simulated:
+# - enzymatic decomposition
+# - DOC and enzyme diffusion
+# - microbial uptake and respiration
+# - enzymatic production and breakdown
+# - DOC and enzyme sorption to mineral surfaces
+# - DOC flux to and from dead zones
+# - Optionally: advection, SOC flux to dead zones, microbial biomasss dynamics
 
 ### Setup ======================================================================
 # Libraries
@@ -20,8 +30,6 @@ depths <-
 time.step <-
   
 ### Inputs =====================================================================
-
-
 
 # Load spatial input data (texture data matrix)
 clay   <-  # [g g^-1] clay fraction values (array: point x layer)
@@ -40,34 +48,28 @@ input_times     <-  # time points for input values
 LC_0  <- 0 # GetInitValues("InitVal_LC_0.csv")   # [g] labile carbon (array: point x layer)
 RC_0  <- 0 # GetInitValues("InitVal_RC_0.csv")   # [g] recalcitrant carbon (array: point x layer)
 SCw_0 <- 0 # GetInitValues("InitVal_SC_w_0.csv") # [g] soluble carbon in bulk water (array: point x layer)
-SCs_0 <- 0 # GetInitValues("InitVal_SC_s_0.csv") # [g] soluble water sorbed to minerals (array: point x layer)
-SCd_0 <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] soluble water local to microbes (array: point x layer)
-SCm_0 <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] soluble water local to microbes (array: point x layer)
-ECw_0 <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] soluble water local to microbes (array: point x layer)
-ECs_0 <- 0 # GetInitValues("InitVal_SC_s_0.csv") # [g] soluble water sorbed to minerals (array: point x layer)
-ECm_0 <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] soluble water local to microbes (array: point x layer)
-MC_0  <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] soluble water local to microbes (array: point x layer)
+SCs_0 <- 0 # GetInitValues("InitVal_SC_s_0.csv") # [g] soluble carbon sorbed to minerals (array: point x layer)
+SCd_0 <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] soluble carbon in disconnected zones (array: point x layer)
+SCm_0 <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] soluble carbon local to microbes (array: point x layer)
+ECw_0 <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] enzymes in bulk water (array: point x layer)
+ECs_0 <- 0 # GetInitValues("InitVal_SC_s_0.csv") # [g] enzymes sorbed to minerals (array: point x layer)
+ECm_0 <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] enzymes local to microbes (array: point x layer)
+MC_0  <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] microbial carbon (array: point x layer)
 
-  
-### Constant parameters
-phi       <- 0.5    # [m^3 m^-3] assumed pore space - Else obtain from land model
+### Model parmeters ====
+
+# Constants
+phi       <- 0.5    # [m^3 m^-3] Assumed pore space - Alternatively: obtain from land model.
 psi_Rth   <- 15000  # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
 psi_fc    <- 33     # [kPa] Water potential at field capacity
-Em        <- 0.1    # [h-1]
+Em        <- 0.004  # [h-1] Approx. for 0.1 d-1 (Schimel & Weintraub 2003, Allison 2006, Manzoni et al. ...)
+
+# Spatially variable parameters
+
 
 ### Simulation =================================================================
 
-## Define state variable array
-
-
-
-## Loop through horizontal spatial dimension ====
-
-## Loop through vertical spatial dimension ====
-
-## Loop through temporal dimension ====
-
-# Spatio-temporally variable parameters
+# Loop through horizontal spatial dimension ====
 
 # Spatially variable parameters
 b          <- 2.91 + 15.9 * clay[i, j] # [] Cosby  et al. 1984 calculation of b parameter (Campbell 1974) - Alternatively: obtain from land model.
@@ -76,7 +78,7 @@ theta_Rth  <- phi * (psi_sat / psi_Rth)^(1 / b) # [kPa] Campbell 1984
 theta_fc   <- phi * (psi_sat / psi_fc)^(1 / b) # [kPa] Campbell 1984 - Alternatively: obtain from land model.
 params     <- c(b = b, psi_sat = psi_sat, theta_Rth = theta_Rth, theta_fc = theta_fc)
 
-state <- (LC = LC_0, RC = RC_0, SCw = SCw_0, SC_s  = SCw_0, SCm = SCm_0)
+state <- (LC = LC_0, RC = RC_0, SCw = SCw_0, SCs = SCs_0, SCd = SCd_0, SCm = SCm_0, ECw = ECw_0, ECs = ECs_0, ECm = ECm_0, MC = MC_0)
 
 model1 <- function(times, state, parameters) {
   with(as.list(c(state,parameters)),{
@@ -84,8 +86,7 @@ model1 <- function(times, state, parameters) {
     litter_m <- approx(input_times, input_litter_m, xout=times)$y
     litter_s <- approx(input_times, input_litter_s, xout=times)$y
     temp_s   <- approx(input_times, input_temp_s, xout=times)$y
-    moist_s  <- approx(input_times, input_moist_s, xout=times)$y
-    
+    moist_s  <- approx(input_times, input_moist_s, xout=times)$y    
     
     dLC  <- FluxLC()
     dRC  <- FluxRC()
