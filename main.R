@@ -13,7 +13,7 @@
 # - enzymatic production and breakdown
 # - DOC and enzyme sorption to mineral surfaces
 # - DOC flux to and from dead zones
-# - Optionally: advection, SOC flux to dead zones, microbial biomasss dynamics
+# - Optionally to develope: advection, SOC flux to dead zones, microbial biomasss dynamics, microbial bimoass to SOC pools
 
 ### Setup ======================================================================
 # Libraries
@@ -63,6 +63,12 @@ phi       <- 0.5    # [m^3 m^-3] Assumed pore space - Alternatively: obtain from
 psi_Rth   <- 15000  # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
 psi_fc    <- 33     # [kPa] Water potential at field capacity
 Em        <- 0.004  # [h-1] Approx. for 0.1 d-1 (Schimel & Weintraub 2003, Allison 2006, Manzoni et al. ...)
+K_LC      
+K_RC
+kf_LC
+kf_RC
+D_E0
+D_S0
 
 # Spatially variable parameters
 
