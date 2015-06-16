@@ -16,8 +16,7 @@
 # - microbial uptake and respiration
 # - enzymatic production and breakdown
 # - DOC and enzyme sorption to mineral surfaces
-# - DOC flux to and from dead zones
-# - Optionally to develope: advection, SOC flux to dead zones, microbial biomasss dynamics, microbial bimoass to SOC pools
+# - DOC flux to and from immobile zones
 
 ### Setup ======================================================================
 # Libraries
