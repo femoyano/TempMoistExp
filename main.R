@@ -2,10 +2,10 @@
 
 ### Documentation ==============================================================
 # Main program file.
-# Soil model: SCM1_h (Soil Carbon Model 1 hourly)
+# Soil model: SCM
 
 # Simulation of soil C dynamics. This is the main R script that runs the model.
-# Model time step: hourly
+
 # Processes simulated:
 # - enzymatic decomposition
 # - DOC and enzyme diffusion
@@ -13,7 +13,6 @@
 # - enzymatic production and breakdown
 # - DOC and enzyme sorption to mineral surfaces
 # - DOC flux to and from dead zones
-# - Optionally to develope: advection, SOC flux to dead zones, microbial biomasss dynamics, microbial bimoass to SOC pools
 
 ### Setup ======================================================================
 # Libraries
