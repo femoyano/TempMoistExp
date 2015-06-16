@@ -1,5 +1,9 @@
 # flux_functions.r 
 
+# Documtation
+# Branch: dry_zones. Fluxes have to be corrected to reflect the 'dry zones' effect.
+# i.e. that the availability of each component depends on the water content.
+
 # Functions calculating the fluxes of C.
 
 # Metabolic litter input
@@ -13,20 +17,29 @@ F_sl.rc <- function (litter_struct) { # the input of litter is prescribed; no ca
 }
 
 # Decomposition of LC by enzymes
-F_lc.sc <- function (LC, RC, ECw, kf_LC,  K_LC, K_RC) {
-  (kf_LC * LC * ECw) / (K_LC * (1 + LC / K_LC + RC / K_RC + ECw / K_LC))
+F_lc.sc <- function (LC, RC, ECw, kf_LC,  K_LC, K_RC, theta) {
+  LC <- LC / theta
+  RC <- RC / theta
+  EC <- ECw / theta
+  (kf_LC * LC * ECw) / (K_LC * (1 + LC / K_LC + RC / K_RC + ECw / K_LC)) * theta
 }
 
 # Decomposition of RC by enzymes
-F_rc.sc <- function (LC, RC, ECw, kf_RC, K_LC, K_RC) {
-  (kf_RC * RC * ECw) / (K_RC * (1 + RC / K_RC + LC / K_LC + ECw / K_RC))
+F_rc.sc <- function (LC, RC, ECw, kf_RC, K_LC, K_RC, theta) {
+  LC <- LC / theta
+  RC <- RC / theta
+  EC <- ECw / theta
+  (kf_RC * RC * EC) / (K_RC * (1 + RC / K_RC + LC / K_LC + EC / K_RC)) * theta
 }
 
 # Sorption of enzymes to mineral surface
-F_ecw.ecs <- function (SCw, SCs, ECw, ECs, M, K_SC, K_EC) {
+F_ecw.ecs <- function (SCw, SCs, ECw, ECs, M, K_SC, K_EC, theta) {
   SC <- SCw + SCs
   EC <- ECw + ECs
-  (EC * M) / (K_EC * (1 + EC / K_EC + SC / K_SC + M / K_EC)) - ECs
+  SC <- SC / theta
+  EC <- EC / theta
+  m <- M / theta
+  (EC * M) / (K_EC * (1 + EC / K_EC + SC / K_SC + M / K_EC)) * theta - ECs
 }
 
 # Sorption of SC to mineral surface
@@ -75,7 +88,7 @@ F_ec.lc <- function (ECw, Em) { # the flux from the enzyme pool to dissolved org
   ECw * Em  
 }
 
-# Transfer to disconnected zones.
+# Transfer from / to immobile pool
 F_sci.scw <- function (SCw, SCi, dtheta, theta, theta_fc) {
   if (theta < fc) {
     ifelse (dtheta >= 0, dtheta * (SCi / (theta_fc - theta)), dtheta * (SCw / theta))
