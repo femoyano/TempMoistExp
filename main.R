@@ -12,7 +12,7 @@
 # - microbial uptake and respiration
 # - enzymatic production and breakdown
 # - DOC and enzyme sorption to mineral surfaces
-# - DOC flux to and from dead zones
+# - DOC flux to and from immobile zones
 
 ### Setup ======================================================================
 # Libraries
@@ -26,7 +26,7 @@ source("FluxDryzone.r")
 
 dims <- list(n.time = , n.grid.points = , n.horizons = )
 depths <- 
-time.step <-
+# set.time.resol <- 48 # Use to change time dependent variables and parameters to the desired time resolution (default = daily?)
   
 ### Inputs =====================================================================
 
@@ -39,8 +39,9 @@ depth  <-  # [m] soil depth (array: point x layer)
 # Load spatio_temporal input data
 input_litter_m  <-  # [gC m^2] metabolic litter (array: point x layer x time)
 input_litter_s  <-  # [gC m^2] structural litter (array: point x layer x time)
-input_temp_s    <-  # [k] soil temperatrue (array: point x layer x time)
-input_moist_s   <-  # [m^3 m^-3] soil volumetric water content (array: point x layer x time)
+input_temp      <-  # [k] soil temperatrue (array: point x layer x time)
+input_moist     <-  # [m^3 m^-3] soil volumetric water content (array: point x layer x time)
+input_dmoist    <-  # [m^3 m^-3] change in soil volumetric water (array: point x layer x time)
 input_times     <-  # time points for input values
   
 # Load initial state variable values
@@ -58,16 +59,19 @@ MC_0  <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] microbial carbon (array: 
 ### Model parmeters ====
 
 # Constants
-phi       <- 0.5    # [m^3 m^-3] Assumed pore space - Alternatively: obtain from land model.
-psi_Rth   <- 15000  # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-psi_fc    <- 33     # [kPa] Water potential at field capacity
-Em        <- 0.004  # [h-1] Approx. for 0.1 d-1 (Schimel & Weintraub 2003, Allison 2006, Manzoni et al. ...)
-K_LC      
-K_RC
-kf_LC
-kf_RC
-D_E0
-D_S0
+phi      <- 0.5      # [m^3 m^-3] Assumed pore space - Alternatively: obtain from land model.
+psi_Rth  <- 15000    # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
+psi_fc   <- 33      # [kPa] Water potential at field capacity
+Em       <- 0.004    # [h-1] Approx. for 0.1 d-1 (Schimel & Weintraub 2003, Allison 2006, Manzoni et al. ...)
+K_LC     <- 
+K_RC     <- 
+kf_LC    <- 
+kf_RC    <- 
+D_S0     <- 8.1e-10 # [m s^-1] For amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+D_E0     <- 8.1e-11 # [m s^-1] Vetter et al., 1998
+ECm_f    <- ? # constant fraction of MC representing amount of ECm
+delta    <- ? # characteristic distance between substrate and microbes
+mcrc_f   <- 1 # fraction of dead microbes going to the recalcitrant carbon pool 
 
 # Spatially variable parameters
 
@@ -90,8 +94,8 @@ model1 <- function(times, state, parameters) {
     
     litter_m <- approx(input_times, input_litter_m, xout=times)$y
     litter_s <- approx(input_times, input_litter_s, xout=times)$y
-    temp_s   <- approx(input_times, input_temp_s, xout=times)$y
-    moist_s  <- approx(input_times, input_moist_s, xout=times)$y    
+    temp   <- approx(input_times, input_temp_s, xout=times)$y
+    theta  <- approx(input_times, input_moist_s, xout=times)$y    
     
     dLC  <- FluxLC()
     dRC  <- FluxRC()
