@@ -3,21 +3,21 @@
 # Functions calculating the fluxes of C.
 
 # Metabolic litter input
-F_ml.lc <- function (litter_met) { # the input of litter is prescribed so no calculations are required
+F_ml.lc <- function (litter_met) { # the input of litter is prescribed; no calculations are required
   litter_met
 }
 
 # Structural litter input
-F_sl.rc <- function (litter_struct) { # the input of litter is prescribed so no calculations are required
+F_sl.rc <- function (litter_struct) { # the input of litter is prescribed; no calculations are required
   litter_struct
 }
 
-# Decomposition of LC C by enzymes
+# Decomposition of LC by enzymes
 F_lc.sc <- function (LC, RC, ECw, kf_LC,  K_LC, K_RC) {
   (kf_LC * LC * ECw) / (K_LC * (1 + LC / K_LC + RC / K_RC + ECw / K_LC))
 }
 
-# Decomposition of RC C by enzymes
+# Decomposition of RC by enzymes
 F_rc.sc <- function (LC, RC, ECw, kf_RC, K_LC, K_RC) {
   (kf_RC * RC * ECw) / (K_RC * (1 + RC / K_RC + LC / K_LC + ECw / K_RC))
 }
@@ -48,12 +48,6 @@ F_ecm.ecw <- function (SCw, SCm, D_E0, theta, delta) {
   D_E * (SCm / theta - SCw / theta) / delta
 }
 
-# Transfer to disconnected zones. Need to figure out how to consider fc issue.
-# F_scw.scd <- function (SCw, dtheta) {
-#   theta
-#   ifelse (dtheta < 0,  SCw / theta * (-dtheta), SCd  
-# }
-
 # Mirobial turnover and transfer to LC
 F_mc.ecm <- function (MC, ECm_f) {
   (MC * ECm_f) - ECm
@@ -79,4 +73,21 @@ F_mc_rc <- function (MC, Mm) {
 # Decaying enzymes going to LC pool
 F_ec.lc <- function (ECw, Em) { # the flux from the enzyme pool to dissolved organic matter by enzyme breakdown
   ECw * Em  
+}
+
+# Transfer to disconnected zones.
+F_sci.scw <- function (SCw, SCi, dtheta, theta, theta_fc) {
+  if (theta < fc) {
+    ifelse (dtheta >= 0, dtheta * (SCi / (theta_fc - theta)), dtheta * (SCw / theta))
+  } else SCi
+}
+
+# Advection to adjacent soil layer
+F_scw.adv <- function (SCw, theta, percolation) {
+  SCw / theta * percolation
+}
+
+# Advection from adjacent soil layer
+F_adv.scw <- function (advection_in) { # prescribed
+  advection_in
 }
