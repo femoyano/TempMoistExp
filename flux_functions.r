@@ -64,7 +64,7 @@ F_ecm.ecw <- function (SCw, SCm, D_E0, theta, delta) {
   D_E * (SCm / theta - SCw / theta) / delta
 }
 
-# Mirobial death and transfer to LC
+# Mirobes to LC
 F_mc.ecm <- function (MC, ECm_f) {
   (MC * ECm_f) - ECm
 }

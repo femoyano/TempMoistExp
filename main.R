@@ -19,12 +19,14 @@
 require(deSolve)
 # Sourced files
 
-source("FluxDryzone.r")
+source("flux_functions.r")
 
-# Define dimensions
+# Tmime parameters
 
-dims <- list(n.time = , n.grid.points = , n.horizons = )
-depths <- 
+day <- 86400 # seconds in a day
+hour <- 3600 # seconds in an hour
+tstep <- hour/2
+
 # set.time.resol <- 48 # Use to change time dependent variables and parameters to the desired time resolution (default = daily?)
   
 ### Inputs =====================================================================
@@ -61,15 +63,15 @@ MC_0  <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] microbial carbon (array: 
 phi      <- 0.5      # [m^3 m^-3] Assumed pore space - Alternatively: obtain from land model.
 psi_Rth  <- 15000    # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
 psi_fc   <- 33      # [kPa] Water potential at field capacity
-Em       <- 0.004    # [h-1] Approx. for 0.1 d-1 (Schimel & Weintraub 2003, Allison 2006, Manzoni et al. ...)
+Em       <- 0.004 / hour * tstep   # [h-1] Approx. for 0.1 d-1 (Schimel & Weintraub 2003, Allison 2006, Manzoni et al. ...)
 K_LC     <- 
 K_RC     <- 
-K_SC    <-
+K_SC     <-
 kf_LC    <- 
 kf_RC    <- 
 kf_SC    <-
-D_S0     <- 8.1e-10 # [m s^-1] For amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
-D_E0     <- 8.1e-11 # [m s^-1] Vetter et al., 1998
+D_S0     <- 8.1e-10 * tstep # [m s^-1] For amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+D_E0     <- 8.1e-11 * tstep # [m s^-1] Vetter et al., 1998
 ECm_f    <- ? # constant fraction of MC representing amount of ECm
 delta    <- ? # characteristic distance between substrate and microbes
 mcrc_f   <- 1 # fraction of dead microbes going to the recalcitrant carbon pool
