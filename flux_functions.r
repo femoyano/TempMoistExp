@@ -17,10 +17,11 @@ F_sl.rc <- function (litter_struct) { # the input of litter is prescribed; no ca
 }
 
 # Decomposition of LC by enzymes
-F_lc.sc <- function (LC, RC, ECw, kf_LC, K_LC, K_RC, theta) {
+F_lc.sc <- function (LC, RC, ECw, kf_LC, K_LC, K_RC, theta, ) {
   LC <- LC / theta
   RC <- RC / theta
   EC <- ECw / theta
+  kf_LC <- temp.fun.()
   (kf_LC * LC * ECw) / (K_LC * (1 + LC / K_LC + RC / K_RC + ECw / K_LC)) * theta
 }
 

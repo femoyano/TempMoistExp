@@ -20,6 +20,7 @@ require(deSolve)
 # Sourced files
 
 source("flux_functions.r")
+source("temperature_functions.r")
 
 # Tmime parameters
 
@@ -57,26 +58,32 @@ ECs_0 <- 0 # GetInitValues("InitVal_SC_s_0.csv") # [g] enzymes sorbed to mineral
 ECm_0 <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] enzymes local to microbes (array: point x layer)
 MC_0  <- 0 # GetInitValues("InitVal_SC_m_0.csv") # [g] microbial carbon (array: point x layer)
 
-### Model parmeters ====
+### Known Constants
+R   <- 8.3144  # [J K-1 mol-1] gas constant
 
-phi      <- 0.5      # [m3 m-3] Assumed pore space - Alternatively: obtain from land model.
-psi_Rth  <- 15000    # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
+### Model parmeters ====
+phi      <- 0.5     # [m3 m^-3] Assumed pore space - Alternatively: obtain from land model.
+psi_Rth  <- 15000   # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
 psi_fc   <- 33      # [kPa] Water potential at field capacity
-Em       <- 0.1 / day * tstep   # [d-1] (Schimel & Weintraub 2003, Allison 2006, Manzoni manus ...)
-K_LC     <- 
-K_RC     <- 
-K_SC     <-
-kf_LC    <- 
-kf_RC    <- 
-kf_SC    <-
-D_S0     <- 8.1e-10 * tstep # [m s-1] For amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
-D_E0     <- 8.1e-11 * tstep # [m s-1] Vetter et al., 1998
-ECm_f    <- ? # constant fraction of MC representing amount of ECm
-delta    <- 10^-4 # [m] characteristic distance between substrate and microbes (Manzoni manus)
-mcrc_f   <- 1 # [g g-1] fraction of dead microbes going to the recalcitrant carbon pool
-t_MC     <- 0.05 # [g g-1] scalar for transporter fraction of MC (Tang and Riley 2014)
-T0       <- 290 # [K] reference temperature
-G_Klc    <- 
+Em       <- 0.1 / day * tstep  # [d-1] Enzyme mortality rate (Schimel & Weintraub 2003, Allison 2006, Manzoni manus ...)
+K_LC.EC  <- 200     # [gC] Value of k_ES in Tang and Riley 2014
+K_RC.EC  <- 200     # [gC] Value of k_ES in Tang and Riley 2014
+K_SC.MC  <- 1       # [gC] Value of k_BC in Tang and Riley 2014
+K_SC.M   <- 25      # [gC] Value of k_MC in Tang and Riley 2014
+K_EC.M   <- 50      # [gC] Value of k_ME in Tang and Riley 2014
+V_LC     <- 
+V_RC     <- 
+V_SC     <- 10.93 / day * tstep  # [d^-1] Maximum speed of micro bial uptake of SC
+D_S0     <- 8.1e-10 * tstep    # [m s^-1] For amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+D_E0     <- 8.1e-11 * tstep    # [m s^-1] Vetter et al., 1998
+ECm_f    <- ?       # constant fraction of MC representing amount of ECm
+delta    <- 10^-4   # [m] characteristic distance between substrate and microbes (Manzoni manus)
+mcrc_f   <- 1       # [g g^-1] fraction of dead microbes going to the recalcitrant carbon pool
+t_MC     <- 0.05    # [g g^-1] scalar for transporter fraction of MC (Tang and Riley 2014)
+T0       <- 290     # [K] reference temperature
+G_V.SC   <- 45      # [degC]  Gibbs energy for V_SC
+G_K.SC   <- 15      # [degC]  Gibbs energy for K_SC
+G_K.LC   <- 
 
 
 ### Simulation =================================================================
