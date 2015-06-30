@@ -36,6 +36,7 @@ F_rc.sc <- function (LC, RC, ECw, V_RD, K_LD, K_RD, theta) {
 
 # Sorption of EC to mineral surface
 F_ecw.ecs <- function (SCw, SCs, ECw, ECs, M, K_SS, K_ES, theta) {
+  M <- 
   SC <- SCw + SCs
   EC <- ECw + ECs
   SC <- SC / theta
