@@ -1,4 +1,4 @@
-# Auxiliary functions
+# auxiliary_functions.r
 
 # Artificial temperature forcing data (from Tang and Riley 2014)
 temp.forcing <- data.frame(days = seq(1,365,0.05))

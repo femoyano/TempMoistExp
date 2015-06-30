@@ -17,7 +17,7 @@ F_sl.rc <- function (litter_struct) { # the input of litter is prescribed; no ca
 }
 
 # Decomposition of LC into SC
-F_lc.sc <- function (LC, RC, ECw, V_LD, K_LD, K_RD, theta, E_V.LD, E_K.LD, E_K.RD, ) {
+F_lc.sc <- function (LC, RC, ECw, V_LD, K_LD, K_RD, theta) {
   LC <- LC / theta
   RC <- RC / theta
   EC <- ECw / theta
