@@ -17,8 +17,8 @@ parameters <- c(
   depth  <-  0.30 # [m] soil depth
   
   ### Time Dependent Parameters
-  Em       = 0.006 / day * tstep    , # [d-1] Enzyme turnover rate (Hagerty et al. 2014, value for mineral soils at 0C; 0.04 at 10-15C as in Allison 2006)
-  Mm       = 0.006 / day * tstep    , # [d-1] Microbe turnover rate (Hagerty et al. 2014, value for mineral soils at 0C)
+  Em_0     = 0.04 / day * tstep     , # [d-1] Enzyme turnover rate (Hagerty et al. 2014, value for mineral soils at 290K; 0.04 at 10-15C as in Allison 2006) (!uncertain!)
+  Mm_0     = 0.04 / day * tstep     , # [d-1] Microbe turnover rate (Hagerty et al. 2014, value for mineral soils at 290K) (!uncertain!)
   V_LD_T0  = 0.0058 / day * tstep   , # [d^-1] Maximum speed of LD decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
   V_RD_T0  = 0.000768 / day * tstep , # [d^-1] Maximum speed ofRC decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
   V_SU_T0  = 10.93 / day * tstep    , # [d^-1] Maximum speed of microbial uptake of SC
@@ -26,11 +26,11 @@ parameters <- c(
   ### Fixed Parameters ====
   psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   psi_fc   = 33      , # [kPa] Water potential at field capacity
-  K_LD_T0  = 200     , # [gC] Affinity parameter for LC decomp. (k_ES in Tang and Riley 2014)
-  K_RD_T0  = 200     , # [gC] Affinity parameter for RC decomp. (k_ES in Tang and Riley 2014)
-  K_SU_T0  = 1       , # [gC] Affinity parameter for microbial SC uptake (k_BC in Tang and Riley 2014)
-  K_SS_T0  = 25      , # [gC] Affinity parameter for SC sorption (k_MC in Tang and Riley 2014)
-  K_ES_T0  = 50      , # [gC] Affinity parameter for EC sorption (k_ME in Tang and Riley 2014)
+  K_LD_T0  = 200     , # [gC m-3] Affinity parameter for LC decomp. (k_ES in Tang and Riley 2014)
+  K_RD_T0  = 200     , # [gC m-3] Affinity parameter for RC decomp. (k_ES in Tang and Riley 2014)
+  K_SU_T0  = 1       , # [gC m-3] Affinity parameter for microbial SC uptake (k_BC in Tang and Riley 2014)
+  K_SS_T0  = 25      , # [gC m-3] Affinity parameter for SC sorption (k_MC in Tang and Riley 2014)
+  K_ES_T0  = 50      , # [gC m-3] Affinity parameter for EC sorption (k_ME in Tang and Riley 2014)
   D_S0     = 8.1e-10 / sec * tstep  , # [m s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
   D_E0     = 8.1e-11 / sec * tstep  , # [m s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
   P_E      = 0.01    , # [d^-1] Fraction of MC converted to EC. Intermediate value between Schimel & Weintraub 2003 and Allison et al. 2010 (!uncertain!)
@@ -46,6 +46,7 @@ parameters <- c(
   E_K.RD   = 15000   , # [J mol^-1]  Gibbs energy for K_RD (Tang and Riley 2014)
   E_K.EM   = 10000   , # [J mol^-1]  Gibbs energy for K_EM (Tang and Riley 2014)
   E_K.SM   = 10000   , # [J mol^-1]  Gibbs energy for K_SM (Tang and Riley 2014)
+  E_m      = 47000   , # [J mol^-1]  Gibbs energy for Mm and Em (Haggerty et al. 2014 supplementary info)
   M_spec   = 0.0017    # [gC gSoil^-1] Specific maximum mineral surface capacity for sorption (Mayes et al. 2012)
   
   # Calculate spatial variables ====

@@ -21,9 +21,7 @@ F_lc.scw <- function (LC, RC, ECw, V_LD, K_LD, K_RD, theta) {
   LC <- LC / theta
   RC <- RC / theta
   EC <- ECw / theta
-  V_LD <- temp.fun.()
-  
-  (V_LD * LC * ECw) / (K_LD * (1 + LC / K_LD + RC / K_RD + ECw / K_LD)) * theta
+  (V_LD * LC * EC) / (K_LD * (1 + LC / K_LD + RC / K_RD + EC / K_LD)) * theta
 }
 
 # Decomposition of RC into SC
@@ -104,10 +102,10 @@ F_ecw.scw <- function (ECw, Em) { # enzyme decay and flux to SC pool
 }
 
 # Transfer from / to immobile pool
-F_sci.scw <- function (SCw, SCi, dtheta, theta, theta_fc) {
+F_scw.sci <- function (SCw, SCi, dtheta, theta, theta_fc) {
   if (theta < theta_fc) {
-    ifelse (dtheta >= 0, dtheta * (SCi / (theta_fc - theta)), dtheta * (SCw / theta))
-  } else SCi
+    ifelse (dtheta >= 0, max(-dtheta * (SCi / (theta_fc - theta)), -SCi), -dtheta * (SCw / theta))
+  } else -SCi
 }
 
 # Advection flux out
