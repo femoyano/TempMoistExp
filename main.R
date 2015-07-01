@@ -51,25 +51,32 @@ times_litter   <- litter.data$day      # time vector of the litter data
 # ... fixed in parameter list for now
 
 # Define model time step vector
-times <- seq(1,times_forcing[length(times_forcing)])
+times_model <- seq(1,times_forcing[length(times_forcing)])
 
 # Model definition ====
-model.run <- function(times, state, parameters) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+model.run <- function(times_model, state, parameters) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   with(as.list(c(state, parameters)),{
     
     # Interpolate input variables
-    litter_m <- approx(times_litter, input_litter_m, xout=times, rule=2)$y
-    litter_s <- approx(times_litter, input_litter_s, xout=times, rule=2)$y
-    temp     <- approx(times_forcing, input_temp, xout=times, rule=2)$y
-    theta    <- approx(times_forcing, input_moist, xout=times, rule=2)$y * depth
+    litter_m <- approx(times_litter, input_litter_m, xout=times_model, rule=2)$y
+    litter_s <- approx(times_litter, input_litter_s, xout=times_model, rule=2)$y
+    temp     <- approx(times_forcing, input_temp, xout=times_model, rule=2)$y
+    theta    <- approx(times_forcing, input_moist, xout=times_model, rule=2)$y * depth
     dtheta   <- c(0,diff(theta))
+    
+    # Calculate spatial variables
+    M  <- M_spec * depth * dens_min * (1 - phi)    # [gC] Total C-equivalent mineral surface for sorption
+    b  <- 2.91 + 15.9 * clay                       # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
+    psi_sat   <- exp(6.5-1.3 * sand) * 1000        # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
+    theta_Rth <- phi * (psi_sat / psi_Rth)^(1 / b) # [kPa] Threshold water content for mic. respiration (water retention formula from Campbell 1984)
+    theta_fc  <- phi * (psi_sat / psi_fc)^(1 / b)  # [kPa] Field capacity water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
     
     # Calculate temporal values of T-dependent parameters
     K_LD <- Temp.Resp.Eq(K_LD_T0, temp, T0, E_K.LD, R)
     K_RD <- Temp.Resp.Eq(K_RD_T0, temp, T0, E_K.RD, R)
     K_SU <- Temp.Resp.Eq(K_SU_T0, temp, T0, E_K.SU, R)
-    K_SS <- Temp.Resp.Eq(K_SS_T0, temp, T0, E_K.SS, R)
-    K_ES <- Temp.Resp.Eq(K_ES_T0, temp, T0, E_K.ES, R)
+    K_SM <- Temp.Resp.Eq(K_SM_T0, temp, T0, E_K.SM, R)
+    K_EM <- Temp.Resp.Eq(K_EM_T0, temp, T0, E_K.EM, R)
     V_LD <- Temp.Resp.NonEq(V_LD_T0, temp, T0, E_V.LD, R)
     V_RD <- Temp.Resp.NonEq(V_RD_T0, temp, T0, E_V.RD, R)
     V_SU <- Temp.Resp.NonEq(V_SU_T0, temp, T0, E_V.SU, R)
@@ -84,13 +91,13 @@ model.run <- function(times, state, parameters) { # must be defined as: func <- 
     F_mc_scw  <- F_mc_scw(MC, Mm, mcsc_f)
     F_ecw.scw <- F_ecw.scw(ECw, Em)
     F_scw.sci <- F_sci.scw(SCw, SCi, dtheta, theta, theta_fc)
-    F_scw.scs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SS, K_ES, theta)
+    F_scw.scs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta)
     F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta, delta)
     F_scm_co2 <- F_scm_co2(SCm, MC, t_MC, CUE, theta, V_SC, K_SU)
     F_scm.mc  <- F_scm.mc(SCm, MC, t_MC, CUE, theta, V_SC, K_SU)
     F_mc.ecm  <- F_mc.ecm(MC, E_P)
     F_ecm.ecw <- F_ecm.ecw(SCw, SCm, D_E0, theta, delta)
-    F_ecw.ecs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SS, K_ES, theta)
+    F_ecw.ecs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta)
     
     # Define the rate changes for each state variable
     dLC  <- F_ml.lc + F_mc_lc - F_lc.scw
@@ -107,9 +114,9 @@ model.run <- function(times, state, parameters) { # must be defined as: func <- 
     
     # Output as a list
     list(c(dLC, dRC, dSCw, dSCs, dSCi, dSCm, dECw, dECs, dECm, dMC, CO2), 
-         c(K_LD, K_RD, K_SU, K_SS, K_ES, K_LD, K_RD, V_LD, V_RD, V_SU, Mm, Em))
+         c(K_LD, K_RD, K_SU, K_SM, K_EM, K_LD, K_RD, V_LD, V_RD, V_SU, Mm, Em))
     
   }) # end of with...
 } # end of model.run
 
-model.out <- as.data.frame(ode(state, times, model.run, parameters))
+model.out <- as.data.frame(ode(initial_state, times_model, model.run, parameters))

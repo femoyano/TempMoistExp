@@ -33,24 +33,24 @@ F_rc.scw <- function (LC, RC, ECw, V_RD, K_LD, K_RD, theta) {
 }
 
 # Sorption of EC to mineral surface
-F_ecw.ecs <- function (SCw, SCs, ECw, ECs, M, K_SS, K_ES, theta) {
+F_ecw.ecs <- function (SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta) {
   M <- 
   SC <- SCw + SCs
   EC <- ECw + ECs
   SC <- SC / theta
   EC <- EC / theta
   M <- M / theta
-  (EC * M) / (K_ES * (1 + EC / K_ES + SC / K_SS + M / K_ES)) * theta - ECs
+  (EC * M) / (K_EM * (1 + EC / K_EM + SC / K_SM + M / K_EM)) * theta - ECs
 }
 
 # Sorption of SC to mineral surface
-F_scw.scs <- function (SCw, SCs, ECw, ECs, M, K_SS, K_ES, theta) {
+F_scw.scs <- function (SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta) {
   SC <- SCw + SCs
   EC <- ECw + ECs
   SC <- SC / theta
   EC <- EC / theta
   M <- M / theta
-  (SC * M) / (K_SS * (1 + SC / K_SS + EC / K_ES + M / K_SS)) * theta - SCs
+  (SC * M) / (K_SM * (1 + SC / K_SM + EC / K_EM + M / K_SM)) * theta - SCs
 }
 
 # Diffusion of SC to microbes
