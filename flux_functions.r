@@ -17,7 +17,7 @@ F_sl.rc <- function (litter_struct) { # the input of litter is prescribed; no ca
 }
 
 # Decomposition of LC into SC
-F_lc.sc <- function (LC, RC, ECw, V_LD, K_LD, K_RD, theta) {
+F_lc.scw <- function (LC, RC, ECw, V_LD, K_LD, K_RD, theta) {
   LC <- LC / theta
   RC <- RC / theta
   EC <- ECw / theta
@@ -27,7 +27,7 @@ F_lc.sc <- function (LC, RC, ECw, V_LD, K_LD, K_RD, theta) {
 }
 
 # Decomposition of RC into SC
-F_rc.sc <- function (LC, RC, ECw, V_RD, K_LD, K_RD, theta) {
+F_rc.scw <- function (LC, RC, ECw, V_RD, K_LD, K_RD, theta) {
   LC <- LC / theta
   RC <- RC / theta
   EC <- ECw / theta
@@ -89,17 +89,17 @@ F_scm.mc <- function (SCm, MC, t_MC, CUE, theta, V_SC, K_SU) {
 }
 
 # Dead microbes to labile carbon pool
-F_mc_lc <- function (MC, Mm) {
-  MC * Mm * (1 - mcrc_f)
+F_mc_lc <- function (MC, Mm, mcsc_f) {
+  MC * Mm * (1 - mcsc_f)
 }
 
 # Dead microbes to SC pool
-F_mc_sc <- function (MC, Mm) {
+F_mc_scw <- function (MC, Mm, mcsc_f) {
   MC * Mm * mcsc_f
 }
 
-# Decaying enzymes going to LC pool
-F_ec.lc <- function (ECw, Em) { # enzyme decay and flux to SC pool
+# Decaying enzymes going to SC pool
+F_ecw.scw <- function (ECw, Em) { # enzyme decay and flux to SC pool
   ECw * Em
 }
 

@@ -55,7 +55,7 @@ times_litter   <- litter.data$day      # time points when litter is given
 times <- seq(1,times_forcing[length(times_forcing)])
 
 # Model definition ====
-model.run <- function(times, state, parameters, input) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+model.run <- function(times, state, parameters) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   with(as.list(c(state, parameters)),{
     
     # Interpolate input variables
@@ -63,7 +63,7 @@ model.run <- function(times, state, parameters, input) { # must be defined as: f
     litter_s <- approx(times_litter, input_litter_s, xout=times, rule=2)$y
     temp     <- approx(times_forcing, input_temp, xout=times, rule=2)$y
     theta    <- approx(times_forcing, input_moist, xout=times, rule=2)$y
-    dtheta   <- approx(times_forcing, input_dmoist, xout=times, rule=2)$y
+    dtheta   <- c(0,diff(theta))
     
     # Calculate temporal values of T-dependent parameters
     K_LD <- Temp.Resp.Eq(K_LD_T0, temp, T0, E_K.LD, R)
@@ -77,20 +77,26 @@ model.run <- function(times, state, parameters, input) { # must be defined as: f
     Mm   <- Mm_0 * exp(0.115 * (temp-273.15)) # Mm T dependency from Hagerty et al. 2014
     Em   <- Em_0 * exp(0.115 * (temp-273.15)) # Em T dependency (assumed equal to that of Mm, Hagerty et al. 2014)
     
-    dLC  <- FluxLC()
-    dRC  <- FluxRC()
-    dSCw <- FluxSCw()
-    dSCs <- FluxSCs()
-    dSCd <- FluxSCm()
-    dSCm <- FluxSCm()
-    dECm <- FluxECm()
-    dECw <- FluxECw()
-    dECs <- FluxECs()
-    dMC  <- FluxMC()
-    
-    list(c(dLC, dRC, dSCw, dSCs, dSCd, dSCm, dECw, dECs, dECm, dMC))
+    dLC  <- F_ml.lc(litter_m) + F_mc_lc(MC, Mm, mcsc_f) - F_lc.scw(LC, RC, ECw, V_LD, K_LD, K_RD, theta)
+    dRC  <- F_sl.rc(litter_struct) - F_rc.scw(LC, RC, ECw, V_RD, K_LD, K_RD, theta)
+    dSCw <- F_lc.scw(LC, RC, ECw, V_LD, K_LD, K_RD, theta) + F_rc.scw(LC, RC, ECw, V_RD, K_LD, K_RD, theta) + 
+      F_mc_scw(MC, Mm, mcsc_f) + F_ecw.scw(ECw, Em) + F_sci.scw(SCw, SCi, dtheta, theta, theta_fc) - 
+      F_scw.scs(SCw, SCs, ECw, ECs, M, K_SS, K_ES, theta) - F_scw.scm(SCw, SCm, D_S0, theta, delta)
+    dSCs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SS, K_ES, theta)
+    dSCi <- - F_sci.scw(SCw, SCi, dtheta, theta, theta_fc)
+    dSCm <- F_scw.scm(SCw, SCm, D_S0, theta, delta) - F_scm_co2(SCm, MC, t_MC, CUE, theta, V_SC, K_SU) - 
+      F_scm.mc(SCm, MC, t_MC, CUE, theta, V_SC, K_SU)
+    dECm <- F_mc.ecm(MC, E_P) - F_ecm.ecw(SCw, SCm, D_E0, theta, delta)
+    dECw <- F_ecm.ecw(SCw, SCm, D_E0, theta, delta) - F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SS, K_ES, theta) - 
+      F_ecw.scw(ECw, Em)
+    dECs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SS, K_ES, theta)
+    dMC  <- F_scm.mc(SCm, MC, t_MC, CUE, theta, V_SC, K_SU) - F_mc.ecm(MC, E_P) - F_mc_lc(MC, Mm, mcsc_f) - 
+      F_mc_scw(MC, Mm, mcsc_f)
+    dCO2<- F_scm_co2(SCm, MC, t_MC, CUE, theta, V_SC, K_SU)
+        
+    list(c(dLC, dRC, dSCw, dSCs, dSCd, dSCm, dECw, dECs, dECm, dMC, CO2))
     
   }) # end of with...
 } # end of model.run
 
-out <- as.data.frame(ode(state, times, model.run, params))
+model.out <- as.data.frame(ode(state, times, model.run, parameters))

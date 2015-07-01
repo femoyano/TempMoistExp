@@ -5,7 +5,7 @@
 # Variables calculated from input data (e.g. theta_fc, ..) are in main.
 # Warning: time variables and tstep have to be defined before sourcing this file.
 
-params <- c(
+parameters <- c(
     
   ### Known Constants ====
   R   = 8.3144,  # [J K-1 mol-1] gas constant
