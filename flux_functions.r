@@ -54,13 +54,13 @@ F_scw.scs <- function (SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta) {
 }
 
 # Diffusion of SC to microbes
-F_scw.scm <- function (SCw, SCm, D_S0, theta, delta) {
+F_scw.scm <- function (SCw, SCm, D_S0, theta, delta, phi, theta_Rth) {
   D_S <- D_S0 * (phi-theta_Rth)^1.5 * ((theta-theta_Rth)/(phi-theta_Rth))^2.5
   D_S * (SCw / theta - SCm / theta) / delta
 }
 
 # Diffusion of EC from microbes
-F_ecm.ecw <- function (SCw, SCm, D_E0, theta, delta) {
+F_ecm.ecw <- function (SCw, SCm, D_E0, theta, delta, phi, theta_Rth) {
   D_E <- D_E0 * (phi-theta_Rth)^1.5 * ((theta-theta_Rth)/(phi-theta_Rth))^2.5
   D_E * (SCm / theta - SCw / theta) / delta
 }
@@ -71,18 +71,18 @@ F_mc.ecm <- function (MC, E_P) {
 }
 
 # CO2 production
-F_scm_co2 <- function (SCm, MC, t_MC, CUE, theta, V_SC, K_SU) {
+F_scm_co2 <- function (SCm, MC, t_MC, CUE, theta, V_SU, K_SU) {
   SCm <- SCm / theta
   MC <- MC * t_MC / theta
-  U <- (V_SC * SCm * MC) / (K_SU * SCm + MC) * theta
+  U <- (V_SU * SCm * MC) / (K_SU * SCm + MC) * theta
   U * (1-CUE)
 }
 
 # SCm to MC
-F_scm.mc <- function (SCm, MC, t_MC, CUE, theta, V_SC, K_SU) {
+F_scm.mc <- function (SCm, MC, t_MC, CUE, theta, V_SU, K_SU) {
   SCm <- SCm / theta
   MC <- MC * t_MC / theta
-  U <- (V_SC * SCm * MC) / (K_SU * SCm + MC) * theta
+  U <- (V_SU * SCm * MC) / (K_SU * SCm + MC) * theta
   U * CUE
 }
 

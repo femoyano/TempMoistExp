@@ -16,7 +16,7 @@
 # - DOC flux to and from immobile zones
 
 ### Setup ======================================================================
-
+rm(list=ls())
 # Define time step (Warning! input data rates should have same time units as time step)
 ### Time values ====
 day   <- 86400 # seconds in a day
@@ -72,31 +72,31 @@ model.run <- function(times_model, state, parameters) { # must be defined as: fu
     theta_fc  <- phi * (psi_sat / psi_fc)^(1 / b)  # [kPa] Field capacity water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
     
     # Calculate temporal values of T-dependent parameters
-    K_LD <- Temp.Resp.Eq(K_LD_T0, temp, T0, E_K.LD, R)
-    K_RD <- Temp.Resp.Eq(K_RD_T0, temp, T0, E_K.RD, R)
-    K_SU <- Temp.Resp.Eq(K_SU_T0, temp, T0, E_K.SU, R)
-    K_SM <- Temp.Resp.Eq(K_SM_T0, temp, T0, E_K.SM, R)
-    K_EM <- Temp.Resp.Eq(K_EM_T0, temp, T0, E_K.EM, R)
-    V_LD <- Temp.Resp.NonEq(V_LD_T0, temp, T0, E_V.LD, R)
-    V_RD <- Temp.Resp.NonEq(V_RD_T0, temp, T0, E_V.RD, R)
-    V_SU <- Temp.Resp.NonEq(V_SU_T0, temp, T0, E_V.SU, R)
-    Mm   <- Temp.Resp.Eq(Mm_T0, temp, T0, E_m, R)
-    Em   <- Temp.Resp.Eq(Em_T0, temp, T0, E_m, R)
+    K_LD <- Temp.Resp.Eq(K_LD_0, temp, T0, E_K.LD, R)
+    K_RD <- Temp.Resp.Eq(K_RD_0, temp, T0, E_K.RD, R)
+    K_SU <- Temp.Resp.Eq(K_SU_0, temp, T0, E_K.SU, R)
+    K_SM <- Temp.Resp.Eq(K_SM_0, temp, T0, E_K.SM, R)
+    K_EM <- Temp.Resp.Eq(K_EM_0, temp, T0, E_K.EM, R)
+    V_LD <- Temp.Resp.NonEq(V_LD_0, temp, T0, E_V.LD, R)
+    V_RD <- Temp.Resp.NonEq(V_RD_0, temp, T0, E_V.RD, R)
+    V_SU <- Temp.Resp.NonEq(V_SU_0, temp, T0, E_V.SU, R)
+    Mm   <- Temp.Resp.Eq(Mm_0, temp, T0, E_m, R)
+    Em   <- Temp.Resp.Eq(Em_0, temp, T0, E_m, R)
     
     F_ml.lc   <- F_ml.lc(litter_m)
-    F_sl.rc   <- F_sl.rc(litter_struct)
+    F_sl.rc   <- F_sl.rc(litter_s)
     F_mc_lc   <- F_mc_lc(MC, Mm, mcsc_f)
     F_lc.scw  <- F_lc.scw(LC, RC, ECw, V_LD, K_LD, K_RD, theta)
     F_rc.scw  <- F_rc.scw(LC, RC, ECw, V_RD, K_LD, K_RD, theta)
     F_mc_scw  <- F_mc_scw(MC, Mm, mcsc_f)
     F_ecw.scw <- F_ecw.scw(ECw, Em)
-    F_scw.sci <- F_sci.scw(SCw, SCi, dtheta, theta, theta_fc)
+    F_scw.sci <- F_scw.sci(SCw, SCi, dtheta, theta, theta_fc)
     F_scw.scs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta)
-    F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta, delta)
-    F_scm_co2 <- F_scm_co2(SCm, MC, t_MC, CUE, theta, V_SC, K_SU)
-    F_scm.mc  <- F_scm.mc(SCm, MC, t_MC, CUE, theta, V_SC, K_SU)
+    F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta, delta, phi, theta_Rth)
+    F_scm_co2 <- F_scm_co2(SCm, MC, t_MC, CUE, theta, V_SU, K_SU)
+    F_scm.mc  <- F_scm.mc(SCm, MC, t_MC, CUE, theta, V_SU, K_SU)
     F_mc.ecm  <- F_mc.ecm(MC, E_P)
-    F_ecm.ecw <- F_ecm.ecw(SCw, SCm, D_E0, theta, delta)
+    F_ecm.ecw <- F_ecm.ecw(SCw, SCm, D_E0, theta, delta, phi, theta_Rth)
     F_ecw.ecs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta)
     
     # Define the rate changes for each state variable
