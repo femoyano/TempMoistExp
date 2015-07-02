@@ -52,3 +52,14 @@ parameters <- c(
   phi      = 0.5     , # [m3 m^-3] Assumed pore space - Alternatively: obtain from land model
   dens_min = 1600000   # [g m^-3] Assumed mineral density
 )
+
+# Calculate additional parameters
+parlist <- as.list(parameters)
+M  <- with( parlist, M_spec * depth * dens_min * (1 - phi) )  # [gC] Total C-equivalent mineral surface for sorption
+b  <- with( parlist, 2.91 + 15.9 * clay )                    # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
+psi_sat   <- with( parlist, exp(6.5 - 1.3 * sand) / 1000 )   # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
+theta_Rth <- with( parlist, phi * (psi_sat / psi_Rth)^(1 / b) ) # [kPa] Threshold water content for mic. respiration (water retention formula from Campbell 1984)
+theta_fc  <- with( parlist, phi * (psi_sat / psi_fc)^(1 / b)  ) # [kPa] Field capacity water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+
+parameters <- c(parameters, M = M, b = b, psi_sat = psi_sat, theta_Rth = theta_Rth, theta_fc = theta_fc)
+rm(parlist, M, b, psi_sat, theta_Rth, theta_fc)

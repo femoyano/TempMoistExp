@@ -50,6 +50,7 @@ times_litter   <- litter.data$day      # time vector of the litter data
 # Load spatial input data (texture data matrix)
 # ... fixed in parameter list for now
 
+
 # Define model time step vector
 times_model <- seq(1,times_forcing[length(times_forcing)])
 
@@ -58,18 +59,12 @@ model.run <- function(times_model, state, parameters) { # must be defined as: fu
   with(as.list(c(state, parameters)),{
     
     # Interpolate input variables
-    litter_m <- approx(times_litter, input_litter_m, xout=times_model, rule=2)$y
-    litter_s <- approx(times_litter, input_litter_s, xout=times_model, rule=2)$y
-    temp     <- approx(times_forcing, input_temp, xout=times_model, rule=2)$y
-    theta    <- approx(times_forcing, input_moist, xout=times_model, rule=2)$y * depth
-    dtheta   <- c(0,diff(theta))
-    
-    # Calculate spatial variables
-    M  <- M_spec * depth * dens_min * (1 - phi)    # [gC] Total C-equivalent mineral surface for sorption
-    b  <- 2.91 + 15.9 * clay                       # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
-    psi_sat   <- exp(6.5-1.3 * sand) * 1000        # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
-    theta_Rth <- phi * (psi_sat / psi_Rth)^(1 / b) # [kPa] Threshold water content for mic. respiration (water retention formula from Campbell 1984)
-    theta_fc  <- phi * (psi_sat / psi_fc)^(1 / b)  # [kPa] Field capacity water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+    litter_m <- approx(times_litter, input_litter_m, xout=times_model, rule=2)$y  # [gC]
+    litter_s <- approx(times_litter, input_litter_s, xout=times_model, rule=2)$y  # [gC]
+    temp     <- approx(times_forcing, input_temp, xout=times_model, rule=2)$y     # [K]
+    theta_s  <- approx(times_forcing, input_moist, xout=times_model, rule=2)$y    # [m^3 m^-3] specific water content
+    theta    <- theta_s * depth    # [m^3] total water content
+    theta_d  <- c(0,diff(theta))   # [m^3] change in water content relative to previous time step
     
     # Calculate temporal values of T-dependent parameters
     K_LD <- Temp.Resp.Eq(K_LD_0, temp, T0, E_K.LD, R)
@@ -85,36 +80,36 @@ model.run <- function(times_model, state, parameters) { # must be defined as: fu
     
     F_ml.lc   <- F_ml.lc(litter_m)
     F_sl.rc   <- F_sl.rc(litter_s)
-    F_mc_lc   <- F_mc_lc(MC, Mm, mcsc_f)
+    F_mc.lc   <- F_mc.lc(MC, Mm, mcsc_f)
     F_lc.scw  <- F_lc.scw(LC, RC, ECw, V_LD, K_LD, K_RD, theta)
     F_rc.scw  <- F_rc.scw(LC, RC, ECw, V_RD, K_LD, K_RD, theta)
-    F_mc_scw  <- F_mc_scw(MC, Mm, mcsc_f)
+    F_mc.scw  <- F_mc.scw(MC, Mm, mcsc_f)
     F_ecw.scw <- F_ecw.scw(ECw, Em)
-    F_scw.sci <- F_scw.sci(SCw, SCi, dtheta, theta, theta_fc)
+    F_scw.sci <- F_scw.sci(SCw, SCi, theta_d, theta, theta_fc)
     F_scw.scs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta)
-    F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta, delta, phi, theta_Rth)
-    F_scm_co2 <- F_scm_co2(SCm, MC, t_MC, CUE, theta, V_SU, K_SU)
+    F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta, theta_s, delta, phi, theta_Rth)
+    F_scm.co2 <- F_scm.co2(SCm, MC, t_MC, CUE, theta, V_SU, K_SU)
     F_scm.mc  <- F_scm.mc(SCm, MC, t_MC, CUE, theta, V_SU, K_SU)
     F_mc.ecm  <- F_mc.ecm(MC, E_P)
-    F_ecm.ecw <- F_ecm.ecw(SCw, SCm, D_E0, theta, delta, phi, theta_Rth)
+    F_ecm.ecw <- F_ecm.ecw(ECm, ECw, D_E0, theta, theta_s, delta, phi, theta_Rth)
     F_ecw.ecs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta)
     
     # Define the rate changes for each state variable
-    dLC  <- F_ml.lc + F_mc_lc - F_lc.scw
+    dLC  <- F_ml.lc + F_mc.lc - F_lc.scw
     dRC  <- F_sl.rc - F_rc.scw
-    dSCw <- F_lc.scw + F_rc.scw + F_mc_scw + F_ecw.scw - F_scw.sci - F_scw.scs - F_scw.scm
+    dSCw <- F_lc.scw + F_rc.scw + F_mc.scw + F_ecw.scw - F_scw.sci - F_scw.scs - F_scw.scm
     dSCs <- F_scw.scs
     dSCi <- F_scw.sci
-    dSCm <- F_scw.scm - F_scm_co2 - F_scm.mc
+    dSCm <- F_scw.scm - F_scm.co2 - F_scm.mc
     dECm <- F_mc.ecm - F_ecm.ecw
     dECw <- F_ecm.ecw - F_ecw.ecs - F_ecw.scw
     dECs <- F_ecw.ecs
-    dMC  <- F_scm.mc - F_mc.ecm - F_mc_lc - F_mc_scw
-    dCO2 <- F_scm_co2
+    dMC  <- F_scm.mc - F_mc.ecm - F_mc.lc - F_mc.scw
+    dCO2 <- F_scm.co2
     
     # Output as a list
-    list(c(dLC, dRC, dSCw, dSCs, dSCi, dSCm, dECw, dECs, dECm, dMC, CO2), 
-         c(K_LD, K_RD, K_SU, K_SM, K_EM, K_LD, K_RD, V_LD, V_RD, V_SU, Mm, Em))
+    list(c(dLC, dRC, dSCw, dSCs, dSCi, dSCm, dECw, dECs, dECm, dMC, dCO2), 
+         c(K_LD=K_LD, K_RD=K_RD, K_SU=K_SU, K_SM=K_SM, K_EM=K_EM, K_LD=K_LD, K_RD=K_RD, V_LD=V_LD, V_RD=V_RD, V_SU=V_SU, Mm=Mm, Em=Em))
     
   }) # end of with...
 } # end of model.run

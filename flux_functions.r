@@ -54,15 +54,15 @@ F_scw.scs <- function (SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta) {
 }
 
 # Diffusion of SC to microbes
-F_scw.scm <- function (SCw, SCm, D_S0, theta, delta, phi, theta_Rth) {
-  D_S <- D_S0 * (phi-theta_Rth)^1.5 * ((theta-theta_Rth)/(phi-theta_Rth))^2.5
-  D_S * (SCw / theta - SCm / theta) / delta
+F_scw.scm <- function (SCw, SCm, D_S0, theta, theta_s, delta, phi, theta_Rth) {
+  D_S <- D_S0 * (phi - theta_Rth)^1.5 * ((theta_s - theta_Rth)/(phi - theta_Rth))^2.5
+  D_S * (SCw - SCm) / delta # dividing by theta for specific concentrations and multiplying again for total cancels theta out
 }
 
 # Diffusion of EC from microbes
-F_ecm.ecw <- function (SCw, SCm, D_E0, theta, delta, phi, theta_Rth) {
-  D_E <- D_E0 * (phi-theta_Rth)^1.5 * ((theta-theta_Rth)/(phi-theta_Rth))^2.5
-  D_E * (SCm / theta - SCw / theta) / delta
+F_ecm.ecw <- function (ECm, ECw, D_E0, theta, theta_s, delta, phi, theta_Rth) {
+  D_E <- D_E0 * (phi - theta_Rth)^1.5 * ((theta_s - theta_Rth)/(phi - theta_Rth))^2.5
+  D_E * (ECm - ECw) / delta # dividing by theta for specific concentrations and multiplying again for total cancels theta out
 }
 
 # Mirobes to ECm
@@ -71,10 +71,10 @@ F_mc.ecm <- function (MC, E_P) {
 }
 
 # CO2 production
-F_scm_co2 <- function (SCm, MC, t_MC, CUE, theta, V_SU, K_SU) {
+F_scm.co2 <- function (SCm, MC, t_MC, CUE, theta, V_SU, K_SU) {
   SCm <- SCm / theta
   MC <- MC * t_MC / theta
-  U <- (V_SU * SCm * MC) / (K_SU * SCm + MC) * theta
+  U <- (V_SU * SCm * MC) / (K_SU + SCm + MC) * theta
   U * (1-CUE)
 }
 
@@ -82,17 +82,17 @@ F_scm_co2 <- function (SCm, MC, t_MC, CUE, theta, V_SU, K_SU) {
 F_scm.mc <- function (SCm, MC, t_MC, CUE, theta, V_SU, K_SU) {
   SCm <- SCm / theta
   MC <- MC * t_MC / theta
-  U <- (V_SU * SCm * MC) / (K_SU * SCm + MC) * theta
+  U <- (V_SU * SCm * MC) / (K_SU + SCm + MC) * theta
   U * CUE
 }
 
 # Dead microbes to labile carbon pool
-F_mc_lc <- function (MC, Mm, mcsc_f) {
+F_mc.lc <- function (MC, Mm, mcsc_f) {
   MC * Mm * (1 - mcsc_f)
 }
 
 # Dead microbes to SC pool
-F_mc_scw <- function (MC, Mm, mcsc_f) {
+F_mc.scw <- function (MC, Mm, mcsc_f) {
   MC * Mm * mcsc_f
 }
 
@@ -102,9 +102,9 @@ F_ecw.scw <- function (ECw, Em) { # enzyme decay and flux to SC pool
 }
 
 # Transfer from / to immobile pool
-F_scw.sci <- function (SCw, SCi, dtheta, theta, theta_fc) {
+F_scw.sci <- function (SCw, SCi, theta_d, theta, theta_fc) {
   if (theta < theta_fc) {
-    ifelse (dtheta >= 0, max(-dtheta * (SCi / (theta_fc - theta)), -SCi), -dtheta * (SCw / theta))
+    ifelse (theta_d >= 0, max(-theta_d * (SCi / (theta_fc - theta)), -SCi), -theta_d * (SCw / theta))
   } else -SCi
 }
 

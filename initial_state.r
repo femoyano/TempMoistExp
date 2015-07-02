@@ -14,6 +14,6 @@ initial_state <- c(
   ECw = 0 , # [gC] enzymes in bulk water (array: point x layer)
   ECs = 0 , # [gC] enzymes sorbed to minerals (array: point x layer)
   ECm = 0 , # [gC] enzymes local to microbes (array: point x layer)
-  MC  = 0 , # [gC] microbial carbon (array: point x layer)
+  MC  = 0.1 , # [gC] microbial carbon (array: point x layer)
   CO2 = 0 
 )
