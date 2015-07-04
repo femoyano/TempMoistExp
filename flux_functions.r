@@ -54,14 +54,14 @@ F_scw.scs <- function (SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta) {
 }
 
 # Diffusion of SC to microbes
-F_scw.scm <- function (SCw, SCm, D_S0, theta, theta_s, dist, phi, theta_Rth) {
-  D_S <- D_S0 * (phi - theta_Rth)^1.5 * ((theta_s - theta_Rth)/(phi - theta_Rth))^2.5
+F_scw.scm <- function (SCw, SCm, D_S0, theta_s, dist, phi, Rth) {
+  D_S <- D_S0 * (phi - Rth)^1.5 * ((theta_s - Rth)/(phi - Rth))^2.5
   D_S * (SCw - SCm) / dist # dividing by theta for specific concentrations and multiplying again for total cancels theta out
 }
 
 # Diffusion of EC from microbes
-F_ecm.ecw <- function (ECm, ECw, D_E0, theta, theta_s, dist, phi, theta_Rth) {
-  D_E <- D_E0 * (phi - theta_Rth)^1.5 * ((theta_s - theta_Rth)/(phi - theta_Rth))^2.5
+F_ecm.ecw <- function (ECm, ECw, D_E0, theta_s, dist, phi, Rth) {
+  D_E <- D_E0 * (phi - Rth)^1.5 * ((theta_s - Rth)/(phi - Rth))^2.5
   D_E * (ECm - ECw) / dist # dividing by theta for specific concentrations and multiplying again for total cancels theta out
 }
 

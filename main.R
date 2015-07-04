@@ -3,9 +3,7 @@
 
 ### Documentation ==============================================================
 # Main program file.
-# Soil model: SCM-daily
-# Time step: daily
-# Note: C inputs have to be in the same time units as the model step
+# Soil model: SCM
 
 # Processes simulated:
 # - enzymatic decomposition
@@ -22,7 +20,7 @@ rm(list=ls())
 day   <- 86400 # seconds in a day
 hour  <- 3600  # seconds in an hour
 sec   <- 1     # seconds in a second!
-tstep <- day
+tunit <- day   # Notice: C inputs have to be in the same time units as the model tunit variable
 
 # Libraries
 # require(deSolve)
@@ -32,15 +30,12 @@ source("flux_functions.r")
 source("model_parameters.r")
 source("initial_state.r")          # Loads initial state variable values
 
-
 ### Inputs =====================================================================
   
 # Load spatio_temporal input data
-forcing.data  <- read.csv("forcing_data_daily.csv") # forcing data file
+source("load_inputs.R")
 
-litter.data    <- read.csv("litter_input_daily.csv") # litter input rates file
-
-# Difine model times start, end and delt (resolution) times
+# Difine model times: start, end and delt (resolution) times
 start <- 1
 end   <- forcing.data$day[length(forcing.data$day)]
 delt  <- 0.1
@@ -70,7 +65,16 @@ model.run <- function(start, end, delt, state, parameters, litter.data, forcing.
     theta    <- theta_s * depth    # [m^3] total water content
     theta_d  <- c(0,diff(theta))   # [m^3] change in water content relative to previous time step
     
-    # Calculate temporally changing parameters
+    # Calculate spatially dependent variables
+    M         <- M_spec * depth * dens_min * (1 - phi)  # [gC] Total C-equivalent mineral surface for sorption
+    b         <- 2.91 + 15.9 * clay                    # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
+    psi_sat   <- exp(6.5 - 1.3 * sand) / 1000   # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
+    Rth       <- phi * (psi_sat / psi_Rth)^(1 / b) # [kPa] Threshold water content for mic. respiration (water retention formula from Campbell 1984)
+    theta_Rth <- Rth * depth
+    fc        <- phi * (psi_sat / psi_fc)^(1 / b)  # [kPa] Field capacity water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+    theta_fc  <- fc * depth
+    
+    # Calculate temporally changing variables
     K_LD <- Temp.Resp.Eq(K_LD_0, temp, T0, E_K.LD, R)
     K_RD <- Temp.Resp.Eq(K_RD_0, temp, T0, E_K.RD, R)
     K_SU <- Temp.Resp.Eq(K_SU_0, temp, T0, E_K.SU, R)
@@ -96,11 +100,11 @@ model.run <- function(start, end, delt, state, parameters, litter.data, forcing.
       F_ecw.scw <- F_ecw.scw(ECw, Em[i])
       F_scw.sci <- F_scw.sci(SCw, SCi, theta_d[i], theta[i], theta_fc)
       F_scw.scs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SM[i], K_EM[i], theta[i])
-      F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta[i], theta_s[i], dist, phi, theta_Rth)
+      F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta_s[i], dist, phi, Rth)
       F_scm.co2 <- F_scm.co2(SCm, MC, t_MC, CUE, theta[i], V_SU[i], K_SU[i])
       F_scm.mc  <- F_scm.mc(SCm, MC, t_MC, CUE, theta[i], V_SU[i], K_SU[i])
       F_mc.ecm  <- F_mc.ecm(MC, E_P)
-      F_ecm.ecw <- F_ecm.ecw(ECm, ECw, D_E0, theta[i], theta_s[i], dist, phi, theta_Rth)
+      F_ecm.ecw <- F_ecm.ecw(ECm, ECw, D_E0, theta_s[i], dist, phi, Rth)
       F_ecw.ecs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SM[i], K_EM[i], theta[i])
       
       out[i,] <- c(times[i], LC, RC, SCw, SCs, SCi, SCm, ECw, ECs, ECm, MC, CO2)

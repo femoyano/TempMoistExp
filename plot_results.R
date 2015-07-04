@@ -5,3 +5,5 @@ plot(model.out$RC)
 plot(model.out$SCw)
 plot(model.out$SCm)
 plot(model.out$MC)
+plot(model.out$SCi)
+

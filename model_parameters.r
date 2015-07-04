@@ -3,27 +3,23 @@
 # Documentation ====
 # All fixed parameters and constants should be listed here.
 # Variables calculated from input data (e.g. theta_fc, ..) are in main.
-# Warning: time variables and tstep have to be defined before sourcing this file.
+# Warning: time variables and tunit have to be defined before sourcing this file.
 
 parameters <- c(
     
   ### Known Constants ====
   R   = 8.3144,  # [J K-1 mol-1] gas constant
   
-  ### Spatial Variables
-  clay   =  0.30  , # [g g^-1] clay fraction values 
-  sand   =  0.30  , # [g g^-1] sand fraction values 
-  silt   =  0.40  , # [g g^-1] silt fraction values 
-  depth  =  0.30  , # [m] soil depth
-  
   ### Time Dependent Parameters
-#   Em_0    = 0.04 / day * tstep     , # [d-1] Enzyme turnover rate (Hagerty et al. 2014, value for mineral soils at 290K) (!uncertain!)
-#   Mm_0    = 0.04 / day * tstep     , # [d-1] Microbe turnover rate (Hagerty et al. 2014, value for mineral soils at 290K) (!uncertain!)
-  Em_0    = 0.005 / day * tstep     , # [d-1] Enzyme turnover rate (Li et al. 2014) (!uncertain!). Value for 290K.
-  Mm_0    = 0.024 / day * tstep     , # [d-1] Microbe turnover rate (Li et al. 2014) (!uncertain!). Value for 290K.
-  V_LD_0  = 0.0058 / day * tstep   , # [d^-1] Maximum speed of LD decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
-  V_RD_0  = 0.000768 / day * tstep , # [d^-1] Maximum speed ofRC decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
-  V_SU_0  = 10.93 / day * tstep    , # [d^-1] Maximum speed of microbial uptake of SC
+#   Em_0    = 0.04 / day * tunit     , # [d-1] Enzyme turnover rate (Hagerty et al. 2014, value for mineral soils at 290K) (!uncertain!)
+#   Mm_0    = 0.04 / day * tunit     , # [d-1] Microbe turnover rate (Hagerty et al. 2014, value for mineral soils at 290K) (!uncertain!)
+  Em_0    = 0.005 / day * tunit     , # [d-1] Enzyme turnover rate (Li et al. 2014) (!uncertain!). Value for 290K.
+  Mm_0    = 0.024 / day * tunit     , # [d-1] Microbe turnover rate (Li et al. 2014) (!uncertain!). Value for 290K.
+  V_LD_0  = 0.0058 / day * tunit   , # [d^-1] Maximum speed of LD decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
+  V_RD_0  = 0.000768 / day * tunit , # [d^-1] Maximum speed ofRC decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
+  V_SU_0  = 10.93 / day * tunit    , # [d^-1] Maximum speed of microbial uptake of SC
+  D_S0     = 8.1e-10 / sec * tunit  , # [m s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+  D_E0     = 8.1e-11 / sec * tunit  , # [m s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
   
   ### Fixed Parameters ====
   psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
@@ -33,8 +29,6 @@ parameters <- c(
   K_SU_0   = 1       , # [gC m-3] Affinity parameter for microbial SC uptake (k_BC in Tang and Riley 2014)
   K_SM_0   = 25      , # [gC m-3] Affinity parameter for SC sorption (k_MC in Tang and Riley 2014)
   K_EM_0   = 50      , # [gC m-3] Affinity parameter for EC sorption (k_ME in Tang and Riley 2014)
-  D_S0     = 8.1e-10 / sec * tstep  , # [m s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
-  D_E0     = 8.1e-11 / sec * tstep  , # [m s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
   E_P      = 0.01    , # [d^-1] Fraction of MC converted to EC. Intermediate value between Schimel & Weintraub 2003 and Allison et al. 2010 (!uncertain!)
   dist     = 10^-4   , # [m] characteristic distance between substrate and microbes (Manzoni manus)
   mcsc_f   = 0.5     , # [g g^-1] fraction of dead microbes going to SC (rest goes to LC)
@@ -55,13 +49,3 @@ parameters <- c(
   dens_min = 1600000   # [g m^-3] Assumed mineral density
 )
 
-# Calculate additional parameters
-parlist <- as.list(parameters)
-M  <- with( parlist, M_spec * depth * dens_min * (1 - phi) )  # [gC] Total C-equivalent mineral surface for sorption
-b  <- with( parlist, 2.91 + 15.9 * clay )                    # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
-psi_sat   <- with( parlist, exp(6.5 - 1.3 * sand) / 1000 )   # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
-theta_Rth <- with( parlist, phi * (psi_sat / psi_Rth)^(1 / b) ) # [kPa] Threshold water content for mic. respiration (water retention formula from Campbell 1984)
-theta_fc  <- with( parlist, phi * (psi_sat / psi_fc)^(1 / b)  ) # [kPa] Field capacity water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
-
-parameters <- c(parameters, M = M, b = b, psi_sat = psi_sat, theta_Rth = theta_Rth, theta_fc = theta_fc)
-rm(parlist, M, b, psi_sat, theta_Rth, theta_fc)
