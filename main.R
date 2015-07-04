@@ -29,7 +29,6 @@ require(deSolve)
 
 # Sourced files
 source("flux_functions.r")
-source("temperature_functions.r")
 source("model_parameters.r")
 source("initial_state.r")          # Loads initial state variable values
 

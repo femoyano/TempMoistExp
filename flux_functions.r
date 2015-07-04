@@ -117,3 +117,17 @@ F_scw.adv <- function (SCw, theta, percolation) {
 F_adv.scw <- function (advection_in) { # prescribed
   advection_in
 }
+
+# ==============================================================================
+# Temperature responses after to Tang and Riley 2014 (supplementary information)
+
+# Temperature response for equilibrium reactions (for K values)
+Temp.Resp.Eq <- function(K, T, T0, E, R) {
+  K * exp(-E/R * (1/T-1/T0))
+}
+
+# Temperature response for non-equilibrium reactions (for V values)
+Temp.Resp.NonEq <- function(K, T, T0, E, R) {
+  K * T/T0 * exp(-E/R * (1/T-1/T0))
+}
+

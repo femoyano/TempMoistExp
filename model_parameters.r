@@ -17,8 +17,10 @@ parameters <- c(
   depth  =  0.30  , # [m] soil depth
   
   ### Time Dependent Parameters
-  Em_0    = 0.04 / day * tstep     , # [d-1] Enzyme turnover rate (Hagerty et al. 2014, value for mineral soils at 290K; 0.04 at 10-15C as in Allison 2006) (!uncertain!)
-  Mm_0    = 0.04 / day * tstep     , # [d-1] Microbe turnover rate (Hagerty et al. 2014, value for mineral soils at 290K) (!uncertain!)
+#   Em_0    = 0.04 / day * tstep     , # [d-1] Enzyme turnover rate (Hagerty et al. 2014, value for mineral soils at 290K) (!uncertain!)
+#   Mm_0    = 0.04 / day * tstep     , # [d-1] Microbe turnover rate (Hagerty et al. 2014, value for mineral soils at 290K) (!uncertain!)
+  Em_0    = 0.005 / day * tstep     , # [d-1] Enzyme turnover rate (Li et al. 2014) (!uncertain!). Value for 290K.
+  Mm_0    = 0.024 / day * tstep     , # [d-1] Microbe turnover rate (Li et al. 2014) (!uncertain!). Value for 290K.
   V_LD_0  = 0.0058 / day * tstep   , # [d^-1] Maximum speed of LD decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
   V_RD_0  = 0.000768 / day * tstep , # [d^-1] Maximum speed ofRC decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
   V_SU_0  = 10.93 / day * tstep    , # [d^-1] Maximum speed of microbial uptake of SC
