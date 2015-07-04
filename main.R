@@ -25,7 +25,7 @@ sec   <- 1     # seconds in a second!
 tstep <- day
 
 # Libraries
-require(deSolve)
+# require(deSolve)
 
 # Sourced files
 source("flux_functions.r")
@@ -37,35 +37,40 @@ source("initial_state.r")          # Loads initial state variable values
   
 # Load spatio_temporal input data
 forcing.data  <- read.csv("forcing_data_daily.csv") # forcing data file
-input_temp    <- forcing.data$temp   # [K] soil temperature
-input_moist   <- forcing.data$moist  # [m^3 m^-3] soil volumetric water content
-times_forcing <- forcing.data$day    # time vector of the forcing data
 
 litter.data    <- read.csv("litter_input_daily.csv") # litter input rates file
-input_litter_m <- litter.data$litter_m # [gC m^2] metabolic litter
-input_litter_s <- litter.data$litter_s # [gC m^2] structural litter
-times_litter   <- litter.data$day      # time vector of the litter data
 
-# Load spatial input data (texture data matrix)
-# ... fixed in parameter list for now
-
-
-# Define model time step vector
-times_model <- seq(1,times_forcing[length(times_forcing)])
+# Difine model times start, end and delt (resolution) times
+start <- 1
+end   <- forcing.data$day[length(forcing.data$day)]
+delt  <- 0.1
 
 # Model definition ====
-model.run <- function(times_model, state, parameters) { # must be defined as: func <- function(t, y, parms,...) for use with ode
-  with(as.list(c(state, parameters)),{
+model.run <- function(start, end, delt, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+
+  with(as.list(c(state, parameters)), {
+    
+    # Define model time step vector
+    times <- seq(start, end, delt)
+    nt    <- length(times)
+    
+    input_temp    <- forcing.data$temp   # [K] soil temperature
+    input_moist   <- forcing.data$moist  # [m^3 m^-3] soil volumetric water content
+    times_forcing <- forcing.data$day    # time vector of the forcing data
+    
+    input_litter_m <- litter.data$litter_m # [gC m^2] metabolic litter
+    input_litter_s <- litter.data$litter_s # [gC m^2] structural litter
+    times_litter   <- litter.data$day      # time vector of the litter data
     
     # Interpolate input variables
-    litter_m <- approx(times_litter, input_litter_m, xout=times_model, rule=2)$y  # [gC]
-    litter_s <- approx(times_litter, input_litter_s, xout=times_model, rule=2)$y  # [gC]
-    temp     <- approx(times_forcing, input_temp, xout=times_model, rule=2)$y     # [K]
-    theta_s  <- approx(times_forcing, input_moist, xout=times_model, rule=2)$y    # [m^3 m^-3] specific water content
+    litter_m <- approx(times_litter, input_litter_m, xout=times, rule=2)$y  # [gC]
+    litter_s <- approx(times_litter, input_litter_s, xout=times, rule=2)$y  # [gC]
+    temp     <- approx(times_forcing, input_temp, xout=times, rule=2)$y     # [K]
+    theta_s  <- approx(times_forcing, input_moist, xout=times, rule=2)$y    # [m^3 m^-3] specific water content
     theta    <- theta_s * depth    # [m^3] total water content
     theta_d  <- c(0,diff(theta))   # [m^3] change in water content relative to previous time step
     
-    # Calculate temporal values of T-dependent parameters
+    # Calculate temporally changing parameters
     K_LD <- Temp.Resp.Eq(K_LD_0, temp, T0, E_K.LD, R)
     K_RD <- Temp.Resp.Eq(K_RD_0, temp, T0, E_K.RD, R)
     K_SU <- Temp.Resp.Eq(K_SU_0, temp, T0, E_K.SU, R)
@@ -77,40 +82,62 @@ model.run <- function(times_model, state, parameters) { # must be defined as: fu
     Mm   <- Temp.Resp.Eq(Mm_0, temp, T0, E_m, R)
     Em   <- Temp.Resp.Eq(Em_0, temp, T0, E_m, R)
     
-    F_ml.lc   <- F_ml.lc(litter_m)
-    F_sl.rc   <- F_sl.rc(litter_s)
-    F_mc.lc   <- F_mc.lc(MC, Mm, mcsc_f)
-    F_lc.scw  <- F_lc.scw(LC, RC, ECw, V_LD, K_LD, K_RD, theta)
-    F_rc.scw  <- F_rc.scw(LC, RC, ECw, V_RD, K_LD, K_RD, theta)
-    F_mc.scw  <- F_mc.scw(MC, Mm, mcsc_f)
-    F_ecw.scw <- F_ecw.scw(ECw, Em)
-    F_scw.sci <- F_scw.sci(SCw, SCi, theta_d, theta, theta_fc)
-    F_scw.scs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta)
-    F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta, theta_s, delta, phi, theta_Rth)
-    F_scm.co2 <- F_scm.co2(SCm, MC, t_MC, CUE, theta, V_SU, K_SU)
-    F_scm.mc  <- F_scm.mc(SCm, MC, t_MC, CUE, theta, V_SU, K_SU)
-    F_mc.ecm  <- F_mc.ecm(MC, E_P)
-    F_ecm.ecw <- F_ecm.ecw(ECm, ECw, D_E0, theta, theta_s, delta, phi, theta_Rth)
-    F_ecw.ecs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta)
+    # Create matrix to hold output
+    out <- matrix(ncol = 1 + length(initial_state), nrow=nt)
+        
+    for(i in 1:length(times)) {
+      
+      F_ml.lc   <- F_ml.lc(litter_m[i])
+      F_sl.rc   <- F_sl.rc(litter_s[i])
+      F_mc.lc   <- F_mc.lc(MC, Mm[i], mcsc_f)
+      F_lc.scw  <- F_lc.scw(LC, RC, ECw, V_LD[i], K_LD[i], K_RD[i], theta[i])
+      F_rc.scw  <- F_rc.scw(LC, RC, ECw, V_RD[i], K_LD[i], K_RD[i], theta[i])
+      F_mc.scw  <- F_mc.scw(MC, Mm[i], mcsc_f)
+      F_ecw.scw <- F_ecw.scw(ECw, Em[i])
+      F_scw.sci <- F_scw.sci(SCw, SCi, theta_d[i], theta[i], theta_fc)
+      F_scw.scs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SM[i], K_EM[i], theta[i])
+      F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta[i], theta_s[i], dist, phi, theta_Rth)
+      F_scm.co2 <- F_scm.co2(SCm, MC, t_MC, CUE, theta[i], V_SU[i], K_SU[i])
+      F_scm.mc  <- F_scm.mc(SCm, MC, t_MC, CUE, theta[i], V_SU[i], K_SU[i])
+      F_mc.ecm  <- F_mc.ecm(MC, E_P)
+      F_ecm.ecw <- F_ecm.ecw(ECm, ECw, D_E0, theta[i], theta_s[i], dist, phi, theta_Rth)
+      F_ecw.ecs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SM[i], K_EM[i], theta[i])
+      
+      out[i,] <- c(times[i], LC, RC, SCw, SCs, SCi, SCm, ECw, ECs, ECm, MC, CO2)
+      
+      # Define the rate changes for each state variable
+      dLC  <- F_ml.lc + F_mc.lc - F_lc.scw
+      dRC  <- F_sl.rc - F_rc.scw
+      dSCw <- F_lc.scw + F_rc.scw + F_mc.scw + F_ecw.scw - F_scw.sci - F_scw.scs - F_scw.scm
+      dSCs <- F_scw.scs
+      dSCi <- F_scw.sci
+      dSCm <- F_scw.scm - F_scm.co2 - F_scm.mc
+      dECm <- F_mc.ecm - F_ecm.ecw
+      dECw <- F_ecm.ecw - F_ecw.ecs - F_ecw.scw
+      dECs <- F_ecw.ecs
+      dMC  <- F_scm.mc - F_mc.ecm - F_mc.lc - F_mc.scw
+      dCO2 <- F_scm.co2
+      
+      LC <- LC + dLC * delt
+      RC <- RC + dRC * delt
+      SCw <- SCw + dSCw * delt
+      SCs <- SCs + dSCs * delt
+      SCi <- SCi + dSCi * delt
+      SCm <- SCm + dSCm * delt
+      ECw <- ECw + dECw * delt
+      ECs <- ECs + dECs * delt
+      ECm <- ECm + dECm * delt
+      MC <- MC + dMC * delt
+      CO2 <- CO2 + dCO2 * delt 
+    }
     
-    # Define the rate changes for each state variable
-    dLC  <- F_ml.lc + F_mc.lc - F_lc.scw
-    dRC  <- F_sl.rc - F_rc.scw
-    dSCw <- F_lc.scw + F_rc.scw + F_mc.scw + F_ecw.scw - F_scw.sci - F_scw.scs - F_scw.scm
-    dSCs <- F_scw.scs
-    dSCi <- F_scw.sci
-    dSCm <- F_scw.scm - F_scm.co2 - F_scm.mc
-    dECm <- F_mc.ecm - F_ecm.ecw
-    dECw <- F_ecm.ecw - F_ecw.ecs - F_ecw.scw
-    dECs <- F_ecw.ecs
-    dMC  <- F_scm.mc - F_mc.ecm - F_mc.lc - F_mc.scw
-    dCO2 <- F_scm.co2
+    colnames(out) <- c("time", "LC", "RC", "SCw", "SCs", "SCi", "SCm", "ECw", "ECs", "ECm", "MC", "CO2")
     
-    # Output as a list
-    list(c(dLC, dRC, dSCw, dSCs, dSCi, dSCm, dECw, dECs, dECm, dMC, dCO2), 
-         c(K_LD=K_LD, K_RD=K_RD, K_SU=K_SU, K_SM=K_SM, K_EM=K_EM, K_LD=K_LD, K_RD=K_RD, V_LD=V_LD, V_RD=V_RD, V_SU=V_SU, Mm=Mm, Em=Em))
+    out <- cbind(as.data.frame(out), litter_m, litter_s, temp, theta, theta_s, theta_d)
     
   }) # end of with...
+
 } # end of model.run
 
-model.out <- as.data.frame(ode(initial_state, times_model, model.run, parameters))
+model.out <- model.run(start, end, delt, initial_state, parameters, litter.data, forcing.data)
+
