@@ -7,7 +7,7 @@
 # and returns the values for each time point in a data frame
 ### ============================================================================
 
-model.run <- function(eq.run, start, end, delt, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+ModelFull <- function(eq.run, start, end, delt, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(state, parameters)), {
     
@@ -33,10 +33,10 @@ model.run <- function(eq.run, start, end, delt, state, parameters, litter.data, 
     }
     
     # Interpolate input variables
-    litter_m <- approx(times_litter, input_litter_m, xout=times, rule=2)$y  # [gC]
-    litter_s <- approx(times_litter, input_litter_s, xout=times, rule=2)$y  # [gC]
-    temp     <- approx(times_forcing, input_temp, xout=times, rule=2)$y     # [K]
-    theta_s  <- approx(times_forcing, input_moist, xout=times, rule=2)$y    # [m^3 m^-3] specific water content
+    litter_m <- approx(times_litter, litter_m, xout=times, rule=2)$y  # [gC]
+    litter_s <- approx(times_litter, litter_s, xout=times, rule=2)$y  # [gC]
+    temp     <- approx(times_forcing, temp, xout=times, rule=2)$y     # [K]
+    theta_s  <- approx(times_forcing, theta, xout=times, rule=2)$y    # [m^3 m^-3] specific water content
     theta    <- theta_s * depth    # [m^3] total water content
     theta_d  <- c(0,diff(theta))   # [m^3] change in water content relative to previous time step
     
@@ -63,6 +63,8 @@ model.run <- function(eq.run, start, end, delt, state, parameters, litter.data, 
     
     # Create matrix to hold output
     out <- matrix(ncol = 1 + length(initial_state), nrow=nt)
+    
+    setbreak <- 0
     
     for(i in 1:length(times)) {
       
@@ -115,7 +117,7 @@ model.run <- function(eq.run, start, end, delt, state, parameters, litter.data, 
       
       # If spinup, stop at equilibirum
       if (eq.run & (i*delt)>=24) { 
-        if (CheckEquil(LC, RC, i, eq.mpd)) {
+        if (CheckEquil(out[,2], out[,3], i, eq.mpd)) {
           print(paste("Yearly change in the sum of LC and RC below equilibrium max. change value of ", eq.mpd, " at day ", i * delt,". Sum at equilibrium is ", LC[i]+RC[i],".",sep=""))
           setbreak <- TRUE
         }
