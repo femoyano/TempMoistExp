@@ -15,6 +15,9 @@
 
 ### Setup ======================================================================
 rm(list=ls())
+
+eq.run <- 1 # should the input data be recylced until equilibrium is reached?
+
 # Define time step (Warning! input data rates should have same time units as time step)
 ### Time values ====
 day   <- 86400 # seconds in a day
@@ -90,6 +93,8 @@ model.run <- function(start, end, delt, state, parameters, litter.data, forcing.
     out <- matrix(ncol = 1 + length(initial_state), nrow=nt)
         
     for(i in 1:length(times)) {
+      
+#       if(i == 1598) {browser()}
       
       F_ml.lc   <- F_ml.lc(litter_m[i])
       F_sl.rc   <- F_sl.rc(litter_s[i])

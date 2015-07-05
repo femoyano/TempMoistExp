@@ -11,7 +11,7 @@ F_ml.lc <- function (litter_met) { # the input of litter is prescribed; no calcu
   litter_met
 }
 
-# Structural litter input to RC
+# Structural litter input to RChttps://duckduckgo.com/?t=lm&q=git+merging&ia=qafield 
 F_sl.rc <- function (litter_struct) { # the input of litter is prescribed; no calculations are required
   litter_struct
 }
@@ -34,7 +34,6 @@ F_rc.scw <- function (LC, RC, ECw, V_RD, K_LD, K_RD, theta) {
 
 # Sorption of EC to mineral surface
 F_ecw.ecs <- function (SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta) {
-  M <- 
   SC <- SCw + SCs
   EC <- ECw + ECs
   SC <- SC / theta
@@ -55,12 +54,14 @@ F_scw.scs <- function (SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta) {
 
 # Diffusion of SC to microbes
 F_scw.scm <- function (SCw, SCm, D_S0, theta_s, dist, phi, Rth) {
+  if (theta_s <= Rth) return(0)
   D_S <- D_S0 * (phi - Rth)^1.5 * ((theta_s - Rth)/(phi - Rth))^2.5
   D_S * (SCw - SCm) / dist # dividing by theta for specific concentrations and multiplying again for total cancels theta out
 }
 
 # Diffusion of EC from microbes
 F_ecm.ecw <- function (ECm, ECw, D_E0, theta_s, dist, phi, Rth) {
+  if (theta_s <= Rth) return(0)
   D_E <- D_E0 * (phi - Rth)^1.5 * ((theta_s - Rth)/(phi - Rth))^2.5
   D_E * (ECm - ECw) / dist # dividing by theta for specific concentrations and multiplying again for total cancels theta out
 }
