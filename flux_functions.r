@@ -132,3 +132,12 @@ Temp.Resp.NonEq <- function(K, T, T0, E, R) {
   K * T/T0 * exp(-E/R * (1/T-1/T0))
 }
 
+# ==============================================================================
+# Function to check for equilibirum conditions
+CheckEquil <- function(LC, RC, i, eq.mpd) {
+  y1 <- LC[(i-12/delt+1):i] + RC[(i-12/delt+1):i]
+  y2 <- LC[(i-24/delt+1):(i-12/delt)] + RC[(i-24/delt+1):(i-12/delt)]
+  x <- abs((mean(y1) / mean(y2)) - 1)
+  ifelse(x <= (eq.mpd/100), TRUE, FALSE)
+}
+
