@@ -5,20 +5,8 @@
 # Main program file.
 # Soil model: SCM
 
-# Processes simulated:
-# - enzymatic decomposition
-# - DOC and enzyme diffusion
-# - microbial uptake and respiration
-# - enzymatic production and breakdown
-# - DOC and enzyme sorption to mineral surfaces
-# - DOC flux to and from immobile zones
-
 ### Setup ======================================================================
 rm(list=ls())
-
-### Flags
-full.model <- FALSE
-diff.off <- TRUE
 
 eq.run <- TRUE # Run to equilibrium? This will recycle input data.
 eq.mpd <- 0.1 # equilibrium maximum percent difference. spinup run stops if difference is lower.
@@ -48,6 +36,5 @@ start <- 1
 end   <- ifelse(eq.run, eq.max.time, forcing.data$day[length(forcing.data$day)])
 delt  <- 1
 
-if (full.model) {model.out <- ModelFull(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
-if (diff.off) {model.out <- ModelNoDiff(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
+model.out <- ModelAWB(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
 
