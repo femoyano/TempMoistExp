@@ -7,29 +7,20 @@
 # Functions calculating the fluxes of C.
 
 # Metabolic litter input to LC
-F_ml.lc <- function (litter_met) { # the input of litter is prescribed; no calculations are required
+F_ml.pc <- function (litter_met) { # the input of litter is prescribed; no calculations are required
   litter_met
 }
 
 # Structural litter input to RChttps://duckduckgo.com/?t=lm&q=git+merging&ia=qafield 
-F_sl.rc <- function (litter_struct) { # the input of litter is prescribed; no calculations are required
+F_sl.pc <- function (litter_struct) { # the input of litter is prescribed; no calculations are required
   litter_struct
 }
 
-# Decomposition of LC into SC
-F_lc.scw <- function (LC, RC, ECw, V_LD, K_LD, K_RD, theta) {
-  LC <- LC / theta
-  RC <- RC / theta
-  EC <- ECw / theta
-  (V_LD * LC * EC) / (K_LD * (1 + LC / K_LD + RC / K_RD + EC / K_LD)) * theta
-}
-
-# Decomposition of RC into SC
-F_rc.scw <- function (LC, RC, ECw, V_RD, K_LD, K_RD, theta) {
-  LC <- LC / theta
-  RC <- RC / theta
-  EC <- ECw / theta
-  (V_RD * RC * EC) / (K_RD * (1 + RC / K_RD + LC / K_LD + EC / K_RD)) * theta
+# Decomposition function
+F_decomp <- function (S, E, V, Kd, theta, cm3) {
+  Sw <- S / (theta * cm3)
+  Ew <- E / (theta * cm3)
+  (V * Sw * Ew) / (Kd * (1 + Sw / Kd + Ew / Kd + M / Km)) * (theta * cm3)
 }
 
 # Sorption of EC to mineral surface
