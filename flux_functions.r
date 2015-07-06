@@ -119,6 +119,27 @@ F_adv.scw <- function (advection_in) { # prescribed
   advection_in
 }
 
+# SC to CO2: used for minimal model   
+F_sc.co2 <- function(SC, CUE, theta, V_SU, K_SU) {
+  SC <- SC / theta
+  U <- (V_SU * SC) / (K_SU + SC) * theta
+  U * (1-CUE)
+}
+
+# SC to LC: used in minimal model
+F_sc.lc <- function(SC, CUE, theta, V_SU, K_SU, mcsc_f, E_P) {
+  SC <- SC / theta
+  U <- (V_SU * SC) / (K_SU + SC) * theta
+  U * (CUE) * (1-E_P) * (1-mcsc_f)
+}
+
+# SC to EC: used in minimal model
+F_sc.ec <- function(SC, CUE, theta, V_SU, K_SU, E_P) {
+  SC <- SC / theta
+  U <- (V_SU * SC) / (K_SU + SC ) * theta
+  U * (CUE) * E_P
+}
+
 # ==============================================================================
 # Temperature responses after to Tang and Riley 2014 (supplementary information)
 

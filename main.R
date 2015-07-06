@@ -16,13 +16,15 @@
 ### Setup ======================================================================
 rm(list=ls())
 
-### Flags
+### Flags for running model versions
 full.model <- FALSE
-diff.off <- TRUE
+diff.off <- FALSE
+min.model <- TRUE
+
 
 eq.run <- TRUE # Run to equilibrium? This will recycle input data.
 eq.mpd <- 0.1 # equilibrium maximum percent difference. spinup run stops if difference is lower.
-eq.max.time <- 20000
+eq.max.time <- 10000
 
 ### Define time units ==========================================================
 # (Warning! input data rates should have same time units as tunit)
@@ -42,12 +44,14 @@ source("flux_functions.r")
 source("model_parameters.r")
 source("initial_state.r")          # Loads initial state variable values
 source("ModelFull.R")
+source("ModelMin.R")
 
 # Define model times: start, end and delt (resolution)
 start <- 1
 end   <- ifelse(eq.run, eq.max.time, forcing.data$day[length(forcing.data$day)])
-delt  <- 1
+delt  <- 0.1
 
-if (full.model) {model.out <- ModelFull(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
-if (diff.off) {model.out <- ModelNoDiff(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
+if (full.model) out.fullmod <- ModelFull(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
+if (diff.off) out.diffoffmod <- ModelNoDiff(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
+if (min.model) out.minmodel <- ModelMin(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
 

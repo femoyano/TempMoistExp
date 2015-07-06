@@ -16,8 +16,8 @@ parameters <- c(
   Em_0    = 0.005 / day * tunit     , # [d-1] Enzyme turnover rate (Li et al. 2014) (!uncertain!). Value for 290K.
   Mm_0    = 0.024 / day * tunit     , # [d-1] Microbe turnover rate (Li et al. 2014) (!uncertain!). Value for 290K.
   V_LD_0  = 0.0058 / day * tunit   , # [d^-1] Maximum speed of LD decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
-  V_RD_0  = 0.000768 / day * tunit , # [d^-1] Maximum speed ofRC decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
-  V_SU_0  = 10.93 / day * tunit    , # [d^-1] Maximum speed of microbial uptake of SC
+  V_RD_0  = 0.000768 / day * tunit , # [d^-1] Maximum speed of RC decomposition. Based on the two pool litter model of Adair et al. 2008. Similar magnitude as in Zhang et al. 2008, Cotrufo et al. in Soil Carbon Dynamics 2009
+  V_SU_0  = 10.93 / day * tunit    , # [d^-1] Maximum speed of microbial uptake of SC 
   D_S0     = 8.1e-10 / sec * tunit  , # [m s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
   D_E0     = 8.1e-11 / sec * tunit  , # [m s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
   

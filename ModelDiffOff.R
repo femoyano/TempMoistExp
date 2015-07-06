@@ -1,4 +1,4 @@
-### ModelFull.R ================================================================
+### model_run.R ================================================================
 
 ### Documentation ==============================================================
 # Main function running the model. 
@@ -76,19 +76,19 @@ ModelFull <- function(eq.run, start, end, delt, state, parameters, litter.data, 
       # Calculate all fluxes
       F_ml.lc   <- F_ml.lc(litter_m[i])
       F_sl.rc   <- F_sl.rc(litter_s[i])
-      F_mc.lc   <- F_mc.lc(MC, Mm[i], mcsc_f)
       F_lc.scw  <- F_lc.scw(LC, RC, ECw, V_LD[i], K_LD[i], K_RD[i], theta[i])
       F_rc.scw  <- F_rc.scw(LC, RC, ECw, V_RD[i], K_LD[i], K_RD[i], theta[i])
-      F_mc.scw  <- F_mc.scw(MC, Mm[i], mcsc_f)
-      F_ecw.scw <- F_ecw.scw(ECw, Em[i])
       F_scw.sci <- F_scw.sci(SCw, SCi, theta_d[i], theta[i], theta_fc)
       F_scw.scs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SM[i], K_EM[i], theta[i])
       F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta_s[i], dist, phi, Rth)
       F_scm.co2 <- F_scm.co2(SCm, MC, t_MC, CUE, theta[i], V_SU[i], K_SU[i])
       F_scm.mc  <- F_scm.mc(SCm, MC, t_MC, CUE, theta[i], V_SU[i], K_SU[i])
+      F_mc.scw  <- F_mc.scw(MC, Mm[i], mcsc_f)
+      F_mc.lc   <- F_mc.lc(MC, Mm[i], mcsc_f)
       F_mc.ecm  <- F_mc.ecm(MC, E_P)
       F_ecm.ecw <- F_ecm.ecw(ECm, ECw, D_E0, theta_s[i], dist, phi, Rth)
       F_ecw.ecs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SM[i], K_EM[i], theta[i])
+      F_ecw.scw <- F_ecw.scw(ECw, Em[i])
       
       # Define the rate changes for each state variable
       dLC  <- F_ml.lc + F_mc.lc - F_lc.scw
