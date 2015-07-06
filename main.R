@@ -18,7 +18,6 @@ rm(list=ls())
 
 ### Flags for running model versions
 full.model <- FALSE
-diff.off <- FALSE
 min.model <- TRUE
 
 
@@ -52,6 +51,5 @@ end   <- ifelse(eq.run, eq.max.time, forcing.data$day[length(forcing.data$day)])
 delt  <- 0.1
 
 if (full.model) out.fullmod <- ModelFull(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
-if (diff.off) out.diffoffmod <- ModelNoDiff(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
 if (min.model) out.minmodel <- ModelMin(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
 
