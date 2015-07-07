@@ -12,20 +12,21 @@ F_litter <- function (litter_flux) { # the input of litter is prescribed; no cal
 }
 
 # Decomposition flux
-F_decomp <- function (S, E, V, K, theta, cm3) {
-  S <- S / (theta * cm3)
+F_decomp <- function (C, E, V, K, theta, cm3) {
+  C <- C / (theta * cm3)
   E <- E / (theta * cm3)
-  (V * S * E) / (K + S + E) * (theta * cm3)
+  D <- (V * C * E) / (K + C + E) * (theta * cm3)
+  ifelse(D > C, C, D) # max decomp is size of C, so C cannot become negative
 }
 
 # Sorption to mineral surface
-F_sorp <- function (S1w, S1s, S2w, S2s, M, K_M1, K_M2, theta, cm3) {
-  S1 <- S1w + S1s
-  S2 <- S2w + S2s
-  S1 <- S1 / (theta * cm3)
-  S2 <- S2 / (theta * cm3)
+F_sorp <- function (SCw, SCs, Ew, Es, M, K_M1, K_M2, theta, cm3) {
+  SC <- SCw + SCs
+  E <- Ew + Es
+  SC <- SC / (theta * cm3)
+  E <- E / (theta * cm3)
   M <- M / (theta * cm3)
-  (S1 * M) / (K_M1 * (1 + S1 / K_M1 + M / K_M1 + S2 / K_M2)) * (theta * cm3) - S1s
+  (SC * M) / (K_M1 * (1 + SC / K_M1 + M / K_M1 + E / K_M2)) * (theta * cm3) - SCs
 }
 
 # Diffusion flux
@@ -35,30 +36,30 @@ F_diff <- function (Sw, Sm, D_S0, theta_s, dist, phi, Rth) {
   D_S * (Sw - Sm) / dist # dividing by theta for specific concentrations and multiplying again for total cancels theta out
 }
 
-# Microbial C uptake (first order)
-F_uptake1 <- function(SC, theta, V_U1, K_U1) {
+# Microbial C uptake
+F_uptake <- function (SC, MC, theta, V_U, K_U, cm3) {
   SC <- SC / (theta * cm3)
-  (V_U1 * SC) / (K_U1 + SC) * (theta * cm3)
+  MC <- MC / (theta * cm3)
+  U <- (V_U * SC * MC) / (K_U + SC + MC) * (theta * cm3)
+  ifelse(U > SC, SC, U) # max uptake is size of SC, so SC cannot become negative
 }
 
-# Microbial C uptake (second order)
-F_uptake2 <- function (SC, MC, t_M, theta, V_U2, K_U2) {
-  SC <- SC / (theta * cm3)
-  MC <- MC * t_MC / (theta * cm3)
-  (V_U2 * SC * MC) / (K_U2 + SCm + MC) * (theta * cm3)
+# Microbe to enzyme
+F_mc.ec <- function (MC, E_P, Mm) {
+  (MC - (MC * Mm)) * E_P
 }
 
-# Microbes enzyme production
-F_mc.ecm <- function (MC, E_P) {
-  MC * E_P
+# Microbe to SC
+F_mc.sc <- function (MC, Mm, mcsc_f) {
+  MC * Mm * mcsc_f
 }
 
-# Dead microbes
-F_mc.lc <- function (MC, Mm) {
-  MC * Mm
+# Microbe to PC
+F_mc.pc <- function (MC, Mm, mcsc_f) {
+  MC * Mm * (1 - mcsc_f)
 }
 
-# Decaying enzymes
+# Enzymes decay
 F_ecw.scw <- function (ECw, Em) {
   ECw * Em
 }
@@ -96,9 +97,9 @@ Temp.Resp.NonEq <- function(K, T, T0, E, R) {
 
 # ==============================================================================
 # Function to check for equilibirum conditions
-CheckEquil <- function(LC, RC, i, eq.mpd) {
-  y1 <- LC[(i-12/delt+1):i] + RC[(i-12/delt+1):i]
-  y2 <- LC[(i-24/delt+1):(i-12/delt)] + RC[(i-24/delt+1):(i-12/delt)]
+CheckEquil <- function(PC, i, eq.mpd) {
+  y1 <- PC[(i-12/delt+1):i]
+  y2 <- PC[(i-24/delt+1):(i-12/delt)]
   x <- abs((mean(y1) / mean(y2)) - 1)
   ifelse(x <= (eq.mpd/100), TRUE, FALSE)
 }

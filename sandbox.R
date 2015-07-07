@@ -11,3 +11,4 @@ MM <- function(x) {V*x*E/(K+x+E) * 90000} # * (theta*cm3)}
 
 curve(MM, from=0, to=1)
 
+0.00672 * exp(-47000/8.3144*(1/290-1/293.15))

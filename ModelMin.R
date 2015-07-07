@@ -53,14 +53,12 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
     theta_fc  <- fc * depth
     
     # Calculate temporally changing variables
-    K_LD <- Temp.Resp.Eq(K_LD_0, temp, T0, E_K.LD, R)
-    K_RD <- Temp.Resp.Eq(K_RD_0, temp, T0, E_K.RD, R)
-    K_SU <- Temp.Resp.Eq(K_SU_0, temp, T0, E_K.SU, R)
+    K_D  <- Temp.Resp.Eq(K_D_0, temp, T0, E_K.D, R)
+    K_U  <- Temp.Resp.Eq(K_U_0, temp, T0, E_K.U, R)
     K_SM <- Temp.Resp.Eq(K_SM_0, temp, T0, E_K.SM, R)
     K_EM <- Temp.Resp.Eq(K_EM_0, temp, T0, E_K.EM, R)
-    V_LD <- Temp.Resp.NonEq(V_LD_0, temp, T0, E_V.LD, R)
-    V_RD <- Temp.Resp.NonEq(V_RD_0, temp, T0, E_V.RD, R)
-    V_SU <- Temp.Resp.NonEq(V_SU_0, temp, T0, E_V.SU, R)
+    V_D  <- Temp.Resp.NonEq(V_D_0, temp, T0, E_V.D, R)
+    V_U  <- Temp.Resp.NonEq(V_U_0, temp, T0, E_V.U, R)
     Mm   <- Temp.Resp.Eq(Mm_0, temp, T0, E_m, R)
     Em   <- Temp.Resp.Eq(Em_0, temp, T0, E_m, R)
     
@@ -75,40 +73,30 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
 #       browser()
       
       # Write out values at current time
-      out[i,] <- c(times[i], PC, SCw, SCs, SCi, SCm, ECw, ECs, ECm, MC, CO2)
+      out[i,] <- c(times[i], PC, SC, EC, MC, CO2)
       
       # Calculate all fluxes
       F_ml.pc   <- F_litter(litter_m[i])
       F_sl.pc   <- F_litter(litter_s[i])
-      F_pc.scw  <- F_decomp(PC, ECw, V_D[i], K_LD[i], K_RD[i], theta[i])
-      F_scw.co2 <- F_sc.co2(SCw, CUE, theta[i], V_SU[i], K_SU[i])
-      F_scw.lc  <- F_sc.lc(SCw, CUE, theta[i], V_SU[i], K_SU[i], mcsc_f, E_P)
-      F_scw.ecw <- F_sc.ec(SCw, CUE, theta[i], V_SU[i], K_SU[i], E_P)
-      F_ecw.scw <- F_ecw.scw(ECw, Em[i])
+      F_pc.sc   <- F_decomp(PC, EC, V_D[i], K_D[i], theta[i], cm3)
+      F_sc.co2  <- F_uptake(SC, MC, theta[i], V_U[i], K_U[i], cm3) * (1-CUE)
+      F_sc.mc   <- F_uptake(SC, MC, theta[i], V_U[i], K_U[i], cm3) * CUE
+      F_mc.ec   <- F_mc.ec(MC, Mm[i], E_P)
+      F_mc.pc   <- F_mc.pc(MC, Mm[i], mcsc_f)
+      F_mc.sc   <- F_mc.sc(MC, Mm[i], mcsc_f)
+      F_ec.sc   <- F_ec.sc(ECw, Em[i])
       
       # Define the rate changes for each state variable
-      dLC  <- F_ml.lc + F_sl.lc + F_scw.lc - F_lc.scw
-      dRC  <- 0
-      dSCw <- F_lc.scw + F_ecw.scw - F_scw.co2 -  F_scw.lc - F_scw.ecw
-      dSCs <- 0
-      dSCi <- 0
-      dSCm <- 0
-      dECm <- 0
-      dECw <- F_scw.ecw - F_ecw.scw
-      dECs <- 0
-      dMC  <- 0
-      dCO2 <- F_scw.co2
+      dPC  <- F_ml.pc + F_sl.pc + F_mc.pc - F_pc.sc
+      dSC  <- F_pc.sc + F_ec.sc + F_mc.sc - F_sc.co2 - F_sc.mc
+      dEC  <- F_mc.ec - F_ec.sc
+      dMC  <- F_sc.mc - F_mc.ec - F_mc.pc - F_mc.sc
+      dCO2 <- F_sc.co2
       
-      LC <- LC + dLC * delt
-      RC <- RC + dRC * delt
-      SCw <- SCw + dSCw * delt
-      SCs <- SCs + dSCs * delt
-      SCi <- SCi + dSCi * delt
-      SCm <- SCm + dSCm * delt
-      ECw <- ECw + dECw * delt
-      ECs <- ECs + dECs * delt
-      ECm <- ECm + dECm * delt
-      MC <- MC + dMC * delt
+      PC  <-PLC + dPC * delt
+      SC  <- SC + dSC * delt
+      EC  <- EC + dEC * delt
+      MC  <- MC + dMC * delt
       CO2 <- CO2 + dCO2 * delt 
       
       # If spinup, stop at equilibirum
