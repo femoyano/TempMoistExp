@@ -1,13 +1,16 @@
-### ModelFull.R ================================================================
+### ModelMin.R ================================================================
 
 ### Documentation ==============================================================
-# Main function running the model. 
+# Main function running the model.
 # This function prepares the input data, then loops over the time variable where
 # it calls the flux functions, calculates the changes in each pool,
-# and returns the values for each time point in a data frame
+# and returns the values for each time point in a data frame.
+
+# ModelMin version has the minimum number of processes:
+# Only 1 litter pool, no diffusion, no sorbtion, no immobile C, microbe implicit.
 ### ============================================================================
 
-ModelFull <- function(eq.run, start, end, delt, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(state, parameters)), {
     
@@ -64,44 +67,37 @@ ModelFull <- function(eq.run, start, end, delt, state, parameters, litter.data, 
     # Create matrix to hold output
     out <- matrix(ncol = 1 + length(initial_state), nrow=nt)
     
-    setbreak <- 0
+    setbreak <- 0 # break flag for spinup runs
     
     for(i in 1:length(times)) {
       
-      #       if(i == 1598) {browser()}
+#       if(i == 15) {browser()}
+#       browser()
       
       # Write out values at current time
-      out[i,] <- c(times[i], LC, RC, SCw, SCs, SCi, SCm, ECw, ECs, ECm, MC, CO2)
+      out[i,] <- c(times[i], PC, SCw, SCs, SCi, SCm, ECw, ECs, ECm, MC, CO2)
       
       # Calculate all fluxes
-      F_ml.lc   <- F_ml.lc(litter_m[i])
-      F_sl.rc   <- F_sl.rc(litter_s[i])
-      F_mc.lc   <- F_mc.lc(MC, Mm[i], mcsc_f)
-      F_lc.scw  <- F_lc.scw(LC, RC, ECw, V_LD[i], K_LD[i], K_RD[i], theta[i])
-      F_rc.scw  <- F_rc.scw(LC, RC, ECw, V_RD[i], K_LD[i], K_RD[i], theta[i])
-      F_mc.scw  <- F_mc.scw(MC, Mm[i], mcsc_f)
+      F_ml.pc   <- F_litter(litter_m[i])
+      F_sl.pc   <- F_litter(litter_s[i])
+      F_pc.scw  <- F_decomp(PC, ECw, V_D[i], K_LD[i], K_RD[i], theta[i])
+      F_scw.co2 <- F_sc.co2(SCw, CUE, theta[i], V_SU[i], K_SU[i])
+      F_scw.lc  <- F_sc.lc(SCw, CUE, theta[i], V_SU[i], K_SU[i], mcsc_f, E_P)
+      F_scw.ecw <- F_sc.ec(SCw, CUE, theta[i], V_SU[i], K_SU[i], E_P)
       F_ecw.scw <- F_ecw.scw(ECw, Em[i])
-      F_scw.sci <- F_scw.sci(SCw, SCi, theta_d[i], theta[i], theta_fc)
-      F_scw.scs <- F_scw.scs(SCw, SCs, ECw, ECs, M, K_SM[i], K_EM[i], theta[i])
-      F_scw.scm <- F_scw.scm(SCw, SCm, D_S0, theta_s[i], dist, phi, Rth)
-      F_scm.co2 <- F_scm.co2(SCm, MC, t_MC, CUE, theta[i], V_SU[i], K_SU[i])
-      F_scm.mc  <- F_scm.mc(SCm, MC, t_MC, CUE, theta[i], V_SU[i], K_SU[i])
-      F_mc.ecm  <- F_mc.ecm(MC, E_P)
-      F_ecm.ecw <- F_ecm.ecw(ECm, ECw, D_E0, theta_s[i], dist, phi, Rth)
-      F_ecw.ecs <- F_ecw.ecs(SCw, SCs, ECw, ECs, M, K_SM[i], K_EM[i], theta[i])
       
       # Define the rate changes for each state variable
-      dLC  <- F_ml.lc + F_mc.lc - F_lc.scw
-      dRC  <- F_sl.rc - F_rc.scw
-      dSCw <- F_lc.scw + F_rc.scw + F_mc.scw + F_ecw.scw - F_scw.sci - F_scw.scs - F_scw.scm
-      dSCs <- F_scw.scs
-      dSCi <- F_scw.sci
-      dSCm <- F_scw.scm - F_scm.co2 - F_scm.mc
-      dECm <- F_mc.ecm - F_ecm.ecw
-      dECw <- F_ecm.ecw - F_ecw.ecs - F_ecw.scw
-      dECs <- F_ecw.ecs
-      dMC  <- F_scm.mc - F_mc.ecm - F_mc.lc - F_mc.scw
-      dCO2 <- F_scm.co2
+      dLC  <- F_ml.lc + F_sl.lc + F_scw.lc - F_lc.scw
+      dRC  <- 0
+      dSCw <- F_lc.scw + F_ecw.scw - F_scw.co2 -  F_scw.lc - F_scw.ecw
+      dSCs <- 0
+      dSCi <- 0
+      dSCm <- 0
+      dECm <- 0
+      dECw <- F_scw.ecw - F_ecw.scw
+      dECs <- 0
+      dMC  <- 0
+      dCO2 <- F_scw.co2
       
       LC <- LC + dLC * delt
       RC <- RC + dRC * delt

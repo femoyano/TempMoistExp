@@ -10,7 +10,7 @@ rm(list=ls())
 
 eq.run <- TRUE # Run to equilibrium? This will recycle input data.
 eq.mpd <- 0.1 # equilibrium maximum percent difference. spinup run stops if difference is lower.
-eq.max.time <- 20000
+eq.max.time <- 10000
 
 ### Define time units ==========================================================
 # (Warning! input data rates should have same time units as tunit)
@@ -30,11 +30,13 @@ source("flux_functions.r")
 source("model_parameters.r")
 source("initial_state.r")          # Loads initial state variable values
 source("ModelFull.R")
+source("ModelMin.R")
 
 # Define model times: start, end and delt (resolution)
 start <- 1
 end   <- ifelse(eq.run, eq.max.time, forcing.data$day[length(forcing.data$day)])
-delt  <- 1
+delt  <- 0.1
 
-model.out <- ModelAWB(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
+model.out <- ModelMin(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
+
 

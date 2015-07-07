@@ -6,90 +6,60 @@
 
 # Functions calculating the fluxes of C.
 
-# Metabolic litter input to LC
-F_ml.pc <- function (litter_met) { # the input of litter is prescribed; no calculations are required
-  litter_met
+# Litter input
+F_litter <- function (litter_flux) { # the input of litter is prescribed; no calculations are required
+  litter_flux
 }
 
-# Structural litter input to RChttps://duckduckgo.com/?t=lm&q=git+merging&ia=qafield 
-F_sl.pc <- function (litter_struct) { # the input of litter is prescribed; no calculations are required
-  litter_struct
+# Decomposition flux
+F_decomp <- function (S, E, V, K, theta, cm3) {
+  S <- S / (theta * cm3)
+  E <- E / (theta * cm3)
+  (V * S * E) / (K + S + E) * (theta * cm3)
 }
 
-# Decomposition function
-F_decomp <- function (S, E, V, Kd, theta, cm3) {
-  Sw <- S / (theta * cm3)
-  Ew <- E / (theta * cm3)
-  (V * Sw * Ew) / (Kd * (1 + Sw / Kd + Ew / Kd + M / Km)) * (theta * cm3)
+# Sorption to mineral surface
+F_sorp <- function (S1w, S1s, S2w, S2s, M, K_M1, K_M2, theta, cm3) {
+  S1 <- S1w + S1s
+  S2 <- S2w + S2s
+  S1 <- S1 / (theta * cm3)
+  S2 <- S2 / (theta * cm3)
+  M <- M / (theta * cm3)
+  (S1 * M) / (K_M1 * (1 + S1 / K_M1 + M / K_M1 + S2 / K_M2)) * (theta * cm3) - S1s
 }
 
-# Sorption of EC to mineral surface
-F_ecw.ecs <- function (SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta) {
-  SC <- SCw + SCs
-  EC <- ECw + ECs
-  SC <- SC / theta
-  EC <- EC / theta
-  M <- M / theta
-  (EC * M) / (K_EM * (1 + EC / K_EM + SC / K_SM + M / K_EM)) * theta - ECs
-}
-
-# Sorption of SC to mineral surface
-F_scw.scs <- function (SCw, SCs, ECw, ECs, M, K_SM, K_EM, theta) {
-  SC <- SCw + SCs
-  EC <- ECw + ECs
-  SC <- SC / theta
-  EC <- EC / theta
-  M <- M / theta
-  (SC * M) / (K_SM * (1 + SC / K_SM + EC / K_EM + M / K_SM)) * theta - SCs
-}
-
-# Diffusion of SC to microbes
-F_scw.scm <- function (SCw, SCm, D_S0, theta_s, dist, phi, Rth) {
+# Diffusion flux
+F_diff <- function (Sw, Sm, D_S0, theta_s, dist, phi, Rth) {
   if (theta_s <= Rth) return(0)
   D_S <- D_S0 * (phi - Rth)^1.5 * ((theta_s - Rth)/(phi - Rth))^2.5
-  D_S * (SCw - SCm) / dist # dividing by theta for specific concentrations and multiplying again for total cancels theta out
+  D_S * (Sw - Sm) / dist # dividing by theta for specific concentrations and multiplying again for total cancels theta out
 }
 
-# Diffusion of EC from microbes
-F_ecm.ecw <- function (ECm, ECw, D_E0, theta_s, dist, phi, Rth) {
-  if (theta_s <= Rth) return(0)
-  D_E <- D_E0 * (phi - Rth)^1.5 * ((theta_s - Rth)/(phi - Rth))^2.5
-  D_E * (ECm - ECw) / dist # dividing by theta for specific concentrations and multiplying again for total cancels theta out
+# Microbial C uptake (first order)
+F_uptake1 <- function(SC, theta, V_U1, K_U1) {
+  SC <- SC / (theta * cm3)
+  (V_U1 * SC) / (K_U1 + SC) * (theta * cm3)
 }
 
-# Mirobes to ECm
+# Microbial C uptake (second order)
+F_uptake2 <- function (SC, MC, t_M, theta, V_U2, K_U2) {
+  SC <- SC / (theta * cm3)
+  MC <- MC * t_MC / (theta * cm3)
+  (V_U2 * SC * MC) / (K_U2 + SCm + MC) * (theta * cm3)
+}
+
+# Microbes enzyme production
 F_mc.ecm <- function (MC, E_P) {
   MC * E_P
 }
 
-# CO2 production
-F_scm.co2 <- function (SCm, MC, t_MC, CUE, theta, V_SU, K_SU) {
-  SCm <- SCm / theta
-  MC <- MC * t_MC / theta
-  U <- (V_SU * SCm * MC) / (K_SU + SCm + MC) * theta
-  U * (1-CUE)
+# Dead microbes
+F_mc.lc <- function (MC, Mm) {
+  MC * Mm
 }
 
-# SCm to MC
-F_scm.mc <- function (SCm, MC, t_MC, CUE, theta, V_SU, K_SU) {
-  SCm <- SCm / theta
-  MC <- MC * t_MC / theta
-  U <- (V_SU * SCm * MC) / (K_SU + SCm + MC) * theta
-  U * CUE
-}
-
-# Dead microbes to labile carbon pool
-F_mc.lc <- function (MC, Mm, mcsc_f) {
-  MC * Mm * (1 - mcsc_f)
-}
-
-# Dead microbes to SC pool
-F_mc.scw <- function (MC, Mm, mcsc_f) {
-  MC * Mm * mcsc_f
-}
-
-# Decaying enzymes going to SC pool
-F_ecw.scw <- function (ECw, Em) { # enzyme decay and flux to SC pool
+# Decaying enzymes
+F_ecw.scw <- function (ECw, Em) {
   ECw * Em
 }
 
@@ -109,6 +79,7 @@ F_scw.adv <- function (SCw, theta, percolation) {
 F_adv.scw <- function (advection_in) { # prescribed
   advection_in
 }
+
 
 # ==============================================================================
 # Temperature responses after to Tang and Riley 2014 (supplementary information)
