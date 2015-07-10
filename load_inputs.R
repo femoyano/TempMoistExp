@@ -1,10 +1,28 @@
 # inputs
+### Climate forcing and litter input ===========================================
 
-### Climate forcing and litter input
-forcing.data   <- read.csv("forcing_data_daily.csv") # forcing data file
-litter.data    <- read.csv("litter_input_daily.csv") # litter input rates file
+### Documentation ==============================================================
+# Forcing and litter data time should be in daily units
+# Forcing data will be interpolated to model time step
+# Soil T must be in kelvin and soil moisture in volumetric content
+# Litter input must be in gC m-2 d-1
+### ============================================================================
 
-### Spatial Variables
+forcing.data   <- read.csv("input_forcing.csv") # forcing data file
+# convert time units
+forcing.data$day <- forcing.data$day * (day / tunit)
+names(forcing.data)[1] <- t_unit
+
+# litter.data    <- read.csv("input_litter.csv") # litter input rates file
+# # convert time units 
+# litter.data$day <- litter.data$day * (day / tunit)
+# names(litter.data)[1] <- t_unit
+# # convert litter input rates to the model time step rate
+# litter.data[,-1] <- litter.data[,-1] / day * tunit
+
+litter.data <- data.frame(hour=1, litter_m = 0.00015, litter_s = 0, litter_d = 0.00001)
+
+### Spatial Variables ==========================================================
 clay   <- 0.51  # [g g^-1] clay fraction values 
 sand   <- 0.03  # [g g^-1] sand fraction values 
 silt   <- 0.46  # [g g^-1] silt fraction values 

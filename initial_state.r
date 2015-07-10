@@ -6,13 +6,8 @@
 
 initial_state <- c(
   PC  = 0 , # [gC] labile carbon (array: point x layer)
-  SCw = 0 , # [gC] soluble carbon in bulk water (array: point x layer)
-  SCs = 0 , # [gC] soluble carbon sorbed to minerals (array: point x layer)
-  SCi = 0 , # [gC] soluble immobile carbon (in dry zones) (array: point x layer)
-  SCm = 0 , # [gC] soluble carbon local to microbes (array: point x layer)
-  ECw = 1 , # [gC] enzymes in bulk water (array: point x layer)
-  ECs = 0 , # [gC] enzymes sorbed to minerals (array: point x layer)
-  ECm = 0 , # [gC] enzymes local to microbes (array: point x layer)
-  MC  = 1 , # [gC] microbial carbon (array: point x layer)
+  SC  = 0 , # [gC] soluble carbon (array: point x layer)
+  EC  = 0.001 , # [mgC] enzymes (array: point x layer)
+  MC  = 0.01 , # [mgC] microbial carbon (array: point x layer)
   CO2 = 0 
 )

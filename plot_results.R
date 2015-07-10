@@ -1,9 +1,8 @@
 # Plot results ====
+out.month <- aggregate(model.out, by=list(x=ceiling(model.out[,1]/365)), FUN=mean)
 
-plot(model.out$LC)
-plot(model.out$RC)
-plot(model.out$SCw)
-plot(model.out$SCm)
-plot(model.out$MC)
-plot(model.out$SCi)
+plot(out.month$PC)
+plot(out.month$SC)
+plot(out.month$MC)
+plot(out.month$CO2)
 

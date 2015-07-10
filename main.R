@@ -9,15 +9,21 @@
 rm(list=ls())
 
 eq.run <- TRUE # Run to equilibrium? This will recycle input data.
-eq.mpd <- 0.1 # equilibrium maximum percent difference. spinup run stops if difference is lower.
-eq.max.time <- 10000
+eq.md  <- 0.5 # equilibrium maximum percent difference. spinup run stops if difference is lower.
+eq.max.time <- 1000000
+
+t_unit <- "day" # model time unit (as string): "hour", "day", "month" or "year"
+delt   <-  20    # multiplier t_unit: defines model time step
 
 ### Define time units ==========================================================
-# (Warning! input data rates should have same time units as tunit)
-day   <- 86400 # seconds in a day
-hour  <- 3600  # seconds in an hour
-sec   <- 1     # seconds in a second!
-tunit <- day   # Notice: C inputs have to be in the same time units as the model tunit variable
+# Warning! input data rates should have same time units as tunit
+year  <- 31536000 # seconds in a year
+month <- 2628000  # seconds in a month
+day   <- 86400    # seconds in a day
+hour  <- 3600     # seconds in an hour
+sec   <- 1        # seconds in a second!
+tunit <- get(t_unit)      # hour, day, month or year (or fraction e.g. hour/2)
+
 
 ### Libraries ====
 # require(deSolve)
@@ -26,16 +32,14 @@ tunit <- day   # Notice: C inputs have to be in the same time units as the model
 source("load_inputs.R")
 
 # Sourced files
-source("flux_functions.r")
-source("model_parameters.r")
+source("flux_functions_dry.r")
+source("parameters.r")
 source("initial_state.r")          # Loads initial state variable values
-source("ModelFull.R")
 source("ModelMin.R")
 
 # Define model times: start, end and delt (resolution)
 start <- 1
-end   <- ifelse(eq.run, eq.max.time, forcing.data$day[length(forcing.data$day)])
-delt  <- 0.1
+end   <- ifelse(eq.run, eq.max.time, forcing.data$day[length(forcing.data[,1])])
 
 model.out <- ModelMin(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
 
