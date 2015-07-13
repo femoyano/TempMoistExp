@@ -9,11 +9,11 @@
 rm(list=ls())
 
 eq.run <- TRUE # Run to equilibrium? This will recycle input data.
-eq.md  <- 0.5 # equilibrium maximum percent difference. spinup run stops if difference is lower.
-eq.max.time <- 1000000
+eq.md  <- 0 # equilibrium maximum percent difference. spinup run stops if difference is lower.
+eq.max.time <- 30000
 
-t_unit <- "day" # model time unit (as string): "hour", "day", "month" or "year"
-delt   <-  20    # multiplier t_unit: defines model time step
+t_unit <- "hour" # model time unit (as string): "hour", "day", "month" or "year"
+delt   <-  1    # multiplier t_unit: defines model time step
 
 ### Define time units ==========================================================
 # Warning! input data rates should have same time units as tunit
@@ -32,7 +32,7 @@ tunit <- get(t_unit)      # hour, day, month or year (or fraction e.g. hour/2)
 source("load_inputs.R")
 
 # Sourced files
-source("flux_functions_dry.r")
+source("flux_functions.r")
 source("parameters.r")
 source("initial_state.r")          # Loads initial state variable values
 source("ModelMin.R")

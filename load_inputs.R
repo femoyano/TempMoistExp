@@ -8,10 +8,13 @@
 # Litter input must be in gC m-2 d-1
 ### ============================================================================
 
-forcing.data   <- read.csv("input_forcing.csv") # forcing data file
-# convert time units
-forcing.data$day <- forcing.data$day * (day / tunit)
-names(forcing.data)[1] <- t_unit
+# forcing.data   <- read.csv("input_forcing.csv") # forcing data file
+# # convert time units
+# forcing.data$day <- forcing.data$day * (day / tunit)
+# names(forcing.data)[1] <- t_unit
+
+forcing.data <- data.frame(hour=1, temp = 293.15)
+
 
 # litter.data    <- read.csv("input_litter.csv") # litter input rates file
 # # convert time units 
@@ -20,7 +23,7 @@ names(forcing.data)[1] <- t_unit
 # # convert litter input rates to the model time step rate
 # litter.data[,-1] <- litter.data[,-1] / day * tunit
 
-litter.data <- data.frame(hour=1, litter_m = 0.00015, litter_s = 0, litter_d = 0.00001)
+litter.data <- data.frame(hour=1, litter_m = 0.0005, litter_s = 0, litter_d = 0.0005)
 
 ### Spatial Variables ==========================================================
 clay   <- 0.51  # [g g^-1] clay fraction values 

@@ -14,14 +14,12 @@ F_litter <- function (litter_flux) { # the input of litter is prescribed; no cal
 
 # Decomposition flux
 F_decomp <- function (C, E, V, K) {
-  D <- (V * C * E) / (K + C + E)
-  ifelse(D > C, C, D) # max decomp is size of C, so C cannot become negative
+  (V * C * E) / (K + C + E)
 }
 
 # Microbial C uptake
 F_uptake <- function (SC, MC, V_U, K_U) {
-  U <- (V_U * SC * MC) / (K_U + SC)
-  ifelse(U > SC, SC, U) # max uptake is size of SC, so SC cannot become negative
+  (V_U * SC * MC) / (K_U + SC)
 }
 
 # Microbe to enzyme
