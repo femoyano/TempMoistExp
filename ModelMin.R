@@ -15,7 +15,7 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
   with(as.list(c(state, parameters)), {
     
     # Create model time step vector
-    times <- seq(start, end)
+    times <- seq(start, end, delt)
     nt    <- length(times)
     
     # Repeat input data when shorter than end time
@@ -97,7 +97,6 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
       }
       if (setbreak) break
     } # end for loop
-    
     
     colnames(out) <- c("time", "PC", "SC", "EC", "MC", "CO2")
     
