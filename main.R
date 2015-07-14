@@ -9,7 +9,7 @@
 rm(list=ls())
 
 eq.run <- TRUE # Run to equilibrium? This will recycle input data.
-eq.md  <- 0 # equilibrium maximum percent difference. spinup run stops if difference is lower.
+eq.md  <- 0.1 # maximum difference for equilibrium conditions [in mgC gSoil-1]. spinup run stops if difference is lower.
 eq.max.time <- 30000
 
 t_unit <- "hour" # model time unit (as string): "hour", "day", "month" or "year"

@@ -55,17 +55,16 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
     setbreak <- 0 # break flag for spinup runs
     
     for(i in 1:length(times)) {
-            
       # Write out values at current time
       out[i,] <- c(times[i], PC, SC, EC, MC, CO2)
-      
+      browser()
       # Calculate all fluxes
       F_ml.pc   <- F_litter(litter_m[i])
       F_sl.pc   <- F_litter(litter_s[i])
       F_dl.sc   <- F_litter(litter_d[i])
       F_pc.sc   <- F_decomp(PC, EC, V_D[i], K_D[i])
-      F_sc.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE)
-      F_sc.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE
+      F_sc.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE[i])
+      F_sc.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE[i]
       F_mc.ec   <- F_mc.ec(MC, Mm[i], E_P)
       F_mc.pc   <- F_mc.pc(MC, Mm[i], mcsc_f)
       F_mc.sc   <- F_mc.sc(MC, Mm[i], mcsc_f)
@@ -87,7 +86,7 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
       # If spinup, stop at equilibirum
       if (eq.run & (i * delt * tunit / year)>=2) { 
         if (CheckEquil(out[,2], i, eq.md)) {
-          print(paste("Yearly change in PC below equilibrium max. change value of", eq.md, "at",t_unit, i * delt,". Value at equilibrium is ", PC,".",sep=" "))
+          print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_unit, i * delt,". Value at equilibrium is ", PC, ".", sep=" "))
           setbreak <- TRUE
         }
       }

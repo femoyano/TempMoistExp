@@ -57,10 +57,12 @@ Temp.Resp.NonEq <- function(K, T, T0, E, R) {
 
 # ==============================================================================
 # Function to check for equilibirum conditions
+# Calculates the absolute change in C between the last two years of simulation
 CheckEquil <- function(PC, i, eq.md) {
   y1 <- PC[(i-12/delt+1):i]
   y2 <- PC[(i-24/delt+1):(i-12/delt)]
   x <- abs(mean(y2) - mean(y1))
+  if(is.na(x)) browser()
   ifelse(x <= (eq.md), TRUE, FALSE)
 }
 
