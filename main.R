@@ -13,7 +13,6 @@ eq.md  <- 0.1 # maximum difference for equilibrium conditions [in mgC gSoil-1]. 
 eq.max.time <- 30000
 
 t_unit <- "hour" # model time unit (as string): "hour", "day", "month" or "year"
-delt   <-  1    # multiplier t_unit: defines model time step
 
 ### Define time units ==========================================================
 # Warning! input data rates should have same time units as tunit
@@ -37,10 +36,10 @@ source("parameters.r")
 source("initial_state.r")          # Loads initial state variable values
 source("ModelMin.R")
 
-# Define model times: start, end and delt (resolution)
+# Define model times: start and end
 start <- 1
 end   <- ifelse(eq.run, eq.max.time, forcing.data$day[length(forcing.data[,1])])
 
-model.out <- ModelMin(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
+model.out <- ModelMin(eq.run, start, end, initial_state, parameters, litter.data, forcing.data)
 
 

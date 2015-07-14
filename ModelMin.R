@@ -10,12 +10,12 @@
 # Only 1 litter pool, no diffusion, no sorbtion, no immobile C, microbe implicit.
 ### ============================================================================
 
-ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+ModelMin <- function(eq.run, start, end, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(state, parameters)), {
     
     # Create model time step vector
-    times <- seq(start, end, delt)
+    times <- seq(start, end)
     nt    <- length(times)
     
     # Repeat input data when shorter than end time
@@ -77,16 +77,16 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
       dMC  <- F_sc.mc - F_mc.ec - F_mc.pc - F_mc.sc
       dCO2 <- F_sc.co2
 
-      PC  <- PC + dPC * delt
-      SC  <- SC + dSC * delt
-      EC  <- EC + dEC * delt
-      MC  <- MC + dMC * delt
-      CO2 <- CO2 + dCO2 * delt 
+      PC  <- PC + dPC
+      SC  <- SC + dSC
+      EC  <- EC + dEC
+      MC  <- MC + dMC
+      CO2 <- CO2 + dCO2 
       
       # If spinup, stop at equilibirum
-      if (eq.run & (i * delt * tunit / year)>=2) { 
+      if (eq.run & (i * tunit / year)>=2) { 
         if (CheckEquil(out[,2], i, eq.md)) {
-          print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_unit, i * delt,". Value at equilibrium is ", PC, ".", sep=" "))
+          print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_unit, i,". Value at equilibrium is ", PC, ".", sep=" "))
           setbreak <- TRUE
         }
       }
