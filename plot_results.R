@@ -1,9 +1,9 @@
 # Plot results ====
-out.month <- aggregate(model.out, by=list(x=ceiling(model.out[,1]/24)), FUN=mean)
+out.days <- aggregate(model.out, by=list(x=ceiling(model.out[,1]/24)), FUN=mean)
 
-plot(out.month$PC)
-plot(out.month$SC)
-plot(out.month$MC)
-plot(out.month$EC)
-plot(out.month$CO2)
+plot(out.days$PC)
+plot(out.days$SC)
+plot(out.days$MC)
+plot(out.days$EC)
+plot(out.days$CO2)
 
