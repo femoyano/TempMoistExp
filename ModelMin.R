@@ -77,16 +77,21 @@ ModelMin <- function(eq.run, start, end, state, parameters, litter.data, forcing
       dMC  <- F_sc.mc - F_mc.ec - F_mc.pc - F_mc.sc
       dCO2 <- F_sc.co2
 
-      PC  <- ifelse(PC + dPC > 0, PC + dPC, 0)
-      SC  <- ifelse(SC + dSC > 0, SC + dSC, 0)
-      EC  <- ifelse(EC + dEC > 0, EC + dEC, 0)
-      MC  <- ifelse(MC + dMC > 0, MC + dMC, stop("MC has reached a value of 0. This should not happen"))
-      CO2 <- CO2 + dCO2 
+      PC  <- PC + dPC * delt
+      SC  <- SC + dSC * delt
+      EC  <- EC + dEC * delt
+      MC  <- MC + dMC * delt
+      CO2 <- CO2 + dCO2 * delt 
+
+      PC  <- ifelse(PC > 0, PC, 0)
+      SC  <- ifelse(SC > 0, SC, 0)
+      EC  <- ifelse(EC > 0, EC, 0)
+      MC  <- ifelse(MC > 0, MC, stop("MC has reached a value of 0. This should not happen."))
       
       # If spinup, stop at equilibirum
-      if (eq.run & (i * tunit / year)>=2) { 
-        if (CheckEquil(out[,2], i, eq.md)) {
-          print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_unit, i,". Value at equilibrium is ", PC, ".", sep=" "))
+      if (eq.run & (i * delt * tunit / year)>=2) { 
+        if (CheckEquil(out[,2], i, delt, eq.md)) {
+          print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_unit, i * delt,". Value at equilibrium is ", PC, ".", sep=" "))
           setbreak <- TRUE
         }
       }
