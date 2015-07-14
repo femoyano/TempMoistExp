@@ -57,7 +57,7 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
     for(i in 1:length(times)) {
       # Write out values at current time
       out[i,] <- c(times[i], PC, SC, EC, MC, CO2)
-      browser()
+
       # Calculate all fluxes
       F_ml.pc   <- F_litter(litter_m[i])
       F_sl.pc   <- F_litter(litter_s[i])
@@ -65,10 +65,10 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
       F_pc.sc   <- F_decomp(PC, EC, V_D[i], K_D[i])
       F_sc.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE[i])
       F_sc.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE[i]
-      F_mc.ec   <- F_mc.ec(MC, Mm[i], E_P)
-      F_mc.pc   <- F_mc.pc(MC, Mm[i], mcsc_f)
-      F_mc.sc   <- F_mc.sc(MC, Mm[i], mcsc_f)
-      F_ec.sc   <- F_ec.sc(EC, Em[i])
+      F_mc.ec   <- F_mc.ec(MC, Mm, E_P)
+      F_mc.pc   <- F_mc.pc(MC, Mm, mcsc_f)
+      F_mc.sc   <- F_mc.sc(MC, Mm, mcsc_f)
+      F_ec.sc   <- F_ec.sc(EC, Em)
       
       # Define the rate changes for each state variable
       dPC  <- F_ml.pc + F_sl.pc + F_mc.pc - F_pc.sc
@@ -82,10 +82,15 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
       EC  <- EC + dEC * delt
       MC  <- MC + dMC * delt
       CO2 <- CO2 + dCO2 * delt 
+
+      PC  <- ifelse(PC > 0, PC, 0)
+      SC  <- ifelse(SC > 0, SC, 0)
+      EC  <- ifelse(EC > 0, EC, 0)
+      MC  <- ifelse(MC > 0, MC, stop("MC has reached a value of 0. This should not happen."))
       
       # If spinup, stop at equilibirum
       if (eq.run & (i * delt * tunit / year)>=2) { 
-        if (CheckEquil(out[,2], i, eq.md)) {
+        if (CheckEquil(out[,2], i, delt, eq.md)) {
           print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_unit, i * delt,". Value at equilibrium is ", PC, ".", sep=" "))
           setbreak <- TRUE
         }
@@ -96,7 +101,7 @@ ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, f
     
     colnames(out) <- c("time", "PC", "SC", "EC", "MC", "CO2")
     
-    out <- cbind(as.data.frame(out), litter_m, litter_s, temp, theta, theta_s, theta_d)
+    out <- cbind(as.data.frame(out), litter_m, litter_s, litter_d, temp)
     
     out <- out[1:i,]
     
