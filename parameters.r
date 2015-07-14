@@ -11,11 +11,11 @@ parameters <- c(
   R   = 0.008314                  ,  # [kJ K-1 mol-1] gas constant
   
   ### Time Dependent Parameters
-  Em_0   = 0.001 / hour * tunit  , # [h-1] Enzyme turnover rate (Allison at al. 2010).
-  Mm_0   = 0.0002 / hour * tunit , # [h-1] Microbe turnover rate (Allison at al. 2010).
-  E_P    = 0.000005              , # [h^-1] Fraction of MC converted to EC. Intermediate value between Schimel & Weintraub 2003 and Allison et al. 2010 (!uncertain!)
-  V_D_0  = 1 / hour * tunit      , # [h-1] Maximum speed of PC decomposition (Allison at al. 2010)
-  V_U_0  = 0.01 / hour * tunit   , # [h-1] Maximum speed of microbial uptake of SC (Allison at al. 2010) Use without t_M scaling!!!
+  Em_0   = 0.001 / hour * tunit    , # [h-1] Enzyme turnover rate (Allison at al. 2010).
+  Mm_0   = 0.0002 / hour * tunit   , # [h-1] Microbe turnover rate (Allison at al. 2010).
+  E_P    = 0.000005 / hour * tunit , # [h-1] Fraction of MC converted to EC. Intermediate value between Schimel & Weintraub 2003 and Allison et al. 2010 (!uncertain!)
+  V_D_0  = 1 / hour * tunit        , # [h-1] Maximum speed of PC decomposition (Allison at al. 2010)
+  V_U_0  = 0.01 / hour * tunit     , # [h-1] Maximum speed of microbial uptake of SC (Allison at al. 2010) Use without t_M scaling!!!
   
   ### Fixed Parameters ====
   K_D_0    = 500      , # [mgC gSoil-1] Affinity parameter for PC decomp. (approx. Allison et al. 2010, Li at al. 2014)
