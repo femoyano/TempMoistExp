@@ -10,7 +10,7 @@
 # Only 1 litter pool, no diffusion, no sorbtion, no immobile C, microbe implicit.
 ### ============================================================================
 
-ModelMin <- function(eq.run, start, end, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+ModelMin <- function(eq.run, start, end, delt, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(state, parameters)), {
     

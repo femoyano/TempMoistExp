@@ -42,6 +42,6 @@ source("ModelMin.R")
 start <- 1
 end   <- ifelse(eq.run, eq.max.time, forcing.data$day[length(forcing.data[,1])])
 
-model.out <- ModelMin(eq.run, start, end, initial_state, parameters, litter.data, forcing.data)
+model.out <- ModelMin(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
 
 
