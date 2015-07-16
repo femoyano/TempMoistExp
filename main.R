@@ -9,11 +9,11 @@
 rm(list=ls())
 
 eq.run <- TRUE # Run to equilibrium? This will recycle input data.
-eq.md  <- 0.1 # maximum difference for equilibrium conditions [in mgC gSoil-1]. spinup run stops if difference is lower.
-eq.max.time <- 240000
+eq.md  <- -30 # maximum difference for equilibrium conditions [in mgC gSoil-1]. spinup run stops if difference is lower.
+eq.max.time <- 24000
 
 t_unit <- "hour" # model time unit (as string): "hour", "day", "month" or "year"
-delt   <-  24    # multiplier t_unit: defines model time step
+delt   <-  1    # multiplier t_unit: defines model time step
 
 
 ### Define time units ==========================================================
@@ -42,6 +42,6 @@ source("ModelMin.R")
 start <- 1
 end   <- ifelse(eq.run, eq.max.time, forcing.data$day[length(forcing.data[,1])])
 
-model.out <- ModelMin(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
+model.out <- Model(eq.run, start, end, delt, initial_state, parameters, litter.data, forcing.data)
 
 
