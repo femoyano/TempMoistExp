@@ -23,7 +23,7 @@ forcing.data <- data.frame(hour=1, temp = 293.15)
 # # convert litter input rates to the model time step rate
 # litter.data[,-1] <- litter.data[,-1] / day * tunit
 
-litter.data <- data.frame(hour=1, litter_m = 0.00015, litter_s = 0, litter_d = 0.00001)
+litter.data <- data.frame(hour=1, litter_str = 0.00015, litter_met = 0.00001)
 
 # ### Spatial Variables ==========================================================
 # clay   <- 0.51  # [g g^-1] clay fraction values 

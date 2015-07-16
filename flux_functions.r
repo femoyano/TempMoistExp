@@ -28,13 +28,13 @@ F_mc.ec <- function (MC, E_P, Mm) {
 }
 
 # Microbe to SC
-F_mc.sc <- function (MC, Mm, mcsc_f) {
-  MC * Mm * mcsc_f
+F_mc.sc <- function (MC, Mm, mcpc_f) {
+  MC * Mm * (1- mcpc_f)
 }
 
 # Microbe to PC
-F_mc.pc <- function (MC, Mm, mcsc_f) {
-  MC * Mm * (1 - mcsc_f)
+F_mc.pc <- function (MC, Mm, mcpc_f) {
+  MC * Mm * mcpc_f
 }
 
 # Enzymes decay
@@ -45,24 +45,13 @@ F_ec.sc <- function (EC, Em) {
 # ==============================================================================
 # Temperature responses after to Tang and Riley 2014 (supplementary information)
 
-# Temperature response for equilibrium reactions (for K values)
-Temp.Resp.Eq <- function(K, T, T0, E, R) {
-  K * exp(-E/R * (1/T-1/T0))
+# Temperature response for equilibrium reactions = Arrhenius (for K values)
+Temp.Resp.Eq <- function(k_ref, T, T_ref, E, R) {
+  k_ref * exp(-E/R * (1/T-1/T_ref))
 }
 
 # Temperature response for non-equilibrium reactions (for V values)
-Temp.Resp.NonEq <- function(K, T, T0, E, R) {
-  K * T/T0 * exp(-E/R * (1/T-1/T0))
-}
-
-# ==============================================================================
-# Function to check for equilibirum conditions
-# Calculates the absolute change in C between the last two years of simulation
-
-CheckEquil <- function(PC, i, delt, eq.md) {
-  y1 <- PC[(i-12/delt+1):i]
-  y2 <- PC[(i-24/delt+1):(i-12/delt)]
-  x <- abs(mean(y2) - mean(y1))
-  ifelse(x <= (eq.md), TRUE, FALSE)
+Temp.Resp.NonEq <- function(k_ref, T, T_ref, E, R) {
+  k_ref * T/T_ref * exp(-E/R * (1/T-1/T_ref))
 }
 
