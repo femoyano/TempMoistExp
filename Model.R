@@ -101,8 +101,7 @@ Model <- function(eq.run, start, end, tsave, state, parameters, litter.data, for
     colnames(out) <- c("time", "PC", "SC", "EC", "MC", "CO2")
     
     out <- as.data.frame(out)
-    
-    out <- out[1:floor(i * tunit / tsave) + 1,]
+    out <- out[1:(floor(i * tunit / tsave) + 1),]
     
   }) # end of with...
   
