@@ -68,7 +68,7 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
       F_mc.ec   <- MC * E_p # F_mc.ec(MC, Mm, E_p)
       F_mc.pc   <- MC * Mm * mcpc_f # F_mc.pc(MC, Mm, mcpc_f)
       F_mc.sc   <- MC * Mm * (1 - mcpc_f) # F_mc.sc(MC, Mm, mcpc_f)
-      F_ec.sc   <- EC * Em # F_ec.sc(EC, Em)
+      F_ec.sc   <- F_ec.sc(EC, Em)
       
       # Define the rate changes for each state variable
       dPC  <- F_sl.pc + F_mc.pc - F_pc.sc
