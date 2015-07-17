@@ -6,7 +6,7 @@
 # Soil model: SCM
 
 ### Setup ======================================================================
-rm(list=ls())
+# rm(list=ls())
 
 spinup      <- TRUE    # Should data be recylced for spinup run?
 eq.stop     <- FALSE   # Stop at equilibrium?
@@ -54,4 +54,4 @@ out <- Model(spinup, eq.stop, start, end, tsave, initial_state, parameters, litt
 #   )
 # })
 
-tail(out)
+tail(out, 1)
