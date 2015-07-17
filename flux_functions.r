@@ -14,7 +14,7 @@ F_litter <- function (litter_flux) { # the input of litter is prescribed; no cal
 
 # Decomposition flux
 F_decomp <- function (C, E, V, K) {
-  (V * C * E) / (K + C + E)
+  (V * E * C) / (K + C)
 }
 
 # Microbial C uptake
@@ -23,8 +23,8 @@ F_uptake <- function (SC, MC, V_U, K_U) {
 }
 
 # Microbe to enzyme
-F_mc.ec <- function (MC, E_P, Mm) {
-  (MC - (MC * Mm)) * E_P
+F_mc.ec <- function (MC, E_p, Mm) {
+  (MC - (MC * Mm)) * E_p
 }
 
 # Microbe to SC

@@ -10,7 +10,7 @@
 # Only 1 litter pool, no diffusion, no sorbtion, no immobile C, microbe implicit.
 ### ============================================================================
 
-Model <- function(eq.run, start, end, tsave, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(state, parameters)), {
     
@@ -25,7 +25,7 @@ Model <- function(eq.run, start, end, tsave, state, parameters, litter.data, for
     litter_pc       <- litter.data$litter_str # [mgC m^2] structural litter going to pc
     times_litter    <- litter.data[,1]        # time vector of the litter data
     
-    if(eq.run) {
+    if(spinup) {
       temp  <- rep(temp, length.out = end)
       litter_pc <- rep(litter_pc,  length.out = end)
       litter_sc <- rep(litter_sc,  length.out = end)
@@ -60,15 +60,15 @@ Model <- function(eq.run, start, end, tsave, state, parameters, litter.data, for
       }
       
       # Calculate all fluxes
-      F_sl.pc   <- F_litter(litter_pc[i])
+      F_sl.pc   <- litter_pc[i]
       F_ml.sc   <- F_litter(litter_sc[i])
       F_pc.sc   <- F_decomp(PC, EC, V_D[i], K_D[i])
       F_sc.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE[i])
       F_sc.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE[i]
-      F_mc.ec   <- F_mc.ec(MC, Mm, E_p)
-      F_mc.pc   <- F_mc.pc(MC, Mm, mcpc_f)
-      F_mc.sc   <- F_mc.sc(MC, Mm, mcpc_f)
-      F_ec.sc   <- F_ec.sc(EC, Em)
+      F_mc.ec   <- MC * E_p # F_mc.ec(MC, Mm, E_p)
+      F_mc.pc   <- MC * Mm * mcpc_f # F_mc.pc(MC, Mm, mcpc_f)
+      F_mc.sc   <- MC * Mm * (1 - mcpc_f) # F_mc.sc(MC, Mm, mcpc_f)
+      F_ec.sc   <- EC * Em # F_ec.sc(EC, Em)
       
       # Define the rate changes for each state variable
       dPC  <- F_sl.pc + F_mc.pc - F_pc.sc
@@ -88,8 +88,8 @@ Model <- function(eq.run, start, end, tsave, state, parameters, litter.data, for
       EC  <- ifelse(EC > 0, EC, 0)
       MC  <- ifelse(MC > 0, MC, stop("MC has reached a value of 0. This should not happen."))
       
-      # If spinup, stop at equilibirum
-      if (eq.run & (i * tunit / year) >= 10 & ((i * tunit / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
+      # If spinup and stop at equilibirum
+      if (spinup & eq.stop & (i * tunit / year) >= 10 & ((i * tunit / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
         if (CheckEquil(out[,2], i, eq.md, tsave, year)) {
           print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_step, i,". Value at equilibrium is ", PC, ".", sep=" "))
           setbreak <- TRUE
