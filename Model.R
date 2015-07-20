@@ -60,14 +60,14 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
       }
       
       # Calculate all fluxes
-      F_sl.pc   <- litter_pc[i]
+      F_sl.pc   <- F_litter(litter_pc[i])
       F_ml.sc   <- F_litter(litter_sc[i])
       F_pc.sc   <- F_decomp(PC, EC, V_D[i], K_D[i])
       F_sc.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE[i])
       F_sc.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE[i]
-      F_mc.ec   <- MC * E_p # F_mc.ec(MC, Mm, E_p)
-      F_mc.pc   <- MC * Mm * mcpc_f # F_mc.pc(MC, Mm, mcpc_f)
-      F_mc.sc   <- MC * Mm * (1 - mcpc_f) # F_mc.sc(MC, Mm, mcpc_f)
+      F_mc.ec   <- F_mc.ec(MC, E_p, Mm)
+      F_mc.pc   <- F_mc.pc(MC, Mm, mcpc_f)
+      F_mc.sc   <- F_mc.sc(MC, Mm, mcpc_f)
       F_ec.sc   <- F_ec.sc(EC, Em)
       
       # Define the rate changes for each state variable
