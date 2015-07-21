@@ -22,10 +22,12 @@ parameters <- c(
   K_U_ref  = 0.26     , # [mgC gSoil-1] Affinity parameter for microbial SC uptake (approx. Allison et al. 2010, Li at al. 2014)
   mcpc_f   = 0.5      , # [g g^-1] fraction of dead microbes going to SC (rest goes to PC)
   T_ref    = 293.15   , # [K] reference temperature
-  E_V.U    = 47       , # [kJ mol^-1]  Gibbs energy for V_U (Tang and Riley 2014)
-  E_V.D    = 47       , # [kJ mol^-1]  Gibbs energy for V_D (average of lignin and cellulose in Wang et al. 2013)
-  E_K.U    = 30       , # [kJ mol^-1]  Gibbs energy for K_U (Tang and Riley 2014)
-  E_K.D    = 30       , # [kJ mol^-1]  Gibbs energy for K_D (Tang and Riley 2014)
+  E_V.U    = 47       , # [kJ mol^-1] Gibbs energy for V_U (Tang and Riley 2014)
+  E_V.D    = 47       , # [kJ mol^-1] Gibbs energy for V_D (average of lignin and cellulose in Wang et al. 2013)
+  E_K.U    = 30       , # [kJ mol^-1] Gibbs energy for K_U (Tang and Riley 2014)
+  E_K.D    = 30       , # [kJ mol^-1] Gibbs energy for K_D (Tang and Riley 2014)
+  E_Mm     = 47       , # [kJ mol^-1] Gibbs energy for Mm (Hagerty et al. 2014)
+  E_Em     = 47       , # [kJ mol^-1] Gibbs energy for Em (Hagerty et al. 2014)
   CUE_ref  = 0.31     , # Carbon use efficieny (= microbial growth efficiency) (Allison et al. 2010)
   E_m      = 47       , # [kJ mol^-1]  Gibbs energy for Mm and Em (Haggerty et al. 2014 supplementary info)
   CUE_s    = -0.016     # CUE slope with temperature

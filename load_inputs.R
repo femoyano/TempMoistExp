@@ -13,7 +13,7 @@
 # forcing.data$day <- forcing.data$day * (day / tunit)
 # names(forcing.data)[1] <- t_unit
 
-forcing.data <- data.frame(hour=1, temp = 293.15)
+forcing.data <- data.frame(hour=1, temp = 298.15)
 
 
 # litter.data    <- read.csv("input_litter.csv") # litter input rates file

@@ -42,32 +42,33 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
     K_U <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K.U, R)
     V_D <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V.D, R)
     V_U <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V.U, R)
-    CUE <- CUE_s * (temp - T_ref) + CUE_ref
-    Mm  <- Mm_ref
+    CUE <- CUE_ref
+    Mm  <- Temp.Resp.Eq(Mm_ref, temp, T_ref, E_Mm, R)
     Em  <- Em_ref
     
     # Create matrix to hold output
-    out <- matrix(ncol = 1 + length(initial_state), nrow = floor(nt * tunit / tsave) + 1)
+    out <- matrix(ncol = 1 + length(initial_state), nrow = floor(nt * tunit / tsave))
     
     setbreak <- 0 # break flag for spinup runs
     
     for(i in 1:length(times)) {
-
+# browser()
       # Write out values at save time intervals
-      if(i == 1 | (i * tunit) %% (tsave) == 0) {
-        j <- i * tunit / tsave + 1
+#       browser()
+      if((i * tunit) %% (tsave) == 0) {
+        j <- i * tunit / tsave
         out[j,] <- c(times[i], PC, SC, EC, MC, CO2)
       }
-      
+
       # Calculate all fluxes
       F_sl.pc   <- F_litter(litter_pc[i])
       F_ml.sc   <- F_litter(litter_sc[i])
       F_pc.sc   <- F_decomp(PC, EC, V_D[i], K_D[i])
-      F_sc.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE[i])
-      F_sc.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE[i]
-      F_mc.ec   <- F_mc.ec(MC, E_p, Mm)
-      F_mc.pc   <- F_mc.pc(MC, Mm, mcpc_f)
-      F_mc.sc   <- F_mc.sc(MC, Mm, mcpc_f)
+      F_sc.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE)
+      F_sc.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE
+      F_mc.ec   <- F_mc.ec(MC, E_p, Mm[i])
+      F_mc.pc   <- F_mc.pc(MC, Mm[i], mcpc_f)
+      F_mc.sc   <- F_mc.sc(MC, Mm[i], mcpc_f)
       F_ec.sc   <- F_ec.sc(EC, Em)
       
       # Define the rate changes for each state variable
@@ -101,7 +102,7 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
     colnames(out) <- c("time", "PC", "SC", "EC", "MC", "CO2")
     
     out <- as.data.frame(out)
-    out <- out[1:(floor(i * tunit / tsave) + 1),]
+    out <- out[1:(floor(i * tunit / tsave)),]
     
   }) # end of with...
   
