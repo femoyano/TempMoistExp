@@ -47,7 +47,7 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
     Em  <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     # Create matrix to hold output
-    out <- matrix(ncol = 1 + length(initial_state), nrow = floor(nt * tunit / tsave))
+    out <- matrix(ncol = 1 + length(initial_state), nrow = floor(nt * tstep / tsave))
     
     setbreak <- 0 # break flag for spinup runs
     
@@ -55,8 +55,8 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
 # browser()
       # Write out values at save time intervals
 #       browser()
-      if((i * tunit) %% (tsave) == 0) {
-        j <- i * tunit / tsave
+      if((i * tstep) %% (tsave) == 0) {
+        j <- i * tstep / tsave
         out[j,] <- c(times[i], PC, SC, EC, MC, CO2)
       }
 
@@ -90,7 +90,7 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
       MC  <- ifelse(MC > 0, MC, stop("MC has reached a value of 0. This should not happen."))
       
       # If spinup and stop at equilibirum
-      if (spinup & eq.stop & (i * tunit / year) >= 10 & ((i * tunit / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
+      if (spinup & eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
         if (CheckEquil(out[,2], i, eq.md, tsave, year)) {
           print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_step, i,". Value at equilibrium is ", PC, ".", sep=" "))
           setbreak <- TRUE
@@ -102,7 +102,7 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
     colnames(out) <- c("time", "PC", "SC", "EC", "MC", "CO2")
     
     out <- as.data.frame(out)
-    out <- out[1:(floor(i * tunit / tsave)),]
+    out <- out[1:(floor(i * tstep / tsave)),]
     
   }) # end of with...
   

@@ -6,7 +6,7 @@ hour  <- 3600     # seconds in an hour
 #===============================================================================
 
 plot.time <- year
-out.agg <- aggregate(out, by=list(x=ceiling(out[,1]*tunit/plot.time)), FUN=mean)
+out.agg <- aggregate(out, by=list(x=ceiling(out[,1]*tstep/plot.time)), FUN=mean)
 
 plot(out.agg$PC) #/out.agg$PC[1]-1) * 100, ylim=c(-50,50), xlim=c(0,100), type="l")
 plot(out.agg$SC)

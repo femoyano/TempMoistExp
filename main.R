@@ -17,13 +17,13 @@ t_save      <- "year" # time unit at which to save output. Cannot be less than t
 
 
 ### Define time units ==========================================================
-# Warning! input data rates should have same time units as tunit
+# Warning! input data rates should have same time units as tstep
 year  <- 31536000 # seconds in a year
 month <- 2628000  # seconds in a month
 day   <- 86400    # seconds in a day
 hour  <- 3600     # seconds in an hour
 sec   <- 1        # seconds in a second!
-tunit <- get(t_step)      # model timestep: hour, day, month or year (or fraction e.g. hour/2)
+tstep <- get(t_step)      # model timestep: hour, day, month or year (or fraction e.g. hour/2)
 tsave <- get(t_save)      # output save times: hour, day, month or year (or fraction e.g. hour/2)
 
 
