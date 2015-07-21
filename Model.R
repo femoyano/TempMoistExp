@@ -44,7 +44,7 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
     V_U <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V.U, R)
     CUE <- CUE_ref
     Mm  <- Temp.Resp.Eq(Mm_ref, temp, T_ref, E_Mm, R)
-    Em  <- Em_ref
+    Em  <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     # Create matrix to hold output
     out <- matrix(ncol = 1 + length(initial_state), nrow = floor(nt * tunit / tsave))
@@ -69,7 +69,7 @@ Model <- function(spinup, eq.stop, start, end, tsave, state, parameters, litter.
       F_mc.ec   <- F_mc.ec(MC, E_p, Mm[i])
       F_mc.pc   <- F_mc.pc(MC, Mm[i], mcpc_f)
       F_mc.sc   <- F_mc.sc(MC, Mm[i], mcpc_f)
-      F_ec.sc   <- F_ec.sc(EC, Em)
+      F_ec.sc   <- F_ec.sc(EC, Em[i])
       
       # Define the rate changes for each state variable
       dPC  <- F_sl.pc + F_mc.pc - F_pc.sc
