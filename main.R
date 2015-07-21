@@ -42,10 +42,10 @@ source("Model.R")
 
 
 # Define model times: start and end
-start <- 1
-end   <- ifelse(spinup, t.max.spin, forcing.data$day[length(forcing.data[,1])])
+start <- ifelse(spinup, 1, forcing.data[1,1] )
+end   <- ifelse(spinup, t.max.spin, tail(forcing.data[,1], 1) )
 
-out <- Model(spinup, eq.stop, start, end, tsave, initial_state, parameters, litter.data, forcing.data)
+out <- Model(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, litter.data, forcing.data)
 
 # with(as.list(parameters), {
 #   print( # steady state value for PC
