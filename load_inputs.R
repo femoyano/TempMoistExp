@@ -15,7 +15,6 @@
 
 forcing.data <- data.frame(hour=1, temp = 288.15)
 
-
 # litter.data    <- read.csv("input_litter.csv") # litter input rates file
 # # convert time units 
 # litter.data$day <- litter.data$day * (day / tunit)
