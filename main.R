@@ -11,7 +11,7 @@
 spinup      <- TRUE    # Should data be recylced for spinup run?
 eq.stop     <- FALSE   # Stop at equilibrium?
 eq.md       <- 1       # maximum difference for equilibrium conditions [in mgC gSoil-1]. spinup run stops if difference is lower.
-t.max.spin  <- 500000  # maximum run time for spinup runs
+t.max.spin  <- 100000  # maximum run time for spinup runs
 t_step      <- "hour"  # model time step (as string): "hour", "day", "month" or "year"
 t_save      <- "year" # time unit at which to save output. Cannot be less than t_step
 
