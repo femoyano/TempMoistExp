@@ -13,7 +13,7 @@
 # forcing.data$day <- forcing.data$day * (day / tstep)
 # names(forcing.data)[1] <- t_step
 
-forcing.data <- data.frame(hour=1, temp = 283.15)
+forcing.data <- data.frame(hour=1, temp = 283.15, moist=0.40)
 
 # litter.data    <- read.csv("input_litter.csv") # litter input rates file
 # # convert time units 
