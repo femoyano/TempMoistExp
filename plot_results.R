@@ -9,14 +9,16 @@ plot.time <- month
 out.agg <- aggregate(out, by=list(x=ceiling(out[,1]*tstep/plot.time)), FUN=mean)
 
 plot(out.agg$PC) #/out.agg$PC[1]-1) * 100, ylim=c(-50,50), xlim=c(0,100), type="l")
-plot(out.agg$SC)
+plot(out.agg$SCb)
+plot(out.agg$SCm)
 plot(out.agg$MC)
-plot(out.agg$EC)
+plot(out.agg$ECb)
+plot(out.agg$ECm)
 plot(out.agg$CO2)
 
-# 
-# plot(model.out$PC)
-# plot(model.out$SC)
-# plot(model.out$MC)
-# plot(model.out$EC)
-# plot(model.out$CO2)
+# # 
+# plot(out$PC)
+# plot(out$SC)
+# plot(out$MC)
+# plot(out$EC)
+# plot(out$CO2)
