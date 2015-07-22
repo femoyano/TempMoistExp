@@ -42,6 +42,13 @@ F_ec.sc <- function (EC, Em) {
   EC * Em
 }
 
+# Diffusion flux
+F_scw.scm <- function (C1, C2, D_0, moist_s, dist, phi, Rth) {
+  if (moist_s <= Rth) return(0)
+  D <- D_0 * (phi - Rth)^1.5 * ((moist_s - Rth)/(phi - Rth))^2.5
+  D * (C1 - C2) / dist # dividing by moist for specific concentrations and multiplying again for total cancels moist out
+}
+
 # ==============================================================================
 # Temperature responses after to Tang and Riley 2014 (supplementary information)
 

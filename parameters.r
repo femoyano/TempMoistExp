@@ -42,7 +42,7 @@ parameters <- c(
   psi_fc   = 33      , # [kPa] Water potential at field capacity
   D_S0     = 8.1e-10 / sec * tstep  , # [m s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
   D_E0     = 8.1e-11 / sec * tstep  , # [m s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
-  delta    = 10^-4   , # [m] characteristic distance between substrate and microbes (Manzoni manus)
+  dist     = 10^-4   , # [m] characteristic distance between substrate and microbes (Manzoni manus)
   phi      = 0.5       # [m3 m^-3] Assumed pore space - Alternatively: obtain from land model  
 )
 

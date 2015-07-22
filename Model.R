@@ -10,7 +10,7 @@
 # Only 1 litter pool, no diffusion, no sorbtion, no immobile C, microbe implicit.
 ### ============================================================================
 
-Model <- function(spinup, eq.stop, start, end, tstep, tsave, state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(state, parameters)), {
     
@@ -19,17 +19,17 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, state, parameters, 
     nt    <- length(times)
     
     temp            <- forcing.data$temp      # [K] soil temperature
-    moist           <- forcing.data$moist     # [m3 m-3] soil volumetric moisture
+    moist_s         <- forcing.data$moist     # [m3 m-3] specific soil volumetric moisture
     times_forcing   <- forcing.data[,1]       # [t_step] time vector of the forcing data
     litter_sc       <- litter.data$litter_met # [mgC m^2] metabolic litter going to sc
     litter_pc       <- litter.data$litter_str # [mgC m^2] structural litter going to pc
     times_litter    <- litter.data[,1]        # time vector of the litter data
 
     # Interpolate input variables
-    litter_pc <- approx(times_litter, litter_pc, xout=times, rule=2)$y  # [mgC]
-    litter_sc <- approx(times_litter, litter_sc, xout=times, rule=2)$y  # [mgC]
-    temp      <- approx(times_forcing, temp, xout=times, rule=2)$y      # [K]
-    moist     <- approx(times_forcing, moist, xout=times, rule=2)$y     # [m3 m-3]
+    litter_pc <- approx(times_litter, litter_pc, xout=times, rule=2)$y
+    litter_sc <- approx(times_litter, litter_sc, xout=times, rule=2)$y
+    temp      <- approx(times_forcing, temp, xout=times, rule=2)$y
+    moist_s   <- approx(times_forcing, moist, xout=times, rule=2)$y
     
     # If spinup, repeat input data
     if(spinup) {
@@ -38,6 +38,16 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, state, parameters, 
       litter_pc <- rep(litter_pc,  length.out = end)
       litter_sc <- rep(litter_sc,  length.out = end)
     }
+    
+    # Calculate spatially dependent variables
+    moist     <- moist_s * depth                    # [m^3] total water content
+    moist_d   <- c(0,diff(moist))                   # [m^3] change in water content relative to previous time step
+    b         <- 2.91 + 15.9 * clay                 # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
+    psi_sat   <- exp(6.5 - 1.3 * sand) / 1000       # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
+    Rth       <- phi * (psi_sat / psi_Rth)^(1 / b)  # [kPa] Threshold water content for mic. respiration (water retention formula from Campbell 1984)
+    moist_Rth <- Rth * depth                        # [m3 m-3] Total moisture in layer at Rth
+    fc        <- phi * (psi_sat / psi_fc)^(1 / b)   # [kPa] Field capacity water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+    moist_fc  <- fc * depth                         # [m3 m-3] Total moisture in layer at fc
     
     # Calculate temporally changing variables
     K_D <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
@@ -54,44 +64,53 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, state, parameters, 
     setbreak <- 0 # break flag for spinup runs
     
     for(i in 1:length(times)) {
-# browser()
+
       # Write out values at save time intervals
-#       browser()
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], PC, SC, EC, MC, CO2)
+        out[j,] <- c(times[i], PC, SCb, SCm, ECb, ECm, MC, CO2)
       }
 
       # Calculate all fluxes
-      F_sl.pc   <- F_litter(litter_pc[i])
-      F_ml.sc   <- F_litter(litter_sc[i])
-      F_pc.sc   <- F_decomp(PC, EC, V_D[i], K_D[i])
-      F_sc.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE)
-      F_sc.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE
-      F_mc.ec   <- F_mc.ec(MC, E_p, Mm[i])
-      F_mc.pc   <- F_mc.pc(MC, Mm[i], mcpc_f)
-      F_mc.sc   <- F_mc.sc(MC, Mm[i], mcpc_f)
-      F_ec.sc   <- F_ec.sc(EC, Em[i])
+      F_sl.pc    <- F_litter(litter_pc[i])
+      F_ml.scb   <- F_litter(litter_sc[i])
+      F_pc.scb   <- F_decomp(PC, EC, V_D[i], K_D[i])
+      F_scm.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE)
+      F_scm.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE
+      F_mc.ecm   <- F_mc.ec(MC, E_p, Mm[i])
+      F_mc.pc    <- F_mc.pc(MC, Mm[i], mcpc_f)
+      F_mc.scb   <- F_mc.sc(MC, Mm[i], mcpc_f)
+      F_ecb.scb  <- F_ec.sc(EC, Em[i])
+      F_scb.scm  <- F_scb.scm(SCb, SCm, D_S0, moist_s[i], dist, phi, Rth)
+      F_ecm.ecb  <- F_ecm.ecb(ECm, ECb, D_E0, moist_s[i], dist, phi, Rth)
       
       # Define the rate changes for each state variable
-      dPC  <- F_sl.pc + F_mc.pc - F_pc.sc
-      dSC  <- F_ml.sc + F_pc.sc + F_ec.sc + F_mc.sc - F_sc.co2 - F_sc.mc
-      dEC  <- F_mc.ec - F_ec.sc
+      dPC  <- F_sl.pc + F_mc.pc - F_pc.scb
+      dSCb <- F_ml.scb + F_pc.scb + F_ecb.scb + F_mc.scb - F_scb.scm
+      dECb <- F_ecm.ecb - F_ec.scb
+      dSCm <- F_scb.sbm - F_scm.co2 - F_scm.mc
+      dECm <- F_mc.ecm - F_ecm.ecb
       dMC  <- F_sc.mc - F_mc.ec - F_mc.pc - F_mc.sc
       dCO2 <- F_sc.co2
 
-      PC  <- PC + dPC
-      SC  <- SC + dSC
-      EC  <- EC + dEC
-      MC  <- MC + dMC
+      # Clalculate the new pool size
+      PC  <- PC  + dPC
+      SCb <- SCb + dSCb
+      SCm <- SCm + dSCm
+      ECb <- ECb + dECb
+      ECm <- ECm + dECm
+      MC  <- MC  + dMC
       CO2 <- CO2 + dCO2
 
+      # This section limites the flux to the size of the pool itself, avoiding negative values. Should not be necessary when using DE solver.
       PC  <- ifelse(PC > 0, PC, 0)
-      SC  <- ifelse(SC > 0, SC, 0)
-      EC  <- ifelse(EC > 0, EC, 0)
+      SCb <- ifelse(SCb > 0, SCb, 0)
+      SCm <- ifelse(SCm > 0, SCm, 0)
+      ECb <- ifelse(ECb > 0, ECb, 0)
+      ECm <- ifelse(ECm > 0, ECm, 0)
       MC  <- ifelse(MC > 0, MC, stop("MC has reached a value of 0. This should not happen."))
       
-      # If spinup and stop at equilibirum
+      # Check for stop in case of spinup and stop at equilibirum are set
       if (spinup & eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
         if (CheckEquil(out[,2], i, eq.md, tsave, year)) {
           print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_step, i,". Value at equilibrium is ", PC, ".", sep=" "))
@@ -101,7 +120,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, state, parameters, 
       if (setbreak) break
     } # end for loop
     
-    colnames(out) <- c("time", "PC", "SC", "EC", "MC", "CO2")
+    colnames(out) <- c("time", "PC", "SCb", "SCm", "ECb", "ECm", "MC", "CO2")
     
     out <- as.data.frame(out)
     out <- out[1:(floor(i * tstep / tsave)),]
