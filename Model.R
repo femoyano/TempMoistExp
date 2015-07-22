@@ -12,24 +12,25 @@
 
 Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
-  with(as.list(c(state, parameters)), {
+  with(as.list(c(initial_state, parameters)), {
     
     # Create model time step vector
     times <- seq(start, end)
     nt    <- length(times)
     
-    temp            <- forcing.data$temp      # [K] soil temperature
-    moist_s         <- forcing.data$moist     # [m3 m-3] specific soil volumetric moisture
-    times_forcing   <- forcing.data[,1]       # [t_step] time vector of the forcing data
-    litter_sc       <- litter.data$litter_met # [mgC m^2] metabolic litter going to sc
-    litter_pc       <- litter.data$litter_str # [mgC m^2] structural litter going to pc
-    times_litter    <- litter.data[,1]        # time vector of the litter data
+    temp           <- forcing.data$temp      # [K] soil temperature
+    moist          <- forcing.data$moist     # [m3 m-3] specific soil volumetric moisture
+    times_forcing  <- forcing.data[,1]       # [t_step] time vector of the forcing data
+    litter_sc      <- litter.data$litter_met # [mgC m^2] metabolic litter going to sc
+    litter_pc      <- litter.data$litter_str # [mgC m^2] structural litter going to pc
+    times_litter   <- litter.data[,1]        # time vector of the litter data
 
+    browser()
     # Interpolate input variables
     litter_pc <- approx(times_litter, litter_pc, xout=times, rule=2)$y
     litter_sc <- approx(times_litter, litter_sc, xout=times, rule=2)$y
     temp      <- approx(times_forcing, temp, xout=times, rule=2)$y
-    moist_s   <- approx(times_forcing, moist, xout=times, rule=2)$y
+    moist   <- approx(times_forcing, moist, xout=times, rule=2)$y
     
     # If spinup, repeat input data
     if(spinup) {
@@ -40,14 +41,14 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     }
     
     # Calculate spatially dependent variables
-    moist     <- moist_s * depth                    # [m^3] total water content
-    moist_d   <- c(0,diff(moist))                   # [m^3] change in water content relative to previous time step
+    moist_t   <- moist * depth                      # [m^3] total water content
+    moist_d   <- c(0,diff(moist_t))                 # [m^3] change in water content relative to previous time step
     b         <- 2.91 + 15.9 * clay                 # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
     psi_sat   <- exp(6.5 - 1.3 * sand) / 1000       # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
-    Rth       <- phi * (psi_sat / psi_Rth)^(1 / b)  # [kPa] Threshold water content for mic. respiration (water retention formula from Campbell 1984)
-    moist_Rth <- Rth * depth                        # [m3 m-3] Total moisture in layer at Rth
-    fc        <- phi * (psi_sat / psi_fc)^(1 / b)   # [kPa] Field capacity water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
-    moist_fc  <- fc * depth                         # [m3 m-3] Total moisture in layer at fc
+    Rth       <- phi * (psi_sat / psi_Rth)^(1 / b)  # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
+#     Rth_t     <- Rth * depth                        # [m3] Total moisture in layer at Rth
+#     fc        <- phi * (psi_sat / psi_fc)^(1 / b)   # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+#     fc_t      <- fc * depth                         # [m3] Total moisture in layer at fc
     
     # Calculate temporally changing variables
     K_D <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
@@ -81,8 +82,8 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       F_mc.pc    <- F_mc.pc(MC, Mm[i], mcpc_f)
       F_mc.scb   <- F_mc.sc(MC, Mm[i], mcpc_f)
       F_ecb.scb  <- F_ec.sc(EC, Em[i])
-      F_scb.scm  <- F_scb.scm(SCb, SCm, D_S0, moist_s[i], dist, phi, Rth)
-      F_ecm.ecb  <- F_ecm.ecb(ECm, ECb, D_E0, moist_s[i], dist, phi, Rth)
+      F_scb.scm  <- F_scb.scm(SCb, SCm, D_S0, moist[i], dist, phi, Rth)
+      F_ecm.ecb  <- F_ecm.ecb(ECm, ECb, D_E0, moist[i], dist, phi, Rth)
       
       # Define the rate changes for each state variable
       dPC  <- F_sl.pc + F_mc.pc - F_pc.scb

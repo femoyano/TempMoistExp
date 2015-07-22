@@ -18,7 +18,7 @@ names(forcing.data)[1] <- t_step
 # litter.data    <- read.csv("input_litter.csv") # litter input rates file
 litter.data <- data.frame(hour=1, litter_str = 0.00015, litter_met = 0.00001)
 litter.data[, 1] <- litter.data[, 1] * (data.time / tstep) # convert time units 
-names(litter.data)[1] <- t_unit
+names(litter.data)[1] <- t_step
 litter.data[,-1] <- litter.data[,-1] / data.time * tstep # convert litter input rates to the model time step rate
 
 
