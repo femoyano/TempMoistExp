@@ -11,12 +11,12 @@
 data.time <- hour
 
 # forcing.data   <- read.csv("input_forcing.csv") # forcing data file
-forcing.data <- data.frame(hour=1, temp = 283.15, moist=0.40)
+forcing.data <- data.frame(hour=c(1,2), temp = c(293.15, 293.15), moist=c(0.40, 0.40))
 forcing.data[, 1] <- forcing.data[, 1] * (data.time / tstep) # convert time units
 names(forcing.data)[1] <- t_step
 
 # litter.data    <- read.csv("input_litter.csv") # litter input rates file
-litter.data <- data.frame(hour=1, litter_str = 0.00015, litter_met = 0.00001)
+litter.data <- data.frame(hour=c(1,2), litter_str = c(0.00015, 0.00015), litter_met = c(0.00001, 0.00001))
 litter.data[, 1] <- litter.data[, 1] * (data.time / tstep) # convert time units 
 names(litter.data)[1] <- t_step
 litter.data[,-1] <- litter.data[,-1] / data.time * tstep # convert litter input rates to the model time step rate

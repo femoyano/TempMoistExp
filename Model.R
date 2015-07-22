@@ -25,12 +25,11 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     litter_pc      <- litter.data$litter_str # [mgC m^2] structural litter going to pc
     times_litter   <- litter.data[,1]        # time vector of the litter data
 
-    browser()
     # Interpolate input variables
     litter_pc <- approx(times_litter, litter_pc, xout=times, rule=2)$y
     litter_sc <- approx(times_litter, litter_sc, xout=times, rule=2)$y
     temp      <- approx(times_forcing, temp, xout=times, rule=2)$y
-    moist   <- approx(times_forcing, moist, xout=times, rule=2)$y
+    moist     <- approx(times_forcing, moist, xout=times, rule=2)$y
     
     # If spinup, repeat input data
     if(spinup) {
@@ -75,24 +74,24 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       # Calculate all fluxes
       F_sl.pc    <- F_litter(litter_pc[i])
       F_ml.scb   <- F_litter(litter_sc[i])
-      F_pc.scb   <- F_decomp(PC, EC, V_D[i], K_D[i])
-      F_scm.co2  <- F_uptake(SC, MC, V_U[i], K_U[i]) * (1-CUE)
-      F_scm.mc   <- F_uptake(SC, MC, V_U[i], K_U[i]) * CUE
-      F_mc.ecm   <- F_mc.ec(MC, E_p, Mm[i])
+      F_pc.scb   <- F_decomp(PC, ECb, V_D[i], K_D[i])
+      F_scm.co2  <- F_uptake(SCm, MC, V_U[i], K_U[i]) * (1-CUE)
+      F_scm.mc   <- F_uptake(SCm, MC, V_U[i], K_U[i]) * CUE
+      F_mc.ecm   <- F_mc.ecm(MC, E_p, Mm[i])
       F_mc.pc    <- F_mc.pc(MC, Mm[i], mcpc_f)
-      F_mc.scb   <- F_mc.sc(MC, Mm[i], mcpc_f)
-      F_ecb.scb  <- F_ec.sc(EC, Em[i])
-      F_scb.scm  <- F_scb.scm(SCb, SCm, D_S0, moist[i], dist, phi, Rth)
-      F_ecm.ecb  <- F_ecm.ecb(ECm, ECb, D_E0, moist[i], dist, phi, Rth)
+      F_mc.scb   <- F_mc.scb(MC, Mm[i], mcpc_f)
+      F_ecb.scb  <- F_ecb.scb(ECb, Em[i])
+      F_scb.scm  <- F_diffusion(SCb, SCm, D_S0, moist[i], dist, phi, Rth)
+      F_ecm.ecb  <- F_diffusion(ECm, ECb, D_E0, moist[i], dist, phi, Rth)
       
       # Define the rate changes for each state variable
       dPC  <- F_sl.pc + F_mc.pc - F_pc.scb
       dSCb <- F_ml.scb + F_pc.scb + F_ecb.scb + F_mc.scb - F_scb.scm
-      dECb <- F_ecm.ecb - F_ec.scb
-      dSCm <- F_scb.sbm - F_scm.co2 - F_scm.mc
+      dECb <- F_ecm.ecb - F_ecb.scb
+      dSCm <- F_scb.scm - F_scm.co2 - F_scm.mc
       dECm <- F_mc.ecm - F_ecm.ecb
-      dMC  <- F_sc.mc - F_mc.ec - F_mc.pc - F_mc.sc
-      dCO2 <- F_sc.co2
+      dMC  <- F_scm.mc - F_mc.ecm - F_mc.pc - F_mc.scb
+      dCO2 <- F_scm.co2
 
       # Clalculate the new pool size
       PC  <- PC  + dPC

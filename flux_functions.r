@@ -23,12 +23,12 @@ F_uptake <- function (SC, MC, V_U, K_U) {
 }
 
 # Microbe to enzyme
-F_mc.ec <- function (MC, E_p, Mm) {
+F_mc.ecm <- function (MC, E_p, Mm) {
   (MC - (MC * Mm)) * E_p
 }
 
 # Microbe to SC
-F_mc.sc <- function (MC, Mm, mcpc_f) {
+F_mc.scb <- function (MC, Mm, mcpc_f) {
   MC * Mm * (1- mcpc_f)
 }
 
@@ -38,12 +38,12 @@ F_mc.pc <- function (MC, Mm, mcpc_f) {
 }
 
 # Enzymes decay
-F_ec.sc <- function (EC, Em) {
+F_ecb.scb <- function (EC, Em) {
   EC * Em
 }
 
 # Diffusion flux
-F_scw.scm <- function (C1, C2, D_0, moist, dist, phi, Rth) {
+F_diffusion <- function (C1, C2, D_0, moist, dist, phi, Rth) {
   if (moist <= Rth) return(0)
   D <- D_0 * (phi - Rth)^1.5 * ((moist - Rth)/(phi - Rth))^2.5
   D * (C1 - C2) / dist # dividing by moist for specific concentrations and multiplying again for total cancels moist out

@@ -6,7 +6,7 @@
 # Soil model: SCM
 
 ### Setup ======================================================================
-# rm(list=ls())
+rm(list=ls())
 
 spinup      <- TRUE    # Spinup run? Data will be recylced.
 eq.stop     <- FALSE   # Stop at equilibrium?
