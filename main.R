@@ -11,15 +11,15 @@ rm(list=ls())
 spinup      <- TRUE    # Spinup run? Data will be recylced.
 eq.stop     <- FALSE   # Stop at equilibrium?
 eq.md       <- 1       # maximum difference for equilibrium conditions [in mgC gSoil-1]. spinup run stops if difference is lower.
-t.max.spin  <- 50000   # maximum run time for spinup runs (in t_step units)
-t_step      <- "day"   # model time step (as string): "hour", "day", "month" or "year"
+t.max.spin  <- 100000   # maximum run time for spinup runs (in t_step units)
+t_step      <- "hour"   # model time step (as string): "hour", "day", "month" or "year"
 t_save      <- "year"  # time unit at which to save output. Cannot be less than t_step
 
 
 ### Define time units ==========================================================
 # Warning! input data rates should have same time units as tstep
-year  <- 31536000 # seconds in a year
-month <- 2628000  # seconds in a month
+year  <- 31104000 # seconds in a year
+month <- 2592000  # seconds in a month
 day   <- 86400    # seconds in a day
 hour  <- 3600     # seconds in an hour
 sec   <- 1        # seconds in a second!
