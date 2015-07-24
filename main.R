@@ -11,8 +11,8 @@ rm(list=ls())
 spinup      <- TRUE    # Spinup run? Data will be recylced.
 eq.stop     <- FALSE   # Stop at equilibrium?
 eq.md       <- 1       # maximum difference for equilibrium conditions [in mgC gSoil-1]. spinup run stops if difference is lower.
-t.max.spin  <- 100000   # maximum run time for spinup runs (in t_step units)
-t_step      <- "hour"   # model time step (as string): "hour", "day", "month" or "year"
+t.max.spin  <- 100000  # maximum run time for spinup runs (in t_step units)
+t_step      <- "hour"  # model time step (as string). Keep "hour" for correct equilibrium values
 t_save      <- "year"  # time unit at which to save output. Cannot be less than t_step
 
 
@@ -40,18 +40,18 @@ source("parameters.r")
 source("initial_state.r")          # Loads initial state variable values
 source("Model.R")
 
-
 # Define model times: start and end
 start <- ifelse(spinup, 1, forcing.data[1,1] )
 end   <- ifelse(spinup, t.max.spin, tail(forcing.data[,1], 1) )
 
 out <- Model(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, litter.data, forcing.data)
 
+# steady state value for PC
 # with(as.list(parameters), {
-#   print( # steady state value for PC
+#   print( 
 #     -Em_ref * K_D_ref * (litter.data$litter_str[1] * (Mm_ref * (1 + CUE_ref * (mcpc_f - 1)) + E_p * (1 - CUE_ref)) + CUE_ref * litter.data$litter_met[1] * mcpc_f * Mm_ref) / 
 #     (litter.data$litter_str[1] * (Mm_ref * (Em_ref * (1 + CUE_ref * (mcpc_f - 1))) + E_p * (Em_ref * (1 - CUE_ref) - CUE_ref * V_D_ref)) + CUE_ref * litter.data$litter_met[1] * (mcpc_f * Mm_ref * Em_ref - E_p * V_D_ref))
 #   )
 # })
 
-tail(out, 1)
+print(tail(out, 1))
