@@ -10,12 +10,6 @@ parameters <- c(
   ### Known Constants ====
   R   = 0.008314                  ,  # [kJ K-1 mol-1] gas constant
   
-  ### Spatial Variables
-  clay   =  0.30  , # [g g^-1] clay fraction values 
-  sand   =  0.30  , # [g g^-1] sand fraction values 
-  silt   =  0.40  , # [g g^-1] silt fraction values 
-  depth  =  0.30  , # [m] soil depth
-  
   ### Time Dependent Parameters
   Em_ref  = 0.001 / hour * tstep    , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   Mm_ref  = 0.00028 / hour * tstep   , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
@@ -42,7 +36,6 @@ parameters <- c(
   psi_fc   = 33      , # [kPa] Water potential at field capacity
   D_S0     = 8.1e-10 / sec * tstep  , # [m s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
   D_E0     = 8.1e-11 / sec * tstep  , # [m s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
-  dist     = 10^-4   , # [m] characteristic distance between substrate and microbes (Manzoni manus)
-  phi      = 0.5       # [m3 m^-3] Assumed pore space - Alternatively: obtain from land model  
+  dist     = 10^-4     # [m] characteristic distance between substrate and microbes (Manzoni manus)
 )
 
