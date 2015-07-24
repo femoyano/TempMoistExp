@@ -46,12 +46,4 @@ end   <- ifelse(spinup, t.max.spin, tail(forcing.data[,1], 1) )
 
 out <- Model(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, litter.data, forcing.data)
 
-# steady state value for PC
-# with(as.list(parameters), {
-#   print( 
-#     -Em_ref * K_D_ref * (litter.data$litter_str[1] * (Mm_ref * (1 + CUE_ref * (mcpc_f - 1)) + E_p * (1 - CUE_ref)) + CUE_ref * litter.data$litter_met[1] * mcpc_f * Mm_ref) / 
-#     (litter.data$litter_str[1] * (Mm_ref * (Em_ref * (1 + CUE_ref * (mcpc_f - 1))) + E_p * (Em_ref * (1 - CUE_ref) - CUE_ref * V_D_ref)) + CUE_ref * litter.data$litter_met[1] * (mcpc_f * Mm_ref * Em_ref - E_p * V_D_ref))
-#   )
-# })
-
 print(tail(out, 1))
