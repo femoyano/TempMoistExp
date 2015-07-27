@@ -74,9 +74,9 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       # Calculate all fluxes
       F_sl.pc    <- F_litter(litter_pc[i])
       F_ml.scb   <- F_litter(litter_sc[i])
-      F_pc.scb   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist_t)
-      F_scm.co2  <- F_uptake(SCm, MC, V_U[i], K_U[i], moist_t) * (1-CUE)
-      F_scm.mc   <- F_uptake(SCm, MC, V_U[i], K_U[i], moist_t) * CUE
+      F_pc.scb   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist_t[i])
+      F_scm.co2  <- F_uptake(SCm, MC, V_U[i], K_U[i], moist_t[i]) * (1-CUE)
+      F_scm.mc   <- F_uptake(SCm, MC, V_U[i], K_U[i], moist_t[i]) * CUE
       F_mc.ecm   <- F_mc.ecm(MC, E_p, Mm[i])
       F_mc.pc    <- F_mc.pc(MC, Mm[i], mcpc_f)
       F_mc.scb   <- F_mc.scb(MC, Mm[i], mcpc_f)
