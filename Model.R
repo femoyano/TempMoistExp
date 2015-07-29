@@ -41,12 +41,12 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     
     # Calculate spatially dependent variables
     moist_t   <- moist * depth                      # [m^3] total water content
-    moist_d   <- c(0,diff(moist_t))                 # [m^3] change in water content relative to previous time step
+    moist_d   <- c(0, diff(moist_t))                # [m^3] change in water content relative to previous time step
     b         <- 2.91 + 15.9 * clay                 # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
     psi_sat   <- exp(6.5 - 1.3 * sand) / 1000       # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
-    Rth       <- phi * (psi_sat / psi_Rth)^(1 / b)  # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
+    Rth       <- ps * (psi_sat / psi_Rth)^(1 / b)  # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
 #     Rth_t     <- Rth * depth                        # [m3] Total moisture in layer at Rth
-#     fc        <- phi * (psi_sat / psi_fc)^(1 / b)   # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+#     fc        <- ps * (psi_sat / psi_fc)^(1 / b)   # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
 #     fc_t      <- fc * depth                         # [m3] Total moisture in layer at fc
     
     # Calculate temporally changing variables
@@ -74,15 +74,15 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       # Calculate all fluxes
       F_sl.pc    <- F_litter(litter_pc[i])
       F_ml.scb   <- F_litter(litter_sc[i])
-      F_pc.scb   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist_t[i])
-      F_scm.co2  <- F_uptake(SCm, MC, V_U[i], K_U[i], moist_t[i]) * (1-CUE)
-      F_scm.mc   <- F_uptake(SCm, MC, V_U[i], K_U[i], moist_t[i]) * CUE
+      F_pc.scb   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist[i], depth)
+      F_scm.co2  <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], depth) * (1-CUE)
+      F_scm.mc   <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], depth) * CUE
       F_mc.ecm   <- F_mc.ecm(MC, E_p, Mm[i])
       F_mc.pc    <- F_mc.pc(MC, Mm[i], mcpc_f)
       F_mc.scb   <- F_mc.scb(MC, Mm[i], mcpc_f)
       F_ecb.scb  <- F_ecb.scb(ECb, Em[i])
-      F_scb.scm  <- F_diffusion(SCb, SCm, D_S0, moist[i], dist, phi, Rth)
-      F_ecm.ecb  <- F_diffusion(ECm, ECb, D_E0, moist[i], dist, phi, Rth)
+      F_scb.scm  <- F_diffusion(SCb, SCm, D_S0, moist[i], dist, ps, Rth, depth)
+      F_ecm.ecb  <- F_diffusion(ECm, ECb, D_E0, moist[i], dist, ps, Rth, depth)
       
       # Define the rate changes for each state variable
       dPC  <- F_sl.pc + F_mc.pc - F_pc.scb

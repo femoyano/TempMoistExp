@@ -2,8 +2,9 @@
 
 # Documentation
 # Note: chemical reactions occur in the water phase and are calulated per cm^-3 water
-# so C pools are  divided by water times cm^3 in 1m^3 water.
-# content to obtain concentrations, then rates are multiplied by water content.
+# so soluble C pools are divided by relative water content to obtain 
+# concentrations. Total flux is obtained by then multiplying by the volume
+# where the reaction occurs.
 
 # Functions calculating the fluxes of C.
 
@@ -13,17 +14,17 @@ F_litter <- function (litter_flux) { # the input of litter is prescribed; no cal
 }
 
 # Decomposition flux
-F_decomp <- function (C, E, V, K, moist_t) {
-  C <- C / moist_t
-  E <- E / moist_t
-  (V * E * C) / (K + C) * moist_t
+F_decomp <- function (C, E, V, K, moist, depth) {
+  C <- C / depth # * moist # to test moist here
+  E <- E / depth #(moist * depth)
+  (V * E * C) / (K + C) * depth
 }
 
 # Microbial C uptake
-F_uptake <- function (C, M, V_U, K_U, moist_t) {
-  C <- C / moist_t
-  M <- M / moist_t
-  (V_U * C * M) / (K_U + C) * moist_t
+F_uptake <- function (C, M, V, K, moist, depth) {
+  C <- C / depth #(moist * depth)
+  M <- M / depth #(moist * depth)
+  (V * C * M) / (K + C) * depth #(moist * depth)
 }
 
 # Microbe to enzyme
@@ -47,10 +48,12 @@ F_ecb.scb <- function (EC, Em) {
 }
 
 # Diffusion flux
+# Here dividing by moist and depth for specific concentrations and multiplying 
+# again for total cancels out, so they are left out.
 F_diffusion <- function (C1, C2, D_0, moist, dist, phi, Rth) {
   if (moist <= Rth) return(0)
   D <- D_0 * (phi - Rth)^1.5 * ((moist - Rth)/(phi - Rth))^2.5
-  D * (C1 - C2) / dist # dividing by moist for specific concentrations and multiplying again for total cancels moist out
+  D * (C1 - C2) / dist 
 }
 
 # ==============================================================================

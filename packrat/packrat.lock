@@ -8,6 +8,11 @@ Source: CRAN
 Version: 1.11
 Hash: cfb223ea04cc3ed6c5a4b72c96b24efe
 
+Package: gtools
+Source: CRAN
+Version: 3.5.0
+Hash: 250a386e3d68eeba4ec6eb057721be6a
+
 Package: packrat
 Source: github
 Version: 0.4.1.8

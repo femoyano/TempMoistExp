@@ -5,11 +5,11 @@
 # Needs to be a named vector for using ode
 
 initial_state <- c(
-  PC  = 37.8     , # [gC] labile carbon (array: point x layer)
-  SCb  = 0.026   , # [gC] soluble carbon in bulk (array: point x layer)
-  SCm  = 0.0     , # [gC] soluble carbon at microbe (array: point x layer)
-  ECb  = 0.0014  , # [mgC] enzymes in bulk (array: point x layer)
-  ECm  = 0.00    , # [mgC] enzymes at microbe (array: point x layer)
-  MC  = 0.25     , # [mgC] microbial carbon (array: point x layer)
-  CO2 = 0 
+  PC  = 15000   , # [gC cm-3] labile carbon (array: point x layer)
+  SCb = 200    , # [gC cm-3] soluble carbon in bulk (array: point x layer)
+  SCm = 10   , # [gC cm-3] soluble carbon at microbe (array: point x layer)
+  ECb = 0.8   , # [gC cm-3] enzymes in bulk (array: point x layer)
+  ECm = 12     , # [gC cm-3] enzymes at microbe (array: point x layer)
+  MC  = 150    , # [gC cm-3] microbial carbon (array: point x layer)
+  CO2 = 0          # [gC] microbial carbon (array: point x layer)
 )
