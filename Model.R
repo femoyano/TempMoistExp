@@ -45,6 +45,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     psi_sat   <- exp(6.5 - 1.3 * sand) / 1000       # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
     Rth       <- ps * (psi_sat / psi_Rth)^(1 / b)   # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
     fc        <- ps * (psi_sat / psi_fc)^(1 / b)    # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+    M         <- M_spec * depth * dens_min * (1 - phi)  # [gC] Total C-equivalent mineral surface for sorption
     
     # Calculate temporally changing variables
     K_D <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
