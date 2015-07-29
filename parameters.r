@@ -33,6 +33,8 @@ parameters <- c(
   E_m      = 47       , # [kJ mol^-1]  Gibbs energy for Mm and Em (Haggerty et al. 2014 supplementary info)
   CUE_s    = -0.016   , # CUE slope with temperature
   cm3      = 1000000  , # cubic centimeters in a cubic meter
+  M_spec   = 0.0017  , # [gC gSoil^-1] Specific maximum mineral surface capacity for sorption (Mayes et al. 2012)
+  dens_min = 2.7     , # [g cm^-3] Assumed mineral particle density
   
   psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   psi_fc   = 33      , # [kPa] Water potential at field capacity
