@@ -14,17 +14,17 @@ F_litter <- function (litter_flux) { # the input of litter is prescribed; no cal
 }
 
 # Decomposition flux
-F_decomp <- function (C, E, V, K, moist, depth) {
-  C <- C / depth # * moist # to test moist here
-  E <- E / (moist * depth) # depth
-  (V * E * C) / (K + C) * depth
+F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+  PC <- PC / depth * min(1, moist / fc) # scaled with max at fc
+  EC <- EC / (moist * depth) # concetration in water phase
+  (V * EC * PC) / (K + PC) * depth
 }
 
 # Microbial C uptake
-F_uptake <- function (C, M, V, K, moist, depth) {
-  C <- C / (moist * depth)
-  M <- M / (moist * depth)
-  (V * C * M) / (K + C) * (moist * depth)
+F_uptake <- function (SC, MC, V, K, moist, fc, depth) {
+  SC <- SC / (moist * depth) # concetration in water phase
+  MC <- MC / depth * min(1, moist / fc) # scaled with max at fc
+  (V * SC * MC) / (K + SC) * (moist * depth)
 }
 
 # Microbe to enzyme
