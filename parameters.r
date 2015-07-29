@@ -21,6 +21,7 @@ parameters <- c(
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
   K_D_ref  = 337500   , # [gC m-3] Affinity parameter for PC decomp. (Li at al. 2014, AWB model => 250 mg gSoil-1)
   K_U_ref  = 351      , # [gC m-3] Affinity parameter for microbial SC uptake (approx. Allison et al. 2010, Li at al. 2014 => 0.26 mg gSoil-1)
+  K_S_ref  = 
   mcpc_f   = 0.5      , # [g g^-1] fraction of dead microbes going to SC (rest goes to PC)
   T_ref    = 293.15   , # [K] reference temperature
   E_V.U    = 47       , # [kJ mol^-1] Gibbs energy for V_U (Tang and Riley 2014)
@@ -33,7 +34,6 @@ parameters <- c(
   E_m      = 47       , # [kJ mol^-1]  Gibbs energy for Mm and Em (Haggerty et al. 2014 supplementary info)
   CUE_s    = -0.016   , # CUE slope with temperature
   cm3      = 1000000  , # cubic centimeters in a cubic meter
-  M_spec   = 0.0017  , # [gC gSoil^-1] Specific maximum mineral surface capacity for sorption (Mayes et al. 2012)
   dens_min = 2.7     , # [g cm^-3] Assumed mineral particle density
   
   psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
