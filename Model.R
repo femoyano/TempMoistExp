@@ -81,8 +81,8 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       F_mc.pc    <- F_mc.pc(MC, Mm[i], mcpc_f)
       F_mc.scb   <- F_mc.scb(MC, Mm[i], mcpc_f)
       F_ecb.scb  <- F_ecb.scb(ECb, Em[i])
-      F_scb.scm  <- F_diffusion(SCb, SCm, D_S0, moist[i], dist, ps, Rth, depth)
-      F_ecm.ecb  <- F_diffusion(ECm, ECb, D_E0, moist[i], dist, ps, Rth, depth)
+      F_scb.scm  <- F_diffusion(SCb, SCm, D_S0, moist[i], dist, ps, Rth)
+      F_ecm.ecb  <- F_diffusion(ECm, ECb, D_E0, moist[i], dist, ps, Rth)
       
       # Define the rate changes for each state variable
       dPC  <- F_sl.pc + F_mc.pc - F_pc.scb
