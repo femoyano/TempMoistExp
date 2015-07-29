@@ -56,6 +56,14 @@ F_diffusion <- function (C1, C2, D_0, moist, dist, phi, Rth) {
   D * (C1 - C2) / dist 
 }
 
+# Sorption to mineral surface
+F_ecw.ecs <- function (SCb, SCs, ECb, ECs, M, K_SM, K_EM, moist, depth) {
+  SC <- (SCb + SCs) / (depth * moist)
+  EC <- (ECb + ECs) / (depth * moist)
+  M <- M / depth * min(1, moist / fc)
+  (EC * M) / (K_EM * (1 + EC / K_EM + SC / K_SM + M / K_EM)) * moist - ECs
+}
+
 # ==============================================================================
 # Temperature responses after to Tang and Riley 2014 (supplementary information)
 
