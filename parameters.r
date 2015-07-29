@@ -33,8 +33,6 @@ parameters <- c(
   CUE_ref  = 0.31     , # Carbon use efficieny (= microbial growth efficiency) (Allison et al. 2010)
   E_m      = 47       , # [kJ mol^-1]  Gibbs energy for Mm and Em (Haggerty et al. 2014 supplementary info)
   CUE_s    = -0.016   , # CUE slope with temperature
-  cm3      = 1000000  , # cubic centimeters in a cubic meter
-  dens_min = 2.7     , # [g cm^-3] Assumed mineral particle density
   
   psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   psi_fc   = 33      , # [kPa] Water potential at field capacity
