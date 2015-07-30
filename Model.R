@@ -66,13 +66,26 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], PC, SCb, SCm, ECb, ECm, MC, CO2)
+        out[j,] <- c(times[i], PC, SCb, SCm, SCs, ECb, ECm, ECs, MC, CO2)
       }
 
       # Calculate all fluxes
       F_sl.pc    <- F_litter(litter_pc[i])
+      PC <- PC + F_sl.pc
+      
       F_ml.scb   <- F_litter(litter_sc[i])
+      SCb <- SCb + F_ml.scb
+      
       F_pc.scb   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist[i], fc, depth)
+      PC  <- PC  - F_pc.scb
+      SCb <- SCb + F_pc.scb
+      
+      F_scb.scs  <- F_sorp(SCb, SCs, ECb, ECs, M, K_SM, K_EM, moist, fc, depth)
+      SCb <- SCb - F_scb.scs
+      SCc <- SCs + F_scb.scs
+      
+      F_ecb.ecs  <- F_sorp(ECb, ECs, SCb, SCs, M, K_EM, K_SM, moist, fc, depth)
+      ECb <- ECb - 
       F_scm.co2  <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], fc, depth) * (1-CUE)
       F_scm.mc   <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], fc, depth) * CUE
       F_mc.ecm   <- F_mc.ecm(MC, E_p, Mm[i])
@@ -81,6 +94,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       F_ecb.scb  <- F_ecb.scb(ECb, Em[i])
       F_scb.scm  <- F_diffusion(SCb, SCm, D_S0, moist[i], dist, ps, Rth)
       F_ecm.ecb  <- F_diffusion(ECm, ECb, D_E0, moist[i], dist, ps, Rth)
+
       
       # Define the rate changes for each state variable
       dPC  <- F_sl.pc + F_mc.pc - F_pc.scb
@@ -118,7 +132,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       if (setbreak) break
     } # end for loop
     
-    colnames(out) <- c("time", "PC", "SCb", "SCm", "ECb", "ECm", "MC", "CO2")
+    colnames(out) <- c("time", "PC", "SCb", "SCm", "SCs", "ECb", "ECm", "ECs", "MC", "CO2")
     
     out <- as.data.frame(out)
     out <- out[1:(floor(i * tstep / tsave)),]
