@@ -40,12 +40,12 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     }
     
     # Calculate spatially dependent variables
-#     moist_d   <- c(0, diff(moist * depth))          # [m^3] change in water content relative to previous time step
-    b         <- 2.91 + 15.9 * clay                 # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
-    psi_sat   <- exp(6.5 - 1.3 * sand) / 1000       # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
-    Rth       <- ps * (psi_sat / psi_Rth)^(1 / b)   # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
-    fc        <- ps * (psi_sat / psi_fc)^(1 / b)    # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
-    M         <- 200 * (100 * clay)^0.6 * pd * (1 - ps) # [g m-3] Total C-equivalent mineral surface for sorption (Mayes et al. 2012)
+#     moist_d   <- c(0, diff(moist * depth))            # [m^3] change in water content relative to previous time step
+    b       <- 2.91 + 15.9 * clay                     # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
+    psi_sat <- exp(6.5 - 1.3 * sand) / 1000           # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
+    Rth     <- ps * (psi_sat / psi_Rth)^(1 / b)       # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
+    fc      <- ps * (psi_sat / psi_fc)^(1 / b)        # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+    M       <- 200 * (100 * clay)^0.6 * pd * (1 - ps) # [g m-3] Total C-equivalent mineral surface for sorption (Mayes et al. 2012)
     
     # Calculate temporally changing variables
     K_D <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
@@ -119,7 +119,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       ECb <- ECb - F_ecb.scb
       SCb <- SCb + F_ecb.scb
 
-      # This section limites the flux to the size of the pool itself, avoiding negative values. Should not be necessary when using DE solver.
+      # This section makes sure that there are no negative C pools, which can happens because of linear approximations.
       PC  <- ifelse(PC > 0, PC, 0)
       SCb <- ifelse(SCb > 0, SCb, 0)
       SCm <- ifelse(SCm > 0, SCm, 0)

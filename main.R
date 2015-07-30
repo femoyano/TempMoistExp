@@ -47,3 +47,5 @@ end   <- ifelse(spinup, t.max.spin, tail(forcing.data[,1], 1) )
 out <- Model(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, litter.data, forcing.data)
 
 print(tail(out, 1))
+
+print(paste("Total soil C:", sum(tail(out, 1)[2:9])))

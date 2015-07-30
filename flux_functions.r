@@ -52,11 +52,12 @@ F_diffusion <- function (C1, C2, D_0, moist, dist, phi, Rth) {
 }
 
 # Sorption to mineral surface
-F_sorp <- function (C1b, C1s, C2b, C2s, M, K_C1, K_C2, moist, fc, depth) {
+F_sorp <- function (C1b, C1s, C2b, C2s, M, K_1, K_2, moist, fc, depth) {
+  mmod <- min(1, moist / fc) # scales M and Cs from 0-1 between 0 and fc
   C1 <- (C1b + C1s) / (depth * moist)
   C2 <- (C2b + C2s) / (depth * moist)
-  M <- M * min(1, moist / fc)
-  (C1 * M) / (K_C1 * (1 + C1 / K_C1 + C2 / K_C2 + M / K_C1)) * (depth * moist) - C1s
+  M <- M * mmod
+  (C1 * M) / (K_1 * (1 + C1 / K_1 + C2 / K_2 + M / K_1)) * depth - (C1s * mmod)
 }
 
 # ==============================================================================

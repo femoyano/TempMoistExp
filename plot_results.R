@@ -6,7 +6,7 @@ hour  <- 3600     # seconds in an hour
 #===============================================================================
 
 # === set plotting time interval === #
-plot.time <- month
+plot.time <- year
 # ================================== #
 
 out.agg <- aggregate(out, by=list(x=ceiling(out[,1]*tstep/plot.time)), FUN=mean)
