@@ -15,6 +15,9 @@ t.max.spin  <- 50000  # maximum run time for spinup runs (in t_step units)
 t_step      <- "hour"  # model time step (as string). Keep "hour" for correct equilibrium values
 t_save      <- "month"  # time unit at which to save output. Cannot be less than t_step
 
+## Flags =======================================================================
+
+
 
 ### Define time units ==========================================================
 # Warning! input data rates should have same time units as tstep
