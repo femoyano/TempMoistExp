@@ -11,18 +11,18 @@ parameters <- c(
   R   = 0.008314                  ,  # [kJ K-1 mol-1] gas constant
   
   ### Time Dependent Parameters
-  Em_ref  = 0.001 / hour * tstep    , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
+  Em_ref  = 0.001 / hour * tstep     , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   Mm_ref  = 0.00028 / hour * tstep   , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
   E_p     = 0.0000056 / hour * tstep , # [h-1] Fraction of MC converted to EC. (Li at al. 2014, AWB model)
-  V_D_ref = 1 / hour * tstep        , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
-  V_U_ref = 0.01 / hour * tstep     , # [h-1] Maximum speed of microbial uptake of SC (Li at al. 2014, AWB model) Use without t_M scaling!!!
+  V_D_ref = 1 / hour * tstep         , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
+  V_U_ref = 0.01 / hour * tstep      , # [h-1] Maximum speed of microbial uptake of SC (Li at al. 2014, AWB model) Use without t_M scaling!!!
   
   ### Fixed Parameters ====
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
   K_D_ref  = 337500   , # [gC m-3] Affinity parameter for PC decomp. (Li at al. 2014, AWB model => 250 mg gSoil-1)
   K_U_ref  = 351      , # [gC m-3] Affinity parameter for microbial SC uptake (approx. Allison et al. 2010, Li at al. 2014 => 0.26 mg gSoil-1)
-  K_SM_ref = 11       , # [gC m-3] Affinity parameter for SC sorption (Mayes et al. 2012 !!! not k_MC in Tang and Riley 2014)
-  K_EM_ref = 11       , # [gC m-3] Affinity parameter for EC sorption (Mayes et al. 2012 !!! not k_ME in Tang and Riley 2014)
+  K_SM_ref = 11       , # [gC m-3] Affinity parameter for SC sorption (Mayes et al. 2012)
+  K_EM_ref = 11       , # [gC m-3] Affinity parameter for EC sorption (Mayes et al. 2012)
   mcpc_f   = 0.5      , # [g g^-1] fraction of dead microbes going to SC (rest goes to PC)
   T_ref    = 293.15   , # [K] reference temperature
   E_V.U    = 47       , # [kJ mol^-1] Gibbs energy for V_U (Tang and Riley 2014)
