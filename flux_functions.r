@@ -32,14 +32,9 @@ F_mc.ecm <- function (MC, E_p, Mm) {
   (MC - (MC * Mm)) * E_p
 }
 
-# Microbe to SC
-F_mc.scb <- function (MC, Mm, mcpc_f) {
-  MC * Mm * (1- mcpc_f)
-}
-
-# Microbe to PC
-F_mc.pc <- function (MC, Mm, mcpc_f) {
-  MC * Mm * mcpc_f
+# Microbe death
+F_mc.pcscb <- function (MC, Mm) {
+  MC * Mm
 }
 
 # Enzymes decay

@@ -85,34 +85,37 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       SCc <- SCs + F_scb.scs
       
       F_ecb.ecs  <- F_sorp(ECb, ECs, SCb, SCs, M, K_EM, K_SM, moist, fc, depth)
-      ECb <- ECb - 
-      F_scm.co2  <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], fc, depth) * (1-CUE)
-      F_scm.mc   <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], fc, depth) * CUE
-      F_mc.ecm   <- F_mc.ecm(MC, E_p, Mm[i])
-      F_mc.pc    <- F_mc.pc(MC, Mm[i], mcpc_f)
-      F_mc.scb   <- F_mc.scb(MC, Mm[i], mcpc_f)
-      F_ecb.scb  <- F_ecb.scb(ECb, Em[i])
-      F_scb.scm  <- F_diffusion(SCb, SCm, D_S0, moist[i], dist, ps, Rth)
-      F_ecm.ecb  <- F_diffusion(ECm, ECb, D_E0, moist[i], dist, ps, Rth)
-
+      ECb <- ECb - F_ecb.ecs
+      ECs <- ECs + F_ecb.ecs
       
-      # Define the rate changes for each state variable
-      dPC  <- F_sl.pc + F_mc.pc - F_pc.scb
-      dSCb <- F_ml.scb + F_pc.scb + F_ecb.scb + F_mc.scb - F_scb.scm
-      dECb <- F_ecm.ecb - F_ecb.scb
-      dSCm <- F_scb.scm - F_scm.co2 - F_scm.mc
-      dECm <- F_mc.ecm - F_ecm.ecb
-      dMC  <- F_scm.mc - F_mc.ecm - F_mc.pc - F_mc.scb
-      dCO2 <- F_scm.co2
-
-      # Clalculate the new pool size
-      PC  <- PC  + dPC
-      SCb <- SCb + dSCb
-      SCm <- SCm + dSCm
-      ECb <- ECb + dECb
-      ECm <- ECm + dECm
-      MC  <- MC  + dMC
-      CO2 <- CO2 + dCO2
+      F_scb.scm  <- F_diffusion(SCb, SCm, D_S0, moist[i], dist, ps, Rth)
+      SCb <- SCb - F_scb.scm
+      SCm <- SCm + F_scb.scm
+      
+      F_scm.co2  <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], fc, depth) * (1-CUE)
+      SCm <- SCm - F_scm.co2
+      CO2 <- CO2 + F_scm.co2
+      
+      F_scm.mc   <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], fc, depth) * CUE
+      SCm <- SCm - F_scm.mc
+      MC  <- MC  + F_scm.mc
+      
+      F_mc.ecm   <- F_mc.ecm(MC, E_p, Mm[i])
+      MC  <- MC  - F_mc.ecm
+      ECm <- ECm + F_mc.ecm
+      
+      F_ecm.ecb  <- F_diffusion(ECm, ECb, D_E0, moist[i], dist, ps, Rth)
+      ECm <- ECm - F_ecm.ecb
+      ECb <- ECb + F_ecm.ecb
+      
+      F_mc.pcscb    <- F_mc.pcscb(MC, Mm[i])
+      MC  <- MC  - F_mc.pcscb
+      PC  <- PC  + F_mc.pcscb * mcpc_f
+      SCb <- SCb + F_mc.pcscb * (1 - mcpc_f)
+      
+      F_ecb.scb  <- F_ecb.scb(ECb, Em[i])
+      ECb <- ECb - F_ecb.scb
+      SCb <- SCb + F_ecb.scb
 
       # This section limites the flux to the size of the pool itself, avoiding negative values. Should not be necessary when using DE solver.
       PC  <- ifelse(PC > 0, PC, 0)
@@ -120,7 +123,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       SCm <- ifelse(SCm > 0, SCm, 0)
       ECb <- ifelse(ECb > 0, ECb, 0)
       ECm <- ifelse(ECm > 0, ECm, 0)
-      MC  <- ifelse(MC > 0, MC, stop("MC has reached a value of 0. This should not happen."))
+      MC  <- ifelse(MC > 0, MC, 0)
       
       # Check for stop in case of spinup and stop at equilibirum are set
       if (spinup & eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
