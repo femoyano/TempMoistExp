@@ -55,7 +55,7 @@ F_diffusion <- function (C1, C2, D_0, moist, dist, phi, Rth) {
 F_sorp <- function (C1b, C1s, C2b, C2s, M, K_C1, K_C2, moist, fc, depth) {
   C1 <- (C1b + C1s) / (depth * moist)
   C2 <- (C2b + C2s) / (depth * moist)
-  M <- M / depth * min(1, moist / fc)
+  M <- M * min(1, moist / fc)
   (C1 * M) / (K_C1 * (1 + C1 / K_C1 + C2 / K_C2 + M / K_C1)) * (depth * moist) - C1s
 }
 

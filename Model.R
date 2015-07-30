@@ -45,7 +45,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     psi_sat   <- exp(6.5 - 1.3 * sand) / 1000       # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
     Rth       <- ps * (psi_sat / psi_Rth)^(1 / b)   # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
     fc        <- ps * (psi_sat / psi_fc)^(1 / b)    # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
-    M         <- 0.0002 * (100 * clay)^0.6 * pd * (1 - ps) # [g cm-3] Total C-equivalent mineral surface for sorption (Mayes et al. 2012)
+    M         <- 200 * (100 * clay)^0.6 * pd * (1 - ps) # [g m-3] Total C-equivalent mineral surface for sorption (Mayes et al. 2012)
     
     # Calculate temporally changing variables
     K_D <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
@@ -81,10 +81,10 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       F_pc.scb   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist[i], fc, depth)
       PC  <- PC  - F_pc.scb
       SCb <- SCb + F_pc.scb
-      
+     
       F_scb.scs  <- F_sorp(SCb, SCs, ECb, ECs, M, K_SM[i], K_EM[i], moist[i], fc, depth)
       SCb <- SCb - F_scb.scs
-      SCc <- SCs + F_scb.scs
+      SCs <- SCs + F_scb.scs
       
       F_ecb.ecs  <- F_sorp(ECb, ECs, SCb, SCs, M, K_EM[i], K_SM[i], moist[i], fc, depth)
       ECb <- ECb - F_ecb.ecs
