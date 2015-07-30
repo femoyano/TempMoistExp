@@ -5,7 +5,7 @@
 # Needs to be a named vector for using ode
 
 initial_state <- c(
-  PC  = 15000   , # [gC cm-3] labile carbon 
+  PC  = 5000   , # [gC cm-3] labile carbon 
   SCb = 200    , # [gC cm-3] soluble carbon in bulk 
   SCm = 10   , # [gC cm-3] soluble carbon at microbe 
   SCs = 0     , # [gC cm-3] sorbed SC

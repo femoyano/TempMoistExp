@@ -40,7 +40,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     }
     
     # Calculate spatially dependent variables
-    moist_d   <- c(0, diff(moist_t))                # [m^3] change in water content relative to previous time step
+#     moist_d   <- c(0, diff(moist * depth))          # [m^3] change in water content relative to previous time step
     b         <- 2.91 + 15.9 * clay                 # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
     psi_sat   <- exp(6.5 - 1.3 * sand) / 1000       # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
     Rth       <- ps * (psi_sat / psi_Rth)^(1 / b)   # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
@@ -50,6 +50,8 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     # Calculate temporally changing variables
     K_D <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
     K_U <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K.U, R)
+    K_SM <- Temp.Resp.Eq(K_SM_ref, temp, T_ref, E_K.SM, R)
+    K_EM <- Temp.Resp.Eq(K_EM_ref, temp, T_ref, E_K.EM, R)
     V_D <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V.D, R)
     V_U <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V.U, R)
     CUE <- CUE_ref
@@ -80,11 +82,11 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       PC  <- PC  - F_pc.scb
       SCb <- SCb + F_pc.scb
       
-      F_scb.scs  <- F_sorp(SCb, SCs, ECb, ECs, M, K_SM, K_EM, moist, fc, depth)
+      F_scb.scs  <- F_sorp(SCb, SCs, ECb, ECs, M, K_SM[i], K_EM[i], moist[i], fc, depth)
       SCb <- SCb - F_scb.scs
       SCc <- SCs + F_scb.scs
       
-      F_ecb.ecs  <- F_sorp(ECb, ECs, SCb, SCs, M, K_EM, K_SM, moist, fc, depth)
+      F_ecb.ecs  <- F_sorp(ECb, ECs, SCb, SCs, M, K_EM[i], K_SM[i], moist[i], fc, depth)
       ECb <- ECb - F_ecb.ecs
       ECs <- ECs + F_ecb.ecs
       

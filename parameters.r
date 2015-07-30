@@ -21,14 +21,16 @@ parameters <- c(
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
   K_D_ref  = 337500   , # [gC m-3] Affinity parameter for PC decomp. (Li at al. 2014, AWB model => 250 mg gSoil-1)
   K_U_ref  = 351      , # [gC m-3] Affinity parameter for microbial SC uptake (approx. Allison et al. 2010, Li at al. 2014 => 0.26 mg gSoil-1)
-  K_SM_ref = 25       , # [gC m-3] Affinity parameter for SC sorption (k_MC in Tang and Riley 2014)
-  K_EM_ref = 50       , # [gC m-3] Affinity parameter for EC sorption (k_ME in Tang and Riley 2014)
+  K_SM_ref = 33750    , # [gC m-3] Affinity parameter for SC sorption (k_MC in Tang and Riley 2014)
+  K_EM_ref = 67500    , # [gC m-3] Affinity parameter for EC sorption (k_ME in Tang and Riley 2014)
   mcpc_f   = 0.5      , # [g g^-1] fraction of dead microbes going to SC (rest goes to PC)
   T_ref    = 293.15   , # [K] reference temperature
   E_V.U    = 47       , # [kJ mol^-1] Gibbs energy for V_U (Tang and Riley 2014)
   E_V.D    = 47       , # [kJ mol^-1] Gibbs energy for V_D (average of lignin and cellulose in Wang et al. 2013)
   E_K.U    = 30       , # [kJ mol^-1] Gibbs energy for K_U (Tang and Riley 2014)
   E_K.D    = 30       , # [kJ mol^-1] Gibbs energy for K_D (Tang and Riley 2014)
+  E_K.SM   = 10       , # [kJ mol^-1] Gibbs energy for K_SM (Tang and Riley 2014)
+  E_K.EM   = 10       , # [kJ mol^-1] Gibbs energy for K_EM (Tang and Riley 2014)
   E_Mm     = 30       , # [kJ mol^-1] Gibbs energy for Mm (Hagerty et al. 2014)
   E_Em     = 30       , # [kJ mol^-1] Gibbs energy for Em (Hagerty et al. 2014)
   CUE_ref  = 0.31     , # Carbon use efficieny (= microbial growth efficiency) (Allison et al. 2010)
