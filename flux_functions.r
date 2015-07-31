@@ -45,9 +45,9 @@ F_ecb.scb <- function (EC, Em) {
 # Diffusion flux
 # Here dividing by moist and depth for specific concentrations and multiplying 
 # again for total cancels out, so they are left out.
-F_diffusion <- function (C1, C2, D_0, moist, dist, phi, Rth) {
+F_diffusion <- function (C1, C2, D_0, moist, dist, ps, Rth) {
   if (moist <= Rth) return(0)
-  D <- D_0 * (phi - Rth)^1.5 * ((moist - Rth)/(phi - Rth))^2.5
+  D <- D_0 * (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
   D * (C1 - C2) / dist 
 }
 
