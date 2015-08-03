@@ -52,3 +52,5 @@ out <- Model(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameter
 print(tail(out, 1))
 
 print(paste("Total soil C:", sum(tail(out, 1)[2:9])))
+
+source("plot_results.R")
