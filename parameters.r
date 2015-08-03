@@ -12,7 +12,7 @@ parameters <- c(
   
   ### Time Dependent Parameters
   Em_ref  = 0.001 / hour * tstep     , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
-  Mm_ref  = 0.00028 / hour * tstep   , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
+  Mm_ref  = 0.0005 / hour * tstep    , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
   E_p     = 0.0000056 / hour * tstep , # [h-1] Fraction of MC converted to EC. (Li at al. 2014, AWB model)
   V_D_ref = 1 / hour * tstep         , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
   V_U_ref = 0.01 / hour * tstep      , # [h-1] Maximum speed of microbial uptake of SC (Li at al. 2014, AWB model) Use without t_M scaling!!!
