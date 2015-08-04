@@ -24,10 +24,3 @@ plot(out.agg$ECs)
 plot(out.agg$CO2)
 
 graphics.off()
-
-# # 
-# plot(out$PC)
-# plot(out$SC)
-# plot(out$MC)
-# plot(out$EC)
-# plot(out$CO2)
