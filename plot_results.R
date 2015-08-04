@@ -23,6 +23,8 @@ plot(out.agg$ECm)
 plot(out.agg$ECs)
 plot(out.agg$CO2)
 
+graphics.off()
+
 # # 
 # plot(out$PC)
 # plot(out$SC)
