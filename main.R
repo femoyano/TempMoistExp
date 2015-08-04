@@ -13,11 +13,9 @@ eq.stop     <- FALSE   # Stop at equilibrium?
 eq.md       <- 1       # maximum difference for equilibrium conditions [in mgC gSoil-1]. spinup run stops if difference is lower.
 t.max.spin  <- 200000  # maximum run time for spinup runs (in t_step units)
 t_step      <- "hour"  # model time step (as string). Keep "hour" for correct equilibrium values
-t_save      <- "month"  # time unit at which to save output. Cannot be less than t_step
+t_save      <- "day"  # time unit at which to save output. Cannot be less than t_step
 
 ## Flags =======================================================================
-
-
 
 ### Define time units ==========================================================
 # Warning! input data rates should have same time units as tstep
@@ -42,6 +40,11 @@ source("Model.R")
 
 # Load input data
 source("load_inputs.R")
+
+
+## Debuging ====================================================================
+
+# debugonce(F_sorp)
 
 # Define model times: start and end
 start <- ifelse(spinup, 1, forcing.data[1,1] )

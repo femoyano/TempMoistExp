@@ -35,7 +35,7 @@ plot(DOCst ~ DOCt)
 
 2077 * 325 / (11 + 325)
 
-### Diffussion
+### Diffussion -----------------------------------------------------------------
 moist<- seq(0,0.5,0.01)
 clay <- 0.3
 sand <- 0.3
@@ -55,7 +55,18 @@ moist<- seq(0,0.5,0.01)
 ps <- 0.5
 D_0 <- 8.1e-10 * 60 * 60 * 24   # [m s^-1] Diffusivity in water for amino acids after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
 dist <- 10^-4     # [m] characteristic distance between substrate and microbes (Manzoni manus)
-Rth <- 0.1 # Volumetric moisture threshold for respiration
+Rth <- 0.1288 # Volumetric moisture threshold for respiration
 D <- D_0 * (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # Diffusivity
 h <- D * 6 / dist^2
 plot(h~moist)
+
+C1 <- SCb
+C2 <- SCm
+moi <- seq(0,0.5, 0.01)
+F_di2 <- function (x) {
+  D <- D_S0 * (ps - Rth)^1.5 * ((x - Rth)/(ps - Rth))^2.5
+  F <- D * (C1 - C2) / dist
+  ifelse(abs(F) > abs((C1 - C2) / 2), (C1 - C2) / 2, F)
+}
+
+### ----------------------------------------------------------------------------
