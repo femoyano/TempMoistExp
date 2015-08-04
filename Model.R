@@ -24,7 +24,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     litter_sc      <- litter.data$litter_met # [mgC m^2] metabolic litter going to sc
     litter_pc      <- litter.data$litter_str # [mgC m^2] structural litter going to pc
     times_litter   <- litter.data[,1]        # time vector of the litter data
-
+    
     # Interpolate input variables
     litter_pc <- approx(times_litter, litter_pc, xout=times, rule=2)$y
     litter_sc <- approx(times_litter, litter_sc, xout=times, rule=2)$y
@@ -40,7 +40,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     }
     
     # Calculate spatially dependent variables
-#     moist_d   <- c(0, diff(moist * depth))            # [m^3] change in water content relative to previous time step
+    #     moist_d   <- c(0, diff(moist * depth))            # [m^3] change in water content relative to previous time step
     b       <- 2.91 + 15.9 * clay                     # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
     psi_sat <- exp(6.5 - 1.3 * sand) / 1000           # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
     Rth     <- ps * (psi_sat / psi_Rth)^(1 / b)       # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
@@ -49,13 +49,13 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     
     # Calculate temporally changing variables
     K_D <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
-    K_U <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K.U, R)
+    #     K_U <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K.U, R)
     K_SM <- Temp.Resp.Eq(K_SM_ref, temp, T_ref, E_K.SM, R)
     K_EM <- Temp.Resp.Eq(K_EM_ref, temp, T_ref, E_K.EM, R)
     V_D <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V.D, R)
-    V_U <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V.U, R)
+    #     V_U <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V.U, R)
     CUE <- CUE_ref
-    Mm  <- Temp.Resp.Eq(Mm_ref, temp, T_ref, E_Mm, R)
+#     Mm  <- Temp.Resp.Eq(Mm_ref, temp, T_ref, E_Mm, R)
     Em  <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     # Create matrix to hold output
@@ -64,63 +64,56 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     setbreak <- 0 # break flag for spinup runs
     
     for(i in 1:length(times)) {
-
+      
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], PC, SCb, SCm, SCs, ECb, ECm, ECs, MC, CO2)
+        out[j,] <- c(times[i], PC, SCw, SCs, ECb, ECm, ECs, CO2)
       }
-# browser()
+      
+#       browser()
+      
       # Calculate all fluxes
       F_sl.pc    <- F_litter(litter_pc[i])
       PC <- PC + F_sl.pc
       
-      F_ml.scb   <- F_litter(litter_sc[i])
-      SCb <- SCb + F_ml.scb
+      F_ml.scw   <- F_litter(litter_sc[i])
+      SCw <- SCw + F_ml.scw
       
-      F_pc.scb   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist[i], fc, depth)
-      PC  <- PC  - F_pc.scb
-      SCb <- SCb + F_pc.scb
-     
-      F_scb.scs  <- F_sorp(SCb, SCs, ECb, ECs, M, K_SM[i], K_EM[i], moist[i], fc, depth)
-      SCb <- SCb - F_scb.scs
-      SCs <- SCs + F_scb.scs
+      F_pc.scw   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist[i], fc, depth)
+      PC  <- PC  - F_pc.scw
+      SCw <- SCw + F_pc.scw
       
-      F_ecb.ecs  <- F_sorp(ECb, ECs, SCb, SCs, M, K_EM[i], K_SM[i], moist[i], fc, depth)
+      F_scw.scs  <- F_sorp(SCw, SCs, ECb, ECs, M, K_SM[i], K_EM[i], moist[i], fc, depth)
+      SCw <- SCw - F_scw.scs
+      SCs <- SCs + F_scw.scs
+      
+      F_ecb.ecs  <- F_sorp(ECb, ECs, SCw, SCs, M, K_EM[i], K_SM[i], moist[i], fc, depth)
       ECb <- ECb - F_ecb.ecs
       ECs <- ECs + F_ecb.ecs
       
-      F_scb.scm  <- F_diffusion(SCb, SCm, D_S0, moist[i], dist, ps, Rth)
-      SCb <- SCb - F_scb.scm
-      SCm <- SCm + F_scb.scm
+      F_scw.diff  <- F_diffusion(SCw, 0, D_S0, moist[i], dist, ps, Rth) # concentration at microbe assumed to be 0
+      SCw  <- SCw - F_scw.diff
       
-      F_scm.co2  <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], fc, depth) * (1-CUE)
-      SCm <- SCm - F_scm.co2
-      CO2 <- CO2 + F_scm.co2
+      F_scw.co2 <- F_scw.diff * (1 - CUE)
+      CO2 <- CO2 + F_scw.co2
       
-      F_scm.mc   <- F_uptake(SCm, MC, V_U[i], K_U[i], moist[i], fc, depth) * CUE
-      SCm <- SCm - F_scm.mc
-      MC  <- MC  + F_scm.mc
-      
-      F_mc.ecm   <- F_mc.ecm(MC, E_p, Mm[i])
-      MC  <- MC  - F_mc.ecm
-      ECm <- ECm + F_mc.ecm
+      F_scw.ecm  <- (F_scw.diff - F_scw.co2) * Ep
+      ECm <- ECm + F_scw.ecm
+        
+      F_scw.pc <- F_scw.diff - F_scw.co2 - F_scw.ecm
+      PC <- PC + F_scw.pc
       
       F_ecm.ecb  <- F_diffusion(ECm, ECb, D_E0, moist[i], dist, ps, Rth)
       ECm <- ECm - F_ecm.ecb
       ECb <- ECb + F_ecm.ecb
       
-      F_mc.pcscb    <- F_mc.pcscb(MC, Mm[i])
-      MC  <- MC  - F_mc.pcscb
-      PC  <- PC  + F_mc.pcscb * mcpc_f
-      SCb <- SCb + F_mc.pcscb * (1 - mcpc_f)
+      F_ecb.scw  <- F_ecb.scw(ECb, Em[i])
+      ECb <- ECb - F_ecb.scw
+      SCw <- SCw + F_ecb.scw
       
-      F_ecb.scb  <- F_ecb.scb(ECb, Em[i])
-      ECb <- ECb - F_ecb.scb
-      SCb <- SCb + F_ecb.scb
-
       # This section makes sure that there are no negative C pools, which should not happen if conditions in flux functions are set correctly.
-      if(PC * SCb * SCm * SCs * ECb * ECm * ECs * MC <= 0) stop("A state variable became 0 or negative. This should not happen")
+      if(PC * SCw * SCs * ECb * ECm * ECs <= 0) stop("A state variable became 0 or negative. This should not happen")
       
       # Check for stop in case of spinup and stop at equilibirum are set
       if (spinup & eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
@@ -132,7 +125,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       if (setbreak) break
     } # end for loop
     
-    colnames(out) <- c("time", "PC", "SCb", "SCm", "SCs", "ECb", "ECm", "ECs", "MC", "CO2")
+    colnames(out) <- c("time", "PC", "SCw", "SCs", "ECb", "ECm", "ECs", "CO2")
     
     out <- as.data.frame(out)
     out <- out[1:(floor(i * tstep / tsave)),]

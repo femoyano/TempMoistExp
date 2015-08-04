@@ -21,31 +21,31 @@ F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
   ifelse(F > PC, PC, F)
 }
 
-# Microbial C uptake
-F_uptake <- function (SC, MC, V, K, moist, fc, depth) {
-  SC <- SC / (moist * depth) # concetration in water phase
-  MC <- MC / depth * min(1, moist / fc) # scaled with max at fc
-  F <- (V * SC * MC) / (K + SC) * (moist * depth)
-  ifelse(F > SC, SC, F)
-}
+# # Microbial C uptake
+# F_uptake <- function (SC, V, K, moist, fc, depth) {
+#   SC <- SC / (moist * depth) # concetration in water phase
+#   F <- (V * SC) / (K + SC) * (moist * depth)
+#   ifelse(F > SC, SC, F)
+# }
 
-# Microbe to enzyme
-F_mc.ecm <- function (MC, E_p, Mm) {
-  F <- (MC - (MC * Mm)) * E_p
-  ifelse(F > MC, MC, F)
-}
+# # Microbe to enzyme
+# F_mc.ecm <- function (MC, Ep, Mm) {
+#   F <- (MC - (MC * Mm)) * Ep
+#   ifelse(F > MC, MC, F)
+# }
 
-# Microbe death
-F_mc.pcscb <- function (MC, Mm) {
-  F <- MC * Mm
-  ifelse(F > MC, MC, F)
-}
+# # Microbe death
+# F_mc.pcscw <- function (MC, Mm) {
+#   F <- MC * Mm
+#   ifelse(F > MC, MC, F)
+# }
 
 # Enzymes decay
-F_ecb.scb <- function (EC, Em) {
+F_ecb.scw <- function (EC, Em) {
   F <- EC * Em
   ifelse(F > EC, EC, F)
 }
+
 # Diffusion flux
 # Here dividing by moist and depth for specific concentrations and multiplying 
 # again for total cancels out, so they are left out.
