@@ -70,7 +70,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
         j <- i * tstep / tsave
         out[j,] <- c(times[i], PC, SCb, SCm, SCs, ECb, ECm, ECs, MC, CO2)
       }
-
+# browser()
       # Calculate all fluxes
       F_sl.pc    <- F_litter(litter_pc[i])
       PC <- PC + F_sl.pc
@@ -119,13 +119,8 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       ECb <- ECb - F_ecb.scb
       SCb <- SCb + F_ecb.scb
 
-      # This section makes sure that there are no negative C pools, which can happens because of linear approximations.
-      PC  <- ifelse(PC > 0, PC, 0)
-      SCb <- ifelse(SCb > 0, SCb, 0)
-      SCm <- ifelse(SCm > 0, SCm, 0)
-      ECb <- ifelse(ECb > 0, ECb, 0)
-      ECm <- ifelse(ECm > 0, ECm, 0)
-      MC  <- ifelse(MC > 0, MC, 0)
+      # This section makes sure that there are no negative C pools, which should not happen if conditions in flux functions are set correctly.
+      if(PC * SCb * SCm * SCs * ECb * ECm * ECs * MC <= 0) stop("A state variable became 0 or negative. This should not happen")
       
       # Check for stop in case of spinup and stop at equilibirum are set
       if (spinup & eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
