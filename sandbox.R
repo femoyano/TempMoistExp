@@ -42,14 +42,20 @@ sand <- 0.3
 ps <- 0.5
 psi_Rth  <- 15000    # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
 psi_fc   <- 33       # [kPa] Water potential at field capacity
-D_0     <- 8.1e-10 * 60 * 60 * 24   # [m s^-1] Diffusivity in water for amino acids after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
-dist     <- 10^-4     # [m] characteristic distance between substrate and microbes (Manzoni manus)
+D_0     <- 8.1e-10   # [m s^-1] Diffusivity in water for amino acids after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+dist     <- 10^-4    # [m] characteristic distance between substrate and microbes (Manzoni manus)
 b       <- 2.91 + 15.9 * clay # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
 psi_sat <- exp(6.5 - 1.3 * sand) / 1000  # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
 Rth     <- ps * (psi_sat / psi_Rth)^(1 / b) # Volumetric moisture threshold for respiration 
 D <- D_0 * (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # Diffusivity 
 h <- D * 6 / dist^2
 plot(h~moist)
+t=1
+plot(1-exp(-h*t) ~ moist, type="l", ylim=c(0,1))
+lines(1-exp(-h*10)~ moist, col=2)
+lines(1-exp(-h*100)~ moist, col=3)
+lines(1-exp(-h*1000)~ moist, col=4)
+lines(1-exp(-h*10000)~ moist, col=5)
 
 moist<- seq(0,0.5,0.01)
 ps <- 0.5

@@ -32,7 +32,7 @@ parameters <- c(
   E_K.EM   = 10       , # [kJ mol^-1] Gibbs energy for K_EM (Tang and Riley 2014)
   E_Mm     = 30       , # [kJ mol^-1] Gibbs energy for Mm (Hagerty et al. 2014)
   E_Em     = 30       , # [kJ mol^-1] Gibbs energy for Em (Hagerty et al. 2014)
-  Ep       = 0.05     , # [g g-1] Fraction of SC converted to EC. (fitted).
+  Ep       = 0.004     , # [g g-1] Fraction of SC converted to EC. (fitted).
 
   CUE_ref  = 0.7     , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
   E_m      = 47       , # [kJ mol^-1]  Gibbs energy for Mm and Em (Haggerty et al. 2014 supplementary info)
