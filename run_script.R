@@ -9,6 +9,7 @@ trans <- T
 
 ### Spinup run =================================================================
 if(spinup) {
+  run.name <- "spinup_DAnoM"
   eq.stop     <- FALSE      # Stop at equilibrium?
   eq.md       <- 1          # maximum difference for equilibrium conditions [in mgC gSoil-1]. spinup run stops if difference is lower.
   t.max.spin  <- 500000     # maximum run time for spinup runs (in t_step units)
@@ -16,7 +17,10 @@ if(spinup) {
   t_save      <- "month"    # time unit at which to save output. Cannot be less than t_step
   source("initial_state.r") # Loads initial state variable values
   source("main.R")
-  out.spin <- out
+  out$TOC <- rowSums(out[,2:7])
+  print(tail(out, 1))
+  assign(run.name, tail(out,100))
+  save(list=run.name, file = paste("../OutputData/", run.name)
 }
 
 ### Transient run ==============================================================
@@ -31,6 +35,7 @@ if(trans) {
 #     init[7] , # [gC m-3]sorbed EC
 #     init[8]   # [gC] microbial carbon 
 #   )
+  run.name <- "litt_incr_0.5_100y_DAnoM"
   source("initial_state.r") # Loads initial state variable values
   eq.stop     <- FALSE      # Stop at equilibrium?
   eq.md       <- 1          # maximum difference for equilibrium conditions [in mgC gSoil-1]. spinup run stops if difference is lower.
@@ -40,8 +45,8 @@ if(trans) {
   source("main.R")
   out$TOC <- rowSums(out[,2:7])
   print(tail(out, 1))
-  out.DAnoM <- out
-  save(out.DAnoM, file = "../OutputData/DAnoM.Rdata")
+  assign(run.name, out)
+  save(list=run.name, file = paste("../OutputData/", run.name)
   agg.time <- year
   out.agg <- aggregate(out, by=list(x=ceiling(out[,1]*tstep/agg.time)), FUN=mean)
   source("plot_results.R")
