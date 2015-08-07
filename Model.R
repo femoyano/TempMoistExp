@@ -13,32 +13,7 @@
 Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, litter.data, forcing.data) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(initial_state, parameters)), {
-    
-    # Create model time step vector
-    times <- seq(start, end)
-    nt    <- length(times)
-    
-    temp           <- forcing.data$temp      # [K] soil temperature
-    moist          <- forcing.data$moist     # [m3 m-3] specific soil volumetric moisture
-    times_forcing  <- forcing.data[,1]       # [t_step] time vector of the forcing data
-    litter_sc      <- litter.data$litter_met # [mgC m^2] metabolic litter going to sc
-    litter_pc      <- litter.data$litter_str # [mgC m^2] structural litter going to pc
-    times_litter   <- litter.data[,1]        # time vector of the litter data
-    
-    # Interpolate input variables
-    litter_pc <- approx(times_litter, litter_pc, xout=times, rule=2)$y
-    litter_sc <- approx(times_litter, litter_sc, xout=times, rule=2)$y
-    temp      <- approx(times_forcing, temp, xout=times, rule=2)$y
-    moist     <- approx(times_forcing, moist, xout=times, rule=2)$y
-    
-    # If spinup, repeat input data
-    if(spinup) {
-      temp  <- rep(temp, length.out = end)
-      moist <- rep(moist, length.out = end)
-      litter_pc <- rep(litter_pc,  length.out = end)
-      litter_sc <- rep(litter_sc,  length.out = end)
-    }
-    
+
     # Calculate spatially dependent variables
     #     moist_d   <- c(0, diff(moist * depth))            # [m^3] change in water content relative to previous time step
     b       <- 2.91 + 15.9 * clay                     # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
