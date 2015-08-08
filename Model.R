@@ -39,7 +39,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     setbreak <- 0 # break flag for spinup runs
     
     for(i in 1:length(times)) {
-      
+
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave

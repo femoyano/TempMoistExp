@@ -25,16 +25,16 @@ if(spinup) {
   force.file <- "input_forcing_spinup.csv"
   litter.file <- "input_litter_spinup.csv"
 } else {
-  force.file <- "input_forcing_trans.csv"
-  litter.file <- "input_litter_trans.csv"
+  force.file <- "input_forcing_transient.csv"
+  litter.file <- "input_litter_transient.csv"
 }
 
 ### Forcing Data =============================================================
 
 # Option 1: get from file
 forcing.data   <- read.csv(force.file) # forcing data file
-forcing.t_step <- forcing.data(1,1)
-forcing.data[, 1] <- forcing.data[, 1] * forcing.t_step / tstep # convert time units
+forcing.tstep <- get(names(forcing.data)[1])
+forcing.data[, 1] <- forcing.data[, 1] * forcing.tstep / tstep # convert time units
 names(forcing.data)[1] <- t_step
 
 # Option 2: create forcing dataframe
@@ -45,10 +45,10 @@ forcing.data <- data.frame(hour=c(1,2), temp = c(293.15, 293.15), moist=c(fc, fc
 
 ### Option 1: read from file (e.g. field litter data)
 litter.data    <- read.csv(litter.file) # litter input rates file
-input.t_step <- forcing.data(1,1)
-litter.data[, 1] <- litter.data[, 1] * input.t_step / tstep # convert time units 
+litter.tstep <- get(names(litter.data)[1])
+litter.data[, 1] <- litter.data[, 1] * litter.tstep / tstep # convert time units 
 names(litter.data)[1] <- t_step
-litter.data[,-1] <- litter.data[,-1] / input.t_step * tstep # convert litter input rates to the model time step rate
+litter.data[,-1] <- litter.data[,-1] / litter.tstep * tstep # convert litter input rates to the model time step rate
 
 ### Option 2: create input dataframe (use literature data and scale up to soil layer)
 #   litt_met <- 0.00001 * 1000000 * pd * (1 - ps) / 1000 * depth # [gC m-2 h-1] mgC gSoil-1 (from Li et al.) to gC m-2
