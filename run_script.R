@@ -20,7 +20,7 @@ if(spinup) {
   out$TOC <- rowSums(out[,2:7])
   print(tail(out, 1))
   assign(run.name, tail(out,100))
-  save(list=run.name, file = paste("../OutputData/", run.name)
+  save(list=run.name, file = paste("../OutputData/", run.name, ".Rdata", sep=""))
 }
 
 ### Transient run ==============================================================
@@ -44,12 +44,13 @@ if(trans) {
   t_save      <- "month"    # time unit at which to save output. Cannot be less than t_step
   source("main.R")
   out$TOC <- rowSums(out[,2:7])
-  print(tail(out, 1))
+  # assign run name and save
   assign(run.name, out)
-  save(list=run.name, file = paste("../OutputData/", run.name)
-  agg.time <- year
-  out.agg <- aggregate(out, by=list(x=ceiling(out[,1]*tstep/agg.time)), FUN=mean)
+  save(list=run.name, file = paste("../OutputData/", run.name, ".Rdata", sep=""))
+  
+  print(tail(out, 1))
   source("plot_results.R")
+  PlotResults(get(run.name))
 }
 
 rm(list=ls())
