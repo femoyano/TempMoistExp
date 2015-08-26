@@ -41,7 +41,7 @@ F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
 # }
 
 # Enzymes decay
-F_ecb.scw <- function (EC, Em) {
+F_ec.sc <- function (EC, Em) {
   F <- EC * Em
   ifelse(F > EC, EC, F)
 }

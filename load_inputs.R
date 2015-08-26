@@ -4,7 +4,7 @@
 # Forcing and litter data time should be in hourly units
 # Forcing data will be interpolated to model time step
 # Soil T must be in kelvin and soil moisture in volumetric content
-# Litter input must be in gC m-2 d-1
+# Litter input must be in gC m-2 h-1
 ### ============================================================================
 
 ### Spatial Variables ==========================================================
@@ -21,37 +21,18 @@ b       <- 2.91 + 15.9 * clay                # [] b parameter (Campbell 1974) as
 psi_sat <- exp(6.5 - 1.3 * sand) / 1000      # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
 fc      <- ps * (psi_sat / psi_fc)^(1 / b)   # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
 
-if(spinup) {
-  force.file <- "input_forcing_spinup.csv"
-  litter.file <- "input_litter_spinup.csv"
-} else {
-  force.file <- "input_forcing_transient.csv"
-  litter.file <- "input_litter_transient.csv"
-}
-
-### Forcing Data =============================================================
+### Input Data =============================================================
 
 # Option 1: get from file
-forcing.data   <- read.csv(force.file) # forcing data file
-forcing.tstep <- get(names(forcing.data)[1])
-forcing.data[, 1] <- forcing.data[, 1] * forcing.tstep / tstep # convert time units
-names(forcing.data)[1] <- t_step
+input.data            <- read.csv(input.file) # input data file
+input.data$litter_met <- input.data$litter_met / hour * tstep # convert litter input rates to the model time step rate
+input.data$litter_str <- input.data$litter_str / hour * tstep # convert litter input rates to the model time step rate
+input.tstep           <- get(names(input.data)[1])
+input.data[, 1]       <- input.data[, 1] * input.tstep / tstep # convert time units
+names(input.data)[1]  <- t_step
 
-# Option 2: create forcing dataframe
-forcing.data <- data.frame(hour=c(1,2), temp = c(293.15, 293.15), moist=c(fc, fc))
-
-
-### Litter Input Data ========================================================
-
-### Option 1: read from file (e.g. field litter data)
-litter.data    <- read.csv(litter.file) # litter input rates file
-litter.tstep <- get(names(litter.data)[1])
-litter.data[, 1] <- litter.data[, 1] * litter.tstep / tstep # convert time units 
-names(litter.data)[1] <- t_step
-litter.data[,-1] <- litter.data[,-1] / litter.tstep * tstep # convert litter input rates to the model time step rate
-
-### Option 2: create input dataframe (use literature data and scale up to soil layer)
-#   litt_met <- 0.00001 * 1000000 * pd * (1 - ps) / 1000 * depth # [gC m-2 h-1] mgC gSoil-1 (from Li et al.) to gC m-2
-#   litt_str <- 0.00015 * 1000000 * pd * (1 - ps) / 1000 * depth # [gC m-2 h-1] mgC gSoil-1 (from Li et al.) to gC m-2
-#   litter.data <- data.frame(hour=seq(1,2), litter_str = rep(litt_str, 2), litter_met = rep(litt_met, 2))
+# Option 2: create input dataframe
+#   litt_met   <- 0.00001 * 1000000 * pd * (1 - ps) / 1000 * depth # [gC m-2 h-1] mgC gSoil-1 (from Li et al.) to gC m-2
+#   litt_str   <- 0.00015 * 1000000 * pd * (1 - ps) / 1000 * depth # [gC m-2 h-1] mgC gSoil-1 (from Li et al.) to gC m-2
+#   input.data <- data.frame(hour=seq(1,2), temp = c(293.15, 293.15), moist=c(fc, fc), litter_str = rep(litt_str, 2), litter_met = rep(litt_met, 2))
 
