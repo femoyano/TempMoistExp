@@ -1,18 +1,15 @@
-# Run_script
+### Run_script
 
-# Documentation ================================================================
-# Scipt for setting options and running the model
-source("plot_results.R")
-runscript <- TRUE # flag for the main file
-
-# Choose to run spinup and/or transient run
-spinup <- F
-trans <- T
-
-### General Setup ==============================================================
-model.name  <- "EMDA"
+### User Setup ==============================================================
+spinup <- 0
+trans <- 1
+model.name  <- "EDA"
 spinup.data <- "Standard1"
 trans.data  <- "LitterInc1"
+
+### Non User Setup =============================================================
+source("plot_results.R")
+runscript <- TRUE # flag for the main file
 
 ### ============================================================================
 spinup.name <- paste(model.name, spinup.data, sep="_")
@@ -40,12 +37,14 @@ if(spinup) {
 if(trans) {
   input.file  <- paste("input_", trans.data, ".csv", sep="")
   run.name    <- trans.name
+  eq.stop     <- FALSE       # Stop at equilibrium?
+  eq.md       <- 20         # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
   load(paste("../OutputData/", spinup.name, "_spinup.Rdata", sep=""))
-  rm(initial_state)
+  if(exists("initial_state")) rm(initial_state)
   init <- tail(get(spinup.name), 1)
   initial_state <- c(
     PC  = init$PC[1]  ,
-    SCw = init$SCb[1] ,
+    SCw = init$SCw[1] ,
     SCs = init$SCs[1] ,
     ECb = init$ECb[1] ,
     ECm = init$ECm[1] ,

@@ -89,11 +89,11 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       ECb <- ECb - F_ecb.scw
       SCw <- SCw + F_ecb.scw
       
-      # This section makes sure that there are no negative C pools, which should not happen if conditions in flux functions are set correctly.
-      if(PC * SCw * SCs * ECb * ECm * ECs <= 0) stop("A state variable became 0 or negative. This should not happen")
+#       # This section makes sure that there are no negative C pools, which should not happen if conditions in flux functions are set correctly.
+#       if(PC * SCw * SCs * ECb * ECm * ECs <= 0) stop("A state variable became 0 or negative. This should not happen")
       
       # Check for equilibirum conditions
-      if (spinup & eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
+      if (eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
         if (CheckEquil(out[,2], i, eq.md, tsave, tstep, year, depth)) {
           print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_step, i,". Value at equilibrium is ", PC, ".", sep=" "))
           setbreak <- TRUE
