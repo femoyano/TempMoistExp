@@ -18,8 +18,10 @@ PlotResults <- function(out) {
   plot(out.agg$ECs, type=t)
   plot(out.agg$CO2, type=t)
   plot(out.agg$TOC, type=t)
-  plot((out.agg$PC / out.agg$PC[1]-1) * 100, type=t, ylim=c(-15,15), xlim=c(0,100))
-  plot((out.agg$TOC / out.agg$TOC[1]-1) * 100, type=t, ylim=c(-15,15), xlim=c(0,100))
+  plot(out.agg$temp, type=t)
+  plot(out.agg$moist, type=t)
+#   plot((out.agg$PC / out.agg$PC[1]-1) * 100, type=t, ylim=c(-15,15), xlim=c(0,100))
+#   plot((out.agg$TOC / out.agg$TOC[1]-1) * 100, type=t, ylim=c(-15,15), xlim=c(0,100))
   
   # graphics.off()
 }
