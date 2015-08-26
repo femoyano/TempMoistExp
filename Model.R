@@ -34,7 +34,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     Em  <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     # Create matrix to hold output
-    out <- matrix(ncol = 1 + length(initial_state), nrow = floor(nt * tstep / tsave))
+    out <- matrix(ncol = 3 + length(initial_state), nrow = floor(nt * tstep / tsave))
     
     setbreak <- 0 # break flag for spinup runs
     
@@ -43,7 +43,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], PC, SCw, SCs, ECb, ECm, ECs, CO2)
+        out[j,] <- c(times[i], PC, SCw, SCs, ECb, ECm, ECs, CO2, temp[i], moist[i])
       }
 # browser()
       # Calculate all fluxes
@@ -102,7 +102,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       if (setbreak) break
     } # end for loop
     
-    colnames(out) <- c("time", "PC", "SCw", "SCs", "ECb", "ECm", "ECs", "CO2")
+    colnames(out) <- c("time", "PC", "SCw", "SCs", "ECb", "ECm", "ECs", "CO2", "temp", "moist")
     
     out <- as.data.frame(out)
     out <- out[1:(floor(i * tstep / tsave)),]
