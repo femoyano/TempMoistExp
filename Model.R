@@ -39,13 +39,13 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     setbreak <- 0 # break flag for spinup runs
     
     for(i in 1:length(times)) {
-
+# browser()
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
         out[j,] <- c(times[i], PC, SCw, SCs, ECb, ECm, ECs, CO2, temp[i], moist[i])
       }
-# browser()
+
       # Calculate all fluxes
       F_sl.pc    <- F_litter(litter_pc[i])
       PC <- PC + F_sl.pc
@@ -69,7 +69,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       SCw  <- SCw - F_scw.diff
       
       F_scw.co2 <- F_scw.diff * (1 - CUE)
-      CO2 <- CO2 + F_scw.co2
+      CO2 <- F_scw.co2
       
       F_scw.ecm  <- F_scw.diff * CUE * Ep
       ECm <- ECm + F_scw.ecm

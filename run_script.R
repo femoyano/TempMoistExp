@@ -1,11 +1,12 @@
 ### Run_script
+rm(list=ls())
 
 ### User Setup ==============================================================
 spinup <- 0
 trans <- 1
 model.name  <- "EDA"
-spinup.data <- "Standard1"
-trans.data  <- "LitterInc1"
+spinup.data <- "Wetzstein"
+trans.data  <- "Wetzstein"
 
 ### Non User Setup =============================================================
 source("plot_results.R")
@@ -21,9 +22,9 @@ if(spinup) {
   run.name    <- spinup.name
   eq.stop     <- TRUE       # Stop at equilibrium?
   eq.md       <- 20         # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
-  t.max.spin  <- 800000     # maximum run time for spinup runs (in t_step units)
+  t.max.spin  <- 200000     # maximum run time for spinup runs (in t_step units)
   t_step      <- "hour"     # model time step (as string). Keep "hour" for correct equilibrium values
-  t_save      <- "month"    # time unit at which to save output. Cannot be less than t_step
+  t_save      <- "day"    # time unit at which to save output. Cannot be less than t_step
   source("initial_state.r") # Loads initial state variable values
   source("main.R")
   out$TOC <- rowSums(out[,2:7])
@@ -39,7 +40,8 @@ if(trans) {
   run.name    <- trans.name
   eq.stop     <- FALSE       # Stop at equilibrium?
   eq.md       <- 20         # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
-  load(paste("../OutputData/", spinup.name, "_spinup.Rdata", sep=""))
+#   load(paste("../OutputData/", spinup.name, "_spinup.Rdata", sep=""))
+  load(paste("../OutputData/", trans.name, "_trans.Rdata", sep=""))
   if(exists("initial_state")) rm(initial_state)
   init <- tail(get(spinup.name), 1)
   initial_state <- c(
@@ -53,7 +55,7 @@ if(trans) {
   )
   spinup      <- FALSE      # If TRUE then spinup run and data will be recylced.
   t_step      <- "hour"     # model time step (as string). Keep "hour" for correct equilibrium values
-  t_save      <- "month"    # time unit at which to save output. Cannot be less than t_step
+  t_save      <- "hour"    # time unit at which to save output. Cannot be less than t_step
   source("main.R")
   out$TOC <- rowSums(out[,2:7])
   # assign run name and save

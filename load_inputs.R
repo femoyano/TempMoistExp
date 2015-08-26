@@ -8,9 +8,9 @@
 ### ============================================================================
 
 ### Spatial Variables ==========================================================
-sand   <- 0.30  # [g g^-1] clay fraction values 
-clay   <- 0.30  # [g g^-1] sand fraction values 
-silt   <- 0.40  # [g g^-1] silt fraction values 
+sand   <- 0.70  # [g g^-1] clay fraction values 
+clay   <- 0.10  # [g g^-1] sand fraction values 
+silt   <- 0.20  # [g g^-1] silt fraction values 
 ps     <- 0.5   # [m^3 m^-3] soil pore space
 pd     <- 2.7   # [g cm-3] soil particule density
 depth  <- 0.30  # [m] soil depth

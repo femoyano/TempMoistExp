@@ -45,12 +45,12 @@ source("load_inputs.R")
 
 # debugonce(F_sorp)
 
-# Define model times: start and end
-start <- ifelse(spinup, 1, input.data[1,1] )
-end   <- ifelse(spinup, t.max.spin, tail(input.data[,1], 1) )
+# Obtain data times: start and end
+start <- input.data[1,1]
+end   <- tail(input.data[,1], 1)
 
 # Create model time step vector
-times <- seq(start, end)
+ifelse(spinup, times <- seq(1, t.max.spin), times <- seq(start, end))
 nt    <- length(times)
 
 temp        <- input.data$temp       # [K] soil temperature
@@ -60,17 +60,17 @@ litter_pc   <- input.data$litter_str # [mgC m^2] structural litter going to pc
 times_input <- input.data[,1]        # time vector of input data
 
 # Interpolate input variables
-litter_pc <- approx(times_input, litter_pc, xout=times, rule=2)$y
-litter_sc <- approx(times_input, litter_sc, xout=times, rule=2)$y
-temp      <- approx(times_input, temp, xout=times, rule=2)$y
-moist     <- approx(times_input, moist, xout=times, rule=2)$y
+litter_pc <- approx(times_input, litter_pc, xout=seq(start, end), rule=2)$y
+litter_sc <- approx(times_input, litter_sc, xout=seq(start, end), rule=2)$y
+temp      <- approx(times_input, temp, xout=seq(start, end), rule=2)$y
+moist     <- approx(times_input, moist, xout=seq(start, end), rule=2)$y
 
 # If spinup, repeat input data
 if(spinup) {
-  temp  <- rep(temp, length.out = end)
-  moist <- rep(moist, length.out = end)
-  litter_pc <- rep(litter_pc,  length.out = end)
-  litter_sc <- rep(litter_sc,  length.out = end)
+  temp  <- rep(temp, length.out = t.max.spin)
+  moist <- rep(moist, length.out = t.max.spin)
+  litter_pc <- rep(litter_pc,  length.out = t.max.spin)
+  litter_sc <- rep(litter_sc,  length.out = t.max.spin)
 }
 
 out <- Model(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, temp, moist, litter_pc, litter_sc)
