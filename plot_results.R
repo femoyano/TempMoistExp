@@ -1,10 +1,10 @@
-PlotResults <- function(out) {
+PlotResults <- function(out, agg.time) {
   year  <- 31104000 # seconds in a year
   month <- 2592000  # seconds in a month
   day   <- 86400    # seconds in a day
   hour  <- 3600     # seconds in an hour
   tstep <- hour
-  agg.time <- day
+  agg.time <- agg.time
   
   out.agg <- aggregate(out, by=list(x=ceiling(out[,1]*tstep/agg.time)), FUN=mean)
 
