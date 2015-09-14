@@ -9,10 +9,10 @@
 ### Option 1: input data from file  ============================================
 
 # Spatial soil data
-soil.data             <- read.csv(soil.file)
+soil.data  <- read.csv(soil.file)
 
 # Forcing and input data
-input.data            <- read.csv(input.file) # input data file
+input.data <- read.csv(input.file) # input data file
 
 ### Option 2: manually enter input data ======================================== ####
 
