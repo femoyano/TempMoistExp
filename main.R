@@ -40,24 +40,9 @@ source("Model.R")
 # Load input data
 source("load_inputs.R")
 
-
-## Debuging ====================================================================
-
-# debugonce(F_sorp)
-
-# Obtain data times: start and end
-start <- input.data[1,1]
-end   <- tail(input.data[,1], 1)
-
 # Create model time step vector
 ifelse(spinup, times <- seq(1, t.max.spin), times <- seq(start, end))
 nt    <- length(times)
-
-temp        <- input.data$temp       # [K] soil temperature
-moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moisture
-litter_sc   <- input.data$litter_met # [mgC m^2] metabolic litter going to sc
-litter_pc   <- input.data$litter_str # [mgC m^2] structural litter going to pc
-times_input <- input.data[,1]        # time vector of input data
 
 # Interpolate input variables
 litter_pc <- approx(times_input, litter_pc, xout=seq(start, end), rule=2)$y
