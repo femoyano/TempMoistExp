@@ -46,8 +46,8 @@ ifelse(spinup, times <- seq(1, t.max.spin), times <- seq(start, end))
 nt    <- length(times)
 
 # Interpolate input variables
-litter_pc <- approx(times_input, litter_pc, xout=seq(start, end), rule=2)$y
-litter_sc <- approx(times_input, litter_sc, xout=seq(start, end), rule=2)$y
+litter_str <- approx(times_input, litter_str, xout=seq(start, end), rule=2)$y
+litter_met <- approx(times_input, litter_met, xout=seq(start, end), rule=2)$y
 temp      <- approx(times_input, temp, xout=seq(start, end), rule=2)$y
 moist     <- approx(times_input, moist, xout=seq(start, end), rule=2)$y
 
@@ -55,8 +55,8 @@ moist     <- approx(times_input, moist, xout=seq(start, end), rule=2)$y
 if(spinup) {
   temp  <- rep(temp, length.out = t.max.spin)
   moist <- rep(moist, length.out = t.max.spin)
-  litter_pc <- rep(litter_pc,  length.out = t.max.spin)
-  litter_sc <- rep(litter_sc,  length.out = t.max.spin)
+  litter_str <- rep(litter_str,  length.out = t.max.spin)
+  litter_met <- rep(litter_met,  length.out = t.max.spin)
 }
 
-out <- Model(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, temp, moist, litter_pc, litter_sc)
+out <- Model(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, temp, moist, litter_str, litter_met)

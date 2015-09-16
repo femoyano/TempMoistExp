@@ -26,7 +26,7 @@ spinup.name <- paste(model.name, spinup.data, sep="_")
 trans.name  <- paste(model.name, trans.data, sep="_")
 
 ### Non User Setup =============================================================
-source("plot_results.R")
+source("PlotResults.R")
 runscript <- TRUE # flag for the main file
 
 ### Spinup run =================================================================

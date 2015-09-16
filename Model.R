@@ -2,19 +2,16 @@
 
 ### Documentation ==============================================================
 # Main function running the model.
-# This function prepares the input data, then loops over the time variable where
+# This function loops over the time variable where
 # it calls the flux functions, calculates the changes in each pool,
 # and returns the values for each time point in a data frame.
-
-# ModelMin version has the minimum number of processes:
-# Only 1 litter pool, no diffusion, no sorbtion, no immobile C, microbe implicit.
 ### ============================================================================
 
-Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, temp, moist, litter_pc, litter_sc) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, temp, moist, litter_str, litter_met) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(initial_state, parameters)), {
 
-    # Calculate spatially dependent variables
+    # Calculate spatially changing variables
     #     moist_d   <- c(0, diff(moist * depth))            # [m^3] change in water content relative to previous time step
     b       <- 2.91 + 15.9 * clay                     # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
     psi_sat <- exp(6.5 - 1.3 * sand) / 1000           # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
@@ -107,6 +104,6 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     out <- as.data.frame(out)
     out <- out[1:(floor(i * tstep / tsave)),]
     
-  }) # end of with...
+  }) # end of with(...
   
 } # end of model.run

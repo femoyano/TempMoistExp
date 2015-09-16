@@ -38,12 +38,9 @@ input.data <- read.csv(input.file) # input data file
 
 temp        <- input.data$temp       # [K] soil temperature
 moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moisture
-litter_sc   <- input.data$litter_met # [mgC m^2] metabolic litter going to sc
-litter_pc   <- input.data$litter_str # [mgC m^2] structural litter going to pc
+litter_met  <- input.data$litter_met / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model time step rate
+litter_str  <- input.data$litter_str / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model time step rate
 times_input <- input.data[,1]        # time vector of input data
-
-litter_sc   <- litter_sc / hour * tstep # convert litter input rates to the model time step rate
-litter_pc   <- litter_pc / hour * tstep # convert litter input rates to the model time step rate
 
 # convert times to model times
 input.tstep <- get(names(input.data)[1])
