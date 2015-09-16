@@ -69,7 +69,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       SCw  <- SCw - F_scw.diff
       
       F_scw.co2 <- F_scw.diff * (1 - CUE)
-      CO2 <- F_scw.co2
+      CO2 <- CO2 + F_scw.co2
       
       F_scw.ecm  <- F_scw.diff * CUE * Ep
       ECm <- ECm + F_scw.ecm
