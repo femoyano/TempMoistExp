@@ -41,6 +41,9 @@ source("Model.R")
 # Load input data
 source("load_inputs.R")
 
+# Create model time step vector
+ifelse(spinup, times <- seq(1, t.max.spin), times <- seq(start, end))
+
 # Interpolate input variables
 litter_str <- approx(times_input, litter_str, xout=seq(start, end), rule=2)$y
 litter_met <- approx(times_input, litter_met, xout=seq(start, end), rule=2)$y
@@ -55,4 +58,4 @@ if(spinup) {
   litter_met <- rep(litter_met,  length.out = t.max.spin)
 }
 
-out <- Model(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, temp, moist, litter_str, litter_met)
+out <- Model(spinup, eq.stop, times, tstep, tsave, initial_state, parameters, temp, moist, litter_str, litter_met)

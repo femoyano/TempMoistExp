@@ -7,7 +7,7 @@
 # and returns the values for each time point in a data frame.
 ### ============================================================================
 
-Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, parameters, temp, moist, litter_str, litter_met) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameters, temp, moist, litter_str, litter_met) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(initial_state, parameters)), {
 
@@ -31,8 +31,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     Em  <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     # Create matrix to hold output
-    nt <- length(temp) # get the number of time steps in the input data
-    out <- matrix(ncol = 3 + length(initial_state), nrow = floor(nt * tstep / tsave))
+    out <- matrix(ncol = 3 + length(initial_state), nrow = floor(length(times) * tstep / tsave))
     
     setbreak <- 0 # break flag for spinup runs
     
@@ -45,10 +44,10 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
       }
 
       # Calculate all fluxes
-      F_sl.pc    <- F_litter(litter_pc[i])
+      F_sl.pc    <- F_litter(litter_str[i])
       PC <- PC + F_sl.pc
       
-      F_ml.scw   <- F_litter(litter_sc[i])
+      F_ml.scw   <- F_litter(litter_met[i])
       SCw <- SCw + F_ml.scw
       
       F_pc.scw   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist[i], fc, depth)
