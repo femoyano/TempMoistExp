@@ -31,6 +31,7 @@ Model <- function(spinup, eq.stop, start, end, tstep, tsave, initial_state, para
     Em  <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     # Create matrix to hold output
+    nt <- length(temp) # get the number of time steps in the input data
     out <- matrix(ncol = 3 + length(initial_state), nrow = floor(nt * tstep / tsave))
     
     setbreak <- 0 # break flag for spinup runs
