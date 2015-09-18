@@ -8,11 +8,6 @@
 
 # Functions calculating the fluxes of C.
 
-# Litter input
-F_litter <- function (litter_flux) { # the input of litter is prescribed; no calculations are required
-  F <- litter_flux
-}
-
 # Decomposition flux
 F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
   PC <- PC / depth * min(1, moist / fc) # scaled with max at fc
@@ -21,39 +16,10 @@ F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
   ifelse(F > PC, PC, F)
 }
 
-# # Microbial C uptake
-# F_uptake <- function (SC, V, K, moist, fc, depth) {
-#   SC <- SC / (moist * depth) # concetration in water phase
-#   F <- (V * SC) / (K + SC) * (moist * depth)
-#   ifelse(F > SC, SC, F)
-# }
-
-# # Microbe to enzyme
-# F_mc.ecm <- function (MC, Ep, Mm) {
-#   F <- (MC - (MC * Mm)) * Ep
-#   ifelse(F > MC, MC, F)
-# }
-
-# # Microbe death
-# F_mc.pcscw <- function (MC, Mm) {
-#   F <- MC * Mm
-#   ifelse(F > MC, MC, F)
-# }
-
 # Enzymes decay
 F_ec.sc <- function (EC, Em) {
   F <- EC * Em
   ifelse(F > EC, EC, F)
-}
-
-# Diffusion flux
-# Here dividing by moist and depth for specific concentrations and multiplying 
-# again for total cancels out, so they are left out.
-F_diffusion <- function (C1, C2, D_0, moist, dist, ps, Rth) {
-  if (moist <= Rth) return(0)
-  D <- D_0 * (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
-  F <- D * (C1 - C2) / dist
-  ifelse(abs(F) > abs((C1 - C2) / 2), (C1 - C2) / 2, F)
 }
 
 # Sorption to mineral surface

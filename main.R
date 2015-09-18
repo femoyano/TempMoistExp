@@ -8,7 +8,7 @@
 ### Setup if run script is not used ============================================
 if(!exists("runscript")) {
   input.file  <- "input.csv"
-  soil.file   <- "soil.csv"
+  site.file   <- "site.csv"
   spinup      <- TRUE    # If TRUE then spinup run and data will be recylced.
   eq.stop     <- FALSE   # Stop at equilibrium?
   eq.md       <- 1       # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.

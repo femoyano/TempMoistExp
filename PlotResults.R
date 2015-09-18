@@ -1,27 +1,29 @@
-PlotResults <- function(out, agg.time) {
+PlotResults <- function(data, agg.time, path, name) {
+
   year  <- 31104000 # seconds in a year
   month <- 2592000  # seconds in a month
   day   <- 86400    # seconds in a day
   hour  <- 3600     # seconds in an hour
   tstep <- hour
-  agg.time <- agg.time
+  agg_t <- get(agg.time)
   
-  out.agg <- aggregate(out, by=list(x=ceiling(out[,1]*tstep/agg.time)), FUN=mean)
+  data.agg <- aggregate(data, by=list(x=ceiling(data[,1]*tstep/agg_t)), FUN=mean)
 
-  # png()
-  t <- "p"
-  plot(out.agg$PC, type=t) #/out.agg$PC[1]-1) * 100, ylim=c(-50,50), xlim=c(0,100), type=t)
-#   plot(out.agg$SCw, type=t)
-#   plot(out.agg$SCs, type=t)
-#   plot(out.agg$ECb, type=t)
-#   plot(out.agg$ECm, type=t)
-#   plot(out.agg$ECs, type=t)
-  plot(out.agg$CO2, type=t)
-  plot(out.agg$TOC, type=t)
-#   plot(out.agg$temp, type=t)
-#   plot(out.agg$moist, type=t)
-#   plot((out.agg$PC / out.agg$PC[1]-1) * 100, type=t, ylim=c(-15,15), xlim=c(0,100))
-#   plot((out.agg$TOC / out.agg$TOC[1]-1) * 100, type=t, ylim=c(-15,15), xlim=c(0,100))
-  
-  # graphics.off()
+  ty <- "l"
+  vars <- names(data.agg)
+  for (i in 3:length(vars)) {
+    fname <- paste(path, name, "_", vars[i],".png",sep="")
+    png(filename = fname)
+    plot(data.agg[,i], type=ty, xlab = agg.time, ylab=vars[i])
+    graphics.off()
+    
+    # plot relative changes
+    if(vars[i] == "TOC" | vars[i] == "PC") {
+      fname <- paste(path, name, "_", vars[i],"_relative.png",sep="")
+      png(filename = fname)
+      plotdata <- (data.agg[,i] / data.agg[1,i] - 1) * 100
+      plot(plotdata, type=ty, ylim=c(-15,15), xlab = agg.time, ylab=vars[i])
+      graphics.off()
+    }
+  }
 }

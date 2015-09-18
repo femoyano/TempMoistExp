@@ -9,7 +9,7 @@
 ### Option 1: input data from file  ============================================
 
 # Spatial soil data
-soil.data  <- read.csv(soil.file)
+site.data  <- read.csv(site.file)
 
 # Forcing and input data
 input.data <- read.csv(input.file) # input data file
@@ -46,13 +46,13 @@ times_input <- input.data[,1]        # time vector of input data
 input.tstep <- get(names(input.data)[1])
 times_input <- times_input * input.tstep / tstep
 
-sand   <- soil.data$sand  # [g g^-1] clay fraction values 
-clay   <- soil.data$clay  # [g g^-1] sand fraction values 
-silt   <- soil.data$silt  # [g g^-1] silt fraction values 
-ps     <- soil.data$ps    # [m^3 m^-3] soil pore space
-depth  <- soil.data$depth # [m] soil depth
+sand   <- site.data$sand  # [g g^-1] clay fraction values 
+clay   <- site.data$clay  # [g g^-1] sand fraction values 
+silt   <- site.data$silt  # [g g^-1] silt fraction values 
+ps     <- site.data$ps    # [m^3 m^-3] soil pore space
+depth  <- site.data$depth # [m] soil depth
 
-rm(input.data, soil.data)
+rm(input.data, site.data)
 
 ### Obtain data times: start and end ===========================================
 
