@@ -2,12 +2,12 @@
 rm(list=ls())
 
 ### User Setup =================================================================
-spin <- 0
+spin <- 1
 trans <- 1
 model.name  <- "EDA"
 site.name   <- "Wetzstein"
-spinup.data <- "WetzsteinSM08"
-trans.data  <- "WetzsteinSM08"
+spinup.data <- "WetzsteinSM16"
+trans.data  <- "WetzsteinSM16"
 
 t.max.spin     <- 300000    # maximum run time for spinup runs (in t_step units)
 t_save_spinup  <- "day"    # time interval at which to save spinup output. Same or larger than t_step.
