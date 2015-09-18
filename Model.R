@@ -93,6 +93,9 @@ Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameter
     
     out <- as.data.frame(out)
     out <- out[1:(floor(i * tstep / tsave)),]
+    out$CO2.rate <- c(0, diff(out$CO2))
+
+    return(out)
     
   }) # end of with(...
   

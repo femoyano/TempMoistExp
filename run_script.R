@@ -2,7 +2,7 @@
 rm(list=ls())
 
 ### User Setup =================================================================
-spin <- 1
+spin <- 0
 trans <- 1
 model.name  <- "EDA"
 site.name   <- "Wetzstein"

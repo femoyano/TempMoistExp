@@ -22,7 +22,7 @@ PlotResults <- function(data, agg.time, path, name) {
       fname <- paste(path, name, "_", vars[i],"_relative.png",sep="")
       png(filename = fname)
       plotdata <- (data.agg[,i] / data.agg[1,i] - 1) * 100
-      plot(plotdata, type=ty, ylim=c(-15,15), xlab = agg.time, ylab=vars[i])
+      plot(plotdata, type=ty, xlab = agg.time, ylab=vars[i])
       graphics.off()
     }
   }
