@@ -4,8 +4,9 @@
 ### Documentation ==============================================================
 # Main program file.
 # Soil model: SCM
+### Libraries ==================================================================
 
-### Setup if run script is not used ============================================
+### Setup variables if run script is not used ==================================
 if(!exists("runscript")) {
   input.file  <- "input.csv"
   site.file   <- "site.csv"
