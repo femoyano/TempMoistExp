@@ -31,6 +31,7 @@ Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameter
     out <- matrix(ncol = 1 + extra + length(initial_state), nrow = floor(length(times) * tstep / tsave))
     
     setbreak   <- 0 # break flag for spinup runs
+    if(!enzyme.diff) ECm <- 0
 
     # Set initial values for variables that can be optionally saved
     diffmod    <- 0 # initial values for saving diff values
@@ -54,27 +55,48 @@ Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameter
       diffmod  <- ifelse(moist[i] <= Rth, 0, (ps - Rth)^1.5 * ((moist[i] - Rth)/(ps - Rth))^2.5)
                          
       F_sl.pc    <- litter_str[i]
+      PC <- PC + F_sl.pc
+      
       F_ml.scw   <- litter_met[i]
+      SCw <- SCw + F_ml.scw
+      
       F_pc.scw   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist[i], fc, depth)
-      F_scw.scs  <- F_sorp(SCw, SCs, ECb, ECs, M, K_SM[i], K_EM[i], moist[i], fc, depth)
-      F_ecb.ecs  <- F_sorp(ECb, ECs, SCw, SCs, M, K_EM[i], K_SM[i], moist[i], fc, depth)
+      if(F_pc.scw > PC) F_pc.scw <- PC
+      PC  <- PC - F_pc.scw
+      SCw <- SCw + F_pc.scw
+      
+      if (adsorption) {
+        F_scw.scs  <- F_sorp(SCw, SCs, ECb, ECs, M, K_SM[i], K_EM[i], moist[i], fc, depth)
+        SCw <- SCw - F_scw.scs
+        SCs <- SCs + F_scw.scs
+        
+        F_ecb.ecs  <- F_sorp(ECb, ECs, SCw, SCs, M, K_EM[i], K_SM[i], moist[i], fc, depth)
+        ECb <- ECb - F_ecb.ecs
+        ECs <- ECs + F_ecb.ecs
+      }
+
       F_scw.diff <- diffmod * D_S0 * (SCw - 0) / dist # concentration at microbe assumed to be 0 
-      F_scw.co2  <- F_scw.diff * (1 - CUE)
-      F_scw.ecm  <- F_scw.diff * CUE * Ep
-      F_scw.pc   <- F_scw.diff * CUE * (1 - Ep)
-      F_ecm.ecb  <- diffmod * D_E0 * (ECm - ECb) / dist
-      F_ecm.scw  <- F_ec.sc(ECm, Em[i])
-      F_ecb.scw  <- F_ec.sc(ECb, Em[i])
+      if(F_scw.diff > SCw) F_scw.diff <- SCw
+      SCw <- SCw - F_scw.diff
+      CO2 <- CO2 + F_scw.diff * (1 - CUE)
+      PC  <- PC  + F_scw.diff * CUE * (1 - Ep)
       
-      # For stepwise model, limit the fluxes to the pool sizes
-      
-      PC  <- PC  + F_sl.pc + F_scw.pc - F_pc.scw
-      SCw <- SCw + F_ml.scw + F_pc.scw + F_ecm.scw + F_ecb.scw - F_scw.scs - F_scw.diff
-      SCs <- SCs + F_scw.scs
-      ECb <- ECb + F_ecm.ecb - F_ecb.scw - F_ecb.ecs
-      ECs <- ECs + F_ecb.ecs
-      CO2 <- CO2 + F_scw.co2
-      ECm <- ECm + F_scw.ecm - F_ecm.ecb - F_ecm.scw
+      if (enzyme.diff) {
+        ECm <- ECm + F_scw.diff * CUE * Ep
+        F_ecm.ecb  <- diffmod * D_E0 * (ECm - ECb) / dist
+        if(F_ecm.ecb > ECm) F_ecm.ecb <- ECm
+        ECm <- ECm - F_ecm.ecb
+        ECb <- ECb + F_ecm.ecb
+        F_ecm.scw  <- F_e.decay(ECm, Em[i])
+        ECm <- ECm - F_ecm.scw
+        SCw <- SCw + F_ecm.scw
+      } else {
+        ECb <- ECb + F_scw.diff * CUE * Ep
+      }
+
+      F_ecb.scw  <- F_e.decay(ECb, Em[i])
+      ECb <- ECb - F_ecb.scw
+      SCw <- SCw + F_ecb.scw      
       
 #       # This section makes sure that there are no negative C pools, which should not happen if conditions in flux functions are set correctly.
 #       if(PC * SCw * SCs * ECb * ECm * ECs <= 0) stop("A state variable became 0 or negative. This should not happen")
