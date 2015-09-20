@@ -9,7 +9,7 @@ site.name   <- "Wetzstein"
 spinup.data <- "WetzsteinSM16"
 trans.data  <- "WetzsteinSM16"
 
-t.max.spin     <- 300000    # maximum run time for spinup runs (in t_step units)
+t.max.spin     <- 100000    # maximum run time for spinup runs (in t_step units)
 t_save_spinup  <- "day"    # time interval at which to save spinup output. Same or larger than t_step.
 t_save_trans   <- "hour"    # time unit at which to save output. Cannot be less than t_step
 eq.stop.spinup <- FALSE     # Stop spinup at equilibrium?
@@ -20,7 +20,7 @@ adsorption <- 0
 enzyme.diff <- 1
 
 ### Optional Setup =============================================================
-input.path        <- file.path("..", "InputData")
+input.path        <- file.path("..", "Input")
 output.path       <- file.path("..", "Output")
 spinup.input.file <- file.path(input.path, paste("input_", spinup.data, ".csv", sep=""))
 trans.input.file  <- file.path(input.path, paste("input_", trans.data, ".csv", sep=""))
@@ -31,6 +31,7 @@ trans.name  <- paste(model.name, trans.data, sep="_")
 
 ### Non User Setup =============================================================
 runscript <- TRUE # flag for the main file
+source("GetInitial.r")
 
 ### Spinup run =================================================================
 if(spin) {
@@ -43,8 +44,8 @@ if(spin) {
   source("initial_state.r") # Loads initial state variable values
   source("main.R")
   print(tail(out, 1))
+  assign(spinup.name, out)
   write.csv(out, file = output.file, row.names =  FALSE)
-
 }
 
 ### Transient run ==============================================================
@@ -61,6 +62,7 @@ if(trans) {
   init <- tail(get(spinup.name), 1)
   initial_state <- GetInitial(init) 
   source("main.R")
+  assign(trans.name, out)
   write.csv(out, file = output.file, row.names =  FALSE)
   print(tail(out, 1))
 }
