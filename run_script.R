@@ -15,9 +15,13 @@ t_save_trans   <- "hour"    # time unit at which to save output. Cannot be less 
 eq.stop.spinup <- FALSE     # Stop spinup at equilibrium?
 eq.md          <- 20        # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
 
-### Optional Setup =============================================================
+# Flags!
+adsorption <- 0
+enzyme.diff <- 1
 
+### Optional Setup =============================================================
 input.path        <- file.path("..", "InputData")
+output.path       <- file.path("..", "Output")
 spinup.input.file <- file.path(input.path, paste("input_", spinup.data, ".csv", sep=""))
 trans.input.file  <- file.path(input.path, paste("input_", trans.data, ".csv", sep=""))
 site.file         <- file.path(input.path, paste("input_site_", site.name, ".csv", sep=""))
@@ -31,45 +35,33 @@ runscript <- TRUE # flag for the main file
 ### Spinup run =================================================================
 if(spin) {
   input.file  <- spinup.input.file
-  run.name    <- spinup.name
+  output.file    <- file.path(output.path, paste(spinup.name, ".csv", sep=""))
   spinup      <- TRUE      # If TRUE then spinup run and data will be recylced.
   eq.stop     <- eq.stop.spinup
   t_step      <- "hour" # model time step (as string). Keep "hour" for correct equilibrium values
   t_save      <- t_save_spinup
   source("initial_state.r") # Loads initial state variable values
   source("main.R")
-  out$TOC <- rowSums(out[,2:7])
   print(tail(out, 1))
-  assign(run.name, out)
-  save(list=run.name, file = paste("../OutputData/", run.name, "_spinup.Rdata", sep=""))
+  write.csv(out, file = output.file, row.names =  FALSE)
+
 }
 
 ### Transient run ==============================================================
 if(trans) {
   input.file  <- trans.input.file
+  output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
   run.name    <- trans.name
   spinup      <- FALSE      # If TRUE then spinup run and data will be recylced.
   t_step      <- "hour"     # model time step (as string). Keep "hour" for correct equilibrium values
   t_save      <- t_save_trans
   eq.stop     <- FALSE       # Stop at equilibrium?
-  load(paste("../OutputData/", spinup.name, "_spinup.Rdata", sep=""))
-#   load(paste("../OutputData/", trans.name, "_trans.Rdata", sep=""))
+  assign(spinup.name, read.csv(file.path(output.path, paste(spinup.name, ".csv", sep=""))))
   if(exists("initial_state")) rm(initial_state)
   init <- tail(get(spinup.name), 1)
-  initial_state <- c(
-    PC  = init$PC[1]  ,
-    SCw = init$SCw[1] ,
-    SCs = init$SCs[1] ,
-    ECb = init$ECb[1] ,
-    ECm = init$ECm[1] ,
-    ECs = init$ECs[1] ,
-    CO2 = 0
-  )
+  initial_state <- GetInitial(init) 
   source("main.R")
-  out$TOC <- rowSums(out[,2:7])
-  # assign run name and save
-  assign(run.name, out)
-  save(list=run.name, file = paste("../OutputData/", run.name, "_trans.Rdata", sep=""))
+  write.csv(out, file = output.file, row.names =  FALSE)
   print(tail(out, 1))
 }
 
