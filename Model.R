@@ -34,8 +34,9 @@ Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameter
     if(!enzyme.diff) ECm <- 0
 
     # Set initial values for variables that can be optionally saved
-    diffmod    <- 0 # initial values for saving diff values
-    F_sl.pc <- F_ml.scw <- F_pc.scw <- F_scw.scs <- F_ecb.ecs <- 0
+    diffmod_S <- 0 # initial values for saving diff values
+    diffmod_E <- 0 # initial values for saving diff values
+    F_sl.pc   <- F_ml.scw <- F_pc.scw <- F_scw.scs <- F_ecb.ecs <- 0
     F_ecm.ecb <- F_scw.diff <- F_scw.co2 <- F_scw.ecm <- F_scw.pc <- 0
     F_ecm.ecb <- F_ecm.scw  <- F_ecb.scw <- 0
     
@@ -45,14 +46,17 @@ Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameter
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], PC, SCw, SCs, ECb, ECm, ECs, CO2, temp[i], moist[i], F_scw.diff)
+        out[j,] <- c(times[i], PC, SCw, SCs, ECb, ECm, ECs, CO2, temp[i], moist[i], diffmod_S)
       }
 
       # Calculate all fluxes
       # Note: for diffusion fluxes below, dividing by moist and depth for specific concentrations 
       # and multiplying again for total cancel each other out.
+
+      diff    <- ifelse(moist[i] <= Rth, 0, (ps - Rth)^1.5 * ((moist[i] - Rth)/(ps - Rth))^2.5)
+      diffmod_S <- diff / dist * D_S0
+      diffmod_E <- diff / dist * D_E0
       
-      diffmod  <- ifelse(moist[i] <= Rth, 0, (ps - Rth)^1.5 * ((moist[i] - Rth)/(ps - Rth))^2.5)
                          
       F_sl.pc    <- litter_str[i]
       PC <- PC + F_sl.pc
@@ -75,7 +79,7 @@ Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameter
         ECs <- ECs + F_ecb.ecs
       }
 
-      F_scw.diff <- diffmod * D_S0 * (SCw - 0) / dist # concentration at microbe assumed to be 0 
+      F_scw.diff <- diffmod_S * (SCw - 0) # concentration at microbe assumed to be 0 
       if(F_scw.diff > SCw) F_scw.diff <- SCw
       SCw <- SCw - F_scw.diff
       CO2 <- CO2 + F_scw.diff * (1 - CUE)
@@ -83,8 +87,9 @@ Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameter
       
       if (enzyme.diff) {
         ECm <- ECm + F_scw.diff * CUE * Ep
-        F_ecm.ecb  <- diffmod * D_E0 * (ECm - ECb) / dist
+        F_ecm.ecb  <- diffmod_E * (ECm - ECb)
         if(F_ecm.ecb > ECm) F_ecm.ecb <- ECm
+        if((-1 * F_ecm.ecb) > ECb) F_ecm.ecb <- -ECb
         ECm <- ECm - F_ecm.ecb
         ECb <- ECb + F_ecm.ecb
         F_ecm.scw  <- F_e.decay(ECm, Em[i])
@@ -111,7 +116,7 @@ Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameter
       if (setbreak) break
     } # end for loop
     
-    colnames(out) <- c("time", "PC", "SCw", "SCs", "ECb", "ECm", "ECs", "CO2", "temp", "moist", "F_scw.diff")
+    colnames(out) <- c("time", "PC", "SCw", "SCs", "ECb", "ECm", "ECs", "CO2", "temp", "moist", "diffmod_S")
     
     out <- as.data.frame(out)
     out <- out[1:(floor(i * tstep / tsave)),]

@@ -13,11 +13,11 @@ parameters <- c(
   ### Time Dependent Parameters
   Em_ref  = 0.001 / hour * tstep  , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   Ep      = 0.01 / hour * tstep   , # [g g-1] Fraction of SC taken up that is converted to EC. (assumed).
-  V_D_ref = 0.1 / hour * tstep    , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
+  V_D_ref = 1 / hour * tstep    , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
   
   ### Fixed Parameters ====
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
-  K_D_ref  = 100000   , # [gC m-3] Affinity parameter for PC decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
+  K_D_ref  = 300000   , # [gC m-3] Affinity parameter for PC decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
   K_SM_ref = 11       , # [gC m-3] Affinity parameter for SC sorption (Mayes et al. 2012)
   K_EM_ref = 11       , # [gC m-3] Affinity parameter for EC sorption (Mayes et al. 2012)
   mcpc_f   = 0.5      , # [g g^-1] fraction of dead microbes going to SC (rest goes to PC)
