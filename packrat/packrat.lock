@@ -1,7 +1,7 @@
 PackratFormat: 1.4
 PackratVersion: 0.4.1.8
 RVersion: 3.2.2
-Repos: CRAN=http://ftp5.gwdg.de/pub/misc/cran/
+Repos: CRAN=https://cran.uni-muenster.de/
 
 Package: deSolve
 Source: CRAN
@@ -10,8 +10,8 @@ Version: 1.12
 Package: packrat
 Source: github
 Version: 0.4.1.8
+Hash: ee57b7e7ba891d23079b12f1ff5106d0db0594e5
 GithubRepo: packrat
 GithubUsername: rstudio
 GithubRef: v0.98.1000
 GithubSha1: ee57b7e7ba891d23079b12f1ff5106d0db0594e5
-Hash: ee57b7e7ba891d23079b12f1ff5106d0db0594e5
