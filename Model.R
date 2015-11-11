@@ -19,12 +19,12 @@ Model <- function(spinup, eq.stop, times, tstep, tsave, initial_state, parameter
     M       <- 200 * (100 * clay)^0.6 * pd * (1 - ps) # [g m-3] Total C-equivalent mineral surface for sorption (Mayes et al. 2012)
     
     # Calculate temporally changing variables
-    K_D <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
-    K_SM <- Temp.Resp.Eq(K_SM_ref, temp, T_ref, E_K.SM, R)
-    K_EM <- Temp.Resp.Eq(K_EM_ref, temp, T_ref, E_K.EM, R)
-    V_D <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V.D, R)
-    CUE <- CUE_ref
-    Em  <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
+    K_D     <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
+    K_SM    <- Temp.Resp.Eq(K_SM_ref, temp, T_ref, E_K.SM, R)
+    K_EM    <- Temp.Resp.Eq(K_EM_ref, temp, T_ref, E_K.EM, R)
+    V_D     <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V.D, R)
+    CUE     <- CUE_ref
+    Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     # Create matrix to hold output
     extra <- 3 # number of extra variables to save (temp, moist, diffmod, ...)
