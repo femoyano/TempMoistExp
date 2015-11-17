@@ -4,6 +4,7 @@
 # Forcing data will be interpolated to model time step
 # Soil T must be in kelvin and soil moisture in volumetric content
 # Litter input must be in gC m-2 h-1
+# Requires: tunit
 
 ### Option 1: input data from file  ============================================
 
@@ -37,13 +38,13 @@ input.data <- read.csv(input.file) # input data file
 
 temp        <- input.data$temp       # [K] soil temperature
 moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moisture
-litter_met  <- input.data$litter_met # [mgC m^-2 tstep^-1] convert litter input rates to the model time step rate
-litter_str  <- input.data$litter_str # [mgC m^-2 tstep^-1] convert litter input rates to the model time step rate
+litter_met  <- input.data$litter_met / hour * tunit # [mgC m^-2 tunit^-1] convert litter input rates to the model rate
+litter_str  <- input.data$litter_str / hour * tunit # [mgC m^-2 tunit^-1] convert litter input rates to the model rate
 times_input <- input.data[,1]        # time vector of input data
 
 # convert times to model times
 input.tstep <- get(names(input.data)[1])
-times_input <- times_input * input.tstep / hour
+times_input <- times_input * input.tstep / tunit
 
 sand   <- site.data$sand  # [g g^-1] clay fraction values 
 clay   <- site.data$clay  # [g g^-1] sand fraction values 

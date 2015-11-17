@@ -87,3 +87,13 @@ SOM <- seq(0, 1, 0.001)
 plot(0.00005 * (SOM^(-1/3) - 1) ~ SOM)
 
 0.0001 * (0.04^(-1/3) - 1)
+
+
+### ------------------------
+# Check for equilibirum conditions
+if (eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
+  if (CheckEquil(out[,2], i, eq.md, tsave, tstep, year, depth)) {
+    print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_step, i,". Value at equilibrium is ", PC, ".", sep=" "))
+    setbreak <- TRUE
+  }
+}

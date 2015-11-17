@@ -5,10 +5,16 @@
 # equation solver function.
 ### ============================================================================
 
-Model <- function(times, initial_state, parameters) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+Model <- function(t, initial_state, pars) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
-  with(as.list(c(initial_state, parameters)), {
-
+  with(as.list(c(initial_state, pars)), {
+    
+    # Calculate the input and forcing at time t
+    litter_str <- Approx_litter_str(t)
+    litter_met <- Approx_litter_met(t)
+    temp       <- Approx_temp(t)
+    moist      <- Approx_moist(t)
+    
     # Calculate temporally changing variables
     K_D     <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
     K_SM    <- Temp.Resp.Eq(K_SM_ref, temp, T_ref, E_K.SM, R)
@@ -17,80 +23,55 @@ Model <- function(times, initial_state, parameters) { # must be defined as: func
     CUE     <- CUE_ref
     Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
-    if(!enzyme.diff) ECm <- 0
-    diff    <- ifelse(moist[i] <= Rth, 0, (ps - Rth)^1.5 * ((moist[i] - Rth)/(ps - Rth))^2.5)
+    if(!enzyme.diff) ECm  <- 0
+    
+    # Note: for diffusion fluxes, no need to divid by moist and depth to get specific
+    # concentrations and multiply again for total since they cancel out.
+    if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
     diffmod_S <- diff / dist * D_S0
     diffmod_E <- diff / dist * D_E0
 
     # Calculate change rates
-    # Note: for diffusion fluxes below, dividing by moist and depth for specific concentrations 
-    # and multiplying again for total cancel each other out.
-                       
-    F_sl.pc    <- litter_str[i]
-    PC <- PC + F_sl.pc
     
-    F_ml.scw   <- litter_met[i]
-    SCw <- SCw + F_ml.scw
+    F_sl.pc    <- litter_str
+    F_ml.scw   <- litter_met
     
-    F_pc.scw   <- F_decomp(PC, ECb, V_D[i], K_D[i], moist[i], fc, depth)
-    if(F_pc.scw > PC) F_pc.scw <- PC
-    PC  <- PC - F_pc.scw
-    SCw <- SCw + F_pc.scw
+    F_pc.scw   <- F_decomp(PC, ECb, V_D, K_D, moist, fc, depth)
     
     if (adsorption) {
-      F_scw.scs  <- F_sorp(SCw, SCs, ECb, ECs, M, K_SM[i], K_EM[i], moist[i], fc, depth)
-      SCw <- SCw - F_scw.scs
-      SCs <- SCs + F_scw.scs
-      
-      F_ecb.ecs  <- F_sorp(ECb, ECs, SCw, SCs, M, K_EM[i], K_SM[i], moist[i], fc, depth)
-      ECb <- ECb - F_ecb.ecs
-      ECs <- ECs + F_ecb.ecs
-      }
-
+      F_scw.scs  <- F_sorp(SCw, SCs, ECb, ECs, M, K_SM, K_EM, moist, fc, depth)
+      F_ecb.ecs  <- F_sorp(ECb, ECs, SCw, SCs, M, K_EM, K_SM, moist, fc, depth)
+    } else {
+      F_scw.scs <- 0
+      F_ecb.ecs <- 0
+    }
+    
     F_scw.diff <- diffmod_S * (SCw - 0) # concentration at microbe assumed to be 0 
-    if(F_scw.diff > SCw) F_scw.diff <- SCw
-    SCw <- SCw - F_scw.diff
-    CO2 <- CO2 + F_scw.diff * (1 - CUE)
-    PC  <- PC  + F_scw.diff * CUE * (1 - Ep)
+    F_scw.co2  <- F_scw.diff * (1 - CUE)
+    F_scw.pc   <- F_scw.diff * CUE * (1 - Ep)
     
     if (enzyme.diff) {
-      ECm <- ECm + F_scw.diff * CUE * Ep
-      F_ecm.ecb  <- diffmod_E * (ECm - ECb)
-      if(F_ecm.ecb > ECm) F_ecm.ecb <- ECm
-      if((-1 * F_ecm.ecb) > ECb) F_ecm.ecb <- -ECb
-      ECm <- ECm - F_ecm.ecb
-      ECb <- ECb + F_ecm.ecb
-      F_ecm.scw  <- F_e.decay(ECm, Em[i])
-      ECm <- ECm - F_ecm.scw
-      SCw <- SCw + F_ecm.scw
+      F_scw.ecb <- 0
+      F_scw.ecm <- F_scw.diff * CUE * Ep
+      F_ecm.ecb <- diffmod_E * (ECm - ECb)
+      F_ecm.scw <- F_e.decay(ECm, Em)
     } else {
-      ECb <- ECb + F_scw.diff * CUE * Ep
+      F_scw.ecb <- F_scw.diff * CUE * Ep
+      F_scw.ecm <- 0
+      F_ecm.ecb <- 0
+      F_ecm.scw <- 0
     }
-
-    F_ecb.scw  <- F_e.decay(ECb, Em[i])
-    ECb <- ECb - F_ecb.scw
-    SCw <- SCw + F_ecb.scw      
     
-#       # This section makes sure that there are no negative C pools, which should not happen if conditions in flux functions are set correctly.
-#       if(PC * SCw * SCs * ECb * ECm * ECs <= 0) stop("A state variable became 0 or negative. This should not happen")
+    F_ecb.scw  <- F_e.decay(ECb, Em)
     
-    # Check for equilibirum conditions
-    if (eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
-      if (CheckEquil(out[,2], i, eq.md, tsave, tstep, year, depth)) {
-        print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_step, i,". Value at equilibrium is ", PC, ".", sep=" "))
-        setbreak <- TRUE
-      }
-    }
-    if (setbreak) break
-
-    colnames(out) <- c("time", "PC", "SCw", "SCs", "ECb", "ECm", "ECs", "CO2", "temp", "moist", "diffmod_S")
-    
-    out <- as.data.frame(out)
-    out <- out[1:(floor(i * tstep / tsave)),]
-    out$CO2.rate <- c(0, diff(out$CO2))
-
-    return(out)
+    dPC  <- F_sl.pc + F_scw.pc - F_pc.scw
+    dSCw <- F_ml.scw + F_pc.scw + F_ecb.scw + F_ecm.scw - F_scw.diff
+    dSCs <- 
+    dECb <- F
+    dECm <- F
+    dECs <- F
+    CO2  <- F
     
   }) # end of with(...
   
-} # end of model.run
+} # end of Model

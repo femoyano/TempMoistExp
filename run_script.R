@@ -4,16 +4,23 @@ rm(list=ls())
 ### User Setup =================================================================
 spin <- 1
 trans <- 0
-model.name  <- "EDA"
+model.name  <- "EDA-desolve"
 site.name   <- "Wetzstein"
 spinup.data <- "WetzsteinSM16"
 trans.data  <- "WetzsteinSM16"
 
-t.max.spin     <- 300000    # maximum run time for spinup runs (in t_step units)
-t_save_spinup  <- "day"    # time interval at which to save spinup output. Same or larger than t_step.
-t_save_trans   <- "hour"    # time unit at which to save output. Cannot be less than t_step
-eq.stop.spinup <- FALSE     # Stop spinup at equilibrium?
-eq.md          <- 20        # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
+## Getting starting values of state variables for the transient run.
+# init.mode can be either "spinup", "trans", "file" or "default";
+# it gets values from: current spinup, current transient, init.file or initial.state.r, respectively
+# note that runs with same setup will overwrite previous output files
+init.mode   <- "spinup"
+init.file   <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Overwritten if init.mode = "spinup", "trans" or "default". 
+
+spin.years     <- 5000    # maximum years for spinup runs
+t.save.spin    <- "year"  # interval at which to save output during spinup runs (as text).
+t.save.trans   <- "day"   # interval at which to save output during transient runs (as text).
+eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
+eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
 
 # Flags!
 adsorption <- 0
@@ -22,26 +29,26 @@ enzyme.diff <- 1
 ### Optional Setup =============================================================
 input.path        <- file.path("..", "Input")
 output.path       <- file.path("..", "Output")
-spinup.input.file <- file.path(input.path, paste("input_", spinup.data, ".csv", sep=""))
-trans.input.file  <- file.path(input.path, paste("input_", trans.data, ".csv", sep=""))
-site.file         <- file.path(input.path, paste("input_site_", site.name, ".csv", sep=""))
+spinup.input.file <- file.path(input.path, paste("input_"     , spinup.data, ".csv", sep=""))
+trans.input.file  <- file.path(input.path, paste("input_"     , trans.data , ".csv", sep=""))
+site.file         <- file.path(input.path, paste("input_site_", site.name  , ".csv", sep=""))
 
 spinup.name <- paste("spinup", model.name, spinup.data, sep="_")
 trans.name  <- paste("trans", model.name, trans.data, sep="_")
 
+t.unit      <- "hour" # Unit used for all rates (as string). Should not change results when using ode solver (test?)
+
 ### Non User Setup =============================================================
-runscript <- TRUE # flag for the main file
+runscript <- TRUE # flag for main file
 source("GetInitial.r")
 
 ### Spinup run =================================================================
 if(spin) {
+  spinup      <- TRUE # set spinup flag
   input.file  <- spinup.input.file
   spin.output.file <- file.path(output.path, paste(spinup.name, ".csv", sep=""))
   run.name    <- spinup.name
-  spinup      <- TRUE      # If TRUE then spinup run and data will be recylced.
   eq.stop     <- eq.stop.spinup
-  t_step      <- "hour" # model time step (as string). Keep "hour" for correct equilibrium values
-  t_save      <- t_save_spinup
   source("initial_state.r") # Loads initial state variable values
   source("main.R")
   print(tail(out, 1))
@@ -51,16 +58,18 @@ if(spin) {
 
 ### Transient run ==============================================================
 if(trans) {
+  spinup      <- FALSE      # unset spinup flag
   input.file  <- trans.input.file
   output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
   run.name    <- trans.name
-  spinup      <- FALSE      # If TRUE then spinup run and data will be recylced.
-  t_step      <- "hour"     # model time step (as string). Keep "hour" for correct equilibrium values
-  t_save      <- t_save_trans
-  eq.stop     <- FALSE       # Stop at equilibrium?
+  eq.stop     <- FALSE  # do not stop at equilibrium 
   if(exists("initial_state")) rm(initial_state)
-  init <- tail(read.csv(spin.output.file), 1)
-  initial_state <- GetInitial(init) 
+  if(init.mode == "spinup") init.file <- spin.output.file
+  if(trans.init == "trans") init.file <- output.file
+  if(init.mode == "default") source("initial_state.r") else {
+    init <- tail(read.csv(init.file), 1)
+    initial_state <- GetInitial(init) 
+  }
   source("main.R")
   assign(trans.name, out)
   write.csv(out, file = output.file, row.names =  FALSE)
@@ -69,5 +78,5 @@ if(trans) {
 
 # Plot results
 source("PlotResults.R")
-if(spin) PlotResults(get(spinup.name), "month", path = "../Plots/Spinup/", spinup.name)
+if(spin) PlotResults(get(spinup.name), "year", path = "../Plots/Spinup/", spinup.name)
 if(trans) PlotResults(get(trans.name), "day", path = "../Plots/Trans/", trans.name)

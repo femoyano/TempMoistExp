@@ -3,19 +3,19 @@
 # Documentation ====
 # All fixed parameters and constants should be listed here.
 # Variables calculated from input data (e.g. theta_fc, ..) are in main.
-# Warning: time variables and tstep have to be defined before sourcing this file.
+# Warning: time variables and tunit have to be defined before sourcing this file.
 
-parameters <- c(
+pars <- c(
     
   ### Known Constants ====
   R   = 0.008314                  ,  # [kJ K-1 mol-1] gas constant
   
   ### Time Dependent Parameters
-  Em_ref  = 0.001 / hour * tstep  , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
-  Ep      = 0.01 / hour * tstep   , # [g g-1] Fraction of SC taken up that is converted to EC. (assumed).
-  V_D_ref = 1 / hour * tstep    , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
-  D_S0     = 8.1e-10 / sec * tstep  , # [m^2 s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
-  D_E0     = 8.1e-11 / sec * tstep  , # [m^2 s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
+  Em_ref   = 0.001   / hour * tunit  , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
+  Ep       = 0.01    / hour * tunit   , # [g g-1] Fraction of SC taken up that is converted to EC. (assumed).
+  V_D_ref  = 1       / hour * tunit    , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
+  D_S0     = 8.1e-10 / sec  * tunit  , # [m^2 s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+  D_E0     = 8.1e-11 / sec  * tunit  , # [m^2 s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
   
   ### Fixed Parameters ====
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
