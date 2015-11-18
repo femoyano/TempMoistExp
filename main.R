@@ -10,8 +10,13 @@ require(deSolve)
 
 ### Setup variables if run script is not used ==================================
 if(!exists("runscript")) {
-  adsorption  <- 0
-  microbes    <- 1
+  # flags
+  adsorption  <- 0  # should adsorption desortion rates be simulated
+  microbes    <- 1  # should microbes be explicitly represented?
+  h2o.scale    <- 1  # should available pc scale with moisture (with max at fc)?
+  pc.conc     <- 1  # should available pc concentration change with moisture?
+  ec.conc     <- 1  # should SC concentration change with moisture?
+  #setup
   input.file   <- "input.csv"
   site.file    <- "site.csv"
   spinup       <- TRUE    # If TRUE then spinup run and data will be recylced.

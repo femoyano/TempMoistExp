@@ -8,32 +8,119 @@
 
 # Functions calculating the fluxes of C.
 
-# Decomposition flux
-F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
-  PC <- PC / depth * min(1, moist / fc) # scaled with max at fc
-  EC <- EC / (moist * depth) # concetration in water phase
-  F <- (V * EC * PC) / (K + PC) * depth
-  ifelse(F > PC, PC, F)
+##  Decomposition flux ---------
+# The function will depend on the options (flags) chosen
+if(pc.conc & ec.conc & h2o.scale) {
+  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+    pc.mod <- min(1, moist / fc)
+    PC <- PC / (moist * depth) * pc.mod
+    EC <- EC / (moist * depth)
+    F <- (V * EC * PC) / (K + PC) * depth
+  }
+} else if(pc.conc & ec.conc & !h2o.scale) {
+  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+    PC <- PC / (moist * depth)
+    EC <- EC / (moist * depth)  
+    F <- (V * EC * PC) / (K + PC) * depth
+  }
+} else if(pc.conc & !ec.conc & !h2o.scale){
+  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+    PC <- PC / (moist * depth)
+    EC <- EC / depth
+    F <- (V * EC * PC) / (K + PC) * depth
+  }
+} else if (!pc.conc & !ec.conc & !h2o.scale) {
+  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+    PC <- PC / depth
+    EC <- EC / depth
+    F <- (V * EC * PC) / (K + PC) * depth
+  }
+} else if(!pc.conc & !ec.conc & h2o.scale) {
+  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+    pc.mod <- min(1, moist / fc)
+    PC <- PC / depth * pc.mod
+    EC <- EC / depth
+    F <- (V * EC * PC) / (K + PC) * depth
+  }
+}  else if(pc.conc & !ec.conc & h2o.scale) {
+  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+    pc.mod <- min(1, moist / fc)
+    PC <- PC / (moist * depth) * pc.mod
+    EC <- EC / depth
+    F <- (V * EC * PC) / (K + PC) * depth
+  }
+} else if(!pc.conc & ec.conc & h2o.scale) {
+  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+    pc.mod <- min(1, moist / fc)
+    PC <- PC / depth * pc.mod
+    EC <- EC / (moist * depth)
+    F <- (V * EC * PC) / (K + PC) * depth
+  }
+} else if(!pc.conc & ec.conc & !h2o.scale) {
+  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+    PC <- PC / depth
+    EC <- EC / (moist * depth)
+    F <- (V * EC * PC) / (K + PC) * depth
+  }
+} 
+
+## Sorption to mineral surface -------------------------
+# The function will depend on the options (flags) chosen
+
+if(h2o.scale & ec.conc) {
+  F_adsorp <- function (C1w, C1s, C2w, C2s, Mtot, k, moist, fc, depth) {
+    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
+    C1 <- C1w / (depth * moist)
+    C2 <- C2w / (depth * moist)
+    M <- (Mtot - C1s - C2s) * mmod
+    return( (C1 * M * k) * depth ) # this should be changed to reflect competetion effects
+  }
+  F_desorp <- function (Cs, k, moist, fc, depth) {
+    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
+    Cs1 <- Cs / depth * mmod
+    return( Cs1 * k)
+  }
+} else if(h2o.scale & !ec.conc) {
+  F_adsorp <- function (C1w, C1s, C2w, C2s, Mtot, k, moist, fc, depth) {
+    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
+    C1 <- C1w / depth
+    C2 <- C2w / depth
+    M <- (Mtot - C1s - C2s) * mmod
+    return( (C1 * M * k) * depth ) # this should be changed to reflect competetion effects
+  }
+  F_desorp <- function (Cs, k, moist, fc, depth) {
+    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
+    Cs1 <- Cs / depth * mmod
+    return( Cs1 * k)
+  }
+} else if(!h2o.scale & ec.conc) {
+  F_adsorp <- function (C1w, C1s, C2w, C2s, Mtot, k, moist, fc, depth) {
+    C1 <- C1w / (depth * moist)
+    C2 <- C2w / (depth * moist)
+    M <- (Mtot - C1s - C2s)
+    return( (C1 * M * k) * depth ) # this should be changed to reflect competetion effects
+  }
+  F_desorp <- function (Cs, k, moist, fc, depth) {
+    Cs1 <- Cs / depth
+    return( Cs1 * k)
+  }
+} else if(!h2o.scale & !ec.conc) {
+  F_adsorp <- function (C1w, C1s, C2w, C2s, Mtot, k, moist, fc, depth) {
+    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
+    C1 <- C1w / (depth)
+    C2 <- C2w / (depth)
+    M <- (Mtot - C1s - C2s)
+    return( (C1 * M * k) * depth  ) # this should be changed to reflect competetion effects
+  }
+  F_desorp <- function (Cs, k, moist, fc, depth) {
+    Cs1 <- Cs / depth
+    return( Cs1 * k)
+  }
 }
 
-# Enzymes decay
-F_e.decay <- function (EC, Em) {
-  F <- EC * Em
-  ifelse(F > EC, EC, F)
-}
-
-# Sorption to mineral surface
-F_sorp <- function (C1b, C1s, C2b, C2s, M, K_1, K_2, moist, fc, depth) {
-  mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
-  C1 <- (C1b + C1s) / (depth * moist)
-  C2 <- (C2b + C2s) / (depth * moist)
-  M <- M * mmod
-  F <- (C1 * M) / (K_1 * (1 + C1 / K_1 + C2 / K_2 + M / K_1)) * depth - (C1s * mmod)
-  if(F > C1b) C1b else if((-1 * F) > C1s) C1s else F
-}
 
 # ==============================================================================
-# Temperature responses after to Tang and Riley 2014 (supplementary information)
+# Temperature responses after Tang and Riley 2014 (supplementary information)
 
 # Temperature response for equilibrium reactions = Arrhenius (for K values)
 Temp.Resp.Eq <- function(k_ref, T, T_ref, E, R) {

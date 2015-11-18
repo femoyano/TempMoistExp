@@ -32,6 +32,8 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     SC.diff <- diffmod_S * (SCw - 0) # concentration at microbe is 0
     EC.diff <- diffmod_E * (ECw - 0) # concentration at substrate is 0
 
+    fc.scale <- min(1, moist / fc)
+
     
     ## Calculate change rates ---------------------------------------
     
@@ -40,14 +42,14 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     F_ml.scw   <- litter_met
     
     # Decomposition rate
-    F_pc.scw   <- F_decomp(PC, EC.diff, V_D, K_D, moist, fc, depth)
+    F_pc.scw   <- F_decomp(PC, EC.diff, V_D, K_D, moist, fc, depth, fc.scale)
     
     # Adsorption/desorption
     if(adsorption) {
-      F_scw.scs  <- F_sorp(SCw, SCs, ECw, ECs, M, K_SM, K_EM, moist, fc, depth)
-      F_scs.scw  <- F_desorp()
-      F_ecw.ecs  <- F_sorp(ECw , ECs, SCw, SCs, M, K_EM, K_SM, moist, fc, depth)
-      F_ecs.ecw  <- F_desorb()
+      F_scw.scs  <- F_adsorp(SCw, SCs, ECw, ECs, M, ka.s, moist, fc, depth)
+      F_scs.scw  <- F_desorp(SCs, kd.s, moist, fc, depth)
+      F_ecw.ecs  <- F_adsorp(ECw , ECs, SCw, SCs, M, ka.e, moist, fc, depth)
+      F_ecs.ecw  <- F_desorb(ECs, kd.e, moist, fc, depth)
     } else {
       F_scw.scs <- 0
       F_scs.scw <- 0
@@ -73,7 +75,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     }
     
     # Enzyme decay
-    F_ecw.scw  <- F_e.decay(ECw, Em)
+    F_ecw.scw  <- ECw * Em
     
     ## Rate of change calculation for state variables ---------------
     dPC  <- F_sl.pc + F_scw.pc - F_pc.scw

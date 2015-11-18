@@ -22,9 +22,12 @@ t.save.trans   <- "day"   # interval at which to save output during transient ru
 eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
 eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
 
-# Flags!
-adsorption  <- 0
-microbes    <- 1
+# Flags! -----------------------------------------------------------------------
+adsorption  <- 0  # should adsorption desortion rates be simulated?
+microbes    <- 1  # should microbes be explicitly represented?
+h2o.scale    <- 1  # should available pc scale with moisture (with max at fc)?
+pc.conc     <- 1  # should available pc concentration change with moisture?
+ec.conc     <- 1  # should SC concentration change with moisture?
 
 ### Optional Setup =============================================================
 input.path        <- file.path("..", "Input")
