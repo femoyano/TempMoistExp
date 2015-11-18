@@ -10,7 +10,8 @@ require(deSolve)
 
 ### Setup variables if run script is not used ==================================
 if(!exists("runscript")) {
-  
+  adsorption  <- 0
+  microbes    <- 1
   input.file   <- "input.csv"
   site.file    <- "site.csv"
   spinup       <- TRUE    # If TRUE then spinup run and data will be recylced.

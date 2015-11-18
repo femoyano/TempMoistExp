@@ -23,8 +23,8 @@ eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
 eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
 
 # Flags!
-adsorption <- 0
-enzyme.diff <- 1
+adsorption  <- 0
+microbes    <- 1
 
 ### Optional Setup =============================================================
 input.path        <- file.path("..", "Input")

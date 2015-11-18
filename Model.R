@@ -1,9 +1,9 @@
 ### Model.R ================================================================
 
-### Documentation ==============================================================
+### Documentation ==========================================================
 # Function calculating the rates of change. Used later in the differential 
 # equation solver function.
-### ============================================================================
+### ========================================================================
 
 Model <- function(t, initial_state, pars) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
@@ -23,53 +23,63 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     CUE     <- CUE_ref
     Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
-    if(!enzyme.diff) ECm  <- 0
-    
     # Note: for diffusion fluxes, no need to divid by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
     diffmod_S <- diff / dist * D_S0
     diffmod_E <- diff / dist * D_E0
 
-    # Calculate change rates
+    ## Calculate change rates ---------------------------------------
     
+    # Input rate
     F_sl.pc    <- litter_str
     F_ml.scw   <- litter_met
     
-    F_pc.scw   <- F_decomp(PC, ECb, V_D, K_D, moist, fc, depth)
+    # Decomposition rate
+    F_pc.scw   <- F_decomp(PC, ECw, V_D, K_D, moist, fc, depth)
     
-    if (adsorption) {
-      F_scw.scs  <- F_sorp(SCw, SCs, ECb, ECs, M, K_SM, K_EM, moist, fc, depth)
-      F_ecb.ecs  <- F_sorp(ECb, ECs, SCw, SCs, M, K_EM, K_SM, moist, fc, depth)
+    # Diffusion rates
+    F_scw.diff <- diffmod_S * (SCw - 0) # concentration at microbe is 0
+    F_ecw.diff <- diffmod_E * (ECw - 0) # concentration at substrate is 0
+    
+    # Adsorption/desorption
+    if(adsorption) {
+      F_scw.scs  <- F_sorp(SCw, SCs, ECw, ECs, M, K_SM, K_EM, moist, fc, depth)
+      F_scs.scw  <- F_desorp()
+      F_ecw.ecs  <- F_sorp(ECw , ECs, SCw, SCs, M, K_EM, K_SM, moist, fc, depth)
+      F_ecs.ecw  <- F_desorb()
     } else {
       F_scw.scs <- 0
-      F_ecb.ecs <- 0
+      F_scs.scw <- 0
+      F_ecw.ecs <- 0
+      F_ecs.ecw <- 0
     }
     
-    F_scw.diff <- diffmod_S * (SCw - 0) # concentration at microbe assumed to be 0 
-    F_scw.co2  <- F_scw.diff * (1 - CUE)
-    F_scw.pc   <- F_scw.diff * CUE * (1 - Ep)
-    
-    if (enzyme.diff) {
-      F_scw.ecb <- 0
-      F_scw.ecm <- F_scw.diff * CUE * Ep
-      F_ecm.ecb <- diffmod_E * (ECm - ECb)
-      F_ecm.scw <- F_e.decay(ECm, Em)
+    # Microbial growth, mortality, respiration and enzyme production
+    if(microbes) {
+      F_scw.mc  <- F_scw.diff * CUE
+      F_scw.co2 <- F_scw.diff * (1 - CUE)
+      F_mc.pc   <- MC * NA # here goes mortality of mc 
+      F_mc.ecw  <- MC * NA # here goes enzyme production of mc 
     } else {
-      F_scw.ecb <- F_scw.diff * CUE * Ep
-      F_scw.ecm <- 0
-      F_ecm.ecb <- 0
-      F_ecm.scw <- 0
+      F_scw.mc  <- 0
+      F_mc.pc   <- 0
+      F_mc.ecw  <- 0
+      F_scw.co2 <- F_scw.diff * (1 - CUE)
+      F_scw.pc  <- F_scw.diff * CUE * (1 - Ep)
+      F_scw.ecw <- F_scw.diff * CUE * Ep
     }
     
-    F_ecb.scw  <- F_e.decay(ECb, Em)
+    # Enzyme decay
+    F_ecw.scw  <- F_e.decay(ECw, Em)
     
+    ### Rate of change calculation for state variables --------------
     dPC  <- F_sl.pc + F_scw.pc - F_pc.scw
-    dSCw <- F_ml.scw + F_pc.scw + F_ecb.scw + F_ecm.scw - F_scw.diff
-    dSCs <- 
-    dECb <- F
-    dECm <- F
+    dSCw <- F_ml.scw + F_pc.scw + F_scs.scw + F_ecw.scw - F_scw.
+    dSCs <- F_scw.scs - F_scs.scw
+    dECw <- F_mc.ecw + F_ecs.ecw - F_ecw.scw - F_ecw.ecs
     dECs <- F
+    dMC  <- F_scw.mc - 
     CO2  <- F
     
   }) # end of with(...
