@@ -23,12 +23,16 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     CUE     <- CUE_ref
     Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
+    ## Diffusion calculations  --------------------------------------
     # Note: for diffusion fluxes, no need to divid by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
     diffmod_S <- diff / dist * D_S0
     diffmod_E <- diff / dist * D_E0
+    SC.diff <- diffmod_S * (SCw - 0) # concentration at microbe is 0
+    EC.diff <- diffmod_E * (ECw - 0) # concentration at substrate is 0
 
+    
     ## Calculate change rates ---------------------------------------
     
     # Input rate
@@ -36,11 +40,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     F_ml.scw   <- litter_met
     
     # Decomposition rate
-    F_pc.scw   <- F_decomp(PC, ECw, V_D, K_D, moist, fc, depth)
-    
-    # Diffusion rates
-    F_scw.diff <- diffmod_S * (SCw - 0) # concentration at microbe is 0
-    F_ecw.diff <- diffmod_E * (ECw - 0) # concentration at substrate is 0
+    F_pc.scw   <- F_decomp(PC, EC.diff, V_D, K_D, moist, fc, depth)
     
     # Adsorption/desorption
     if(adsorption) {
@@ -57,30 +57,34 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     
     # Microbial growth, mortality, respiration and enzyme production
     if(microbes) {
-      F_scw.mc  <- F_scw.diff * CUE
-      F_scw.co2 <- F_scw.diff * (1 - CUE)
+      F_scw.mc  <- SC.diff * CUE
+      F_scw.co2 <- SC.diff * (1 - CUE)
       F_mc.pc   <- MC * NA # here goes mortality of mc 
-      F_mc.ecw  <- MC * NA # here goes enzyme production of mc 
+      F_mc.ecw  <- MC * NA # here goes enzyme production of mc
+      F_scw.pc  <- 0
+      F_scw.ecw <- 0
     } else {
       F_scw.mc  <- 0
       F_mc.pc   <- 0
       F_mc.ecw  <- 0
-      F_scw.co2 <- F_scw.diff * (1 - CUE)
-      F_scw.pc  <- F_scw.diff * CUE * (1 - Ep)
-      F_scw.ecw <- F_scw.diff * CUE * Ep
+      F_scw.co2 <- SC.diff * (1 - CUE)
+      F_scw.pc  <- SC.diff * CUE * (1 - Ep)
+      F_scw.ecw <- SC.diff * CUE * Ep
     }
     
     # Enzyme decay
     F_ecw.scw  <- F_e.decay(ECw, Em)
     
-    ### Rate of change calculation for state variables --------------
+    ## Rate of change calculation for state variables ---------------
     dPC  <- F_sl.pc + F_scw.pc - F_pc.scw
-    dSCw <- F_ml.scw + F_pc.scw + F_scs.scw + F_ecw.scw - F_scw.
+    dSCw <- F_ml.scw + F_pc.scw + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecw
     dSCs <- F_scw.scs - F_scs.scw
-    dECw <- F_mc.ecw + F_ecs.ecw - F_ecw.scw - F_ecw.ecs
-    dECs <- F
-    dMC  <- F_scw.mc - 
-    CO2  <- F
+    dECw <- F_ecs.ecw + F_mc.ecw + F_scw.ecw - F_ecw.ecs - F_ecw.scw 
+    dECs <- F_ecw.ecs - F_ecs.ecw
+    dMC  <- F_scw.mc - F_mc.pc - F_mc.ecw
+    CO2  <- F_scw.co2
+    
+    return(list(c(dPC, dSCw, dSCs, dECw, dECs, dMC, dCO2), c(litter_str, litter_met, temp, moist, diffmod_E, diffmod_S)))
     
   }) # end of with(...
   
