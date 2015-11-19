@@ -11,6 +11,7 @@ pars <- c(
   R   = 0.008314                  ,  # [kJ K-1 mol-1] gas constant
   
   ### Time Dependent Parameters
+  Mm_ref   = 0.00028 / hour * tunit , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
   Em_ref   = 0.001   / hour * tunit , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   Ep       = 5.6e-06 / hour * tunit , # [gC g-1 MC h-1] Fraction of SC taken up that is converted to EC. (assumed).
   V_D_ref  = 1       / hour * tunit , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
