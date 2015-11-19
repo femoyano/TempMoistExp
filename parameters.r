@@ -17,10 +17,10 @@ pars <- c(
   D_S0     = 8.1e-10 / sec  * tunit , # [m^2 s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
   D_E0     = 8.1e-11 / sec  * tunit , # [m^2 s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
   # Adsorptino/desorption rates (ka/kd ratio follows Mayes et al. 2012 (alfisols) -> Tang and Riley 2014, but values must be researched)
-  ka.s     = 0.01    / hour * tunit , # [h-1] Adsorption rate constant of soluble C into free mineral adsorption sites
-  ka.e     = 0.01    / hour * tunit , # [h-1] Adsorption rate constant of enzymes into free mineral adsorption sites
-  kd.s     = 0.25    / hour * tunit , # [h-1] Desorption rate constant of soluble C into free mineral adsorption sites
-  kd.e     = 0.50    / hour * tunit , # [h-1] Desorption rate constant of enzymes into free mineral adsorption sites
+  ka.s.ref = 0.01    / hour * tunit , # [h-1] Adsorption rate constant of soluble C into free mineral adsorption sites
+  ka.e.ref = 0.01    / hour * tunit , # [h-1] Adsorption rate constant of enzymes into free mineral adsorption sites
+  kd.s.ref = 0.25    / hour * tunit , # [h-1] Desorption rate constant of soluble C into free mineral adsorption sites
+  kd.e.ref = 0.50    / hour * tunit , # [h-1] Desorption rate constant of enzymes into free mineral adsorption sites
   
   ### Fixed Parameters ====
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
@@ -33,8 +33,8 @@ pars <- c(
   E_V.D    = 47       , # [kJ mol^-1] Gibbs energy for V_D (average of lignin and cellulose in Wang et al. 2013)
   E_K.U    = 30       , # [kJ mol^-1] Gibbs energy for K_U (Tang and Riley 2014)
   E_K.D    = 30       , # [kJ mol^-1] Gibbs energy for K_D (Tang and Riley 2014)
-  E_K.SM   = 10       , # [kJ mol^-1] Gibbs energy for K_SM (Tang and Riley 2014)
-  E_K.EM   = 10       , # [kJ mol^-1] Gibbs energy for K_EM (Tang and Riley 2014)
+  E_ka     = 10       , # [kJ mol^-1] Gibbs energy for SC adsorption/desorption fluxes (Tang and Riley 2014)
+  E_kd     = 10       , # [kJ mol^-1] Gibbs energy for EC adsorption/desorption fluxes (Tang and Riley 2014)
   E_Mm     = 30       , # [kJ mol^-1] Gibbs energy for Mm (Hagerty et al. 2014)
   E_Em     = 30       , # [kJ mol^-1] Gibbs energy for Em (Hagerty et al. 2014)
   CUE_ref  = 0.7     , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
@@ -42,6 +42,7 @@ pars <- c(
   CUE_s    = -0.016   , # CUE slope with temperature
   pd       = 2.7      , # [g cm^-3] Soil particle density
   Ef       = 0.01     , # [g g-1] Fraction of SC taken up that is converted to EC. (fitted).
+  Mm       = 
   psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   psi_fc   = 33      , # [kPa] Water potential at field capacity
   dist     = 10^-7   # [m] characteristic distance between substrate and microbes (Manzoni manus)

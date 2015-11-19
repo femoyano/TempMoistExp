@@ -17,8 +17,10 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     
     # Calculate temporally changing variables
     K_D     <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
-    K_SM    <- Temp.Resp.Eq(K_SM_ref, temp, T_ref, E_K.SM, R)
-    K_EM    <- Temp.Resp.Eq(K_EM_ref, temp, T_ref, E_K.EM, R)
+    ka.s    <- Temp.Resp.Eq(ka.s.ref, temp, T_ref, E_ka, R)
+    kd.s    <- Temp.Resp.Eq(kd.s.ref, temp, T_ref, E_kd, R)
+    ka.e    <- Temp.Resp.Eq(ka.e.ref, temp, T_ref, E_ka, R)
+    kd.e    <- Temp.Resp.Eq(kd.e.ref, temp, T_ref, E_kd, R)
     V_D     <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V.D, R)
     CUE     <- CUE_ref
     Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
@@ -42,7 +44,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     F_ml.scw   <- litter_met
     
     # Decomposition rate
-    F_pc.scw   <- F_decomp(PC, EC.diff, V_D, K_D, moist, fc, depth, fc.scale)
+    F_pc.scw   <- F_decomp(PC, EC.diff, V_D, K_D, moist, fc, depth)
     
     # Adsorption/desorption
     if(adsorption) {
@@ -61,8 +63,8 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     if(microbes) {
       F_scw.mc  <- SC.diff * CUE
       F_scw.co2 <- SC.diff * (1 - CUE)
-      F_mc.pc   <- MC * NA # here goes mortality of mc 
-      F_mc.ecw  <- MC * NA # here goes enzyme production of mc
+      F_mc.pc   <- MC * Mm
+      F_mc.ecw  <- MC * Ep
       F_scw.pc  <- 0
       F_scw.ecw <- 0
     } else {
