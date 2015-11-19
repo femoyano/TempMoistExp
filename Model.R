@@ -46,10 +46,10 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     
     # Adsorption/desorption
     if(adsorption) {
-      F_scw.scs  <- F_adsorp(SCw, SCs, ECw, ECs, M, ka.s, moist, fc, depth)
-      F_scs.scw  <- F_desorp(SCs, kd.s, moist, fc, depth)
-      F_ecw.ecs  <- F_adsorp(ECw , ECs, SCw, SCs, M, ka.e, moist, fc, depth)
-      F_ecs.ecw  <- F_desorb(ECs, kd.e, moist, fc, depth)
+      F_scw.scs  <- F_adsorp(SCw, SCs, ECs, Md, ka.s, moist, fc, depth)
+      F_scs.scw  <- F_desorp(SCs, kd.s, moist, fc)
+      F_ecw.ecs  <- F_adsorp(ECw , ECs, SCs, Md, ka.e, moist, fc, depth)
+      F_ecs.ecw  <- F_desorb(ECs, kd.e, moist, fc)
     } else {
       F_scw.scs <- 0
       F_scs.scw <- 0
@@ -70,8 +70,8 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
       F_mc.pc   <- 0
       F_mc.ecw  <- 0
       F_scw.co2 <- SC.diff * (1 - CUE)
-      F_scw.pc  <- SC.diff * CUE * (1 - Ep)
-      F_scw.ecw <- SC.diff * CUE * Ep
+      F_scw.pc  <- SC.diff * CUE * (1 - Ef)
+      F_scw.ecw <- SC.diff * CUE * Ef
     }
     
     # Enzyme decay

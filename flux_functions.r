@@ -1,7 +1,7 @@
 # flux_functions.r 
 
 # Documentation
-# Note: chemical reactions occur in the water phase and are calulated per cm^-3 water
+# Note: chemical reactions occur in the water phase and are calulated per unit volume
 # so soluble C pools are divided by relative water content to obtain 
 # concentrations. Total flux is obtained by then multiplying by the volume
 # where the reaction occurs.
@@ -66,58 +66,57 @@ if(pc.conc & ec.conc & h2o.scale) {
 
 ## Sorption to mineral surface -------------------------
 # The function will depend on the options (flags) chosen
+# ligand/receptor kinetics used (https://en.wikipedia.org/wiki/Binding_constant)
+# Md stands for mineral adsorption site density.
+# Lw and Ls are ligands in water or adsorbed.
+# Mmod is used for scaling M and Ls from 0-1 between 0 and fc
 
 if(h2o.scale & ec.conc) {
-  F_adsorp <- function (C1w, C1s, C2w, C2s, Mtot, k, moist, fc, depth) {
-    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
-    C1 <- C1w / (depth * moist)
-    C2 <- C2w / (depth * moist)
-    M <- (Mtot - C1s - C2s) * mmod
-    return( (C1 * M * k) * depth ) # this should be changed to reflect competetion effects
+  F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
+    mmod <- min(1, moist / fc)
+    L <- Lw / (depth * moist)
+    M <- (Md - (L1s + L2s)) * mmod
+    return( (L * M * k) * depth )
   }
-  F_desorp <- function (Cs, k, moist, fc, depth) {
-    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
-    Cs1 <- Cs / depth * mmod
-    return( Cs1 * k)
+  F_desorp <- function (Ls, k, moist, fc) {
+    mmod <- min(1, moist / fc)
+    L <- Ls * mmod
+    return(L * k)
   }
 } else if(h2o.scale & !ec.conc) {
-  F_adsorp <- function (C1w, C1s, C2w, C2s, Mtot, k, moist, fc, depth) {
-    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
-    C1 <- C1w / depth
-    C2 <- C2w / depth
-    M <- (Mtot - C1s - C2s) * mmod
-    return( (C1 * M * k) * depth ) # this should be changed to reflect competetion effects
+  F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
+    mmod <- min(1, moist / fc)
+    L <- Lw / depth
+    M <- (Md - (L1s + L2s)) * mmod
+    return( (L * M * k) * depth )
   }
-  F_desorp <- function (Cs, k, moist, fc, depth) {
-    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
-    Cs1 <- Cs / depth * mmod
-    return( Cs1 * k)
+  F_desorp <- function (Ls, k, moist, fc) {
+    mmod <- min(1, moist / fc)
+    L <- Ls * mmod
+    return(L * k)
   }
 } else if(!h2o.scale & ec.conc) {
-  F_adsorp <- function (C1w, C1s, C2w, C2s, Mtot, k, moist, fc, depth) {
-    C1 <- C1w / (depth * moist)
-    C2 <- C2w / (depth * moist)
-    M <- (Mtot - C1s - C2s)
-    return( (C1 * M * k) * depth ) # this should be changed to reflect competetion effects
+  F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
+    L <- Lw / (depth * moist)
+    M <- Md - (L1s + L2s)
+    return( (L * M * k) * depth )
   }
-  F_desorp <- function (Cs, k, moist, fc, depth) {
-    Cs1 <- Cs / depth
-    return( Cs1 * k)
+  F_desorp <- function (Ls, k, moist, fc) {
+    L <- Ls
+    return(L * k)
   }
 } else if(!h2o.scale & !ec.conc) {
-  F_adsorp <- function (C1w, C1s, C2w, C2s, Mtot, k, moist, fc, depth) {
-    mmod <- min(1, moist / fc) # for scaling M and Cs from 0-1 between 0 and fc
-    C1 <- C1w / (depth)
-    C2 <- C2w / (depth)
-    M <- (Mtot - C1s - C2s)
-    return( (C1 * M * k) * depth  ) # this should be changed to reflect competetion effects
+  F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
+    mmod <- min(1, moist / fc)
+    L <- Lw / (depth)
+    M <- Md - (L1s + L2s)
+    return( (L * M * k) * depth  )
   }
-  F_desorp <- function (Cs, k, moist, fc, depth) {
-    Cs1 <- Cs / depth
-    return( Cs1 * k)
+  F_desorp <- function (Ls, k, moist, fc) {
+    L <- Ls
+    return(L * k)
   }
 }
-
 
 # ==============================================================================
 # Temperature responses after Tang and Riley 2014 (supplementary information)
