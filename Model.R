@@ -23,6 +23,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     kd.e    <- Temp.Resp.Eq(kd.e.ref, temp, T_ref, E_kd, R)
     V_D     <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V.D, R)
     CUE     <- CUE_ref
+    Mm      <- Temp.Resp.Eq(Mm_ref, temp, T_ref, E_Mm, R)
     Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     ## Diffusion calculations  --------------------------------------
