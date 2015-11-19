@@ -2,8 +2,8 @@
 rm(list=ls())
 
 ### User Setup =================================================================
-spin <- 1
-trans <- 0
+spin <- 0
+trans <- 1
 model.name  <- "EDA-desolve"
 site.name   <- "Wetzstein"
 spinup.data <- "WetzsteinSM16"
@@ -38,6 +38,8 @@ site.file         <- file.path(input.path, paste("input_site_", site.name  , ".c
 
 spinup.name <- paste("spinup", model.name, spinup.data, sep="_")
 trans.name  <- paste("trans", model.name, trans.data, sep="_")
+spin.output.file <- file.path(output.path, paste(spinup.name, ".csv", sep=""))
+trans.output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
 
 t.unit      <- "hour" # Unit used for all rates (as string). Should not change results when using ode solver (test?)
 
@@ -49,7 +51,6 @@ source("GetInitial.r")
 if(spin) {
   spinup      <- TRUE # set spinup flag
   input.file  <- spinup.input.file
-  spin.output.file <- file.path(output.path, paste(spinup.name, ".csv", sep=""))
   run.name    <- spinup.name
   eq.stop     <- eq.stop.spinup
   source("initial_state.r") # Loads initial state variable values
@@ -63,19 +64,18 @@ if(spin) {
 if(trans) {
   spinup      <- FALSE      # unset spinup flag
   input.file  <- trans.input.file
-  output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
   run.name    <- trans.name
   eq.stop     <- FALSE  # do not stop at equilibrium 
   if(exists("initial_state")) rm(initial_state)
   if(init.mode == "spinup") init.file <- spin.output.file
-  if(trans.init == "trans") init.file <- output.file
+  if(init.mode == "trans") init.file <- trans.output.file
   if(init.mode == "default") source("initial_state.r") else {
     init <- tail(read.csv(init.file), 1)
     initial_state <- GetInitial(init) 
   }
   source("main.R")
   assign(trans.name, out)
-  write.csv(out, file = output.file, row.names =  FALSE)
+  write.csv(out, file = trans.output.file, row.names =  FALSE)
   print(tail(out, 1))
 }
 
