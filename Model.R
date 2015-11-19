@@ -87,7 +87,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     dECw <- F_ecs.ecw + F_mc.ecw + F_scw.ecw - F_ecw.ecs - F_ecw.scw 
     dECs <- F_ecw.ecs - F_ecs.ecw
     dMC  <- F_scw.mc - F_mc.pc - F_mc.ecw
-    CO2  <- F_scw.co2
+    dCO2 <- F_scw.co2
     
     return(list(c(dPC, dSCw, dSCs, dECw, dECs, dMC, dCO2), c(litter_str, litter_met, temp, moist, diffmod_E, diffmod_S)))
     

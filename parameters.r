@@ -43,7 +43,6 @@ pars <- c(
   CUE_s    = -0.016   , # CUE slope with temperature
   pd       = 2.7      , # [g cm^-3] Soil particle density
   Ef       = 0.01     , # [g g-1] Fraction of SC taken up that is converted to EC. (fitted).
-  Mm       = 
   psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   psi_fc   = 33      , # [kPa] Water potential at field capacity
   dist     = 10^-7   # [m] characteristic distance between substrate and microbes (Manzoni manus)
