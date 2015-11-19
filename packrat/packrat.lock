@@ -3,9 +3,70 @@ PackratVersion: 0.4.1.8
 RVersion: 3.2.2
 Repos: CRAN=https://cran.uni-muenster.de/
 
+Package: bitops
+Source: CRAN
+Version: 1.0-6
+Hash: cb26464a8321628636b547518994c931
+
+Package: caTools
+Source: CRAN
+Version: 1.17.1
+Hash: bb5fdc266f716b8a289a4f92007d53e3
+Requires: bitops
+
 Package: deSolve
 Source: CRAN
 Version: 1.12
+Hash: 3fc5928561ec03c5ceef8cd6b1ec5e37
+
+Package: digest
+Source: CRAN
+Version: 0.6.8
+Hash: 89dc4c8734dad5322bb3c5c2af09056f
+
+Package: evaluate
+Source: CRAN
+Version: 0.8
+Hash: fc2cfbbd9fc4df850c1b4c799463891d
+Requires: stringr
+
+Package: formatR
+Source: CRAN
+Version: 1.2.1
+Hash: 4bef90cfc1c7e0a7ac67ed556f65ca61
+
+Package: highr
+Source: CRAN
+Version: 0.5.1
+Hash: f3698614a04c032e7715d80da21417c4
+
+Package: htmltools
+Source: CRAN
+Version: 0.2.6
+Hash: 2c87108d130de261ac3c468d3316ae42
+Requires: digest
+
+Package: knitr
+Source: CRAN
+Version: 1.11
+Hash: d31c77797f1724e0588013ae84e61c69
+Requires: digest, evaluate, formatR, highr, markdown, stringr, yaml
+
+Package: magrittr
+Source: CRAN
+Version: 1.5
+Hash: 38d492cf072bc9f3c73bda2aee3d0e23
+
+Package: markdown
+Source: CRAN
+Version: 0.7.7
+Hash: 3fdcd70d6d9a7067ffa051d143c48f4c
+Requires: mime
+
+Package: mime
+Source: CRAN
+Version: 0.4
+Hash: 7539cd616a3a73975a289e02ab2624db
 
 Package: packrat
 Source: github
@@ -15,3 +76,25 @@ GithubRepo: packrat
 GithubUsername: rstudio
 GithubRef: v0.98.1000
 GithubSha1: ee57b7e7ba891d23079b12f1ff5106d0db0594e5
+
+Package: rmarkdown
+Source: CRAN
+Version: 0.8.1
+Hash: 9e87ecbc173a5ea0f041bfb89d0af714
+Requires: caTools, htmltools, knitr, yaml
+
+Package: stringi
+Source: CRAN
+Version: 1.0-1
+Hash: 05a5f292b45a1c24c5e4d300a38702ba
+
+Package: stringr
+Source: CRAN
+Version: 1.0.0
+Hash: 513045488dcf8019cc2f4305dc7d1f90
+Requires: magrittr, stringi
+
+Package: yaml
+Source: CRAN
+Version: 2.1.13
+Hash: e5d041c001f6d641fd009c1f6ef7d831

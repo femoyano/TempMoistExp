@@ -20,6 +20,7 @@ pars <- c(
   ### Fixed Parameters ====
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
   K_D_ref  = 300000   , # [gC m-3] Affinity parameter for PC decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
+  ks.s     = 
   K_SM_ref = 11       , # [gC m-3] Affinity parameter for SC sorption (Mayes et al. 2012)
   K_EM_ref = 11       , # [gC m-3] Affinity parameter for EC sorption (Mayes et al. 2012)
   mcpc_f   = 0.5      , # [g g^-1] fraction of dead microbes going to SC (rest goes to PC)
