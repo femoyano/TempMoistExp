@@ -10,59 +10,53 @@
 
 ##  Decomposition flux ---------
 # The function will depend on the options (flags) chosen
-if(pc.conc & ec.conc & h2o.scale) {
+if(flag.pw & !flag.sew) stop("If flag.pw is TRUE, flag.sew must also be TRUE")
+
+if(flag.pw & flag.sew & flag.fc) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / (moist * depth) * pc.mod
     EC <- EC / (moist * depth)
-    F <- (V * EC * PC) / (K + PC) * depth
+    F <- (V * EC * PC) / (K + PC) * (moist * depth)
   }
-} else if(pc.conc & ec.conc & !h2o.scale) {
+} else if(flag.pw & flag.sew & !flag.fc) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / (moist * depth)
     EC <- EC / (moist * depth)  
-    F <- (V * EC * PC) / (K + PC) * depth
+    F <- (V * EC * PC) / (K + PC) * (moist * depth)
   }
-} else if(pc.conc & !ec.conc & !h2o.scale){
-  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
-    PC <- PC / (moist * depth)
-    EC <- EC / depth
-    F <- (V * EC * PC) / (K + PC) * depth
-  }
-} else if (!pc.conc & !ec.conc & !h2o.scale) {
+} else if (!flag.pw & !flag.sew & !flag.fc) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / depth
     EC <- EC / depth
     F <- (V * EC * PC) / (K + PC) * depth
   }
-} else if(!pc.conc & !ec.conc & h2o.scale) {
+} else if(!flag.pw & !flag.sew & flag.fc) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / depth * pc.mod
     EC <- EC / depth
     F <- (V * EC * PC) / (K + PC) * depth
   }
-}  else if(pc.conc & !ec.conc & h2o.scale) {
-  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
-    pc.mod <- min(1, moist / fc)
-    PC <- PC / (moist * depth) * pc.mod
-    EC <- EC / depth
-    F <- (V * EC * PC) / (K + PC) * depth
-  }
-} else if(!pc.conc & ec.conc & h2o.scale) {
+}  else if(!flag.pw & flag.sew & flag.fc) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / depth * pc.mod
     EC <- EC / (moist * depth)
     F <- (V * EC * PC) / (K + PC) * depth
   }
-} else if(!pc.conc & ec.conc & !h2o.scale) {
+} else if(!flag.pw & flag.sew & !flag.fc) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / depth
     EC <- EC / (moist * depth)
     F <- (V * EC * PC) / (K + PC) * depth
   }
 } 
+
+## Diffusion Fluxes  ------------------------- ---------
+F_diff <- function(diff, C1, C2 = 0) {
+  return(diff * (C1 - C2)) # convertion to concentrations (depth * moist) cancels out
+}
 
 ## Sorption to mineral surface -------------------------
 # The function will depend on the options (flags) chosen
@@ -71,7 +65,7 @@ if(pc.conc & ec.conc & h2o.scale) {
 # Lw and Ls are ligands in water or adsorbed.
 # Mmod is used for scaling M and Ls from 0-1 between 0 and fc
 
-if(h2o.scale & ec.conc) {
+if(flag.fc & flag.sew) {
   F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth * moist)
@@ -83,7 +77,7 @@ if(h2o.scale & ec.conc) {
     L <- Ls * mmod
     return(L * k)
   }
-} else if(h2o.scale & !ec.conc) {
+} else if(flag.fc & !flag.sew) {
   F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / depth
@@ -95,7 +89,7 @@ if(h2o.scale & ec.conc) {
     L <- Ls * mmod
     return(L * k)
   }
-} else if(!h2o.scale & ec.conc) {
+} else if(!flag.fc & flag.sew) {
   F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
     L <- Lw / (depth * moist)
     M <- Md - (L1s + L2s)
@@ -105,7 +99,7 @@ if(h2o.scale & ec.conc) {
     L <- Ls
     return(L * k)
   }
-} else if(!h2o.scale & !ec.conc) {
+} else if(!flag.fc & !flag.sew) {
   F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth)

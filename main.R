@@ -11,11 +11,12 @@ require(deSolve)
 ### Setup variables if run script is not used ==================================
 if(!exists("runscript")) {
   # flags
-  adsorption  <- 0  # should adsorption desortion rates be simulated
-  microbes    <- 1  # should microbes be explicitly represented?
-  h2o.scale    <- 1  # should available pc scale with moisture (with max at fc)?
-  pc.conc     <- 1  # should available pc concentration change with moisture?
-  ec.conc     <- 1  # should SC concentration change with moisture?
+  flag.ads  <- 0  # model adsorption desorption rates?
+  flag.mic  <- 0  # model microbial pool explicitly?
+  flag.fc   <- 1  # scale pc with moisture (with max at fc)?
+  flag.pw   <- 1  # calculate pc concentration in water?
+  flag.sew  <- 1  # calculate ec and sc concentration in wate
+
   #setup
   input.file   <- "input.csv"
   site.file    <- "site.csv"

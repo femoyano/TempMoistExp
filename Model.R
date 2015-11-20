@@ -27,16 +27,11 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     ## Diffusion calculations  --------------------------------------
-    # Note: for diffusion fluxes, no need to divid by moist and depth to get specific
+    # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
-    diffmod_S <- diff / dist * D_S0
-    diffmod_E <- diff / dist * D_E0
-    SC.diff <- diffmod_S * (SCw - 0) # concentration at microbe is 0
-    EC.diff <- diffmod_E * (ECw - 0) # concentration at substrate is 0
-
-    fc.scale <- min(1, moist / fc)
-
+    diffmod_S <- D_S0 * diff / dist
+    diffmod_E <- D_E0 * diff / dist
     
     ## Calculate change rates ---------------------------------------
     
@@ -48,7 +43,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     F_pc.scw   <- F_decomp(PC, EC.diff, V_D, K_D, moist, fc, depth)
     
     # Adsorption/desorption
-    if(adsorption) {
+    if(flag.ads) {
       F_scw.scs  <- F_adsorp(SCw, SCs, ECs, Md, ka.s, moist, fc, depth)
       F_scs.scw  <- F_desorp(SCs, kd.s, moist, fc)
       F_ecw.ecs  <- F_adsorp(ECw , ECs, SCs, Md, ka.e, moist, fc, depth)
@@ -61,7 +56,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     }
     
     # Microbial growth, mortality, respiration and enzyme production
-    if(microbes) {
+    if(flag.mic) {
       F_scw.mc  <- SC.diff * CUE
       F_scw.co2 <- SC.diff * (1 - CUE)
       F_mc.pc   <- MC * Mm

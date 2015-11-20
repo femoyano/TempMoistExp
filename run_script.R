@@ -1,33 +1,35 @@
 ### Run_script
 rm(list=ls())
 
-### User Setup =================================================================
-spin <- 0
-trans <- 1
-model.name  <- "EDA-desolve"
+### User General Setup ========================================================
+spin <- 0 # set TRUE to run spinup
+trans <- 1 # set TRUE for a normal (transient) run
+model.name  <- "SoilC"
 site.name   <- "Wetzstein"
-spinup.data <- "WetzsteinSM16"
-trans.data  <- "WetzsteinSM16"
 
-## Getting starting values of state variables for the transient run.
-# init.mode can be either "spinup", "trans", "file" or "default";
+### User Spinup Run Settings --------------------------------------------------
+spinup.data    <- "WetzsteinSM16"
+spin.years     <- 5000    # maximum years for spinup runs
+t.save.spin    <- "year"  # interval at which to save output during spinup runs (as text).
+eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
+eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
+
+### User Transient Run Settings ------------------------------------------------
+## init.mode sets starting values of state variables for the transient run.
+#  init.mode can be either "spinup", "trans", "file" or "default";
 # it gets values from: current spinup, current transient, init.file or initial.state.r, respectively
 # note that runs with same setup will overwrite previous output files
 init.mode   <- "spinup"
 init.file   <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Overwritten if init.mode = "spinup", "trans" or "default". 
-
-spin.years     <- 5000    # maximum years for spinup runs
-t.save.spin    <- "year"  # interval at which to save output during spinup runs (as text).
+trans.data  <- "WetzsteinSM16"
 t.save.trans   <- "day"   # interval at which to save output during transient runs (as text).
-eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
-eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
 
 # Flags! -----------------------------------------------------------------------
-adsorption  <- 0  # should adsorption desortion rates be simulated?
-microbes    <- 1  # should microbes be explicitly represented?
-h2o.scale    <- 1  # should available pc scale with moisture (with max at fc)?
-pc.conc     <- 1  # should available pc concentration change with moisture?
-ec.conc     <- 1  # should SC concentration change with moisture?
+flag.ads  <- 0  # model adsorption desorption rates?
+flag.mic  <- 0  # model microbial pool explicitly?
+flag.fc   <- 1  # scale pc with moisture (with max at fc)?
+flag.pw   <- 1  # calculate pc concentration in water?
+flag.sew  <- 1  # calculate ec and sc concentration in water?
 
 ### Optional Setup =============================================================
 input.path        <- file.path("..", "Input")
