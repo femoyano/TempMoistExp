@@ -1,42 +1,43 @@
 ### Run_script
 rm(list=ls())
 
-### User General Setup ========================================================
-spin <- 0 # set TRUE to run spinup
-trans <- 1 # set TRUE for a normal (transient) run
-model.name  <- "SoilC"
-site.name   <- "Wetzstein"
+### User Settings General ========================================================
+spin           <- 0           # set to TRUE to run spinup
+trans          <- 1           # set to TRUE for a normal (transient) run
+model.name     <- "EDA-desolve"
+site.name      <- "Wetzstein"
+ode.method     <- "lsoda"     # see ode function
 
-### User Spinup Run Settings --------------------------------------------------
+### User Settings for Spinup Run --------------------------------------------------
 spinup.data    <- "WetzsteinSM16"
 spin.years     <- 5000    # maximum years for spinup runs
 t.save.spin    <- "year"  # interval at which to save output during spinup runs (as text).
 eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
 eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
 
-### User Transient Run Settings ------------------------------------------------
-## init.mode sets starting values of state variables for the transient run.
-#  init.mode can be either "spinup", "trans", "file" or "default";
-# it gets values from: current spinup, current transient, init.file or initial.state.r, respectively
-# note that runs with same setup will overwrite previous output files
-init.mode   <- "spinup"
-init.file   <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Overwritten if init.mode = "spinup", "trans" or "default". 
-trans.data  <- "WetzsteinSM16"
+### User Settings for Transient Run ------------------------------------------------
+init.mode      <- "spinup"
+init.file      <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Overwritten if init.mode = "spinup", "trans" or "default". 
+trans.data     <- "WetzsteinSM16"
 t.save.trans   <- "day"   # interval at which to save output during transient runs (as text).
+# Note: init.mode sets starting values of state variables for the transient run.
+# init.mode can be either "spinup", "trans", "file" or "default";
+# it gets values from: current spinup, current transient, init.file or initial_state.r, respectively
+# Note that runs with same setup will overwrite previous output files.
 
 # Flags! -----------------------------------------------------------------------
 flag.ads  <- 0  # model adsorption desorption rates?
 flag.mic  <- 0  # model microbial pool explicitly?
-flag.fc   <- 1  # scale pc with moisture (with max at fc)?
-flag.pw   <- 1  # calculate pc concentration in water?
-flag.sew  <- 1  # calculate ec and sc concentration in water?
+flag.fc   <- 1  # scale PC, SCs, ECs, M with moisture (with max at fc)?
+flag.pw   <- 1  # calculate PC concentration in water?
+flag.sew  <- 1  # calculate EC and SC concentration in water?
 
 ### Optional Setup =============================================================
 input.path        <- file.path("..", "Input")
 output.path       <- file.path("..", "Output")
 spinup.input.file <- file.path(input.path, paste("input_"     , spinup.data, ".csv", sep=""))
 trans.input.file  <- file.path(input.path, paste("input_"     , trans.data , ".csv", sep=""))
-site.file         <- file.path(input.path, paste("input_site_", site.name  , ".csv", sep=""))
+site.file         <- file.path(input.path, paste("site_", site.name  , ".csv", sep=""))
 
 spinup.name <- paste("spinup", model.name, spinup.data, sep="_")
 trans.name  <- paste("trans", model.name, trans.data, sep="_")
@@ -83,5 +84,5 @@ if(trans) {
 
 # Plot results
 source("PlotResults.R")
-if(spin) PlotResults(get(spinup.name), "year", path = "../Plots/Spinup/", spinup.name)
-if(trans) PlotResults(get(trans.name), "day", path = "../Plots/Trans/", trans.name)
+if(spin) PlotResults(get(spinup.name), "year", path = "..Output/Plots/Spinup/", spinup.name)
+if(trans) PlotResults(get(trans.name), "day", path = "..Output/Plots/Trans/", trans.name)

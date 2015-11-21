@@ -32,6 +32,8 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
     diffmod_S <- D_S0 * diff / dist
     diffmod_E <- D_E0 * diff / dist
+    SC.diff <- diffmod_S * (SCw - 0) # concentration at microbe asumed 0
+    EC.diff <- diffmod_E * (ECw - 0) # concentration at substrate assumed 0
     
     ## Calculate change rates ---------------------------------------
     
@@ -84,7 +86,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     dMC  <- F_scw.mc - F_mc.pc - F_mc.ecw
     dCO2 <- F_scw.co2
     
-    return(list(c(dPC, dSCw, dSCs, dECw, dECs, dMC, dCO2), c(litter_str, litter_met, temp, moist, diffmod_E, diffmod_S)))
+    return(list(c(dPC, dSCw, dSCs, dECw, dECs, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod_E=diffmod_E, diffmod_S=diffmod_S)))
     
   }) # end of with(...
   

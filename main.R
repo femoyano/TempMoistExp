@@ -10,17 +10,17 @@ require(deSolve)
 
 ### Setup variables if run script is not used ==================================
 if(!exists("runscript")) {
-  # flags
+  # Flags
   flag.ads  <- 0  # model adsorption desorption rates?
   flag.mic  <- 0  # model microbial pool explicitly?
-  flag.fc   <- 1  # scale pc with moisture (with max at fc)?
-  flag.pw   <- 1  # calculate pc concentration in water?
-  flag.sew  <- 1  # calculate ec and sc concentration in wate
+  flag.fc   <- 1  # scale PC, SCs, ECs, M with moisture (with max at fc)?
+  flag.pw   <- 1  # calculate PC concentration in water?
+  flag.sew  <- 1  # calculate EC and SC concentration in water?
 
-  #setup
+  # Setup
   input.file   <- "input.csv"
   site.file    <- "site.csv"
-  spinup       <- TRUE    # If TRUE then spinup run and data will be recylced.
+  spinup       <- FALSE   # If TRUE then spinup run and data will be recylced.
   eq.stop      <- FALSE   # Stop at equilibrium?
   eq.md        <- 1       # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
   spin.years   <- 5000    # years for spinup runs
@@ -29,6 +29,10 @@ if(!exists("runscript")) {
   t.save.trans <- "day"   # interval at which to save output during transient runs (text).
   source("initial_state.r")
 }
+
+if(!flag.mic) initial_state["MC"]  <- NA
+if(!flag.ads) initial_state["SCs"] <- NA
+if(!flag.ads) initial_state["ECs"] <- NA
 
 ### Define time quantities
 year  <- 31104000 # seconds in a year
@@ -78,4 +82,6 @@ Md       <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [g m-3] Mineral s
 pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, b = b, psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md) # add all new parameters
 
 # Run the differential equation solver
-out <- ode(initial_state, times, Model, pars)
+ptm <- proc.time()
+out <- ode(initial_state, times, Model, pars, method = ode.method)
+print(proc.time()-ptm)

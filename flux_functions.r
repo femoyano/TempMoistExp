@@ -53,11 +53,6 @@ if(flag.pw & flag.sew & flag.fc) {
   }
 } 
 
-## Diffusion Fluxes  ------------------------- ---------
-F_diff <- function(diff, C1, C2 = 0) {
-  return(diff * (C1 - C2)) # convertion to concentrations (depth * moist) cancels out
-}
-
 ## Sorption to mineral surface -------------------------
 # The function will depend on the options (flags) chosen
 # ligand/receptor kinetics used (https://en.wikipedia.org/wiki/Binding_constant)
