@@ -1,12 +1,10 @@
 ### Run_script
 rm(list=ls())
 
-### User Settings General ========================================================
+### User Settings - General =======================================================
 spin           <- 0           # set to TRUE to run spinup
 trans          <- 1           # set to TRUE for a normal (transient) run
-model.name     <- "EDA-desolve"
 site.name      <- "Wetzstein"
-ode.method     <- "lsoda"     # see ode function
 
 ### User Settings for Spinup Run --------------------------------------------------
 spinup.data    <- "WetzsteinSM16"
@@ -28,23 +26,31 @@ t.save.trans   <- "day"   # interval at which to save output during transient ru
 # Flags! -----------------------------------------------------------------------
 flag.ads  <- 0  # model adsorption desorption rates?
 flag.mic  <- 0  # model microbial pool explicitly?
-flag.fc   <- 1  # scale PC, SCs, ECs, M with moisture (with max at fc)?
-flag.pw   <- 1  # calculate PC concentration in water?
+flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)?
+flag.pcw  <- 1  # calculate PC concentration in water?
 flag.sew  <- 1  # calculate EC and SC concentration in water?
 
 ### Optional Setup =============================================================
+# input settings
 input.path        <- file.path("..", "Input")
-output.path       <- file.path("..", "Output")
 spinup.input.file <- file.path(input.path, paste("input_"     , spinup.data, ".csv", sep=""))
 trans.input.file  <- file.path(input.path, paste("input_"     , trans.data , ".csv", sep=""))
 site.file         <- file.path(input.path, paste("site_", site.name  , ".csv", sep=""))
 
-spinup.name <- paste("spinup", model.name, spinup.data, sep="_")
-trans.name  <- paste("trans", model.name, trans.data, sep="_")
-spin.output.file <- file.path(output.path, paste(spinup.name, ".csv", sep=""))
+# output settings
+model.name        <- paste("SoilC-", "A", flag.ads, "_M", flag.mic, "_F", flag.sfc, "_P", flag.pcw, "_S", flag.sew, sep = "")
+spinup.name       <- paste("spinup", model.name, spinup.data, sep="_")
+trans.name        <- paste("trans", model.name, trans.data, sep="_")
+output.path       <- file.path("..", "Output")
+spin.output.file  <- file.path(output.path, paste(spinup.name, ".csv", sep=""))
 trans.output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
 
-t.unit      <- "hour" # Unit used for all rates (as string). Should not change results when using ode solver (test?)
+# Model time unit
+# Unit used for all rates (as string). Must coincide with unit in input data
+# Should not change results when using ode solver (test?)
+t.unit      <- "hour"
+
+ode.method     <- "lsoda"  # see ode function
 
 ### Non User Setup =============================================================
 runscript <- TRUE # flag for main file

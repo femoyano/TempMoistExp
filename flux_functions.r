@@ -12,40 +12,40 @@
 # The function will depend on the options (flags) chosen
 if(flag.pw & !flag.sew) stop("If flag.pw is TRUE, flag.sew must also be TRUE")
 
-if(flag.pw & flag.sew & flag.fc) {
+if(flag.pw & flag.sew & flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / (moist * depth) * pc.mod
     EC <- EC / (moist * depth)
     F <- (V * EC * PC) / (K + PC) * (moist * depth)
   }
-} else if(flag.pw & flag.sew & !flag.fc) {
+} else if(flag.pw & flag.sew & !flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / (moist * depth)
     EC <- EC / (moist * depth)  
     F <- (V * EC * PC) / (K + PC) * (moist * depth)
   }
-} else if (!flag.pw & !flag.sew & !flag.fc) {
+} else if (!flag.pw & !flag.sew & !flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / depth
     EC <- EC / depth
     F <- (V * EC * PC) / (K + PC) * depth
   }
-} else if(!flag.pw & !flag.sew & flag.fc) {
+} else if(!flag.pw & !flag.sew & flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / depth * pc.mod
     EC <- EC / depth
     F <- (V * EC * PC) / (K + PC) * depth
   }
-}  else if(!flag.pw & flag.sew & flag.fc) {
+}  else if(!flag.pw & flag.sew & flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / depth * pc.mod
     EC <- EC / (moist * depth)
     F <- (V * EC * PC) / (K + PC) * depth
   }
-} else if(!flag.pw & flag.sew & !flag.fc) {
+} else if(!flag.pw & flag.sew & !flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / depth
     EC <- EC / (moist * depth)
@@ -60,7 +60,7 @@ if(flag.pw & flag.sew & flag.fc) {
 # Lw and Ls are ligands in water or adsorbed.
 # Mmod is used for scaling M and Ls from 0-1 between 0 and fc
 
-if(flag.fc & flag.sew) {
+if(flag.fcs & flag.sew) {
   F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth * moist)
@@ -72,7 +72,7 @@ if(flag.fc & flag.sew) {
     L <- Ls * mmod
     return(L * k)
   }
-} else if(flag.fc & !flag.sew) {
+} else if(flag.fcs & !flag.sew) {
   F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / depth
@@ -84,7 +84,7 @@ if(flag.fc & flag.sew) {
     L <- Ls * mmod
     return(L * k)
   }
-} else if(!flag.fc & flag.sew) {
+} else if(!flag.fcs & flag.sew) {
   F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
     L <- Lw / (depth * moist)
     M <- Md - (L1s + L2s)
@@ -94,7 +94,7 @@ if(flag.fc & flag.sew) {
     L <- Ls
     return(L * k)
   }
-} else if(!flag.fc & !flag.sew) {
+} else if(!flag.fcs & !flag.sew) {
   F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth)

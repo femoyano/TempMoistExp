@@ -13,7 +13,7 @@ if(!exists("runscript")) {
   # Flags
   flag.ads  <- 0  # model adsorption desorption rates?
   flag.mic  <- 0  # model microbial pool explicitly?
-  flag.fc   <- 1  # scale PC, SCs, ECs, M with moisture (with max at fc)?
+  flag.fcs  <- 1  # scale PC, SCs, ECs, M with moisture (with max at fc)?
   flag.pw   <- 1  # calculate PC concentration in water?
   flag.sew  <- 1  # calculate EC and SC concentration in water?
 

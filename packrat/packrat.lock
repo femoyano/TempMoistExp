@@ -1,7 +1,17 @@
 PackratFormat: 1.4
-PackratVersion: 0.4.1.8
+PackratVersion: 0.4.6.1
 RVersion: 3.2.2
 Repos: CRAN=https://cran.uni-muenster.de/
+
+Package: RColorBrewer
+Source: CRAN
+Version: 1.1-2
+Hash: 5203278413b09be06483c5ac1920bb05
+
+Package: Rcpp
+Source: CRAN
+Version: 0.12.2
+Hash: e03b48067b288bf916e90e8e5e317aab
 
 Package: bitops
 Source: CRAN
@@ -14,10 +24,20 @@ Version: 1.17.1
 Hash: bb5fdc266f716b8a289a4f92007d53e3
 Requires: bitops
 
+Package: colorspace
+Source: CRAN
+Version: 1.2-6
+Hash: a53ddc5a49706984d234ea5cc209c8f0
+
 Package: deSolve
 Source: CRAN
 Version: 1.12
 Hash: 3fc5928561ec03c5ceef8cd6b1ec5e37
+
+Package: dichromat
+Source: CRAN
+Version: 2.0-0
+Hash: 42be2136555fa4b6167605df56d8cd7c
 
 Package: digest
 Source: CRAN
@@ -34,6 +54,17 @@ Package: formatR
 Source: CRAN
 Version: 1.2.1
 Hash: 4bef90cfc1c7e0a7ac67ed556f65ca61
+
+Package: ggplot2
+Source: CRAN
+Version: 1.0.1
+Hash: 06a8e5faacfd76c9e4ab11a5b7ad94d6
+Requires: digest, gtable, plyr, proto, reshape2, scales
+
+Package: gtable
+Source: CRAN
+Version: 0.1.2
+Hash: 0cf4a2b54c02b35dec7e74a8ebed12a0
 
 Package: highr
 Source: CRAN
@@ -52,6 +83,11 @@ Version: 1.11
 Hash: d31c77797f1724e0588013ae84e61c69
 Requires: digest, evaluate, formatR, highr, markdown, stringr, yaml
 
+Package: labeling
+Source: CRAN
+Version: 0.3
+Hash: 568a992912caf7eeddfb121924154047
+
 Package: magrittr
 Source: CRAN
 Version: 1.5
@@ -68,20 +104,45 @@ Source: CRAN
 Version: 0.4
 Hash: 7539cd616a3a73975a289e02ab2624db
 
+Package: munsell
+Source: CRAN
+Version: 0.4.2
+Hash: fa8af6d040041439b249351e9d16ae9a
+Requires: colorspace
+
 Package: packrat
-Source: github
-Version: 0.4.1.8
-Hash: ee57b7e7ba891d23079b12f1ff5106d0db0594e5
-GithubRepo: packrat
-GithubUsername: rstudio
-GithubRef: v0.98.1000
-GithubSha1: ee57b7e7ba891d23079b12f1ff5106d0db0594e5
+Source: CRAN
+Version: 0.4.6-1
+Hash: ede5c9b2ba00269324349ef07ef89a81
+
+Package: plyr
+Source: CRAN
+Version: 1.8.3
+Hash: e9fd5625699fb1cd71e6734bcc0d3f8a
+Requires: Rcpp
+
+Package: proto
+Source: CRAN
+Version: 0.3-10
+Hash: 668a9e87cedbdc5f56c396edf1bd2648
+
+Package: reshape2
+Source: CRAN
+Version: 1.4.1
+Hash: 1b2d31d38f1f0e9974a73d7968dfa6fe
+Requires: Rcpp, plyr, stringr
 
 Package: rmarkdown
 Source: CRAN
 Version: 0.8.1
 Hash: 9e87ecbc173a5ea0f041bfb89d0af714
 Requires: caTools, htmltools, knitr, yaml
+
+Package: scales
+Source: CRAN
+Version: 0.3.0
+Hash: 5ef5baa78154b44b1748d8c78bfce4b2
+Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
 
 Package: stringi
 Source: CRAN
