@@ -55,7 +55,7 @@ if(flag.pw & flag.sew & flag.fcs) {
 
 ## Sorption to mineral surface -------------------------
 # The function will depend on the options (flags) chosen
-# ligand/receptor kinetics used (https://en.wikipedia.org/wiki/Binding_constant)
+# ligand(L)/receptor(M) kinetics used (https://en.wikipedia.org/wiki/Binding_constant)
 # Md stands for mineral adsorption site density.
 # Lw and Ls are ligands in water or adsorbed.
 # Mmod is used for scaling M and Ls from 0-1 between 0 and fc
@@ -64,8 +64,8 @@ if(flag.fcs & flag.sew) {
   F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth * moist)
-    M <- (Md - (L1s + L2s)) * mmod
-    return( (L * M * k) * depth )
+    M <- (Md - (L1s + L2s)) * mmod # check! need to calculate concentrations of L1s L2s?
+    return( (L * M * k) * depth ) # check! multiply by moist?
   }
   F_desorp <- function (Ls, k, moist, fc) {
     mmod <- min(1, moist / fc)

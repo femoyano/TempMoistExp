@@ -29,7 +29,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     ## Diffusion calculations  --------------------------------------
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
-    if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
+    if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
     diffmod_S <- D_S0 * diff / dist
     diffmod_E <- D_E0 * diff / dist
     SC.diff <- diffmod_S * (SCw - 0) # concentration at microbe asumed 0
