@@ -10,42 +10,42 @@
 
 ##  Decomposition flux ---------
 # The function will depend on the options (flags) chosen
-if(flag.pw & !flag.sew) stop("If flag.pw is TRUE, flag.sew must also be TRUE")
+if(flag.pcw & !flag.sew) stop("If flag.pcw is TRUE, flag.sew must also be TRUE")
 
-if(flag.pw & flag.sew & flag.fcs) {
+if(flag.pcw & flag.sew & flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / (moist * depth) * pc.mod
     EC <- EC / (moist * depth)
     F <- (V * EC * PC) / (K + PC) * (moist * depth)
   }
-} else if(flag.pw & flag.sew & !flag.fcs) {
+} else if(flag.pcw & flag.sew & !flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / (moist * depth)
     EC <- EC / (moist * depth)  
     F <- (V * EC * PC) / (K + PC) * (moist * depth)
   }
-} else if (!flag.pw & !flag.sew & !flag.fcs) {
+} else if (!flag.pcw & !flag.sew & !flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / depth
     EC <- EC / depth
     F <- (V * EC * PC) / (K + PC) * depth
   }
-} else if(!flag.pw & !flag.sew & flag.fcs) {
+} else if(!flag.pcw & !flag.sew & flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / depth * pc.mod
     EC <- EC / depth
     F <- (V * EC * PC) / (K + PC) * depth
   }
-}  else if(!flag.pw & flag.sew & flag.fcs) {
+}  else if(!flag.pcw & flag.sew & flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / depth * pc.mod
     EC <- EC / (moist * depth)
     F <- (V * EC * PC) / (K + PC) * depth
   }
-} else if(!flag.pw & flag.sew & !flag.fcs) {
+} else if(!flag.pcw & flag.sew & !flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / depth
     EC <- EC / (moist * depth)
@@ -56,16 +56,16 @@ if(flag.pw & flag.sew & flag.fcs) {
 ## Sorption to mineral surface -------------------------
 # The function will depend on the options (flags) chosen
 # ligand(L)/receptor(M) kinetics used (https://en.wikipedia.org/wiki/Binding_constant)
-# Md stands for mineral adsorption site density.
-# Lw and Ls are ligands in water or adsorbed.
+# Md stands for density of mineral adsorption site (so is not corrected for depth)
+# Lw and Ls are ligands in water or adsorbed, respectively.
 # Mmod is used for scaling M and Ls from 0-1 between 0 and fc
 
 if(flag.fcs & flag.sew) {
-  F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
+  F_adsorp <- function (Lw, Ls1, Ls2, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth * moist)
-    M <- (Md - (L1s + L2s)) * mmod # check! need to calculate concentrations of L1s L2s?
-    return( (L * M * k) * depth ) # check! multiply by moist?
+    M <- (Md - (Ls1 + Ls2)) * mmod
+    return( (L * M * k) * depth )
   }
   F_desorp <- function (Ls, k, moist, fc) {
     mmod <- min(1, moist / fc)
@@ -73,10 +73,10 @@ if(flag.fcs & flag.sew) {
     return(L * k)
   }
 } else if(flag.fcs & !flag.sew) {
-  F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
+  F_adsorp <- function (Lw, Ls1, Ls2, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / depth
-    M <- (Md - (L1s + L2s)) * mmod
+    M <- (Md - (Ls1 + Ls2)) * mmod
     return( (L * M * k) * depth )
   }
   F_desorp <- function (Ls, k, moist, fc) {
@@ -85,9 +85,9 @@ if(flag.fcs & flag.sew) {
     return(L * k)
   }
 } else if(!flag.fcs & flag.sew) {
-  F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
+  F_adsorp <- function (Lw, Ls1, Ls2, Md, k, moist, fc, depth) {
     L <- Lw / (depth * moist)
-    M <- Md - (L1s + L2s)
+    M <- Md - (Ls1 + Ls2)
     return( (L * M * k) * depth )
   }
   F_desorp <- function (Ls, k, moist, fc) {
@@ -95,10 +95,10 @@ if(flag.fcs & flag.sew) {
     return(L * k)
   }
 } else if(!flag.fcs & !flag.sew) {
-  F_adsorp <- function (Lw, L1s, L2s, Md, k, moist, fc, depth) {
+  F_adsorp <- function (Lw, Ls1, Ls2, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth)
-    M <- Md - (L1s + L2s)
+    M <- Md - (Ls1 + Ls2)
     return( (L * M * k) * depth  )
   }
   F_desorp <- function (Ls, k, moist, fc) {

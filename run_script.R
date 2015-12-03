@@ -2,8 +2,8 @@
 rm(list=ls())
 
 ### User Settings - General =======================================================
-spin           <- 0           # set to TRUE to run spinup
-trans          <- 1           # set to TRUE for a normal (transient) run
+spin           <- 1           # set to TRUE to run spinup
+trans          <- 0           # set to TRUE for a normal (transient) run
 site.name      <- "Wetzstein"
 
 ### User Settings for Spinup Run --------------------------------------------------
@@ -38,7 +38,7 @@ trans.input.file  <- file.path(input.path, paste("input_"     , trans.data , ".c
 site.file         <- file.path(input.path, paste("site_", site.name  , ".csv", sep=""))
 
 # output settings
-model.name        <- paste("SoilC-", "A", flag.ads, "_M", flag.mic, "_F", flag.sfc, "_P", flag.pcw, "_S", flag.sew, sep = "")
+model.name        <- paste("SoilC-", "A", flag.ads, "_M", flag.mic, "_F", flag.fcs, "_P", flag.pcw, "_S", flag.sew, sep = "")
 spinup.name       <- paste("spinup", model.name, spinup.data, sep="_")
 trans.name        <- paste("trans", model.name, trans.data, sep="_")
 output.path       <- file.path("..", "Output")
@@ -90,5 +90,5 @@ if(trans) {
 
 # Plot results
 source("PlotResults.R")
-if(spin) PlotResults(get(spinup.name), "year", path = "..Output/Plots/Spinup/", spinup.name)
-if(trans) PlotResults(get(trans.name), "day", path = "..Output/Plots/Trans/", trans.name)
+if(spin) PlotResults(get(spinup.name), "year", path = file.path("..", "Output", "Plots", "Spinup"), spinup.name)
+if(trans) PlotResults(get(trans.name), "day", path = file.path("..", "Output", "Plots", "Trans"), trans.name)

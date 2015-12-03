@@ -14,7 +14,7 @@ if(!exists("runscript")) {
   flag.ads  <- 0  # model adsorption desorption rates?
   flag.mic  <- 0  # model microbial pool explicitly?
   flag.fcs  <- 1  # scale PC, SCs, ECs, M with moisture (with max at fc)?
-  flag.pw   <- 1  # calculate PC concentration in water?
+  flag.pcw  <- 1  # calculate PC concentration in water?
   flag.sew  <- 1  # calculate EC and SC concentration in water?
 
   # Setup
@@ -30,9 +30,9 @@ if(!exists("runscript")) {
   source("initial_state.r")
 }
 
-if(!flag.mic) initial_state["MC"]  <- NA
-if(!flag.ads) initial_state["SCs"] <- NA
-if(!flag.ads) initial_state["ECs"] <- NA
+# if(!flag.mic) initial_state["MC"]  <- NA
+# if(!flag.ads) initial_state["SCs"] <- NA
+# if(!flag.ads) initial_state["ECs"] <- NA
 
 ### Define time quantities
 year  <- 31104000 # seconds in a year
