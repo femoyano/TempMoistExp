@@ -33,8 +33,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     diffmod_S <- D_S0 * diff / dist
     diffmod_E <- D_E0 * diff / dist
     SC.diff <- diffmod_S * (SCw - 0) # concentration at microbe asumed 0
-    EC.diff <- diffmod_E * (ECw - 0) # concentration at substrate assumed 0
-    
+
     ## Calculate change rates ---------------------------------------
     
     # Input rate
@@ -42,7 +41,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     F_ml.scw   <- litter_met
     
     # Decomposition rate
-    F_pc.scw   <- F_decomp(PC, EC.diff, V_D, K_D, moist, fc, depth)
+    F_pc.scw   <- F_decomp(PC, ECw, V_D, K_D, moist, fc, depth)
     
     # Adsorption/desorption
     if(flag.ads) {
@@ -74,17 +73,19 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
       F_scw.ecm <- SC.diff * CUE * Ef
     }
     
+    F_ecm.ecw  <- diffmod_E * (ECm - ECw)
+    
     # Enzyme decay
     F_ecw.scw  <- ECw * Em
     
     ## Rate of change calculation for state variables ---------------
-    dPC  <- F_sl.pc + F_scw.pc - F_pc.scw
-    dSCw <- F_ml.scw + F_pc.scw + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecw
+    dPC  <- F_sl.pc   + F_scw.pc  - F_pc.scw
+    dSCw <- F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
     dSCs <- F_scw.scs - F_scs.scw
-    dECw <- F_ecs.ecw + F_mc.ecw + F_scw.ecw - F_ecw.ecs - F_ecw.scw 
-    dECm <- 
+    dECw <- F_ecs.ecw + F_ecm.ecw - F_ecw.ecs - F_ecw.scw 
+    dECm <- F_scw.ecm + F_mc.ecm  - F_ecm.ecw
     dECs <- F_ecw.ecs - F_ecs.ecw
-    dMC  <- F_scw.mc - F_mc.pc - F_mc.ecw
+    dMC  <- F_scw.mc  - F_mc.pc   - F_mc.ecm
     dCO2 <- F_scw.co2
     
     return(list(c(dPC, dSCw, dSCs, dECw, dECm, dECs, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod_E=diffmod_E, diffmod_S=diffmod_S)))
