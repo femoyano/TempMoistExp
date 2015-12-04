@@ -5,12 +5,12 @@
 # Needs to be a named vector for using ode
 if(spinup) {
 initial_state <- c(
-  PC  = 10  , # [gC m-3] labile carbon 
-  SCw = 10  , # [gC m-3] soluble carbon in bulk 
-  SCs = 10  , # [gC m-3] sorbed SC
+  PC  = 1   , # [gC m-3] labile carbon 
+  SCw = 1   , # [gC m-3] soluble carbon in bulk 
+  SCs = 1   , # [gC m-3] sorbed SC
   ECw = 1   , # [gC m-3] enzymes in bulk 
   ECs = 1   , # [gC m-3]sorbed EC
-  MC  = 1     , # [gC m-3] microbial C
+  MC  = 1   , # [gC m-3] microbial C
   CO2 = 0     # [gC] microbial carbon 
 )
 } else {

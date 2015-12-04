@@ -7,8 +7,8 @@ trans          <- 0           # set to TRUE for a normal (transient) run
 site.name      <- "Wetzstein"
 
 ### User Settings for Spinup Run --------------------------------------------------
-spinup.data    <- "WetzsteinSM16"
-spin.years     <- 5000    # maximum years for spinup runs
+spinup.data    <- "Wetzstein2007SM16"
+spin.years     <- 500     # maximum years for spinup runs
 t.save.spin    <- "year"  # interval at which to save output during spinup runs (as text).
 eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
 eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
