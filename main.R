@@ -57,15 +57,23 @@ t.save.s <- get(t.save.spin) / tunit
 t.save.t <- get(t.save.trans) / tunit
 if(spinup) times <- seq(0, spin.time, t.save.s) else times <- seq(start, end, t.save.t)
 
-# If spinup, use average of input data
+# # If spinup, use average of input data
+# if(spinup) {
+#   litter_str  <- rep(mean(litter_str, na.rm=TRUE), length.out = 2)
+#   litter_met  <- rep(mean(litter_met, na.rm=TRUE), length.out = 2)
+#   temp        <- rep(mean(temp      , na.rm=TRUE), length.out = 2)
+#   moist       <- rep(mean(moist     , na.rm=TRUE), length.out = 2)
+#   times_input <- c(1,2)
+# }
+# If spinup, repeat input data
 if(spinup) {
-  litter_str  <- rep(mean(litter_str, na.rm=TRUE), length.out = 2)
-  litter_met  <- rep(mean(litter_met, na.rm=TRUE), length.out = 2)
-  temp        <- rep(mean(temp      , na.rm=TRUE), length.out = 2)
-  moist       <- rep(mean(moist     , na.rm=TRUE), length.out = 2)
-  times_input <- c(1,2)
+  temp       <- rep(temp      , length.out = spin.time)
+  moist      <- rep(moist     , length.out = spin.time)
+  litter_str <- rep(litter_str, length.out = spin.time)
+  litter_met <- rep(litter_met, length.out = spin.time)
 }
 
+browser()
 # Define input variables interpolation functions
 Approx_litter_str <- approxfun(times_input, litter_str, method = "linear", rule = 2)
 Approx_litter_met <- approxfun(times_input, litter_met, method = "linear", rule = 2)
