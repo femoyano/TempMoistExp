@@ -40,11 +40,11 @@ temp        <- input.data$temp       # [K] soil temperature
 moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moisture
 litter_met  <- input.data$litter_met / hour * tunit # [mgC m^-2 tunit^-1] convert litter input rates to the model rate
 litter_str  <- input.data$litter_str / hour * tunit # [mgC m^-2 tunit^-1] convert litter input rates to the model rate
-times_input <- input.data[,1]        # time vector of input data
+times.input <- input.data[,1]        # time vector of input data
 
 # convert times to model times
 input.tstep <- get(names(input.data)[1])
-times_input <- times_input * input.tstep / tunit
+times_input <- times.input * input.tstep / tunit
 
 sand   <- site.data$sand  # [g g^-1] clay fraction values 
 clay   <- site.data$clay  # [g g^-1] sand fraction values 
@@ -52,7 +52,7 @@ silt   <- site.data$silt  # [g g^-1] silt fraction values
 ps     <- site.data$ps    # [m^3 m^-3] soil pore space
 depth  <- site.data$depth # [m] soil depth
 
-rm(input.data, site.data)
+rm(input.data, site.data, times.input)
 
 ### Obtain data times: start and end ===========================================
 
