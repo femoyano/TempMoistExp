@@ -8,7 +8,7 @@ site.name      <- "Wetzstein"
 
 ### User Settings for Spinup Run --------------------------------------------------
 spinup.data    <- "Wetzstein2007SM16"
-spin.years     <- 500     # maximum years for spinup runs
+spin.years     <- 100     # maximum years for spinup runs
 t.save.spin    <- "year"  # interval at which to save output during spinup runs (as text).
 eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
 eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
@@ -27,7 +27,7 @@ t.save.trans   <- "day"   # interval at which to save output during transient ru
 flag.ads  <- 0  # model adsorption desorption rates?
 flag.mic  <- 0  # model microbial pool explicitly?
 flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)?
-flag.pcw  <- 1  # calculate PC concentration in water?
+flag.pcw  <- 0  # calculate PC concentration in water?
 flag.sew  <- 1  # calculate EC and SC concentration in water?
 
 ### Optional Setup =============================================================
