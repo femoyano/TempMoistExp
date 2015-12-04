@@ -62,16 +62,16 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
       F_scw.mc  <- SC.diff * CUE
       F_scw.co2 <- SC.diff * (1 - CUE)
       F_mc.pc   <- MC * Mm
-      F_mc.ecw  <- MC * Ep
+      F_mc.ecm  <- MC * Ep
       F_scw.pc  <- 0
-      F_scw.ecw <- 0
+      F_scw.ecm <- 0
     } else {
       F_scw.mc  <- 0
       F_mc.pc   <- 0
-      F_mc.ecw  <- 0
+      F_mc.ecm  <- 0
       F_scw.co2 <- SC.diff * (1 - CUE)
       F_scw.pc  <- SC.diff * CUE * (1 - Ef)
-      F_scw.ecw <- SC.diff * CUE * Ef
+      F_scw.ecm <- SC.diff * CUE * Ef
     }
     
     # Enzyme decay
@@ -82,11 +82,12 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     dSCw <- F_ml.scw + F_pc.scw + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecw
     dSCs <- F_scw.scs - F_scs.scw
     dECw <- F_ecs.ecw + F_mc.ecw + F_scw.ecw - F_ecw.ecs - F_ecw.scw 
+    dECm <- 
     dECs <- F_ecw.ecs - F_ecs.ecw
     dMC  <- F_scw.mc - F_mc.pc - F_mc.ecw
     dCO2 <- F_scw.co2
     
-    return(list(c(dPC, dSCw, dSCs, dECw, dECs, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod_E=diffmod_E, diffmod_S=diffmod_S)))
+    return(list(c(dPC, dSCw, dSCs, dECw, dECm, dECs, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod_E=diffmod_E, diffmod_S=diffmod_S)))
     
   }) # end of with(...
   
