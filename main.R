@@ -65,15 +65,22 @@ if(spinup) times <- seq(0, spin.time, t.save.s) else times <- seq(start, end, t.
 #   moist       <- rep(mean(moist     , na.rm=TRUE), length.out = 2)
 #   times_input <- c(1,2)
 # }
+
 # If spinup, repeat input data
 if(spinup) {
+  litter_str <- approx(times_input, litter_str, xout=seq(start, end), rule=2)$y
+  litter_met <- approx(times_input, litter_met, xout=seq(start, end), rule=2)$y
+  temp       <- approx(times_input, temp      , xout=seq(start, end), rule=2)$y
+  moist      <- approx(times_input, moist     , xout=seq(start, end), rule=2)$y
+  
   temp       <- rep(temp      , length.out = spin.time)
   moist      <- rep(moist     , length.out = spin.time)
   litter_str <- rep(litter_str, length.out = spin.time)
   litter_met <- rep(litter_met, length.out = spin.time)
+  
+  times_input <- seq(1, spin.time)
 }
 
-browser()
 # Define input variables interpolation functions
 Approx_litter_str <- approxfun(times_input, litter_str, method = "linear", rule = 2)
 Approx_litter_met <- approxfun(times_input, litter_met, method = "linear", rule = 2)
