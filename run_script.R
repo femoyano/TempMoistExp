@@ -8,7 +8,7 @@ site.name      <- "Wetzstein"
 
 ### User Settings for Spinup Run --------------------------------------------------
 spinup.data    <- "Wetzstein2007SM16"
-spin.years     <- 100     # maximum years for spinup runs
+spin.years     <- 10     # maximum years for spinup runs
 t.save.spin    <- "year"  # interval at which to save output during spinup runs (as text).
 eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
 eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
@@ -33,9 +33,9 @@ flag.sew  <- 1  # calculate EC and SC concentration in water?
 ### Optional Setup =============================================================
 # input settings
 input.path        <- file.path("..", "Input")
-spinup.input.file <- file.path(input.path, paste("input_"     , spinup.data, ".csv", sep=""))
-trans.input.file  <- file.path(input.path, paste("input_"     , trans.data , ".csv", sep=""))
-site.file         <- file.path(input.path, paste("site_", site.name  , ".csv", sep=""))
+spinup.input.file <- file.path(input.path, paste("input_" , spinup.data, ".csv", sep=""))
+trans.input.file  <- file.path(input.path, paste("input_" , trans.data , ".csv", sep=""))
+site.file         <- file.path(input.path, paste("site_"  , site.name  , ".csv", sep=""))
 
 # output settings
 model.name        <- paste("SoilC-", "A", flag.ads, "_M", flag.mic, "_F", flag.fcs, "_P", flag.pcw, "_S", flag.sew, sep = "")
@@ -50,7 +50,7 @@ trans.output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
 # Should not change results when using ode solver (test?)
 t.unit      <- "hour"
 
-ode.method     <- "lsoda"  # see ode function
+ode.method  <- "lsoda"  # see ode function
 
 ### Non User Setup =============================================================
 runscript <- TRUE # flag for main file
