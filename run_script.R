@@ -9,7 +9,7 @@ site.name      <- "Wetzstein"
 ### User Settings for Spinup Run --------------------------------------------------
 spinup.data    <- "Wetzstein2007SM16"
 spin.years     <- 5   # maximum years for spinup runs
-t.save.spin    <- "month"  # interval at which to save output during spinup runs (as text).
+t.save.spin    <- "day"  # interval at which to save output during spinup runs (as text).
 
 ### User Settings for Transient Run ------------------------------------------------
 init.mode      <- "spinup"
