@@ -9,9 +9,7 @@ site.name      <- "Wetzstein"
 ### User Settings for Spinup Run --------------------------------------------------
 spinup.data    <- "Wetzstein2007SM16"
 spin.years     <- 10     # maximum years for spinup runs
-t.save.spin    <- "year"  # interval at which to save output during spinup runs (as text).
-eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
-eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
+t.save.spin    <- "month"  # interval at which to save output during spinup runs (as text).
 
 ### User Settings for Transient Run ------------------------------------------------
 init.mode      <- "spinup"
@@ -90,5 +88,5 @@ if(trans) {
 
 # Plot results
 source("PlotResults.R")
-if(spin) PlotResults(get(spinup.name), "year", path = file.path("..", "Output", "Plots", "Spinup"), spinup.name)
+if(spin) PlotResults(get(spinup.name), "month", path = file.path("..", "Output", "Plots", "Spinup"), spinup.name)
 if(trans) PlotResults(get(trans.name), "day", path = file.path("..", "Output", "Plots", "Trans"), trans.name)
