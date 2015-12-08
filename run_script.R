@@ -8,7 +8,7 @@ site.name      <- "Wetzstein"
 
 ### User Settings for Spinup Run --------------------------------------------------
 spinup.data    <- "Wetzstein2007SM16"
-spin.years     <- 10     # maximum years for spinup runs
+spin.years     <- 5   # maximum years for spinup runs
 t.save.spin    <- "month"  # interval at which to save output during spinup runs (as text).
 
 ### User Settings for Transient Run ------------------------------------------------
@@ -59,7 +59,6 @@ if(spin) {
   spinup      <- TRUE # set spinup flag
   input.file  <- spinup.input.file
   run.name    <- spinup.name
-  eq.stop     <- eq.stop.spinup
   source("initial_state.r") # Loads initial state variable values
   source("main.R")
   print(tail(out, 1))
