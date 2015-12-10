@@ -34,17 +34,17 @@ input.data <- read.csv(input.file) # input data file
 #   litt_str   <- 0.00015 * 1000000 * 2.7 * (1 - ps) / 1000 * depth # [gC m-2 h-1] mgC gSoil-1 (from Li et al.) to gC m-2
 #   input.data <- data.frame(hour=seq(1,2), temp = c(293.15, 293.15), moist=c(fc, fc), litter_str = rep(litt_str, 2), litter_met = rep(litt_met, 2))
 
-### Extract variables ==========================================================
+### Adjust time and aggregate to model time step ==========================================================
+times.input <- input.data[,1]        # time vector of input data
+input.tstep <- get(names(input.data)[1])
+times.input <- times.input * input.tstep / tunit # convert input data to model step unit
 
+times_input <- input.data[,1]        # time of input data
 temp        <- input.data$temp       # [K] soil temperature
 moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moisture
 litter_met  <- input.data$litter_met / hour * tunit # [mgC m^-2 tunit^-1] convert litter input rates to the model rate
 litter_str  <- input.data$litter_str / hour * tunit # [mgC m^-2 tunit^-1] convert litter input rates to the model rate
-times.input <- input.data[,1]        # time vector of input data
 
-# convert times to model times
-input.tstep <- get(names(input.data)[1])
-times_input <- times.input * input.tstep / tunit
 
 sand   <- site.data$sand  # [g g^-1] clay fraction values 
 clay   <- site.data$clay  # [g g^-1] sand fraction values 
@@ -52,7 +52,7 @@ silt   <- site.data$silt  # [g g^-1] silt fraction values
 ps     <- site.data$ps    # [m^3 m^-3] soil pore space
 depth  <- site.data$depth # [m] soil depth
 
-rm(input.data, site.data, times.input)
+rm(input.data, site.data, times.input, input.tstep)
 
 ### Obtain data times: start and end ===========================================
 

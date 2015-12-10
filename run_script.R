@@ -25,8 +25,9 @@ t.save.trans   <- "day"   # interval at which to save output during transient ru
 flag.ads  <- 0  # model adsorption desorption rates?
 flag.mic  <- 0  # model microbial pool explicitly?
 flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)?
-flag.pcw  <- 0  # calculate PC concentration in water?
 flag.sew  <- 1  # calculate EC and SC concentration in water?
+flag.des  <- 0  # run using differential equation solver?
+flag.cmi  <- 0  # use a constant mean input (e.g. for spinup)
 
 ### Optional Setup =============================================================
 # input settings

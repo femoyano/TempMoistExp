@@ -10,42 +10,28 @@
 
 ##  Decomposition flux ---------
 # The function will depend on the options (flags) chosen
-if(flag.pcw & !flag.sew) stop("If flag.pcw is TRUE, flag.sew must also be TRUE")
 
-if(flag.pcw & flag.sew & flag.fcs) {
-  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
-    pc.mod <- min(1, moist / fc)
-    PC <- PC / (moist * depth) * pc.mod
-    EC <- EC / (moist * depth)
-    F <- (V * EC * PC) / (K + PC) * (moist * depth)
-  }
-} else if(flag.pcw & flag.sew & !flag.fcs) {
-  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
-    PC <- PC / (moist * depth)
-    EC <- EC / (moist * depth)  
-    F <- (V * EC * PC) / (K + PC) * (moist * depth)
-  }
-} else if (!flag.pcw & !flag.sew & !flag.fcs) {
+if (!flag.sew & !flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / depth
     EC <- EC / depth
     F <- (V * EC * PC) / (K + PC) * depth
   }
-} else if(!flag.pcw & !flag.sew & flag.fcs) {
+} else if(!flag.sew & flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / depth * pc.mod
     EC <- EC / depth
     F <- (V * EC * PC) / (K + PC) * depth
   }
-}  else if(!flag.pcw & flag.sew & flag.fcs) {
+}  else if(flag.sew & flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
     PC <- PC / depth * pc.mod
     EC <- EC / (moist * depth)
     F <- (V * EC * PC) / (K + PC) * depth
   }
-} else if(!flag.pcw & flag.sew & !flag.fcs) {
+} else if(flag.sew & !flag.fcs) {
   F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
     PC <- PC / depth
     EC <- EC / (moist * depth)

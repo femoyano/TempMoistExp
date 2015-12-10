@@ -3,7 +3,7 @@
 
 ### Documentation ==============================================================
 # Main program file.
-# Soil model: SoilBGC.
+# Soil model: SoilBGC
 
 ### Libraries ==================================================================
 require(deSolve)
@@ -14,8 +14,9 @@ if(!exists("runscript")) {
   flag.ads  <- 0  # model adsorption desorption rates?
   flag.mic  <- 0  # model microbial pool explicitly?
   flag.fcs  <- 1  # scale PC, SCs, ECs, M with moisture (with max at fc)?
-  flag.pcw  <- 1  # calculate PC concentration in water?
   flag.sew  <- 1  # calculate EC and SC concentration in water?
+  flag.des  <- 0  # run using differential equation solver?
+  flag.cmi  <- 0  # use a constant mean input (e.g. for spinup)
 
   # Setup
   input.file   <- "input.csv"
@@ -30,16 +31,14 @@ if(!exists("runscript")) {
   source("initial_state.r")
 }
 
-# if(!flag.mic) initial_state["MC"]  <- NA
-# if(!flag.ads) initial_state["SCs"] <- NA
-# if(!flag.ads) initial_state["ECs"] <- NA
-
-### Define time quantities
-year  <- 31104000 # seconds in a year
-month <- 2592000  # seconds in a month
-day   <- 86400    # seconds in a day
-hour  <- 3600     # seconds in an hour
-sec   <- 1        # seconds in a second!
+### Define time units ==========================================================
+year     <- 31104000 # seconds in a year
+month    <- 2592000  # seconds in a month
+day      <- 86400    # seconds in a day
+hour     <- 3600     # seconds in an hour
+halfhour <- 1800     # seconds in half an hour
+tenmin   <- 600      # seconds in 10 minutes
+sec      <- 1        # seconds in a second!
 
 tunit <- get(t.unit)
 
