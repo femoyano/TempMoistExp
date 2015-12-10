@@ -30,16 +30,15 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
-    diffmod_S <- D_S0 * diff / dist
-    diffmod_E <- D_E0 * diff / dist
-    SC.diff <- diffmod_S * (SCw - 0) # concentration at microbe asumed 0
+	SC.diff <- D_S0 * (SCw - 0) * diffmod / dist
+	EC.diff <- D_E0 * (ECm - ECw) * diffmod / dist
 
-    ## Calculate change rates ---------------------------------------
-    
+      ### Calculate all fluxes ------
+ 
     # Input rate
     F_sl.pc    <- litter_str
     F_ml.scw   <- litter_met
-    
+
     # Decomposition rate
     F_pc.scw   <- F_decomp(PC, ECw, V_D, K_D, moist, fc, depth)
     
@@ -73,7 +72,7 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
       F_scw.ecm <- SC.diff * CUE * Ef
     }
     
-    F_ecm.ecw  <- diffmod_E * (ECm - ECw)
+    F_ecm.ecw  <- EC.diff
     
     # Enzyme decay
     F_ecw.scw  <- ECw * Em
