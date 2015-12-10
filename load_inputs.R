@@ -14,7 +14,7 @@ site.data  <- read.csv(site.file)
 # Forcing and input data
 input.data <- read.csv(input.file) # input data file
 
-### Option 2: manually enter input data ======================================== ####
+### Option 2: manually enter input data ========================================
 
 # Field capacity calculation to use as input
 
@@ -35,12 +35,11 @@ input.data <- read.csv(input.file) # input data file
 #   input.data <- data.frame(hour=seq(1,2), temp = c(293.15, 293.15), moist=c(fc, fc), litter_str = rep(litt_str, 2), litter_met = rep(litt_met, 2))
 
 
-# Adjust time units
+### Adjust time units and extract data ========================================
 times.input <- input.data[,1]        # time vector of input data
 input.tstep <- get(names(input.data)[1])
 times.input <- times.input * input.tstep / tunit # convert input data to model step unit
 
-# Extract data
 times_input <- input.data[,1]        # time of input data
 temp        <- input.data$temp       # [K] soil temperature
 moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moisture
