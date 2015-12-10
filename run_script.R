@@ -8,7 +8,7 @@ site.name      <- "Wetzstein"
 
 ### User Settings for Spinup Run --------------------------------------------------
 spinup.data    <- "Wetzstein2007SM16"
-spin.years     <- 5   # maximum years for spinup run
+spin.years     <- 25   # maximum years for spinup run
 t.save.spin    <- "day"  # interval at which to save output during spinup runs (as text).
 
 ### User Settings for Transient Run ------------------------------------------------
@@ -26,7 +26,7 @@ flag.ads  <- 0  # simulate adsorption desorption rates?
 flag.mic  <- 0  # simulate microbial pool explicitly?
 flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)?
 flag.sew  <- 1  # calculate EC and SC concentration in water?
-flag.cmi  <- 0  # use a constant mean input for spinup?
+flag.cmi  <- 1  # use a constant mean input for spinup?
 flag.des  <- 1  # run using differential equation solver?
 
 ### Optional Setup =============================================================
