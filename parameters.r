@@ -3,7 +3,7 @@
 # Documentation ====
 # All fixed parameters and constants should be listed here.
 # Variables calculated from input data (e.g. theta_fc, ..) are in main.
-# Warning: time variables and tunit have to be defined before sourcing this file.
+# Warning: time variables and tstep have to be defined before sourcing this file.
 
 pars <- c(
     
@@ -11,17 +11,17 @@ pars <- c(
   R   = 0.008314                  ,  # [kJ K-1 mol-1] gas constant
   
   ### Time Dependent Parameters
-  Mm_ref   = 0.00028 / hour * tunit , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
-  Em_ref   = 0.001   / hour * tunit , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
-  Ep       = 5.6e-06 / hour * tunit , # [gC g-1 MC h-1] Fraction of SC taken up that is converted to EC. (assumed).
-  V_D_ref  = 1       / hour * tunit , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
-  D_S0     = 8.1e-10 / sec  * tunit , # [m^2 s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
-  D_E0     = 8.1e-11 / sec  * tunit , # [m^2 s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
+  Mm_ref   = 0.00028 / hour * tstep , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
+  Em_ref   = 0.001   / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
+  Ep       = 5.6e-06 / hour * tstep , # [gC g-1 MC h-1] Fraction of SC taken up that is converted to EC. (assumed).
+  V_D_ref  = 1       / hour * tstep , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
+  D_S0     = 8.1e-10 / sec  * tstep , # [m^2 s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+  D_E0     = 8.1e-11 / sec  * tstep , # [m^2 s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
   # Adsorptino/desorption rates (ka/kd ratio follows Mayes et al. 2012 (alfisols) -> Tang and Riley 2014, but values must be researched)
-  ka.s.ref = 0.01    / hour * tunit , # [h-1] Adsorption rate constant of soluble C into free mineral adsorption sites
-  ka.e.ref = 0.01    / hour * tunit , # [h-1] Adsorption rate constant of enzymes into free mineral adsorption sites
-  kd.s.ref = 0.25    / hour * tunit , # [h-1] Desorption rate constant of soluble C into free mineral adsorption sites
-  kd.e.ref = 0.50    / hour * tunit , # [h-1] Desorption rate constant of enzymes into free mineral adsorption sites
+  ka.s.ref = 0.01    / hour * tstep , # [h-1] Adsorption rate constant of soluble C into free mineral adsorption sites
+  ka.e.ref = 0.01    / hour * tstep , # [h-1] Adsorption rate constant of enzymes into free mineral adsorption sites
+  kd.s.ref = 0.25    / hour * tstep , # [h-1] Desorption rate constant of soluble C into free mineral adsorption sites
+  kd.e.ref = 0.50    / hour * tstep , # [h-1] Desorption rate constant of enzymes into free mineral adsorption sites
   
   ### Fixed Parameters ====
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7

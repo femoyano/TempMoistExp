@@ -22,12 +22,12 @@ t.save.trans   <- "day"   # interval at which to save output during transient ru
 # Note that runs with same setup will overwrite previous output files.
 
 # Flags! -----------------------------------------------------------------------
-flag.ads  <- 0  # model adsorption desorption rates?
-flag.mic  <- 0  # model microbial pool explicitly?
+flag.ads  <- 0  # simulate adsorption desorption rates?
+flag.mic  <- 0  # simulate microbial pool explicitly?
 flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)?
 flag.sew  <- 1  # calculate EC and SC concentration in water?
 flag.des  <- 0  # run using differential equation solver?
-flag.cmi  <- 0  # use a constant mean input (e.g. for spinup)
+flag.cmi  <- 0  # use a constant mean input for spinup?
 
 ### Optional Setup =============================================================
 # input settings
@@ -47,7 +47,7 @@ trans.output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
 # Model time unit
 # Unit used for all rates (as string). Must coincide with unit in input data
 # Should not change results when using ode solver (test?)
-t.unit      <- "hour"
+t_step      <- "hour"
 
 ode.method  <- "lsoda"  # see ode function
 
