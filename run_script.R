@@ -8,7 +8,7 @@ site.name      <- "Wetzstein"
 
 ### User Settings for Spinup Run --------------------------------------------------
 spinup.data    <- "Wetzstein2007SM16"
-spin.years     <- 5   # maximum years for spinup runs
+spin.years     <- 5   # maximum years for spinup run
 t.save.spin    <- "day"  # interval at which to save output during spinup runs (as text).
 
 ### User Settings for Transient Run ------------------------------------------------
@@ -26,8 +26,8 @@ flag.ads  <- 0  # simulate adsorption desorption rates?
 flag.mic  <- 0  # simulate microbial pool explicitly?
 flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)?
 flag.sew  <- 1  # calculate EC and SC concentration in water?
-flag.des  <- 0  # run using differential equation solver?
 flag.cmi  <- 0  # use a constant mean input for spinup?
+flag.des  <- 1  # run using differential equation solver?
 
 ### Optional Setup =============================================================
 # input settings
@@ -37,7 +37,8 @@ trans.input.file  <- file.path(input.path, paste("input_" , trans.data , ".csv",
 site.file         <- file.path(input.path, paste("site_"  , site.name  , ".csv", sep=""))
 
 # output settings
-model.name        <- paste("SoilC-", "A", flag.ads, "_M", flag.mic, "_F", flag.fcs, "_P", flag.pcw, "_S", flag.sew, sep = "")
+model.name        <- paste("SoilC-", "A", flag.ads, "_M", flag.mic, "_F", flag.fcs, 
+                           "_S", flag.sew, "_D", flag.des, "_C", flag.cmi, sep = "")
 spinup.name       <- paste("spinup", model.name, spinup.data, sep="_")
 trans.name        <- paste("trans", model.name, trans.data, sep="_")
 output.path       <- file.path("..", "Output")

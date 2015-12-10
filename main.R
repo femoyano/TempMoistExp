@@ -47,16 +47,14 @@ source("parameters.r")
 source("flux_functions.r")
 source("Model.R")
 
-## Load input data
-source("load_inputs.R")
+## Load and prepare input data
+spin.time <- spin.years * year / tstep
+# Define time vector for output (only for de solver?)
+t.save.s <- get(t.save.spin) / tstep
+t.save.t <- get(t.save.trans) / tstep
+if(spinup) times <- seq(0, spin.time, t.save.s) else times <- seq(start, end, t.save.t)
 
-if(flag.des) {
-  ## Define time vector for desolve model output
-  spin.time <- spin.years * year / tstep
-  t.save.s <- get(t.save.spin) / tstep
-  t.save.t <- get(t.save.trans) / tstep
-  if(spinup) times <- seq(0, spin.time, t.save.s) else times <- seq(start, end, t.save.t)
-}
+source("load_inputs.R")
 
 ## Calculate spatially changing variables and add to parameter list
 b       <- 2.91 + 15.9 * clay                         # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
