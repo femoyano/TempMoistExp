@@ -16,15 +16,15 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     moist      <- Approx_moist(t)
     
     # Calculate temporally changing variables
-    K_D     <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
-    ka.s    <- Temp.Resp.Eq(ka.s.ref, temp, T_ref, E_ka, R)
-    kd.s    <- Temp.Resp.Eq(kd.s.ref, temp, T_ref, E_kd, R)
-    ka.e    <- Temp.Resp.Eq(ka.e.ref, temp, T_ref, E_ka, R)
-    kd.e    <- Temp.Resp.Eq(kd.e.ref, temp, T_ref, E_kd, R)
-    V_D     <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V.D, R)
+    K_D     <- Temp.Resp.Eq(K_D_ref , temp, T_ref, E_K.D, R)
+    ka.s    <- Temp.Resp.Eq(ka.s.ref, temp, T_ref, E_ka , R)
+    kd.s    <- Temp.Resp.Eq(kd.s.ref, temp, T_ref, E_kd , R)
+    ka.e    <- Temp.Resp.Eq(ka.e.ref, temp, T_ref, E_ka , R)
+    kd.e    <- Temp.Resp.Eq(kd.e.ref, temp, T_ref, E_kd , R)
+    V_D     <- Temp.Resp.Eq(V_D_ref , temp, T_ref, E_V.D, R)
+    Mm      <- Temp.Resp.Eq(Mm_ref  , temp, T_ref, E_Mm , R)
+    Em      <- Temp.Resp.Eq(Em_ref  , temp, T_ref, E_Em , R)
     CUE     <- CUE_ref
-    Mm      <- Temp.Resp.Eq(Mm_ref, temp, T_ref, E_Mm, R)
-    Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     ## Diffusion calculations  --------------------------------------
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
