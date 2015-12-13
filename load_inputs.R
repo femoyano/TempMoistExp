@@ -1,20 +1,26 @@
-### Climate forcing and litter input ===========================================
+### Climate forcing and litter input =========================================
 
-### Documentation ==============================================================
+### Documentation ============================================================
 # Forcing data will be interpolated to model time step
 # Soil T must be in kelvin and soil moisture in volumetric content
 # Litter input must be in gC m-2 h-1
 # Requires: tstep
 
-### Get input data from file  ==================================================
+### Spatial soil data =========================================================
 
-# Spatial soil data
 site.data  <- read.csv(site.file)
 
-# Forcing and input data
+sand   <- site.data$sand  # [g g^-1] clay fraction values 
+clay   <- site.data$clay  # [g g^-1] sand fraction values 
+silt   <- site.data$silt  # [g g^-1] silt fraction values 
+ps     <- site.data$ps    # [m^3 m^-3] soil pore space
+depth  <- site.data$depth # [m] soil depth
+
+### Climate and litter data ===================================================
+
 input.data <- read.csv(input.file) # input data file
 
-### Adjust time units and extract data =========================================
+# Adjust time units and extract data
 times.input <- input.data[,1]        # time vector of input data
 input.tstep <- get(names(input.data)[1])
 times.input <- times.input * input.tstep / tstep # convert input data to model step unit
@@ -25,20 +31,14 @@ moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moistur
 litter_met  <- input.data$litter_met / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model rate
 litter_str  <- input.data$litter_str / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model rate
 
-sand   <- site.data$sand  # [g g^-1] clay fraction values 
-clay   <- site.data$clay  # [g g^-1] sand fraction values 
-silt   <- site.data$silt  # [g g^-1] silt fraction values 
-ps     <- site.data$ps    # [m^3 m^-3] soil pore space
-depth  <- site.data$depth # [m] soil depth
-
 rm(input.data, site.data, times.input, input.tstep)
 
-### Obtain data times: start and end ===========================================
+# Obtain data times: start and end
 
 start <- times_input[1]
 end   <- tail(times_input, 1)
 
-## Prepare input data
+# Prepare input data
 
 litter_str <- approx(times_input, litter_str, xout=seq(start, end), rule=2)$y
 litter_met <- approx(times_input, litter_met, xout=seq(start, end), rule=2)$y
@@ -67,8 +67,7 @@ if(spinup) {
   } # end of if else (flag.cmi)
 } # end of if(spinup)
 
-if(flag.des) {
-  # Define input variables interpolation functions
+if(flag.des) { # if diff. eq. solver is used define input interpolation functions
   Approx_litter_str <- approxfun(times_input, litter_str, method = "linear", rule = 2)
   Approx_litter_met <- approxfun(times_input, litter_met, method = "linear", rule = 2)
   Approx_temp       <- approxfun(times_input, temp      , method = "linear", rule = 2)

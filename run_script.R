@@ -1,17 +1,28 @@
 ### Run_script
 rm(list=ls())
 
-### User Settings - General =======================================================
-spin           <- 1           # set to TRUE to run spinup
-trans          <- 0           # set to TRUE for a normal (transient) run
+### User Settings =============================================================
+
+## Model run options and flags ------------------------------------------------
+spin      <- 1  # set to TRUE to run spinup
+trans     <- 0  # set to TRUE for a normal (transient) run
+
+flag.ads  <- 0  # simulate adsorption desorption rates
+flag.mic  <- 0  # simulate microbial pool explicitly
+flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)
+flag.sew  <- 1  # calculate EC and SC concentration in water
+flag.cmi  <- 1  # use a constant mean input for spinup
+flag.des  <- 1  # run using differential equation solver? If TRUE then t_step has no effect.
+
+### Input Setup ---------------------------------------------------------------
 site.name      <- "Wetzstein"
 
-### User Settings for Spinup Run --------------------------------------------------
+## User Settings for Spinup Run
 spinup.data    <- "Wetzstein2007SM16"
 spin.years     <- 25   # maximum years for spinup run
 t.save.spin    <- "day"  # interval at which to save output during spinup runs (as text).
 
-### User Settings for Transient Run ------------------------------------------------
+## User Settings for Transient Run
 init.mode      <- "spinup"
 init.file      <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Overwritten if init.mode = "spinup", "trans" or "default". 
 trans.data     <- "WetzsteinSM16"
@@ -21,15 +32,7 @@ t.save.trans   <- "day"   # interval at which to save output during transient ru
 # it gets values from: current spinup, current transient, init.file or initial_state.r, respectively
 # Note that runs with same setup will overwrite previous output files.
 
-# Flags! -----------------------------------------------------------------------
-flag.ads  <- 0  # simulate adsorption desorption rates?
-flag.mic  <- 0  # simulate microbial pool explicitly?
-flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)?
-flag.sew  <- 1  # calculate EC and SC concentration in water?
-flag.cmi  <- 1  # use a constant mean input for spinup?
-flag.des  <- 1  # run using differential equation solver? If TRUE then t_step has no effect.
-
-### Optional Setup =============================================================
+### Optional Settings =========================================================
 # input settings
 input.path        <- file.path("..", "Input")
 spinup.input.file <- file.path(input.path, paste("input_" , spinup.data, ".csv", sep=""))
