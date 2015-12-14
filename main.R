@@ -28,7 +28,7 @@ if(!exists("runscript")) {
   t_step       <- "hour"  # time unit for all rates values
   t.save.spin  <- "year"  # interval at which to save output during spinup runs (text).
   t.save.trans <- "day"   # interval at which to save output during transient runs (text).
-  source("initial_state.r")
+  source("initial_state.R")
 }
 
 ### Define time units ==========================================================
@@ -43,18 +43,22 @@ sec      <- 1        # seconds in a second!
 tstep <- get(t_step)
 
 ## Sourced required files
-source("parameters.r")
-source("flux_functions.r")
+source("parameters.R")
+source("flux_functions.R")
 source("Model.R")
 
 ## Load and prepare input data
-spin.time <- spin.years * year / tstep
-# Define time vector for output (only for de solver?)
-t.save.s <- get(t.save.spin) / tstep
-t.save.t <- get(t.save.trans) / tstep
-if(spinup) times <- seq(0, spin.time, t.save.s) else times <- seq(start, end, t.save.t)
-
 source("load_inputs.R")
+
+### Prepare time vector used during simulation
+spin.time <- spin.years * year / tstep
+if(flag.des) { # If using deSolve, create vector of save times only
+  t.save.s <- get(t.save.spin) / tstep
+  t.save.t <- get(t.save.trans) / tstep
+  if(spinup) times <- seq(0, spin.time, t.save.s) else times <- seq(start, end, t.save.t)
+} else { # if doing fixed step, create vector of every time step
+  if(spinup) times <- seq(1, spin.time) else times <- seq(start, end)
+}
 
 ## Calculate spatially changing variables and add to parameter list
 b       <- 2.91 + 15.9 * clay                         # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
@@ -65,10 +69,13 @@ Md       <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [g m-3] Mineral s
 
 pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, b = b, psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md) # add all new parameters
 
-ptm <- proc.time()
-if(flag.des) { # Run the differential equation solver
-  out <- ode(initial_state, times, Model, pars, method = ode.method)
-} else {
-  out <- something 
+ptm <- proc.time() # save current time to later check run time
+if(flag.des) { # if true, run the differential equation solver
+  out <- ode(initial_state, times, Model_desolve, pars, method = ode.method)
+} else { # else run the stepwise simulation
+  out <- Model(spinup, eq.stop, times, tstep, tsave, initial_state, pars, temp, moist, litter_str, litter_met)
 }
-print(proc.time()-ptm)
+print(proc.time()-ptm) # check run time
+
+out$CO2.rate <- c(0, diff(out$CO2))
+
