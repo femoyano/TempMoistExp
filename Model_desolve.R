@@ -5,7 +5,7 @@
 # equation solver function.
 ### ========================================================================
 
-Model <- function(t, initial_state, pars) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(initial_state, pars)), {
     
