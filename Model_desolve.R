@@ -30,7 +30,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     ## Diffusion calculations  --------------------------------------
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
-    if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
+    if(moist <= Rth) diffmod <- 0 else diffmod <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
     SC.diff <- D_S0 * (SCw - 0) * diffmod / dist
     EC.diff <- D_E0 * (ECm - ECw) * diffmod / dist
     
@@ -83,7 +83,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     dMC  <- F_scw.mc  - F_mc.pc   - F_mc.ecm
     dCO2 <- F_scw.co2
     
-    return(list(c(dPC, dSCw, dSCs, dECw, dECm, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod_E=diffmod_E, diffmod_S=diffmod_S)))
+    return(list(c(dPC, dSCw, dSCs, dECw, dECm, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod=diffmod)))
     
   }) # end of with(...
   

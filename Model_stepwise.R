@@ -30,12 +30,10 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
     
     setbreak   <- 0 # break flag for spinup runs
     
-    # Set initial values for variables that can be optionally saved
-    diffmod_S <- 0 # initial values for saving diff values
-    diffmod_E <- 0 # initial values for saving diff values
-    F_sl.pc   <- F_ml.scw <- F_pc.scw <- F_scw.scs <- 0
-    F_ecm.ecb <- F_scw.diff <- F_scw.co2 <- F_scw.ecm <- F_scw.pc <- 0
-    F_ecm.ecb <- F_ecm.scw  <- F_ecb.scw <- 0
+#     # Set initial values for variables that can be optionally saved
+#     F_sl.pc   <- F_ml.scw <- F_pc.scw <- F_scw.scs <- 0
+#     F_ecm.ecb <- F_scw.diff <- F_scw.co2 <- F_scw.ecm <- F_scw.pc <- 0
+#     F_ecm.ecb <- F_ecm.scw  <- F_ecb.scw <- 0
     
     # Loop through each time step
     for(i in 1:length(times)) {
@@ -45,7 +43,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         j <- i * tstep / tsave
         out[j,] <- c(times[i], PC, SCw, SCs, ECw, ECm, MC, CO2, temp[i], moist[i])
       }
-      
+      browser()
       # Diffusion calculations
       # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
       # concentrations and multiply again for total since they cancel out.
@@ -102,7 +100,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       MC  <- MC  + F_scw.mc  - F_mc.pc   - F_mc.ecm
       CO2 <- CO2 + F_scw.co2
       
-      # Check for equilibirum conditions
+      # Check for equilibirum conditions: will stop if the change in PC in gC m-3 y-1 is smaller than eq.md
       if (eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
         if (CheckEquil(out[,2], i, eq.md, tsave, tstep, year, depth)) {
           print(paste("Yearly change in PC below equilibrium max change value of", eq.md, "at", t_step, i,". Value at equilibrium is ", PC, ".", sep=" "))

@@ -5,26 +5,29 @@ rm(list=ls())
 ### User Settings =================================================================================
 ###################################################################################################
 
-## Model run options and flags ------------------------------------------------
+### Required settings (will affect output) ====================================
+
+# Model run type --------------------------------------------------------------
 spin      <- 1  # set to TRUE to run spinup
 trans     <- 0  # set to TRUE for a normal (transient) run
 
+# Model flag options ----------------------------------------------------------
 flag.ads  <- 0  # simulate adsorption desorption rates
 flag.mic  <- 0  # simulate microbial pool explicitly
 flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)
 flag.sew  <- 1  # calculate EC and SC concentration in water
 flag.cmi  <- 1  # use a constant mean input for spinup
-flag.des  <- 1  # run using differential equation solver? If TRUE then t_step has no effect.
+flag.des  <- 0  # run using differential equation solver? If TRUE then t_step has no effect.
 
-### Input Setup ---------------------------------------------------------------
+# Input Setup -----------------------------------------------------------------
 site.name      <- "Wetzstein"
 
-## User Settings for Spinup Run
+# User Settings for Spinup Run
 spinup.data    <- "Wetzstein2007SM16"
 spin.years     <- 25   # maximum years for spinup run
 t.save.spin    <- "day"  # interval at which to save output during spinup runs (as text).
 
-## User Settings for Transient Run
+# User Settings for Transient Run ---------------------------------------------
 init.mode      <- "spinup"
 init.file      <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Overwritten if init.mode = "spinup", "trans" or "default". 
 trans.data     <- "WetzsteinSM16"
@@ -34,7 +37,7 @@ t.save.trans   <- "day"   # interval at which to save output during transient ru
 # it gets values from: current spinup, current transient, init.file or initial_state.r, respectively
 # Note that runs with same setup will overwrite previous output files.
 
-### Optional Settings =========================================================
+### Optional Settings (may affect output values) ==============================
 
 # model time unit
 # Unit used for all rates (as string). Must coincide with unit in input data
@@ -44,13 +47,19 @@ t_step      <- "hour"
 # options related to differential equation solver
 ode.method  <- "lsoda"  # see ode function
 
-# input settings
+# stop at equilibrium options
+eq.stop <- 0  # should a spinup run stop when soil C is close enough to equilibrium?
+eq.md   <- 10 # equilibrium maximum difference allowed for PC (in gC m-3 y-1)
+
+### Input output file and path names ==========================================
+
+# input
 input.path        <- file.path("..", "Input")
 spinup.input.file <- file.path(input.path, paste("input_" , spinup.data, ".csv", sep=""))
 trans.input.file  <- file.path(input.path, paste("input_" , trans.data , ".csv", sep=""))
 site.file         <- file.path(input.path, paste("site_"  , site.name  , ".csv", sep=""))
 
-# output settings
+# output
 model.name        <- paste("SoilC-", "A", flag.ads, "_M", flag.mic, "_F", flag.fcs, 
                            "_S", flag.sew, "_D", flag.des, "_C", flag.cmi, sep = "")
 spinup.name       <- paste("spinup", model.name, spinup.data, sep="_")
@@ -64,14 +73,15 @@ trans.output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
 ###################################################################################################
 
 runscript <- TRUE # flag for main file
-source("GetInitial.r")
+source("GetInitial.R")
 
 ### Spinup run =================================================================
 if(spin) {
   spinup      <- TRUE # set spinup flag
   input.file  <- spinup.input.file
   run.name    <- spinup.name
-  source("initial_state.r") # Loads initial state variable values
+  t_save      <- t.save.spin
+  source("initial_state.R") # Loads initial state variable values
   source("main.R")
   out <- as.data.frame(out)
   out$CO2.rate <- c(0, diff(out$CO2))
@@ -85,6 +95,7 @@ if(trans) {
   spinup      <- FALSE      # unset spinup flag
   input.file  <- trans.input.file
   run.name    <- trans.name
+  t_save      <- t.save.trans
   eq.stop     <- FALSE  # do not stop at equilibrium 
   if(exists("initial_state")) rm(initial_state)
   if(init.mode == "spinup") init.file <- spin.output.file
@@ -101,7 +112,7 @@ if(trans) {
   print(tail(out, 1))
 }
 
-# Plot results
+### Plot results ==============================================================
 source("PlotResults.R")
 if(spin) PlotResults(get(spinup.name), "month", path = file.path("..", "Output", "Plots", "Spinup"), spinup.name)
 if(trans) PlotResults(get(trans.name), "day", path = file.path("..", "Output", "Plots", "Trans"), trans.name)

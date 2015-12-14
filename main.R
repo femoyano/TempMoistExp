@@ -26,8 +26,7 @@ if(!exists("runscript")) {
   eq.md        <- 1       # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
   spin.years   <- 5000    # years for spinup runs
   t_step       <- "hour"  # time unit for all rates values
-  t.save.spin  <- "year"  # interval at which to save output during spinup runs (text).
-  t.save.trans <- "day"   # interval at which to save output during transient runs (text).
+  t_save       <- "month"  # interval at which to save output during spinup runs (text).
   source("initial_state.R")
 }
 
@@ -41,6 +40,7 @@ tenmin   <- 600      # seconds in 10 minutes
 sec      <- 1        # seconds in a second!
 
 tstep <- get(t_step)
+tsave <- get(t_save)
 
 ## Sourced required files
 source("parameters.R")
@@ -74,7 +74,7 @@ ptm <- proc.time() # save current time to later check run time
 if(flag.des) { # if true, run the differential equation solver
   out <- ode(initial_state, times, Model_desolve, pars, method = ode.method)
 } else { # else run the stepwise simulation
-  out <- Model(spinup, eq.stop, times, tstep, tsave, initial_state, pars, temp, moist, litter_str, litter_met)
+  out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars, temp, moist, litter_str, litter_met)
 }
 print(proc.time()-ptm) # check run time
 
