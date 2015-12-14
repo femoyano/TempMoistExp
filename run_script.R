@@ -73,6 +73,8 @@ if(spin) {
   run.name    <- spinup.name
   source("initial_state.r") # Loads initial state variable values
   source("main.R")
+  out <- as.data.frame(out)
+  out$CO2.rate <- c(0, diff(out$CO2))
   print(tail(out, 1))
   assign(spinup.name, out)
   write.csv(out, file = spin.output.file, row.names =  FALSE)
@@ -92,6 +94,8 @@ if(trans) {
     initial_state <- GetInitial(init) 
   }
   source("main.R")
+  out <- as.data.frame(out)
+  out$CO2.rate <- c(0, diff(out$CO2))
   assign(trans.name, out)
   write.csv(out, file = trans.output.file, row.names =  FALSE)
   print(tail(out, 1))

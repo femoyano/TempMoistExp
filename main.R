@@ -45,7 +45,8 @@ tstep <- get(t_step)
 ## Sourced required files
 source("parameters.R")
 source("flux_functions.R")
-source("Model.R")
+source("Model_desolve.R")
+source("Model_stepwise.R")
 
 ## Load and prepare input data
 source("load_inputs.R")
@@ -77,5 +78,4 @@ if(flag.des) { # if true, run the differential equation solver
 }
 print(proc.time()-ptm) # check run time
 
-out$CO2.rate <- c(0, diff(out$CO2))
 
