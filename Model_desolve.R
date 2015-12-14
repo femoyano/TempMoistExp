@@ -1,8 +1,9 @@
 ### Model.R ================================================================
 
 ### Documentation ==========================================================
-# Function calculating the rates of change. Used later in the differential 
-# equation solver function.
+# Main function running the model.
+# This version is for use with deSolve ode function. It calculates and returns
+# the state variable rates of change.
 ### ========================================================================
 
 Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <- function(t, y, parms,...) for use with ode
@@ -30,15 +31,15 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
-	SC.diff <- D_S0 * (SCw - 0) * diffmod / dist
-	EC.diff <- D_E0 * (ECm - ECw) * diffmod / dist
-
-      ### Calculate all fluxes ------
- 
+    SC.diff <- D_S0 * (SCw - 0) * diffmod / dist
+    EC.diff <- D_E0 * (ECm - ECw) * diffmod / dist
+    
+    ### Calculate all fluxes ------
+    
     # Input rate
     F_sl.pc    <- litter_str
     F_ml.scw   <- litter_met
-
+    
     # Decomposition rate
     F_pc.scw   <- F_decomp(PC, ECw, V_D, K_D, moist, fc, depth)
     

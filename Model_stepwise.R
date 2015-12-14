@@ -1,13 +1,14 @@
-### Model.R ================================================================
+### Model_stepwise.R ================================================================
 
 ### Documentation ==============================================================
 # Main function running the model.
-# This function loops over the time variable where
+# This version runs with a fixed time step, defined by 'tstep'.
+# It loops over the time variable where
 # it calls the flux functions, calculates the changes in each pool,
 # and returns the values for each time point in a data frame.
 ### ============================================================================
 
-Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, pars, temp, moist, litter_str, litter_met) { # must be defined as: func <- function(t, y, parms,...) for use with ode
+Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, pars, temp, moist, litter_str, litter_met) {
   
   with(as.list(c(initial_state, pars)), {
     
@@ -23,8 +24,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
     Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     # Create matrix to hold output
-    extra <- 2 # number of extra variables to save (temp, moist, diffmod, ...)
-    
+    extra <- 2 # number of extra variables to save (temp, moist, ...)
     out <- matrix(ncol = 1 + extra + length(initial_state), nrow = floor(length(times) * tstep / tsave))
     colnames(out) <- c("time", "PC", "SCw", "SCs", "ECw", "ECm", "ECs", "MC", "CO2", "temp", "moist")
     
