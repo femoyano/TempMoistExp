@@ -10,11 +10,15 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
   
   with(as.list(c(initial_state, pars)), {
     
+    # set time used for interpolating input data.
+    t_i <- t
+    if(spinup) t_i <- t %% end # this causes spinups to repeat the input data
+    
     # Calculate the input and forcing at time t
-    litter_str <- Approx_litter_str(t)
-    litter_met <- Approx_litter_met(t)
-    temp       <- Approx_temp(t)
-    moist      <- Approx_moist(t)
+    litter_str <- Approx_litter_str(t_i)
+    litter_met <- Approx_litter_met(t_i)
+    temp       <- Approx_temp(t_i)
+    moist      <- Approx_moist(t_i)
     
     # Calculate temporally changing variables
     K_D     <- Temp.Resp.Eq(K_D_ref , temp, T_ref, E_K.D, R)

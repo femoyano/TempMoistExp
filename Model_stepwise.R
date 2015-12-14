@@ -8,20 +8,9 @@
 # and returns the values for each time point in a data frame.
 ### ============================================================================
 
-Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, pars, temp, moist, litter_str, litter_met) {
+Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, pars) {
   
   with(as.list(c(initial_state, pars)), {
-    
-    # Calculate temporally changing variables
-    K_D     <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K.D, R)
-    ka.s    <- Temp.Resp.Eq(ka.s.ref, temp, T_ref, E_ka, R)
-    kd.s    <- Temp.Resp.Eq(kd.s.ref, temp, T_ref, E_kd, R)
-    ka.e    <- Temp.Resp.Eq(ka.e.ref, temp, T_ref, E_ka, R)
-    kd.e    <- Temp.Resp.Eq(kd.e.ref, temp, T_ref, E_kd, R)
-    V_D     <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V.D, R)
-    CUE     <- CUE_ref
-    Mm      <- Temp.Resp.Eq(Mm_ref, temp, T_ref, E_Mm, R)
-    Em      <- Temp.Resp.Eq(Em_ref, temp, T_ref, E_Em, R)
     
     # Create matrix to hold output
     extra <- 2 # number of extra variables to save (temp, moist, ...)
@@ -38,32 +27,53 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
     # Loop through each time step
     for(i in 1:length(times)) {
       
+      # set time used for interpolating input data.
+      t <- times[i]
+      if(spinup) t <- t %% end # this causes spinups to repeat the input data
+      
+      # Calculate the input and forcing at time t
+      litter_str.i <- Approx_litter_str(t)
+      litter_met.i <- Approx_litter_met(t)
+      temp_i       <- Approx_temp(t)
+      moist_i      <- Approx_moist(t)
+      
+      # Calculate temporally changing variables
+      K_D     <- Temp.Resp.Eq(K_D_ref , temp_i, T_ref, E_K.D, R)
+      ka.s    <- Temp.Resp.Eq(ka.s.ref, temp_i, T_ref, E_ka , R)
+      kd.s    <- Temp.Resp.Eq(kd.s.ref, temp_i, T_ref, E_kd , R)
+      ka.e    <- Temp.Resp.Eq(ka.e.ref, temp_i, T_ref, E_ka , R)
+      kd.e    <- Temp.Resp.Eq(kd.e.ref, temp_i, T_ref, E_kd , R)
+      V_D     <- Temp.Resp.Eq(V_D_ref , temp_i, T_ref, E_V.D, R)
+      Mm      <- Temp.Resp.Eq(Mm_ref  , temp_i, T_ref, E_Mm , R)
+      Em      <- Temp.Resp.Eq(Em_ref  , temp_i, T_ref, E_Em , R)
+      CUE     <- CUE_ref
+      
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], PC, SCw, SCs, ECw, ECm, MC, CO2, temp[i], moist[i])
+        out[j,] <- c(times[i], PC, SCw, SCs, ECw, ECm, MC, CO2, temp_i, moist_i)
       }
-      browser()
+
       # Diffusion calculations
       # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
       # concentrations and multiply again for total since they cancel out.
-      if(moist[i] <= Rth) diffmod <- 0 else diffmod <- (ps - Rth)^1.5 * ((moist[i] - Rth)/(ps - Rth))^2.5 # reference?
+      if(moist_i <= Rth) diffmod <- 0 else diffmod <- (ps - Rth)^1.5 * ((moist_i - Rth)/(ps - Rth))^2.5 # reference?
       SC.diff <- D_S0 * (SCw - 0) * diffmod / dist
       EC.diff <- D_E0 * (ECm - ECw) * diffmod / dist
       
       ### Calculate all fluxes ------
       
       # Input rate
-      F_sl.pc    <- litter_str[i]
-      F_ml.scw   <- litter_met[i]
+      F_sl.pc    <- litter_str.i
+      F_ml.scw   <- litter_met.i
       
       # Decomposition rate
-      F_pc.scw   <- F_decomp(PC, ECw, V_D[i], K_D[i], moist[i], fc, depth)
+      F_pc.scw   <- F_decomp(PC, ECw, V_D, K_D, moist_i, fc, depth)
       
       # Adsorption/desorption
       if(flag.ads) {
-        F_scw.scs  <- F_adsorp(SCw, SCs, Md, ka.s[i], moist[i], fc, depth)
-        F_scs.scw  <- F_desorp(SCs, kd.s[i], moist[i], fc)
+        F_scw.scs  <- F_adsorp(SCw, SCs, Md, ka.s, moist_i, fc, depth)
+        F_scs.scw  <- F_desorp(SCs, kd.s, moist_i, fc)
       } else {
         F_scw.scs <- 0
         F_scs.scw <- 0
@@ -89,7 +99,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       F_ecm.ecw  <- EC.diff
       
       # Enzyme decay
-      F_ecw.scw  <- ECw * Em[i]
+      F_ecw.scw  <- ECw * Em
       
       ## Rate of change calculation for state variables ---------------
       PC  <- PC  + F_sl.pc   + F_scw.pc  - F_pc.scw
