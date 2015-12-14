@@ -13,7 +13,7 @@ if(!exists("runscript")) {
   # Flags
   flag.ads  <- 0  # model adsorption desorption rates?
   flag.mic  <- 0  # model microbial pool explicitly?
-  flag.fcs  <- 1  # scale PC, SCs, ECs, M with moisture (with max at fc)?
+  flag.fcs  <- 1  # scale PC, SCs, M with moisture (with max at fc)?
   flag.sew  <- 1  # calculate EC and SC concentration in water?
   flag.des  <- 0  # run using differential equation solver?
   flag.cmi  <- 0  # use a constant mean input for spinup?

@@ -26,14 +26,14 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
     # Create matrix to hold output
     extra <- 2 # number of extra variables to save (temp, moist, ...)
     out <- matrix(ncol = 1 + extra + length(initial_state), nrow = floor(length(times) * tstep / tsave))
-    colnames(out) <- c("time", "PC", "SCw", "SCs", "ECw", "ECm", "ECs", "MC", "CO2", "temp", "moist")
+    colnames(out) <- c("time", "PC", "SCw", "SCs", "ECw", "ECm", "MC", "CO2", "temp", "moist")
     
     setbreak   <- 0 # break flag for spinup runs
     
     # Set initial values for variables that can be optionally saved
     diffmod_S <- 0 # initial values for saving diff values
     diffmod_E <- 0 # initial values for saving diff values
-    F_sl.pc   <- F_ml.scw <- F_pc.scw <- F_scw.scs <- F_ecb.ecs <- 0
+    F_sl.pc   <- F_ml.scw <- F_pc.scw <- F_scw.scs <- 0
     F_ecm.ecb <- F_scw.diff <- F_scw.co2 <- F_scw.ecm <- F_scw.pc <- 0
     F_ecm.ecb <- F_ecm.scw  <- F_ecb.scw <- 0
     
@@ -43,7 +43,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], PC, SCw, SCs, ECw, ECm, ECs, MC, CO2, temp[i], moist[i])
+        out[j,] <- c(times[i], PC, SCw, SCs, ECw, ECm, MC, CO2, temp[i], moist[i])
       }
       
       # Diffusion calculations
@@ -64,15 +64,11 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       
       # Adsorption/desorption
       if(flag.ads) {
-        F_scw.scs  <- F_adsorp(SCw, SCs, ECs, Md, ka.s[i], moist[i], fc, depth)
+        F_scw.scs  <- F_adsorp(SCw, SCs, Md, ka.s[i], moist[i], fc, depth)
         F_scs.scw  <- F_desorp(SCs, kd.s[i], moist[i], fc)
-        F_ecw.ecs  <- F_adsorp(ECw , ECs, SCs, Md, ka.e[i], moist[i], fc, depth)
-        F_ecs.ecw  <- F_desorb(ECs, kd.e[i], moist[i], fc)
       } else {
         F_scw.scs <- 0
         F_scs.scw <- 0
-        F_ecw.ecs <- 0
-        F_ecs.ecw <- 0
       }
       
       # Microbial growth, mortality, respiration and enzyme production
@@ -101,9 +97,8 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       PC  <- PC  + F_sl.pc   + F_scw.pc  - F_pc.scw
       SCw <- SCw + F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
       SCs <- SCs + F_scw.scs - F_scs.scw
-      ECw <- ECw + F_ecs.ecw + F_ecm.ecw - F_ecw.ecs - F_ecw.scw 
+      ECw <- ECw + F_ecm.ecw - F_ecw.scw 
       ECm <- ECm + F_scw.ecm + F_mc.ecm  - F_ecm.ecw
-      ECs <- ECs + F_ecw.ecs - F_ecs.ecw
       MC  <- MC  + F_scw.mc  - F_mc.pc   - F_mc.ecm
       CO2 <- CO2 + F_scw.co2
       

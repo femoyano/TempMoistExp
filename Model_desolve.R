@@ -45,15 +45,11 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     
     # Adsorption/desorption
     if(flag.ads) {
-      F_scw.scs  <- F_adsorp(SCw, SCs, ECs, Md, ka.s, moist, fc, depth)
+      F_scw.scs  <- F_adsorp(SCw, SCs, Md, ka.s, moist, fc, depth)
       F_scs.scw  <- F_desorp(SCs, kd.s, moist, fc)
-      F_ecw.ecs  <- F_adsorp(ECw , ECs, SCs, Md, ka.e, moist, fc, depth)
-      F_ecs.ecw  <- F_desorb(ECs, kd.e, moist, fc)
     } else {
       F_scw.scs <- 0
       F_scs.scw <- 0
-      F_ecw.ecs <- 0
-      F_ecs.ecw <- 0
     }
     
     # Microbial growth, mortality, respiration and enzyme production
@@ -82,13 +78,12 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     dPC  <- F_sl.pc   + F_scw.pc  - F_pc.scw
     dSCw <- F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
     dSCs <- F_scw.scs - F_scs.scw
-    dECw <- F_ecs.ecw + F_ecm.ecw - F_ecw.ecs - F_ecw.scw 
+    dECw <- F_ecm.ecw - F_ecw.scw 
     dECm <- F_scw.ecm + F_mc.ecm  - F_ecm.ecw
-    dECs <- F_ecw.ecs - F_ecs.ecw
     dMC  <- F_scw.mc  - F_mc.pc   - F_mc.ecm
     dCO2 <- F_scw.co2
     
-    return(list(c(dPC, dSCw, dSCs, dECw, dECm, dECs, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod_E=diffmod_E, diffmod_S=diffmod_S)))
+    return(list(c(dPC, dSCw, dSCs, dECw, dECm, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod_E=diffmod_E, diffmod_S=diffmod_S)))
     
   }) # end of with(...
   
