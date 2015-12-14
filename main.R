@@ -65,7 +65,10 @@ Md       <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [g m-3] Mineral s
 
 pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, b = b, psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md) # add all new parameters
 
-# Run the differential equation solver
 ptm <- proc.time()
-out <- ode(initial_state, times, Model, pars, method = ode.method)
+if(flag.des) { # Run the differential equation solver
+  out <- ode(initial_state, times, Model, pars, method = ode.method)
+} else {
+  out <- something 
+}
 print(proc.time()-ptm)

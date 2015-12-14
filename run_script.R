@@ -1,7 +1,9 @@
 ### Run_script
 rm(list=ls())
 
-### User Settings =============================================================
+###################################################################################################
+### User Settings =================================================================================
+###################################################################################################
 
 ## Model run options and flags ------------------------------------------------
 spin      <- 1  # set to TRUE to run spinup
@@ -33,6 +35,15 @@ t.save.trans   <- "day"   # interval at which to save output during transient ru
 # Note that runs with same setup will overwrite previous output files.
 
 ### Optional Settings =========================================================
+
+# model time unit
+# Unit used for all rates (as string). Must coincide with unit in input data
+# Should not change results when using ode solver (test?)
+t_step      <- "hour"
+
+# options related to differential equation solver
+ode.method  <- "lsoda"  # see ode function
+
 # input settings
 input.path        <- file.path("..", "Input")
 spinup.input.file <- file.path(input.path, paste("input_" , spinup.data, ".csv", sep=""))
@@ -48,14 +59,10 @@ output.path       <- file.path("..", "Output")
 spin.output.file  <- file.path(output.path, paste(spinup.name, ".csv", sep=""))
 trans.output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
 
-# Model time unit
-# Unit used for all rates (as string). Must coincide with unit in input data
-# Should not change results when using ode solver (test?)
-t_step      <- "hour"
+###################################################################################################
+### Non User Settings =============================================================================
+###################################################################################################
 
-ode.method  <- "lsoda"  # see ode function
-
-### Non User Setup =============================================================
 runscript <- TRUE # flag for main file
 source("GetInitial.r")
 
