@@ -1,10 +1,11 @@
 PlotResults <- function(data, agg.time, path, name) {
 
-  year  <- 31104000 # seconds in a year
-  month <- 2592000  # seconds in a month
-  day   <- 86400    # seconds in a day
-  hour  <- 3600     # seconds in an hour
-  tstep <- hour
+  year     <- 31104000 # seconds in a year
+  month    <- 2592000  # seconds in a month
+  day      <- 86400    # seconds in a day
+  hour     <- 3600     # seconds in an hour
+  halfhour <- 1800     # seconds in half an hour
+  tenmin   <- 600      # seconds in 10 minutes
   agg_t <- get(agg.time)
   
   data.agg <- aggregate(data, by=list(x=ceiling(data[,1]*tstep/agg_t)), FUN=mean)

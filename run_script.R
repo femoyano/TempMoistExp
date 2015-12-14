@@ -1,19 +1,30 @@
 ### Run_script
 rm(list=ls())
 
-### User Settings - General =======================================================
-spin           <- 1           # set to TRUE to run spinup
-trans          <- 0           # set to TRUE for a normal (transient) run
+###################################################################################################
+### User Settings =================================================================================
+###################################################################################################
+
+## Model run options and flags ------------------------------------------------
+spin      <- 1  # set to TRUE to run spinup
+trans     <- 0  # set to TRUE for a normal (transient) run
+
+flag.ads  <- 0  # simulate adsorption desorption rates
+flag.mic  <- 0  # simulate microbial pool explicitly
+flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)
+flag.sew  <- 1  # calculate EC and SC concentration in water
+flag.cmi  <- 1  # use a constant mean input for spinup
+flag.des  <- 1  # run using differential equation solver? If TRUE then t_step has no effect.
+
+### Input Setup ---------------------------------------------------------------
 site.name      <- "Wetzstein"
 
-### User Settings for Spinup Run --------------------------------------------------
+## User Settings for Spinup Run
 spinup.data    <- "Wetzstein2007SM16"
-spin.years     <- 500     # maximum years for spinup runs
-t.save.spin    <- "year"  # interval at which to save output during spinup runs (as text).
-eq.stop.spinup <- FALSE   # Stop spinup at equilibrium?
-eq.md          <- 20      # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
+spin.years     <- 25   # maximum years for spinup run
+t.save.spin    <- "day"  # interval at which to save output during spinup runs (as text).
 
-### User Settings for Transient Run ------------------------------------------------
+## User Settings for Transient Run
 init.mode      <- "spinup"
 init.file      <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Overwritten if init.mode = "spinup", "trans" or "default". 
 trans.data     <- "WetzsteinSM16"
@@ -23,36 +34,35 @@ t.save.trans   <- "day"   # interval at which to save output during transient ru
 # it gets values from: current spinup, current transient, init.file or initial_state.r, respectively
 # Note that runs with same setup will overwrite previous output files.
 
-# Flags! -----------------------------------------------------------------------
-flag.ads  <- 0  # model adsorption desorption rates?
-flag.mic  <- 0  # model microbial pool explicitly?
-flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)?
-flag.pcw  <- 1  # calculate PC concentration in water?
-flag.sew  <- 1  # calculate EC and SC concentration in water?
+### Optional Settings =========================================================
 
-### Optional Setup =============================================================
+# model time unit
+# Unit used for all rates (as string). Must coincide with unit in input data
+# Should not change results when using ode solver (test?)
+t_step      <- "hour"
+
+# options related to differential equation solver
+ode.method  <- "lsoda"  # see ode function
+
 # input settings
 input.path        <- file.path("..", "Input")
-spinup.input.file <- file.path(input.path, paste("input_"     , spinup.data, ".csv", sep=""))
-trans.input.file  <- file.path(input.path, paste("input_"     , trans.data , ".csv", sep=""))
-site.file         <- file.path(input.path, paste("site_", site.name  , ".csv", sep=""))
+spinup.input.file <- file.path(input.path, paste("input_" , spinup.data, ".csv", sep=""))
+trans.input.file  <- file.path(input.path, paste("input_" , trans.data , ".csv", sep=""))
+site.file         <- file.path(input.path, paste("site_"  , site.name  , ".csv", sep=""))
 
 # output settings
-model.name        <- paste("SoilC-", "A", flag.ads, "_M", flag.mic, "_F", flag.fcs, "_P", flag.pcw, "_S", flag.sew, sep = "")
+model.name        <- paste("SoilC-", "A", flag.ads, "_M", flag.mic, "_F", flag.fcs, 
+                           "_S", flag.sew, "_D", flag.des, "_C", flag.cmi, sep = "")
 spinup.name       <- paste("spinup", model.name, spinup.data, sep="_")
 trans.name        <- paste("trans", model.name, trans.data, sep="_")
 output.path       <- file.path("..", "Output")
 spin.output.file  <- file.path(output.path, paste(spinup.name, ".csv", sep=""))
 trans.output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
 
-# Model time unit
-# Unit used for all rates (as string). Must coincide with unit in input data
-# Should not change results when using ode solver (test?)
-t.unit      <- "hour"
+###################################################################################################
+### Non User Settings =============================================================================
+###################################################################################################
 
-ode.method     <- "lsoda"  # see ode function
-
-### Non User Setup =============================================================
 runscript <- TRUE # flag for main file
 source("GetInitial.r")
 
@@ -61,7 +71,6 @@ if(spin) {
   spinup      <- TRUE # set spinup flag
   input.file  <- spinup.input.file
   run.name    <- spinup.name
-  eq.stop     <- eq.stop.spinup
   source("initial_state.r") # Loads initial state variable values
   source("main.R")
   print(tail(out, 1))
@@ -90,5 +99,5 @@ if(trans) {
 
 # Plot results
 source("PlotResults.R")
-if(spin) PlotResults(get(spinup.name), "year", path = file.path("..", "Output", "Plots", "Spinup"), spinup.name)
+if(spin) PlotResults(get(spinup.name), "month", path = file.path("..", "Output", "Plots", "Spinup"), spinup.name)
 if(trans) PlotResults(get(trans.name), "day", path = file.path("..", "Output", "Plots", "Trans"), trans.name)

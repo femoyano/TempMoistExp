@@ -3,7 +3,7 @@
 
 ### Documentation ==============================================================
 # Main program file.
-# Soil model: SoilBGC.
+# Soil model: SoilBGC
 
 ### Libraries ==================================================================
 require(deSolve)
@@ -14,9 +14,10 @@ if(!exists("runscript")) {
   flag.ads  <- 0  # model adsorption desorption rates?
   flag.mic  <- 0  # model microbial pool explicitly?
   flag.fcs  <- 1  # scale PC, SCs, ECs, M with moisture (with max at fc)?
-  flag.pcw  <- 1  # calculate PC concentration in water?
   flag.sew  <- 1  # calculate EC and SC concentration in water?
-
+  flag.des  <- 0  # run using differential equation solver?
+  flag.cmi  <- 0  # use a constant mean input for spinup?
+  
   # Setup
   input.file   <- "input.csv"
   site.file    <- "site.csv"
@@ -24,64 +25,50 @@ if(!exists("runscript")) {
   eq.stop      <- FALSE   # Stop at equilibrium?
   eq.md        <- 1       # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
   spin.years   <- 5000    # years for spinup runs
-  t.unit       <- "hour"  # time unit for all rates values
+  t_step       <- "hour"  # time unit for all rates values
   t.save.spin  <- "year"  # interval at which to save output during spinup runs (text).
   t.save.trans <- "day"   # interval at which to save output during transient runs (text).
   source("initial_state.r")
 }
 
-# if(!flag.mic) initial_state["MC"]  <- NA
-# if(!flag.ads) initial_state["SCs"] <- NA
-# if(!flag.ads) initial_state["ECs"] <- NA
+### Define time units ==========================================================
+year     <- 31104000 # seconds in a year
+month    <- 2592000  # seconds in a month
+day      <- 86400    # seconds in a day
+hour     <- 3600     # seconds in an hour
+halfhour <- 1800     # seconds in half an hour
+tenmin   <- 600      # seconds in 10 minutes
+sec      <- 1        # seconds in a second!
 
-### Define time quantities
-year  <- 31104000 # seconds in a year
-month <- 2592000  # seconds in a month
-day   <- 86400    # seconds in a day
-hour  <- 3600     # seconds in an hour
-sec   <- 1        # seconds in a second!
-
-tunit <- get(t.unit)
+tstep <- get(t_step)
 
 ## Sourced required files
 source("parameters.r")
 source("flux_functions.r")
 source("Model.R")
 
-## Load input data
-source("load_inputs.R")
-
-# Define vector with times for model output
-spin.time <- spin.years * year / tunit
-t.save.s <- get(t.save.spin) / tunit
-t.save.t <- get(t.save.trans) / tunit
+## Load and prepare input data
+spin.time <- spin.years * year / tstep
+# Define time vector for output (only for de solver?)
+t.save.s <- get(t.save.spin) / tstep
+t.save.t <- get(t.save.trans) / tstep
 if(spinup) times <- seq(0, spin.time, t.save.s) else times <- seq(start, end, t.save.t)
 
-# If spinup, use average of input data
-if(spinup) {
-  litter_str  <- rep(mean(litter_str, na.rm=TRUE), length.out = 2)
-  litter_met  <- rep(mean(litter_met, na.rm=TRUE), length.out = 2)
-  temp        <- rep(mean(temp      , na.rm=TRUE), length.out = 2)
-  moist       <- rep(mean(moist     , na.rm=TRUE), length.out = 2)
-  times_input <- c(1,2)
-}
+source("load_inputs.R")
 
-# Define input variables interpolation functions
-Approx_litter_str <- approxfun(times_input, litter_str, method = "linear", rule = 2)
-Approx_litter_met <- approxfun(times_input, litter_met, method = "linear", rule = 2)
-Approx_temp       <- approxfun(times_input, temp      , method = "linear", rule = 2)
-Approx_moist      <- approxfun(times_input, moist     , method = "linear", rule = 2)
-
-# Calculate spatially changing variables and add to parameter list
-b       <- 2.91 + 15.9 * clay                     # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
-psi_sat <- exp(6.5 - 1.3 * sand) / 1000           # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
+## Calculate spatially changing variables and add to parameter list
+b       <- 2.91 + 15.9 * clay                         # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
+psi_sat <- exp(6.5 - 1.3 * sand) / 1000               # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
 Rth     <- ps * (psi_sat / pars[["psi_Rth"]])^(1 / b) # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
-fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)        # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
 Md       <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [g m-3] Mineral surface adsorption density in C-equivalent (Mayes et al. 2012)
 
 pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, b = b, psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md) # add all new parameters
 
-# Run the differential equation solver
 ptm <- proc.time()
-out <- ode(initial_state, times, Model, pars, method = ode.method)
+if(flag.des) { # Run the differential equation solver
+  out <- ode(initial_state, times, Model, pars, method = ode.method)
+} else {
+  out <- something 
+}
 print(proc.time()-ptm)

@@ -30,19 +30,17 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     if(moist <= Rth) diff <- 0 else diff <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
-    diffmod_S <- D_S0 * diff / dist
-    diffmod_E <- D_E0 * diff / dist
-    SC.diff <- diffmod_S * (SCw - 0) # concentration at microbe asumed 0
-    EC.diff <- diffmod_E * (ECw - 0) # concentration at substrate assumed 0
-    
-    ## Calculate change rates ---------------------------------------
-    
+	SC.diff <- D_S0 * (SCw - 0) * diffmod / dist
+	EC.diff <- D_E0 * (ECm - ECw) * diffmod / dist
+
+      ### Calculate all fluxes ------
+ 
     # Input rate
     F_sl.pc    <- litter_str
     F_ml.scw   <- litter_met
-    
+
     # Decomposition rate
-    F_pc.scw   <- F_decomp(PC, EC.diff, V_D, K_D, moist, fc, depth)
+    F_pc.scw   <- F_decomp(PC, ECw, V_D, K_D, moist, fc, depth)
     
     # Adsorption/desorption
     if(flag.ads) {
@@ -62,31 +60,34 @@ Model <- function(t, initial_state, pars) { # must be defined as: func <- functi
       F_scw.mc  <- SC.diff * CUE
       F_scw.co2 <- SC.diff * (1 - CUE)
       F_mc.pc   <- MC * Mm
-      F_mc.ecw  <- MC * Ep
+      F_mc.ecm  <- MC * Ep
       F_scw.pc  <- 0
-      F_scw.ecw <- 0
+      F_scw.ecm <- 0
     } else {
       F_scw.mc  <- 0
       F_mc.pc   <- 0
-      F_mc.ecw  <- 0
+      F_mc.ecm  <- 0
       F_scw.co2 <- SC.diff * (1 - CUE)
       F_scw.pc  <- SC.diff * CUE * (1 - Ef)
-      F_scw.ecw <- SC.diff * CUE * Ef
+      F_scw.ecm <- SC.diff * CUE * Ef
     }
+    
+    F_ecm.ecw  <- EC.diff
     
     # Enzyme decay
     F_ecw.scw  <- ECw * Em
     
     ## Rate of change calculation for state variables ---------------
-    dPC  <- F_sl.pc + F_scw.pc - F_pc.scw
-    dSCw <- F_ml.scw + F_pc.scw + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecw
+    dPC  <- F_sl.pc   + F_scw.pc  - F_pc.scw
+    dSCw <- F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
     dSCs <- F_scw.scs - F_scs.scw
-    dECw <- F_ecs.ecw + F_mc.ecw + F_scw.ecw - F_ecw.ecs - F_ecw.scw 
+    dECw <- F_ecs.ecw + F_ecm.ecw - F_ecw.ecs - F_ecw.scw 
+    dECm <- F_scw.ecm + F_mc.ecm  - F_ecm.ecw
     dECs <- F_ecw.ecs - F_ecs.ecw
-    dMC  <- F_scw.mc - F_mc.pc - F_mc.ecw
+    dMC  <- F_scw.mc  - F_mc.pc   - F_mc.ecm
     dCO2 <- F_scw.co2
     
-    return(list(c(dPC, dSCw, dSCs, dECw, dECs, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod_E=diffmod_E, diffmod_S=diffmod_S)))
+    return(list(c(dPC, dSCw, dSCs, dECw, dECm, dECs, dMC, dCO2), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod_E=diffmod_E, diffmod_S=diffmod_S)))
     
   }) # end of with(...
   
