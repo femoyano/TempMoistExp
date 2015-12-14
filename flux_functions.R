@@ -39,56 +39,56 @@ if (!flag.sew & !flag.fcs) {
   }
 } 
 
-## Sorption to mineral surface -------------------------
-# The function will depend on the options (flags) chosen
+## Adsorption to mineral surface -------------------------
+# The function will depend on the options (flags) chosen and
 # ligand(L)/receptor(M) kinetics used (https://en.wikipedia.org/wiki/Binding_constant)
 # Md stands for density of mineral adsorption site (so is not corrected for depth)
-# Lw and Ls are ligands in water or adsorbed, respectively.
-# Mmod is used for scaling M and Ls from 0-1 between 0 and fc
+# Lw and La are ligands in water or adsorbed, respectively.
+# Mmod is used for scaling M and La from 0-1 between 0 and fc
 
 if(flag.fcs & flag.sew) {
-  F_adsorp <- function (Lw, Ls1, Ls2, Md, k, moist, fc, depth) {
+  F_adsorp <- function (Lw, La1, La2, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth * moist)
-    M <- (Md - (Ls1 + Ls2)) * mmod
+    M <- (Md - (La1 + La2)) * mmod
     return( (L * M * k) * depth )
   }
-  F_desorp <- function (Ls, k, moist, fc) {
+  F_desorp <- function (La, k, moist, fc) {
     mmod <- min(1, moist / fc)
-    L <- Ls * mmod
+    L <- La * mmod
     return(L * k)
   }
 } else if(flag.fcs & !flag.sew) {
-  F_adsorp <- function (Lw, Ls1, Ls2, Md, k, moist, fc, depth) {
+  F_adsorp <- function (Lw, La1, La2, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / depth
-    M <- (Md - (Ls1 + Ls2)) * mmod
+    M <- (Md - (La1 + La2)) * mmod
     return( (L * M * k) * depth )
   }
-  F_desorp <- function (Ls, k, moist, fc) {
+  F_desorp <- function (La, k, moist, fc) {
     mmod <- min(1, moist / fc)
-    L <- Ls * mmod
+    L <- La * mmod
     return(L * k)
   }
 } else if(!flag.fcs & flag.sew) {
-  F_adsorp <- function (Lw, Ls1, Ls2, Md, k, moist, fc, depth) {
+  F_adsorp <- function (Lw, La1, La2, Md, k, moist, fc, depth) {
     L <- Lw / (depth * moist)
-    M <- Md - (Ls1 + Ls2)
+    M <- Md - (La1 + La2)
     return( (L * M * k) * depth )
   }
-  F_desorp <- function (Ls, k, moist, fc) {
-    L <- Ls
+  F_desorp <- function (La, k, moist, fc) {
+    L <- La
     return(L * k)
   }
 } else if(!flag.fcs & !flag.sew) {
-  F_adsorp <- function (Lw, Ls1, Ls2, Md, k, moist, fc, depth) {
+  F_adsorp <- function (Lw, La1, La2, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth)
-    M <- Md - (Ls1 + Ls2)
+    M <- Md - (La1 + La2)
     return( (L * M * k) * depth  )
   }
-  F_desorp <- function (Ls, k, moist, fc) {
-    L <- Ls
+  F_desorp <- function (La, k, moist, fc) {
+    L <- La
     return(L * k)
   }
 }
