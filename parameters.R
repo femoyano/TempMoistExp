@@ -15,19 +15,18 @@ pars <- c(
   Em_ref   = 0.001   / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   Ep       = 5.6e-06 / hour * tstep , # [gC g-1 MC h-1] Fraction of SC taken up that is converted to EC. (assumed).
   V_D_ref  = 1       / hour * tstep , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
-  D_S0     = 8.1e-10 / sec  * tstep , # [m^2 s^-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
-  D_E0     = 8.1e-11 / sec  * tstep , # [m^2 s^-1] Diffusivity in water for enzymes. Vetter et al., 1998
+  D_S0     = 8.1e-10 / sec  * tstep , # [m2 s-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+  D_E0     = 8.1e-11 / sec  * tstep , # [m2 s-1] Diffusivity in water for enzymes. Vetter et al., 1998
   # Adsorptino/desorption rates (ka/kd ratio follows Mayes et al. 2012 (alfisols) -> Tang and Riley 2014, but values must be researched)
-  ka.s.ref = 0.01    / hour * tstep , # [h-1] Adsorption rate constant of soluble C into free mineral adsorption sites
-  ka.e.ref = 0.01    / hour * tstep , # [h-1] Adsorption rate constant of enzymes into free mineral adsorption sites
-  kd.s.ref = 0.25    / hour * tstep , # [h-1] Desorption rate constant of soluble C into free mineral adsorption sites
-  kd.e.ref = 0.50    / hour * tstep , # [h-1] Desorption rate constant of enzymes into free mineral adsorption sites
+  ka.s.ref = 1.08e-6  / sec * tstep , # [m3 gC-1 s-1] Adsorption rate constant of SCw. (Ahrens 2015, units converted for gC)
+  kd.s.ref = 1.19e-10 / sec * tstep , # [s-1] Desorption rate constant of SCs. (Ahrens 2015)
   
+
   ### Fixed Parameters ====
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
   K_D_ref  = 300000   , # [gC m-3] Affinity parameter for PC decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
-#   K_SM_ref = 25       , # [gC m-3] Affinity parameter for SC sorption (Tang and Riley 2014, Mayes et al. 2012) # using ka.s and kd.s instead.
-#   K_EM_ref = 11       , # [gC m-3] Affinity parameter for EC sorption (Tang and Riley 2014, Mayes et al. 2012) # using ka.e and kd.e instead.
+#   K_SM_ref = 25       , # [gC m-3] Affinity parameter for SC sorption (Tang and Riley 2014, Mayes et al. 2012) # now using ka.s and kd.s instead.
+#   K_EM_ref = 11       , # [gC m-3] Affinity parameter for EC sorption (Tang and Riley 2014, Mayes et al. 2012) # now using ka.e and kd.e instead.
   mcpc_f   = 0.5      , # [g g^-1] fraction of dead microbes going to SC (rest goes to PC)
   T_ref    = 293.15   , # [K] reference temperature
   E_V.U    = 47       , # [kJ mol^-1] Gibbs energy for V_U (Tang and Riley 2014)
