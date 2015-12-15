@@ -53,12 +53,11 @@ source("load_inputs.R")
 
 # Obtain data times: start and end
 start <- times_input[1]
-# To avoid complications when repeating data during spinup, make sure time starts at 1.
-if(spinup) times_input <- times_input - start + 1
+if(spinup) times_input <- times_input - start + 1 # For spinups, make sure time starts at 1 (simplifies data recylcing).
 end   <- tail(times_input, 1)
 
-# Prepare input data
-if(flag.cmi) { # if a constant mean values should be used
+# If a constant mean values should be used:
+if(spinup & flag.cmi) {
   litter_str  <- rep(mean(litter_str, na.rm=TRUE), length.out = 2)
   litter_met  <- rep(mean(litter_met, na.rm=TRUE), length.out = 2)
   temp        <- rep(mean(temp      , na.rm=TRUE), length.out = 2)
@@ -74,11 +73,11 @@ Approx_moist      <- approxfun(times_input, moist     , method = "linear", rule 
 
 ### Prepare time vector used during simulation ----------------------------------------------------
 spin.time <- spin.years * year / tstep
-if(flag.des) { # If using deSolve, create vector of save times only
+if(flag.des) { # If using deSolve, only save times are required
   t.save.s <- get(t.save.spin) / tstep
   t.save.t <- get(t.save.trans) / tstep
   if(spinup) times <- seq(0, spin.time, t.save.s) else times <- seq(start, end, t.save.t)
-} else { # if doing fixed step, create vector of every time step
+} else { # if running fixed steps, all time step are required
   if(spinup) times <- seq(1, spin.time) else times <- seq(start, end)
 }
 

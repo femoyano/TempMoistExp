@@ -6,6 +6,10 @@ rm(list=ls())
 ###################################################################################################
 
 ### Required settings (will affect output) ====================================
+# Note: init.mode sets starting values of state variables for the transient run.
+# init.mode can be either "spinup", "trans", "file" or "default";
+# it gets values from: current spinup, current transient, init.file or initial_state.R, respectively
+# Note that runs with same setup otpions will overwrite previous output files.
 
 # Model run type --------------------------------------------------------------
 spin      <- 1  # set to TRUE to run spinup
@@ -16,26 +20,23 @@ flag.ads  <- 0  # simulate adsorption desorption rates
 flag.mic  <- 0  # simulate microbial pool explicitly
 flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)
 flag.sew  <- 1  # calculate EC and SC concentration in water
-flag.cmi  <- 1  # use a constant mean input for spinup
 flag.des  <- 0  # run using differential equation solver? If TRUE then t_step has no effect.
 
 # Input Setup -----------------------------------------------------------------
 site.name      <- "Wetzstein"
+init.file       <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Used only if init.mode = "file".
 
-# User Settings for Spinup Run
+# User Settings for Spinup Run ------------------------------------------------
 spinup.data    <- "Wetzstein2007SM16"
-spin.years     <- 25   # maximum years for spinup run
-t.save.spin    <- "month"  # interval at which to save output during spinup runs (as text).
+spin.years     <- 25        # maximum years for spinup run
+t.save.spin    <- "month"   # interval at which to save output during spinup runs (as text).
+init.mode.spin <- "default" # see note above
+flag.cmi       <- 1         # use a constant mean input for spinup
 
 # User Settings for Transient Run ---------------------------------------------
-init.mode      <- "spinup"
-init.file      <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Overwritten if init.mode = "spinup", "trans" or "default". 
-trans.data     <- "WetzsteinSM16"
-t.save.trans   <- "day"   # interval at which to save output during transient runs (as text).
-# Note: init.mode sets starting values of state variables for the transient run.
-# init.mode can be either "spinup", "trans", "file" or "default";
-# it gets values from: current spinup, current transient, init.file or initial_state.r, respectively
-# Note that runs with same setup will overwrite previous output files.
+trans.data      <- "Wetzstein2007SM16"
+t.save.trans    <- "day"    # interval at which to save output during transient runs (as text).
+init.mode.trans <- "spinup" # see note above
 
 ### Optional Settings (may affect output values) ==============================
 
@@ -51,7 +52,7 @@ ode.method  <- "lsoda"  # see ode function
 eq.stop <- 0  # should a spinup run stop when soil C is close enough to equilibrium?
 eq.md   <- 10 # equilibrium maximum difference allowed for PC (in gC m-3 y-1)
 
-### Input output file and path names ==========================================
+### Input-output file and path names ==========================================
 
 # input
 input.path        <- file.path("..", "Input")
@@ -81,6 +82,14 @@ if(spin) {
   input.file  <- spinup.input.file
   run.name    <- spinup.name
   t_save      <- t.save.spin
+  init.mode   <- init.mode.spin
+  if(exists("initial_state")) rm(initial_state)
+  if(init.mode == "spinup") init.file <- spin.output.file
+  if(init.mode == "trans")  init.file <- trans.output.file
+  if(init.mode == "default") source("initial_state.R") else {
+    init <- tail(read.csv(init.file), 1)
+    initial_state <- GetInitial(init)
+  }
   source("initial_state.R") # Loads initial state variable values
   source("main.R")
   out <- as.data.frame(out)
@@ -97,9 +106,10 @@ if(trans) {
   run.name    <- trans.name
   t_save      <- t.save.trans
   eq.stop     <- FALSE  # do not stop at equilibrium 
+  init.mode <- init.mode.trans
   if(exists("initial_state")) rm(initial_state)
   if(init.mode == "spinup") init.file <- spin.output.file
-  if(init.mode == "trans") init.file <- trans.output.file
+  if(init.mode == "trans")  init.file <- trans.output.file
   if(init.mode == "default") source("initial_state.r") else {
     init <- tail(read.csv(init.file), 1)
     initial_state <- GetInitial(init) 
