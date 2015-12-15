@@ -1,14 +1,16 @@
 #### main.R
-# Simulation of soil C dynamics. This is the main R script that runs the model.
 
-### Documentation ==============================================================
-# Main program file.
-# Soil model: SoilBGC
+#### Documentation =============================================================
+# Simulation of soil C dynamics.
+# This is the main script that runs the model. Usually called from run_script.R
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
+#### ==========================================================================
 
-### Libraries ==================================================================
+### Libraries =================================================================
 require(deSolve)
 
-### Setup variables if run script is not used ==================================
+### Setup variables if run script is not used =================================
 if(!exists("runscript")) {
   # Flags
   flag.ads  <- 0  # model adsorption desorption rates?
@@ -30,7 +32,7 @@ if(!exists("runscript")) {
   source("initial_state.R")
 }
 
-### Define time units ==========================================================
+### Define time units =========================================================
 year     <- 31104000 # seconds in a year
 month    <- 2592000  # seconds in a month
 day      <- 86400    # seconds in a day
@@ -42,13 +44,13 @@ sec      <- 1        # seconds in a second!
 tstep <- get(t_step)
 tsave <- get(t_save)
 
-## Sourced required files
+### Sourced required files ----------------------------------------------------
 source("parameters.R")
 source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
 
-### Load and prepare input data -------------------------------------------------------------------
+### Load and prepare input data -----------------------------------------------
 source("load_inputs.R")
 
 # Obtain data times: start and end
@@ -71,7 +73,7 @@ Approx_litter_met <- approxfun(times_input, litter_met, method = "linear", rule 
 Approx_temp       <- approxfun(times_input, temp      , method = "linear", rule = 2)
 Approx_moist      <- approxfun(times_input, moist     , method = "linear", rule = 2)
 
-### Prepare time vector used during simulation ----------------------------------------------------
+### Prepare time vector used during simulation --------------------------------
 spin.time <- spin.years * year / tstep
 if(flag.des) { # If using deSolve, only save times are required
   t.save.s <- get(t.save.spin) / tstep

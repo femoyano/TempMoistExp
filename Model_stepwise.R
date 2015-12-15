@@ -1,12 +1,14 @@
-### Model_stepwise.R ================================================================
+#### Model_stepwise.R ================================================================
 
-### Documentation ==============================================================
+#### Documentation ==============================================================
 # Main function running the model.
 # This version runs with a fixed time step, defined by 'tstep'.
 # It loops over the time variable where
 # it calls the flux functions, calculates the changes in each pool,
 # and returns the values for each time point in a data frame.
-### ============================================================================
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
+#### ============================================================================
 
 Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, pars) {
   

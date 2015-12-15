@@ -1,15 +1,24 @@
-### Run_script
-rm(list=ls())
+#### Run_script
 
-###################################################################################################
-### User Settings =================================================================================
-###################################################################################################
+#### Documentations ===========================================================
+# Script used to prepare settings and launch the model by calling main.R
+# This file is the main user interface.
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
 
-### Required settings (will affect output) ====================================
 # Note: init.mode sets starting values of state variables for the transient run.
 # init.mode can be either "spinup", "trans", "file" or "default";
 # it gets values from: current spinup, current transient, init.file or initial_state.R, respectively
 # Note that runs with same setup otpions will overwrite previous output files.
+#### ==========================================================================
+
+rm(list=ls()) # clear the work space
+
+###############################################################################
+### User Settings =============================================================
+###############################################################################
+
+### Required settings (will affect output) ====================================
 
 # Model run type --------------------------------------------------------------
 spin      <- 1  # set to TRUE to run spinup
@@ -69,14 +78,14 @@ output.path       <- file.path("..", "Output")
 spin.output.file  <- file.path(output.path, paste(spinup.name, ".csv", sep=""))
 trans.output.file <- file.path(output.path, paste(trans.name, ".csv", sep=""))
 
-###################################################################################################
-### Non User Settings =============================================================================
-###################################################################################################
+###############################################################################
+### Non User Settings =========================================================
+###############################################################################
 
 runscript <- TRUE # flag for main file
 source("GetInitial.R")
 
-### Spinup run =================================================================
+### Spinup run ================================================================
 if(spin) {
   spinup      <- TRUE # set spinup flag
   input.file  <- spinup.input.file
@@ -99,7 +108,7 @@ if(spin) {
   write.csv(out, file = spin.output.file, row.names =  FALSE)
 }
 
-### Transient run ==============================================================
+### Transient run =============================================================
 if(trans) {
   spinup      <- FALSE      # unset spinup flag
   input.file  <- trans.input.file

@@ -1,3 +1,13 @@
+#### PlotResults.R
+
+#### Documentation ==========================================================
+# Function that aggregates and plots results.
+# Called from run_script.R
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
+#### ========================================================================
+
+
 PlotResults <- function(data, agg.time, path, name) {
 
   year     <- 31104000 # seconds in a year

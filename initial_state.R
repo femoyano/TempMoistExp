@@ -1,8 +1,10 @@
-# initial_state.r
+#### initial_state.r
 
-# Documentation ====
+#### Documentation ============================================================
 # Sets the initial values for the state variables
 # Needs to be a named vector for using ode
+#### ==========================================================================
+
 if(spinup) {
   initial_state <- c(
     PC  = 1   , # [gC m-3] labile carbon 

@@ -1,4 +1,10 @@
-# GetInitial
+#### GetInitial
+
+#### Documentation ==========================================================
+# Function to extract initial values from a dataframe for model runs
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
+#### ========================================================================
 
 GetInitial <- function(init) {
   c(

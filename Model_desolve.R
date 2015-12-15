@@ -1,10 +1,12 @@
-### Model.R ================================================================
+#### Model.R ================================================================
 
-### Documentation ==========================================================
+#### Documentation ==========================================================
 # Main function running the model.
 # This version is for use with deSolve ode function. It calculates and returns
 # the state variable rates of change.
-### ========================================================================
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
+#### ========================================================================
 
 Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   

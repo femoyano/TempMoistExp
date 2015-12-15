@@ -1,10 +1,13 @@
 # flux_functions.r 
 
-# Documentation
+#### Documentation ============================================================
 # Note: chemical reactions occur in the water phase and are calulated per unit volume
 # so soluble C pools are divided by relative water content to obtain 
 # concentrations. Total flux is obtained by then multiplying by the volume
 # where the reaction occurs.
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
+#### ==========================================================================
 
 # Functions calculating the fluxes of C.
 

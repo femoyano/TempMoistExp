@@ -1,9 +1,12 @@
-# model_parameters.r
+#### model_parameters.r
 
-# Documentation ====
+#### Documentation ============================================================
 # All fixed parameters and constants should be listed here.
 # Variables calculated from input data (e.g. theta_fc, ..) are in main.
 # Warning: time variables and tstep have to be defined before sourcing this file.
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
+#### ==========================================================================
 
 pars <- c(
     
