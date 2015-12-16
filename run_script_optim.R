@@ -101,6 +101,7 @@ if(flag.des) { # If using deSolve, only save times are required
 }
 
 ### Prepare input for transient -------------------------------------------------
+
 # Define input interpolation functions
 t.Approx_litter_str <- approxfun(times_input, litter_str , method = "linear", rule = 2)
 t.Approx_litter_met <- approxfun(times_input, litter_met , method = "linear", rule = 2)
@@ -118,19 +119,23 @@ Md       <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [gC m-3] Mineral 
 
 pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, b = b, psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, end = end, spinup = spinup) # add all new parameters
 
-## Code for first exploration of parameter values =====================================================
+## Call cost function -----------------------------------------------------------------------------
+Costfun(pars_opt)
+
+### -----------------------------------------------------------------------------------------------
+## Code for first exploration of parameter values -------------------------------------------------
 var1svec   <- seq(1,1.5,by=.05)
-nvar1vec <- length(var1svec)
+nvar1vec   <- length(var1svec)
 var2vec    <- seq(0.001,0.05,by=0.002)
-nvar2vec <- length(var2vec)
+nvar2vec   <- length(var2vec)
 # etc. more parameters can be added (adjusting loops below)
 outcost <- matrix(nrow=nvar1vec,ncol=nvar2vec)
 for (m in 1:nvar1vec)
 {
   for (i in 1:nvar2vec)
   {
-    pars <- c(k=nvar2vec[i],mult=var1svec[m])
-    outcost[m,i] <- costf(pars)
+    pars_opt <- c(var2=nvar2vec[i],var1=var1svec[m])
+    outcost[m,i] <- Costfun(pars_opt)
   }
 }
 minpos<-which(outcost==min(outcost),arr.ind=TRUE)
@@ -141,7 +146,6 @@ var2i<-nvar2vec[minpos[2]]
 optpar <- pricefit(par=c(var1=var1m,var2=var2i), minpar=c(0.001,1),
                    maxpar=c(0.05,1.5),func=Costfun, npop=50, numiter=500,
                    centroid=3, varleft=1e-8)
+### -----------------------------------------------------------------------------------------------
 
 
-## Call cost function
-Costfun(pars)
