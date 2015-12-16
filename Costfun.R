@@ -1,11 +1,49 @@
-Costfun <- function(params) 
-  {with(as.list(params),
-      {
-        init_values <- # obtain initial values
-        outtimes <- as.vector(data$time) # define output times to be data times
-        outmodel <- # get model results by calling ode(init_values, outtimes, Model_desolve, params)
-        costt       <- sum((outmodel[,var1] - data$var1)^2)
-        return(costt)
-      })
-}
+#### Costfun.R
 
+#### Documentation =============================================================
+# Simulation of soil C dynamics.
+# This is the main script that runs the model. Usually called from run_script.R
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
+#### ==========================================================================
+
+Costfun <- function(pars_opt)
+  pars[var1] <- pars_opt[var1]
+  pars[var2] <- pars_opt[var2]
+  
+  {with(as.list(pars),
+        {
+          # First run a spinup to get initial values --------
+          # Define input interpolation functions
+          Approx_litter_str <- s.Approx_litter_str
+          Approx_litter_met <- s.Approx_litter_met
+          Approx_temp       <- s.Approx_temp
+          Approx_moist      <- s.Approx_moist
+          times <- s.times
+          if(exists("initial_state")) rm(initial_state)
+          source("initial_state.R")
+          if(flag.des) { # if true, run the differential equation solver
+            spinout <- ode(initial_state, times, Model_desolve, pars, method = ode.method)
+          } else { # else run the stepwise simulation
+            spinout <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars)
+          }
+          
+          # Next run the transient --------------------------
+          # Define input interpolation functions
+          Approx_litter_str <- t.Approx_litter_str
+          Approx_litter_met <- t.Approx_litter_met
+          Approx_temp       <- t.Approx_temp
+          Approx_moist      <- t.Approx_moist
+          outtimes    <- as.vector(data$time) # define output times to be data times
+          init_trans  <- GetInitial(tail(spinout, 1)) # obtain initial values
+          if(flag.des) { # if true, run the differential equation solver
+            out <- ode(initial_state, times, Model_desolve, pars, method = ode.method)
+          } else { # else run the stepwise simulation
+            out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars)
+          }# get model results by calling ode(init_values, outtimes, Model_desolve, pars)
+          CO2.rate <- c(0, diff(out[8]))
+          costt       <- sum((CO2.rate - data$CO2)^2)
+          return(costt)
+        })
+  }
+  

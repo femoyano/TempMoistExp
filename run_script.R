@@ -50,8 +50,7 @@ init.mode.trans <- "spinup" # see note above
 ### Optional Settings (may affect output values) ==============================
 
 # model time unit
-# Unit used for all rates (as string). Must coincide with unit in input data
-# Should not change results when using ode solver (test?)
+# Unit used for all rates (as string).
 t_step      <- "hour"
 
 # options related to differential equation solver
@@ -99,7 +98,6 @@ if(spin) {
     init <- tail(read.csv(init.file), 1)
     initial_state <- GetInitial(init)
   }
-  source("initial_state.R") # Loads initial state variable values
   source("main.R")
   out <- as.data.frame(out)
   out$CO2.rate <- c(0, diff(out$CO2))
