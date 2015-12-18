@@ -8,8 +8,8 @@
 #### ==========================================================================
 
 Costfun <- function(pars_opt)
-  pars[var1] <- pars_opt[var1]
-  pars[var2] <- pars_opt[var2]
+  
+  for(n in names(pars_opt)) pars[[n]] <- pars_opt[[n]]
   
   {with(as.list(pars),
         {
@@ -42,6 +42,7 @@ Costfun <- function(pars_opt)
             out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars)
           }# get model results by calling ode(init_values, outtimes, Model_desolve, pars)
           CO2.rate <- c(0, diff(out[8]))
+          CO2.rate <- CO2.rate # make necessary unit conversion here
           costt       <- sum((CO2.rate - data$CO2)^2)
           return(costt)
         })
