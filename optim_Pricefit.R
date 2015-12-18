@@ -1,4 +1,4 @@
-pricefit <- function (
+Pricefit <- function (
     par,                             # initial par estimates
     minpar=rep(-1e8,length(par)),    # minimal parameter values
     maxpar=rep(1e8,length(par)),     # maximal parameter values

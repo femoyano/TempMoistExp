@@ -65,7 +65,8 @@ source("parameters.R")
 source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
-source("Costfun.R")
+source("optim_Costfun.R")
+source("optim_Pricefit.R")
 
 ### Load and prepare input data -----------------------------------------------
 source("load_inputs.R")
