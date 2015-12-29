@@ -1,4 +1,4 @@
-#### Run_script_optim.R
+#### optim_run_script.R
 
 #### Documentations ===========================================================
 # Script used to prepare settings and run parameter optimization by 
@@ -25,17 +25,17 @@ flag.des  <- 1  # run using differential equation solver? If TRUE then t_step ha
 # Input Setup -----------------------------------------------------------------
 site.name       <- "Wetzstein"
 input.data      <- "Wetzstein2007SM16"
+t_step          <- "hour"        # Model time step (as string). Important when using stepwise run.
 t_save          <- "month"
 spin.years      <- 5         # maximum years for spinup run
 flag.cmi        <- 1         # use a constant mean input for spinup
-t_step          <- "hour"        # Model time step (as string). Important when using stepwise run.
 ode.method      <- "lsoda"       # see ode function
 # eq.stop <- 0  # should a spinup run stop when soil C is close enough to equilibrium?
 # eq.md   <- 10 # equilibrium maximum difference allowed for PC (in gC m-3 y-1)
 
 ### Input-output file and path names ==========================================
 # input
-times_data  <- 0000#what here?
+times_data  <- 0000 #what here?
 input.path  <- file.path("..", "Input")
 input.file  <- file.path(input.path, paste("input_" , input.data, ".csv", sep=""))
 site.file   <- file.path(input.path, paste("site_"  , site.name  , ".csv", sep=""))
