@@ -53,7 +53,7 @@ if(flag.fcs & flag.sew) {
   F_adsorp <- function (Lw, La, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth * moist)
-    M <- (Md - La) * mmod
+    M <- (Md - La / depth) * mmod
     return( (L * M * k) * depth )
   }
   F_desorp <- function (La, k, moist, fc) {
@@ -65,7 +65,7 @@ if(flag.fcs & flag.sew) {
   F_adsorp <- function (Lw, La, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / depth
-    M <- (Md - La) * mmod
+    M <- (Md - La / depth) * mmod
     return( (L * M * k) * depth )
   }
   F_desorp <- function (La, k, moist, fc) {
@@ -76,7 +76,7 @@ if(flag.fcs & flag.sew) {
 } else if(!flag.fcs & flag.sew) {
   F_adsorp <- function (Lw, La, Md, k, moist, fc, depth) {
     L <- Lw / (depth * moist)
-    M <- Md - La
+    M <- Md - La / depth
     return( (L * M * k) * depth )
   }
   F_desorp <- function (La, k, moist, fc) {
@@ -87,7 +87,7 @@ if(flag.fcs & flag.sew) {
   F_adsorp <- function (Lw, La, Md, k, moist, fc, depth) {
     mmod <- min(1, moist / fc)
     L <- Lw / (depth)
-    M <- Md - La
+    M <- Md - La / depth
     return( (L * M * k) * depth  )
   }
   F_desorp <- function (La, k, moist, fc) {

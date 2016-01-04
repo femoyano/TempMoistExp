@@ -43,8 +43,6 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       K_D     <- Temp.Resp.Eq(K_D_ref , temp_i, T_ref, E_K.D, R)
       ka.s    <- Temp.Resp.Eq(ka.s.ref, temp_i, T_ref, E_ka , R)
       kd.s    <- Temp.Resp.Eq(kd.s.ref, temp_i, T_ref, E_kd , R)
-      ka.e    <- Temp.Resp.Eq(ka.e.ref, temp_i, T_ref, E_ka , R)
-      kd.e    <- Temp.Resp.Eq(kd.e.ref, temp_i, T_ref, E_kd , R)
       V_D     <- Temp.Resp.Eq(V_D_ref , temp_i, T_ref, E_V.D, R)
       Mm      <- Temp.Resp.Eq(Mm_ref  , temp_i, T_ref, E_Mm , R)
       Em      <- Temp.Resp.Eq(Em_ref  , temp_i, T_ref, E_Em , R)
@@ -102,13 +100,15 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       
       # Enzyme decay
       F_ecw.scw  <- ECw * Em
+      F_ecm.scw  <- ECm * Em
       
       ## Rate of change calculation for state variables ---------------
       PC  <- PC  + F_sl.pc   + F_scw.pc  + F_mc.pc   - F_pc.scw
-      SCw <- SCw + F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
+      SCw <- SCw + F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw + F_ecm.scw -
+                   F_scw.scs - F_scw.mc  - F_scw.co2 - F_scw.pc  - F_scw.ecm
       SCs <- SCs + F_scw.scs - F_scs.scw
       ECw <- ECw + F_ecm.ecw - F_ecw.scw 
-      ECm <- ECm + F_scw.ecm + F_mc.ecm  - F_ecm.ecw
+      ECm <- ECm + F_scw.ecm + F_mc.ecm  - F_ecm.ecw - F_ecm.scw
       MC  <- MC  + F_scw.mc  - F_mc.pc   - F_mc.ecm
       CO2 <- CO2 + F_scw.co2
       

@@ -38,10 +38,9 @@ pars <- c(
   E_K.D    = 30       , # [kJ mol^-1] Gibbs energy for K_D (Tang and Riley 2014)
   E_ka     = 10       , # [kJ mol^-1] Gibbs energy for SC adsorption/desorption fluxes (Tang and Riley 2014)
   E_kd     = 10       , # [kJ mol^-1] Gibbs energy for EC adsorption/desorption fluxes (Tang and Riley 2014)
-  E_Mm     = 30       , # [kJ mol^-1] Gibbs energy for Mm (Hagerty et al. 2014)
-  E_Em     = 30       , # [kJ mol^-1] Gibbs energy for Em (Hagerty et al. 2014)
-  CUE_ref  = 0.7     , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
-  E_m      = 47       , # [kJ mol^-1]  Gibbs energy for Mm and Em (Haggerty et al. 2014 supplementary info)
+  E_Mm     = 47       , # [kJ mol^-1] Gibbs energy for Mm (Hagerty et al. 2014 supplementary info)
+  E_Em     = 47       , # [kJ mol^-1] Gibbs energy for Em (assumed equal to E_Mm)
+  CUE_ref  = 0.7      , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
   CUE_s    = -0.016   , # CUE slope with temperature
   pd       = 2.7      , # [g cm^-3] Soil particle density
   Ef       = 0.01     , # [g g-1] Fraction of SC taken up that is converted to EC. (fitted).

@@ -26,8 +26,6 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     K_D     <- Temp.Resp.Eq(K_D_ref , temp, T_ref, E_K.D, R)
     ka.s    <- Temp.Resp.Eq(ka.s.ref, temp, T_ref, E_ka , R)
     kd.s    <- Temp.Resp.Eq(kd.s.ref, temp, T_ref, E_kd , R)
-    ka.e    <- Temp.Resp.Eq(ka.e.ref, temp, T_ref, E_ka , R)
-    kd.e    <- Temp.Resp.Eq(kd.e.ref, temp, T_ref, E_kd , R)
     V_D     <- Temp.Resp.Eq(V_D_ref , temp, T_ref, E_V.D, R)
     Mm      <- Temp.Resp.Eq(Mm_ref  , temp, T_ref, E_Mm , R)
     Em      <- Temp.Resp.Eq(Em_ref  , temp, T_ref, E_Em , R)
@@ -79,13 +77,15 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     
     # Enzyme decay
     F_ecw.scw  <- ECw * Em
+    F_ecm.scw  <- ECm * Em
     
     ## Rate of change calculation for state variables ---------------
     dPC  <- F_sl.pc   + F_scw.pc  + F_mc.pc   - F_pc.scw
-    dSCw <- F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
+    dSCw <- F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw + F_ecm.scw -
+            F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
     dSCs <- F_scw.scs - F_scs.scw
     dECw <- F_ecm.ecw - F_ecw.scw 
-    dECm <- F_scw.ecm + F_mc.ecm  - F_ecm.ecw
+    dECm <- F_scw.ecm + F_mc.ecm  - F_ecm.ecw - F_ecm.scw
     dMC  <- F_scw.mc  - F_mc.pc   - F_mc.ecm
     dCO2 <- F_scw.co2
     

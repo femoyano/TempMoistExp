@@ -29,7 +29,7 @@ flag.ads  <- 0  # simulate adsorption desorption rates
 flag.mic  <- 0  # simulate microbial pool explicitly
 flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)
 flag.sew  <- 1  # calculate EC and SC concentration in water
-flag.des  <- 0  # run using differential equation solver? If TRUE then t_step has no effect.
+flag.des  <- 1  # run using differential equation solver? If TRUE then t_step has no effect.
 
 # Input Setup -----------------------------------------------------------------
 site.name      <- "Wetzstein"
