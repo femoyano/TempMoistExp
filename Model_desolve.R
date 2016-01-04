@@ -81,7 +81,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     F_ecw.scw  <- ECw * Em
     
     ## Rate of change calculation for state variables ---------------
-    dPC  <- F_sl.pc   + F_scw.pc  - F_pc.scw
+    dPC  <- F_sl.pc   + F_scw.pc  + F_mc.pc   - F_pc.scw
     dSCw <- F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
     dSCs <- F_scw.scs - F_scs.scw
     dECw <- F_ecm.ecw - F_ecw.scw 

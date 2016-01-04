@@ -104,7 +104,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       F_ecw.scw  <- ECw * Em
       
       ## Rate of change calculation for state variables ---------------
-      PC  <- PC  + F_sl.pc   + F_scw.pc  - F_pc.scw
+      PC  <- PC  + F_sl.pc   + F_scw.pc  + F_mc.pc   - F_pc.scw
       SCw <- SCw + F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw - F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
       SCs <- SCs + F_scw.scs - F_scs.scw
       ECw <- ECw + F_ecm.ecw - F_ecw.scw 
