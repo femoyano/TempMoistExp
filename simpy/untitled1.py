@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from sympy import *
+
 """
 Created on Tue Dec 29 11:56:58 2015
 
@@ -7,8 +9,7 @@ Created on Tue Dec 29 11:56:58 2015
 Script for sovling the steady state equations
 """
 
-#from math import *
-from sympy import *
+'# from math import *'
 
 # Model: SoilC
 
@@ -32,7 +33,7 @@ V_D_ref = 1 / hour * tstep      # [h-1] Maximum speed of PC decomposition
 diff_D0 = 8.1e-10 / sec  * tstep   # [m2 s-1] Diffusivity in water for amino
                                 # acids, after Jones et al. (2005); see also
                                 # Poll et al. (2006). (Manzoni paper)
-diff_EC0 = 8.1e-11 / sec  * tstep   # [m2 s-1] Diffusivity in water for enzymes.
+diff_EC0 = 8.1e-11 / sec  * tstep  # [m2 s-1] Diffusivity in water for enzymes.
                                 # Vetter et al., 1998
 ka.s.ref = 1.08e-6  / sec * tstep  # [m3 gC-1 s-1] Adsorption rate constant of
                                    # SCw. (Ahrens 2015, units converted for gC)
@@ -67,13 +68,15 @@ dist = 10^-7           # [m] characteristic distance between substrate and
                        # microbes (Manzoni manus)
 '''
 
+pars = [(R, 0.008314), ()]
+
 C_P, C_D, C_A, C_Em, C_Ew, CO2 = symbols('C_P C_D C_A C_Em C_Ew CO2')
 
 R, Mm_ref, Em_ref, Ep, V_Dref, diff_D0, diff_EC0, k_ASref, k_DSref, K_Dref, \
     mcpc_f, T_ref, E_VU, E_VD, E_KU, E_KD, E_ka, E_kd, E_mm, E_em, CUE_ref, \
     CUE_s, pd, E_frac, psi_Rth, psi_fc, dist = symbols('R Mm_ref Em_ref Ep \
-    V_Dref diff_D0 diff_EC0 k_ASref k_DSref K_Dref mcpc_f T_ref E_VU E_VD E_KU \
-    E_KD E_ka E_kd E_mm  E_em CUE_ref CUE_s pd E_frac psi_Rth psi_fc dist')
+    V_Dref diff_D0 diff_EC0 k_ASref k_DSref K_Dref mcpc_f T_ref E_VU E_VD \
+    E_KU E_KD E_ka E_kd E_mm E_em CUE_ref CUE_s pd E_frac psi_Rth psi_fc dist')
 
 T, M, lit_str, lit_met, clay, silt, sand, ps, depth = \
     symbols('T M lit_str lit_met clay silt sand ps depth')
@@ -113,3 +116,5 @@ F_ecmecw = diff_EC
 F_ecwdc = C_Ew * Em
 F_ecmdc = C_Em * Em
 
+dC_P = F_slpc + F_dcpc - F_pcdc
+s_dC_P = dC_P.subs()
