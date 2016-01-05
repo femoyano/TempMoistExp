@@ -2,7 +2,7 @@
 
 #### Documentation =============================================================
 # Simulation of soil C dynamics.
-# This is the main script that runs the model. Usually called from run_script.R
+# This script runs the model and then calculates the model cost
 # author(s):
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
@@ -40,7 +40,7 @@ Costfun <- function(pars_opt)
             out <- ode(initial_state, times, Model_desolve, pars, method = ode.method)
           } else { # else run the stepwise simulation
             out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars)
-          }# get model results by calling ode(init_values, outtimes, Model_desolve, pars)
+          } # get model results by calling ode(init_values, outtimes, Model_desolve, pars)
           CO2.rate <- c(0, diff(out[8]))
           CO2.rate <- CO2.rate # make necessary unit conversion here
           costt       <- sum((CO2.rate - data$CO2)^2)

@@ -1,3 +1,12 @@
+
+#### Documentation ============================================================
+# This optimization script is the Controlled Random Search from Price 1977
+# Code adapted from A Practical Guide to Ecological Modelling (Soetaert and Herman)
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
+#### ==========================================================================
+
+
 Pricefit <- function (
     par,                             # initial par estimates
     minpar=rep(-1e8,length(par)),    # minimal parameter values
