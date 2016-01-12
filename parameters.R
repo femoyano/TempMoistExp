@@ -16,7 +16,7 @@ pars <- c(
   ### Time Dependent Parameters
   Mm_ref   = 0.00028 / hour * tstep , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
   Em_ref   = 0.001   / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
-  Ep       = 5.6e-06 / hour * tstep , # [gC g-1 MC h-1] Fraction of SC taken up that is converted to EC. (assumed).
+  Ep       = 5.6e-06 / hour * tstep , # [gC g-1 MC h-1] Fraction of MC converted to EC (assumed).
   V_D_ref  = 1       / hour * tstep , # [h-1] Maximum speed of PC decomposition (Li at al. 2014, AWB model)
   D_S0     = 8.1e-10 / sec  * tstep , # [m2 s-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
   D_E0     = 8.1e-11 / sec  * tstep , # [m2 s-1] Diffusivity in water for enzymes. Vetter et al., 1998
@@ -43,7 +43,7 @@ pars <- c(
   CUE_ref  = 0.7      , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
   CUE_s    = -0.016   , # CUE slope with temperature
   pd       = 2.7      , # [g cm^-3] Soil particle density
-  Ef       = 0.01     , # [g g-1] Fraction of SC taken up that is converted to EC. (fitted).
+  Ef       = 0.01     , # [g g-1] Fraction of SC taken up that is converted to EC (fitted).
   psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   psi_fc   = 33      , # [kPa] Water potential at field capacity
   dist     = 10^-7   # [m] characteristic distance between substrate and microbes (Manzoni manus)

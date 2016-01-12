@@ -25,7 +25,7 @@ spin      <- 1  # set to TRUE to run spinup
 trans     <- 0  # set to TRUE for a normal (transient) run
 
 # Model flag options ----------------------------------------------------------
-flag.ads  <- 0  # simulate adsorption desorption rates
+flag.ads  <- 1  # simulate adsorption desorption rates
 flag.mic  <- 0  # simulate microbial pool explicitly
 flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)
 flag.sew  <- 1  # calculate EC and SC concentration in water
@@ -37,7 +37,7 @@ init.file       <- "../Output/spinup_EDA_WetzsteinSM16.csv" # Used only if init.
 
 # User Settings for Spinup Run ------------------------------------------------
 spinup.data    <- "Wetzstein2007SM16"
-spin.years     <- 25        # maximum years for spinup run
+spin.years     <- 50        # years for spinup run
 t.save.spin    <- "month"   # interval at which to save output during spinup runs (as text).
 init.mode.spin <- "default" # see note above
 flag.cmi       <- 1         # use a constant mean input for spinup
