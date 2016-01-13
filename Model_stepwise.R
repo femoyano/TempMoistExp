@@ -58,8 +58,8 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
       # concentrations and multiply again for total since they cancel out.
       if(moist_i <= Rth) diffmod <- 0 else diffmod <- (ps - Rth)^1.5 * ((moist_i - Rth)/(ps - Rth))^2.5 # reference?
-      C_D.diff <- D_S0 * (C_D - 0) * diffmod / d_pm
-      C_E.diff <- D_E0 * (C_Em - C_Ew) * diffmod / d_pm
+      C_D.diff <- D_d0 * (C_D - 0) * diffmod / d_pm
+      C_E.diff <- D_e0 * (C_Em - C_Ew) * diffmod / d_pm
       
       ### Calculate all fluxes ------
       

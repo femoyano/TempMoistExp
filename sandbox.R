@@ -70,7 +70,7 @@ C1 <- C_Db
 C2 <- C_Dm
 moi <- seq(0,0.5, 0.01)
 F_di2 <- function (x) {
-  D <- D_S0 * (ps - Rth)^1.5 * ((x - Rth)/(ps - Rth))^2.5
+  D <- D_d0 * (ps - Rth)^1.5 * ((x - Rth)/(ps - Rth))^2.5
   F <- D * (C1 - C2) / d_pm
   ifelse(abs(F) > abs((C1 - C2) / 2), (C1 - C2) / 2, F)
 }

@@ -35,8 +35,8 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     if(moist <= Rth) diffmod <- 0 else diffmod <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
-    C_D_diff <- D_S0 * diffmod / d_pm
-    C_E_diff <- D_E0 * diffmod / d_pm
+    C_D_diff <- D_d0 * diffmod / d_pm
+    C_E_diff <- D_e0 * diffmod / d_pm
     
     ### Calculate all fluxes ------
     
