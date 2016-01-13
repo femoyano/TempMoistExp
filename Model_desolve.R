@@ -35,8 +35,8 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     if(moist <= Rth) diffmod <- 0 else diffmod <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
-    C_D.diff <- D_S0 * (C_D - 0) * diffmod / d_pm
-    C_E.diff <- D_E0 * (C_Em - C_Ew) * diffmod / d_pm
+    C_D_diff <- D_S0 * diffmod / d_pm
+    C_E_diff <- D_E0 * diffmod / d_pm
     
     ### Calculate all fluxes ------
     
@@ -58,8 +58,8 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     
     # Microbial growth, mortality, respiration and enzyme production
     if(flag.mic) {
-      F_scw.mc  <- C_D.diff * f_gr
-      F_scw.co2 <- C_D.diff * (1 - f_gr)
+      F_scw.mc  <- C_D_diff * (C_D - 0) * f_gr
+      F_scw.co2 <- C_D_diff * (C_D - 0) * (1 - f_gr)
       F_mc.pc   <- C_M * r_md
       F_mc.ecm  <- C_M * f_me
       F_scw.pc  <- 0
@@ -68,12 +68,12 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
       F_scw.mc  <- 0
       F_mc.pc   <- 0
       F_mc.ecm  <- 0
-      F_scw.co2 <- C_D.diff * (1 - f_gr)
-      F_scw.pc  <- C_D.diff * f_gr * (1 - f_de)
-      F_scw.ecm <- C_D.diff * f_gr * f_de
+      F_scw.co2 <- C_D_diff * (C_D - 0) * (1 - f_gr)
+      F_scw.pc  <- C_D_diff * (C_D - 0) * f_gr * (1 - f_de)
+      F_scw.ecm <- C_D_diff * (C_D - 0) * f_gr * f_de
     }
     
-    F_ecm.ecw  <- C_E.diff
+    F_ecm.ecw  <- C_E_diff * (C_Em - C_Ew)
     
     # Enzyme decay
     F_ecw.scw  <- C_Ew * r_ed

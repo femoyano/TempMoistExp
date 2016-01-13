@@ -28,11 +28,11 @@ def T_resp_eq(k_ref, T, T_ref, E, R):
 
 
 # Define symbols
-C_p, C_d, C_a, C_em, C_ew, C_m, C_r = \
-    sy.symbols('C_p C_d C_a C_em C_ew C_m C_r')
+C_P, C_D, C_A, C_Em, C_Ew, C_M, C_R = \
+    sy.symbols('C_P C_D C_A C_Em C_Ew C_M C_R')
 
-Mm, Em, V_D, D_dc, D_ec, k_AS, k_DS, K_D, R_gr, E_f, M_fc, Md = (
-    sy.symbols('Mm Em V_D D_dc D_ec k_AS k_DS K_D R_gr E_f M_fc Md'))
+r_md, r_ed, V_D, D_dc, D_ec, k_AS, k_DS, K_D, R_gr, f_de, M_fc, Md = (
+    sy.symbols('r_md r_ed V_D D_dc D_ec k_AS k_DS K_D R_gr f_de M_fc Md'))
 
 M, I_sl, I_ml, z = sy.symbols('M I_sl I_ml z')
 
@@ -41,53 +41,53 @@ M, I_sl, I_ml, z = sy.symbols('M I_sl I_ml z')
 # Set flags
 f_ads = 0  # adsorption desorption flag
 f_mic = 0  # simulate microbial pool explicitly
-f_fcs = 1  # scale C_p, C_a, ECs, M to field capacity (with max at fc)
+f_fcs = 1  # scale C_P, C_A, ECs, M to field capacity (with max at fc)
 f_sew = 1  # calculate EC and SC concentration in water
 
 
 F_slpc = I_sl
 F_mldc = I_ml
-F_pcdc = ((V_D * (C_ew / (M * z)) * (C_p / z * M_fc)) /
-          (K_D + (C_p / z * M_fc)) * z)
+F_pcdc = ((V_D * (C_Ew / (M * z)) * (C_P / z * M_fc)) /
+          (K_D + (C_P / z * M_fc)) * z)
 
 if f_ads:
-    F_dcac = ((C_d / (z * M)) * ((Md - (C_a / z)) * M_fc) *
+    F_dcac = ((C_D / (z * M)) * ((Md - (C_A / z)) * M_fc) *
               k_AS * z)
-    F_acdc = C_a * M_fc * k_DS
+    F_acdc = C_A * M_fc * k_DS
 else:
-    F_dcac = 0 * C_a
-    F_acdc = 0 * C_a
+    F_dcac = 0 * C_A
+    F_acdc = 0 * C_A
 
-F_dcrc = D_dc * (C_d - 0) * (1 - R_gr)
-F_dcpc = D_dc * (C_d - 0) * R_gr * (1 - E_f)
-F_dcem = D_dc * (C_d - 0) * R_gr * E_f
-F_emew = D_ec * (C_em - C_ew)
-F_ewdc = C_ew * Em
-F_emdc = C_em * Em
+F_dcrc = D_dc * (C_D - 0) * (1 - R_gr)
+F_dcpc = D_dc * (C_D - 0) * R_gr * (1 - f_de)
+F_dcem = D_dc * (C_D - 0) * R_gr * f_de
+F_emew = D_ec * (C_Em - C_Ew)
+F_ewdc = C_Ew * r_ed
+F_emdc = C_Em * r_ed
 
 
-dC_p = F_slpc + F_dcpc - F_pcdc
-dC_d = (F_mldc + F_pcdc + F_ewdc + F_emdc + F_acdc -
+dC_P = F_slpc + F_dcpc - F_pcdc
+dC_D = (F_mldc + F_pcdc + F_ewdc + F_emdc + F_acdc -
         F_dcac - F_dcrc - F_dcpc - F_dcem)
-dC_a = F_dcac - F_acdc
-dC_ew = F_emew - F_ewdc
-dC_em = F_dcem - F_emew - F_emdc
+dC_A = F_dcac - F_acdc
+dC_Ew = F_emew - F_ewdc
+dC_Em = F_dcem - F_emew - F_emdc
 
-sol = sy.solve([dC_p, dC_d, dC_a, dC_ew, dC_em],
-                        [C_p, C_d, C_a, C_ew, C_em], dict=True)
+sol = sy.solve([dC_P, dC_D, dC_A, dC_Ew, dC_Em],
+                        [C_P, C_D, C_A, C_Ew, C_Em], dict=True)
 sol = sol[0]
-sol_C_p = sol[C_p]
-sol_C_d = sol[C_d]
-sol_C_a = sol[C_a]
-sol_C_em = sol[C_em]
-sol_C_ew = sol[C_ew]
+sol_C_P = sol[C_P]
+sol_C_D = sol[C_D]
+sol_C_A = sol[C_A]
+sol_C_Em = sol[C_Em]
+sol_C_Ew = sol[C_Ew]
 
 
 # Define parameter values
 R = 0.008314
-Mm_ref = 0.00028 / hour * tstep
-Em_ref = 0.001 / hour * tstep
-Ep = 5.6e-06 / hour * tstep
+r_md_ref = 0.00028 / hour * tstep
+r_ed_ref = 0.001 / hour * tstep
+f_me = 5.6e-06 / hour * tstep
 V_Dref = 1.0 / hour * tstep
 D_dc0 = 8.1e-10 / sec * tstep
 D_ec0 = 8.1e-11 / sec * tstep
@@ -116,7 +116,7 @@ silt = 0.2
 sand = 0.7
 ps = 0.45
 z_v = 0.3
-E_f_v = 0.01
+f_de_v = 0.01
 M_v = 0.2
 I_sl_v = 0.0848
 I_ml_v = 0.00898
@@ -131,8 +131,8 @@ K_D_v = T_resp_eq(K_Dref, T, T_ref, E_KD, R)
 k_AS_v = T_resp_eq(k_ASref, T, T_ref, E_ka, R)
 k_DS_v = T_resp_eq(k_DSref, T, T_ref, E_kd, R)
 V_D_v = T_resp_eq(V_Dref, T, T_ref, E_VD, R)
-Mm_v = T_resp_eq(Mm_ref, T, T_ref, E_mm, R)
-Em_v = T_resp_eq(Em_ref, T, T_ref, E_em, R)
+r_md_v = T_resp_eq(r_md_ref, T, T_ref, E_mm, R)
+r_ed_v = T_resp_eq(r_ed_ref, T, T_ref, E_em, R)
 R_gr_v = R_gr_ref
 diff_mod = (ps - Rth)**1.5 * ((M_v - Rth)/(ps - Rth))**2.5
 D_dc_v = D_dc0 * diff_mod / dist
@@ -141,37 +141,37 @@ M_fc_v = sy.Min(1, M_v / fc)
 
 # Substitute variables (parameters) with values
 
-v_dC_p = sol_C_p.subs([
-    (Mm, Mm_v), (Em, Em_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
+v_dC_P = sol_C_P.subs([
+    (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
     (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
-    (E_f, E_f_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
+    (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])
 
-v_dC_d = sol_C_d.subs([
-    (Mm, Mm_v), (Em, Em_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
+v_dC_D = sol_C_D.subs([
+    (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
     (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
-    (E_f, E_f_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
+    (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])
 
-v_dC_a = sol_C_a.subs([
-    (Mm, Mm_v), (Em, Em_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
+v_dC_A = sol_C_A.subs([
+    (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
     (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
-    (E_f, E_f_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
+    (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])
 
-v_dC_ew = sol_C_ew.subs([
-    (Mm, Mm_v), (Em, Em_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
+v_dC_Ew = sol_C_Ew.subs([
+    (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
     (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
-    (E_f, E_f_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
+    (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])
 
-v_dC_em = sol_C_em.subs([
-    (Mm, Mm_v), (Em, Em_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
+v_dC_Em = sol_C_Em.subs([
+    (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
     (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
-    (E_f, E_f_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
+    (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])

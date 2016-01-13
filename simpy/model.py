@@ -30,9 +30,9 @@ def T_resp_eq(k_ref, T, T_ref, E, R):
 
 # Define parameters
 R = 0.008314
-Mm_ref = 0.00028 / hour * tstep
-Em_ref = 0.001 / hour * tstep
-Ep = 5.6e-06 / hour * tstep
+r_md_ref = 0.00028 / hour * tstep
+r_ed_ref = 0.001 / hour * tstep
+f_me = 5.6e-06 / hour * tstep
 V_Dref = 1.0 / hour * tstep
 D_dc0 = 8.1e-10 / sec * tstep
 D_ec0 = 8.1e-11 / sec * tstep
@@ -61,7 +61,7 @@ silt = 0.2
 sand = 0.7
 ps = 0.45
 z = 0.3
-E_f = 0.01
+f_de = 0.01
 M = 0.2
 I_sl = 0.0848
 I_ml = 0.00898
@@ -76,8 +76,8 @@ K_D = T_resp_eq(K_Dref, T, T_ref, E_KD, R)
 k_AS = T_resp_eq(k_ASref, T, T_ref, E_ka, R)
 k_DS = T_resp_eq(k_DSref, T, T_ref, E_kd, R)
 V_D = T_resp_eq(V_Dref, T, T_ref, E_VD, R)
-Mm = T_resp_eq(Mm_ref, T, T_ref, E_mm, R)
-Em = T_resp_eq(Em_ref, T, T_ref, E_em, R)
+r_md = T_resp_eq(r_md_ref, T, T_ref, E_mm, R)
+r_ed = T_resp_eq(r_ed_ref, T, T_ref, E_em, R)
 R_gr = R_gr_ref
 diff_mod = (ps - Rth)**1.5 * ((M - Rth)/(ps - Rth))**2.5
 D_dc = D_dc0 * diff_mod / dist
@@ -110,11 +110,11 @@ def f(y, t):
     F_pcdc = ((V_D * (Cew / (M * z)) * (Cp / z * M_fc)) /
               (K_D + (Cp / z * M_fc)) * z)
     F_dcrc = D_dc * (Cd - 0) * (1 - R_gr)
-    F_dcpc = D_dc * (Cd - 0) * R_gr * (1 - E_f)
-    F_dcem = D_dc * (Cd - 0) * R_gr * E_f
+    F_dcpc = D_dc * (Cd - 0) * R_gr * (1 - f_de)
+    F_dcem = D_dc * (Cd - 0) * R_gr * f_de
     F_emew = D_ec * (Cem - Cew)
-    F_ewdc = Cew * Em
-    F_emdc = Cem * Em
+    F_ewdc = Cew * r_ed
+    F_emdc = Cem * r_ed
     # define differential equations
     dCp = F_slpc + F_dcpc - F_pcdc
     dCd = F_mldc + F_pcdc + F_ewdc + F_emdc - F_dcrc - F_dcpc - F_dcem

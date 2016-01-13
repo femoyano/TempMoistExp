@@ -30,10 +30,10 @@ def T_resp_eq(k_ref, T, T_ref, E, R):
 
 
 # Define symbols
-C_p, C_d, C_a, C_em, C_ew, C_m, C_r = \
-    sy.symbols('C_p C_d C_a C_em C_ew C_m C_r')
+C_P, C_D, C_A, C_Em, C_Ew, C_M, C_R = \
+    sy.symbols('C_P C_D C_A C_Em C_Ew C_M C_R')
 
-Mm_S, Em_S, R_gr_S, E_f_S = (sy.symbols('Mm_S Em_S R_gr_S E_f_S'))
+r_md_S, r_ed_S, R_gr_S, f_de_S = (sy.symbols('r_md_S r_ed_S R_gr_S f_de_S'))
 V_D_S, K_D_S, D_dc_S, D_ec_S = (sy.symbols('V_D_S  K_D_S D_dc_S D_ec_S'))
 k_as_S, k_ds_S, M_fc_S, Md_S = (sy.symbols('k_as_S k_ds_S M_fc_S Md_S'))
 
@@ -44,50 +44,50 @@ M_S, I_sl_S, I_ml_S, z_S = sy.symbols('M_S I_sl_S I_ml_S z_S')
 # Set flags
 f_ads = 0  # adsorption desorption flag
 f_mic = 0  # simulate microbial pool explicitly
-f_fcs = 1  # scale C_p, C_a, ECs, M_S to field capacity (with max at fc)
+f_fcs = 1  # scale C_P, C_A, ECs, M_S to field capacity (with max at fc)
 f_sew = 1  # calculate EC and SC concentration in water
 
-# F_dcac = ((C_d / (z_S * M_S)) * ((Md_S - (C_a / z_S)) * M_fc_S) *
+# F_dcac = ((C_D / (z_S * M_S)) * ((Md_S - (C_A / z_S)) * M_fc_S) *
 #           k_as_S * z_S)
-# F_acdc = C_a * M_fc_S * k_ds_S
+# F_acdc = C_A * M_fc_S * k_ds_S
 
 F_slpc = I_sl_S
 F_mldc = I_ml_S
-F_pcdc = ((V_D_S * (C_ew / (M_S * z_S)) * (C_p / z_S * M_fc_S)) /
-          (K_D_S + (C_p / z_S * M_fc_S)) * z_S)
-F_dcrc = D_dc_S * (C_d - 0) * (1 - R_gr_S)
-F_dcpc = D_dc_S * (C_d - 0) * R_gr_S * (1 - E_f_S)
-F_dcem = D_dc_S * (C_d - 0) * R_gr_S * E_f_S
-F_emew = D_ec_S * (C_em - C_ew)
-F_ewdc = C_ew * Em_S
-F_emdc = C_em * Em_S
+F_pcdc = ((V_D_S * (C_Ew / (M_S * z_S)) * (C_P / z_S * M_fc_S)) /
+          (K_D_S + (C_P / z_S * M_fc_S)) * z_S)
+F_dcrc = D_dc_S * (C_D - 0) * (1 - R_gr_S)
+F_dcpc = D_dc_S * (C_D - 0) * R_gr_S * (1 - f_de_S)
+F_dcem = D_dc_S * (C_D - 0) * R_gr_S * f_de_S
+F_emew = D_ec_S * (C_Em - C_Ew)
+F_ewdc = C_Ew * r_ed_S
+F_emdc = C_Em * r_ed_S
 
-dC_p = F_slpc + F_dcpc - F_pcdc
-dC_d = F_mldc + F_pcdc + F_ewdc + F_emdc - F_dcrc - F_dcpc - F_dcem
-# dC_a = F_dcac - F_acdc
-dC_ew = F_emew - F_ewdc
-dC_em = F_dcem - F_emew - F_emdc
+dC_P = F_slpc + F_dcpc - F_pcdc
+dC_D = F_mldc + F_pcdc + F_ewdc + F_emdc - F_dcrc - F_dcpc - F_dcem
+# dC_A = F_dcac - F_acdc
+dC_Ew = F_emew - F_ewdc
+dC_Em = F_dcem - F_emew - F_emdc
 
-sol = sy.solve([dC_p, dC_d, dC_ew, dC_em],
-               [C_p, C_d, C_ew, C_em], dict=True)
+sol = sy.solve([dC_P, dC_D, dC_Ew, dC_Em],
+               [C_P, C_D, C_Ew, C_Em], dict=True)
 sol = sol[0]
-sol_C_p = sol[C_p]
-sol_C_d = sol[C_d]
-sol_C_em = sol[C_em]
-sol_C_ew = sol[C_ew]
+sol_C_P = sol[C_P]
+sol_C_D = sol[C_D]
+sol_C_Em = sol[C_Em]
+sol_C_Ew = sol[C_Ew]
 
 
 # Define parameter values
 R = 0.008314
-Mm_ref = 0.00028 / hour * tstep
-Em_ref = 0.001 / hour * tstep
-Ep = 5.6e-06 / hour * tstep
+r_md_ref = 0.00028 / hour * tstep
+r_ed_ref = 0.001 / hour * tstep
+f_me = 5.6e-06 / hour * tstep
 V_D_ref = 1.0 / hour * tstep
 D_S0 = 8.1e-10 / sec * tstep
 D_E0 = 8.1e-11 / sec * tstep
 k_a_ref = 1.08e-6 / sec * tstep
-k_dsref = 1.19e-10 / sec * tstep
-K_Dref = 300000
+k_d_ref = 1.19e-10 / sec * tstep
+K_D_ref = 300000
 mcpc_f = 0.5
 T_ref = 293.15
 E_VU = 47
@@ -110,7 +110,7 @@ silt = 0.2
 sand = 0.7
 ps = 0.45
 z = 0.3
-E_f = 0.01
+f_de = 0.01
 M = 0.2
 I_sl = 0.0848
 I_ml = 0.00898
@@ -121,12 +121,12 @@ psi_sat = exp(6.5 - 1.3 * sand) / 1000
 Rth = ps * (psi_sat / psi_Rth)**(1 / b)
 fc = ps * (psi_sat / psi_fc)**(1 / b)
 MD = 200 * (100 * clay)**0.6 * pd * (1 - ps)
-K_D = T_resp_eq(K_Dref, T, T_ref, E_KD, R)
-k_as = T_resp_eq(k_asref, T, T_ref, E_ka, R)
-k_ds = T_resp_eq(k_dsref, T, T_ref, E_kd, R)
+K_D = T_resp_eq(K_D_ref, T, T_ref, E_KD, R)
+k_as = T_resp_eq(k_a_ref, T, T_ref, E_ka, R)
+k_ds = T_resp_eq(k_d_ref, T, T_ref, E_kd, R)
 V_D = T_resp_eq(V_D_ref, T, T_ref, E_VD, R)
-Mm = T_resp_eq(Mm_ref, T, T_ref, E_mm, R)
-Em = T_resp_eq(Em_ref, T, T_ref, E_em, R)
+r_md = T_resp_eq(r_md_ref, T, T_ref, E_mm, R)
+r_ed = T_resp_eq(r_ed_ref, T, T_ref, E_em, R)
 R_gr = R_gr_ref
 diff_mod = (ps - Rth)**1.5 * ((M - Rth)/(ps - Rth))**2.5
 D_dc = D_S0 * diff_mod / dist
@@ -135,36 +135,36 @@ M_fc = sy.Min(1, M / fc)
 
 # Substitute variables (parameters) with values
 
-v_C_p = sol_C_p.subs([
-    (Mm_S, Mm), (Em_S, Em), (V_D_S, V_D), (D_dc_S, D_dc), (D_ec_S, D_ec),
+v_C_P = sol_C_P.subs([
+    (r_md_S, r_md), (r_ed_S, r_ed), (V_D_S, V_D), (D_dc_S, D_dc), (D_ec_S, D_ec),
     (k_as_S, k_as), (k_ds_S, k_ds), (K_D_S, K_D), (R_gr_S, R_gr),
-    (E_f_S, E_f), (M_fc_S, M_fc), (Md_S, MD), (M_S, M), (I_sl_S, I_sl),
+    (f_de_S, f_de), (M_fc_S, M_fc), (Md_S, MD), (M_S, M), (I_sl_S, I_sl),
     (I_ml_S, I_ml), (z_S, z)
     ])
 
-v_C_d = sol_C_d.subs([
-    (Mm_S, Mm), (Em_S, Em), (V_D_S, V_D), (D_dc_S, D_dc), (D_ec_S, D_ec),
+v_C_D = sol_C_D.subs([
+    (r_md_S, r_md), (r_ed_S, r_ed), (V_D_S, V_D), (D_dc_S, D_dc), (D_ec_S, D_ec),
     (k_as_S, k_as), (k_ds_S, k_ds), (K_D_S, K_D), (R_gr_S, R_gr),
-    (E_f_S, E_f), (M_fc_S, M_fc), (Md_S, MD), (M_S, M), (I_sl_S, I_sl),
+    (f_de_S, f_de), (M_fc_S, M_fc), (Md_S, MD), (M_S, M), (I_sl_S, I_sl),
     (I_ml_S, I_ml), (z_S, z)
     ])
 
-v_C_ew = sol_C_ew.subs([
-    (Mm_S, Mm), (Em_S, Em), (V_D_S, V_D), (D_dc_S, D_dc), (D_ec_S, D_ec),
+v_C_Ew = sol_C_Ew.subs([
+    (r_md_S, r_md), (r_ed_S, r_ed), (V_D_S, V_D), (D_dc_S, D_dc), (D_ec_S, D_ec),
     (k_as_S, k_as), (k_ds_S, k_ds), (K_D_S, K_D), (R_gr_S, R_gr),
-    (E_f_S, E_f), (M_fc_S, M_fc), (Md_S, MD), (M_S, M), (I_sl_S, I_sl),
+    (f_de_S, f_de), (M_fc_S, M_fc), (Md_S, MD), (M_S, M), (I_sl_S, I_sl),
     (I_ml_S, I_ml), (z_S, z)
     ])
 
-v_C_em = sol_C_em.subs([
-    (Mm_S, Mm), (Em_S, Em), (V_D_S, V_D), (D_dc_S, D_dc), (D_ec_S, D_ec),
+v_C_Em = sol_C_Em.subs([
+    (r_md_S, r_md), (r_ed_S, r_ed), (V_D_S, V_D), (D_dc_S, D_dc), (D_ec_S, D_ec),
     (k_as_S, k_as), (k_ds_S, k_ds), (K_D_S, K_D), (R_gr_S, R_gr),
-    (E_f_S, E_f), (M_fc_S, M_fc), (Md_S, MD), (M_S, M), (I_sl_S, I_sl),
+    (f_de_S, f_de), (M_fc_S, M_fc), (Md_S, MD), (M_S, M), (I_sl_S, I_sl),
     (I_ml_S, I_ml), (z_S, z)
     ])
 
 # Calculate equilibrium value for adsorbed C
 Min = MD * z * M_fc   # amount of available mineral reaction sites
 K = k_as/k_ds    # binding constant
-eq1 = sy.Eq(K, C_a / (v_C_d * (Min - C_a)))   # K = LR / (L * R)
-v_C_a = sy.solve(eq1, C_a)[0]
+eq1 = sy.Eq(K, C_A / (v_C_D * (Min - C_A)))   # K = LR / (L * R)
+v_C_A = sy.solve(eq1, C_A)[0]

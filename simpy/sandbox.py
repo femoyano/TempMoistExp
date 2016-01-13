@@ -5,12 +5,12 @@ import sympy as sy
 
 RL, R = sy.symbols('RL, R')
 
-F_dcac = ((C_d / (z * M)) * ((Md - (C_a / z)) * M_fc) *
+F_dcac = ((C_D / (z * M)) * ((Md - (C_A / z)) * M_fc) *
           k_AS * z)
-F_acdc = C_a * M_fc * k_DS
+F_acdc = C_A * M_fc * k_DS
 
 ka = 1.08e-6
 kd = 1.19e-10
 K = ka/kd
 
-L = v_dC_d
+L = v_dC_D
