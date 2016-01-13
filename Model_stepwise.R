@@ -34,8 +34,8 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       if(spinup) t <- t %% end # this causes spinups to repeat the input data
       
       # Calculate the input and forcing at time t
-      litter_str_i <- Approx_litter_str(t)
-      litter_met_i <- Approx_litter_met(t)
+      I_sl_i <- Approx_I_sl(t)
+      I_ml_i <- Approx_I_ml(t)
       temp_i       <- Approx_temp(t)
       moist_i      <- Approx_moist(t)
       
@@ -64,8 +64,8 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       ### Calculate all fluxes ------
       
       # Input rate
-      F_sl.pc    <- litter_str_i
-      F_ml.scw   <- litter_met_i
+      F_sl.pc    <- I_sl_i
+      F_ml.scw   <- I_ml_i
       
       # Decomposition rate
       F_pc.scw   <- F_decomp(C_P, C_Ew, V_D, K_D, moist_i, fc, depth)

@@ -79,16 +79,16 @@ s.end   <- tail(s.times_input, 1)
 
 # If a constant mean values should be used:
 if(spinup & flag.cmi) {
-  s.litter_str  <- rep(mean(litter_str , na.rm=TRUE), length.out = 2)
-  s.litter_met  <- rep(mean(litter_met , na.rm=TRUE), length.out = 2)
+  s.I_sl  <- rep(mean(I_sl , na.rm=TRUE), length.out = 2)
+  s.I_ml  <- rep(mean(I_ml , na.rm=TRUE), length.out = 2)
   s.temp_data   <- rep(mean(temp_data  , na.rm=TRUE), length.out = 2)
   s.moist_data  <- rep(mean(moist_data , na.rm=TRUE), length.out = 2)
   s.times_input  <- c(1,2)
 }
 
 # Define input interpolation functions for spinup
-s.Approx_litter_str <- approxfun(s.times_input, s.litter_str , method = "linear", rule = 2)
-s.Approx_litter_met <- approxfun(s.times_input, s.litter_met , method = "linear", rule = 2)
+s.Approx_I_sl <- approxfun(s.times_input, s.I_sl , method = "linear", rule = 2)
+s.Approx_I_ml <- approxfun(s.times_input, s.I_ml , method = "linear", rule = 2)
 s.Approx_temp       <- approxfun(s.times_input, s.temp_data  , method = "linear", rule = 2)
 s.Approx_moist      <- approxfun(s.times_input, s.moist_data , method = "linear", rule = 2)
 
@@ -104,8 +104,8 @@ if(flag.des) { # If using deSolve, only save times are required
 ### Prepare input for transient -------------------------------------------------
 
 # Define input interpolation functions
-t.Approx_litter_str <- approxfun(times_input, litter_str , method = "linear", rule = 2)
-t.Approx_litter_met <- approxfun(times_input, litter_met , method = "linear", rule = 2)
+t.Approx_I_sl <- approxfun(times_input, I_sl , method = "linear", rule = 2)
+t.Approx_I_ml <- approxfun(times_input, I_ml , method = "linear", rule = 2)
 t.Approx_temp       <- approxfun(times_input, temp_data  , method = "linear", rule = 2)
 t.Approx_moist      <- approxfun(times_input, moist_data , method = "linear", rule = 2)
 

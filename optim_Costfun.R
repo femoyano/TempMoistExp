@@ -15,8 +15,8 @@ Costfun <- function(pars_opt)
         {
           # First run a spinup to get initial values --------
           # Define input interpolation functions
-          Approx_litter_str <- s.Approx_litter_str
-          Approx_litter_met <- s.Approx_litter_met
+          Approx_I_sl <- s.Approx_I_sl
+          Approx_I_ml <- s.Approx_I_ml
           Approx_temp       <- s.Approx_temp
           Approx_moist      <- s.Approx_moist
           times <- s.times
@@ -30,8 +30,8 @@ Costfun <- function(pars_opt)
           
           # Next run the transient --------------------------
           # Define input interpolation functions
-          Approx_litter_str <- t.Approx_litter_str
-          Approx_litter_met <- t.Approx_litter_met
+          Approx_I_sl <- t.Approx_I_sl
+          Approx_I_ml <- t.Approx_I_ml
           Approx_temp       <- t.Approx_temp
           Approx_moist      <- t.Approx_moist
           outtimes    <- as.vector(data$time) # define output times to be data times

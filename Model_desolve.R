@@ -17,8 +17,8 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     if(spinup) t_i <- t %% end # this causes spinups to repeat the input data
     
     # Calculate the input and forcing at time t
-    litter_str <- Approx_litter_str(t_i)
-    litter_met <- Approx_litter_met(t_i)
+    I_sl <- Approx_I_sl(t_i)
+    I_ml <- Approx_I_ml(t_i)
     temp       <- Approx_temp(t_i)
     moist      <- Approx_moist(t_i)
     
@@ -35,14 +35,14 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     if(moist <= Rth) diffmod <- 0 else diffmod <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
-    C_D_diff <- D_d0 * diffmod / d_pm
-    C_E_diff <- D_e0 * diffmod / d_pm
+    D_d <- D_d0 * diffmod / d_pm
+    D_e <- D_e0 * diffmod / d_pm
     
     ### Calculate all fluxes ------
     
     # Input rate
-    F_sl.pc    <- litter_str
-    F_ml.scw   <- litter_met
+    F_sl.pc    <- I_sl
+    F_ml.scw   <- I_ml
     
     # Decomposition rate
     F_pc.scw   <- F_decomp(C_P, C_Ew, V_D, K_D, moist, fc, depth)
@@ -58,8 +58,8 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     
     # Microbial growth, mortality, respiration and enzyme production
     if(flag.mic) {
-      F_scw.mc  <- C_D_diff * (C_D - 0) * f_gr
-      F_scw.co2 <- C_D_diff * (C_D - 0) * (1 - f_gr)
+      F_scw.mc  <- D_d * (C_D - 0) * f_gr
+      F_scw.co2 <- D_d * (C_D - 0) * (1 - f_gr)
       F_mc.pc   <- C_M * r_md
       F_mc.ecm  <- C_M * f_me
       F_scw.pc  <- 0
@@ -68,12 +68,12 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
       F_scw.mc  <- 0
       F_mc.pc   <- 0
       F_mc.ecm  <- 0
-      F_scw.co2 <- C_D_diff * (C_D - 0) * (1 - f_gr)
-      F_scw.pc  <- C_D_diff * (C_D - 0) * f_gr * (1 - f_de)
-      F_scw.ecm <- C_D_diff * (C_D - 0) * f_gr * f_de
+      F_scw.co2 <- D_d * (C_D - 0) * (1 - f_gr)
+      F_scw.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_de)
+      F_scw.ecm <- D_d * (C_D - 0) * f_gr * f_de
     }
     
-    F_ecm.ecw  <- C_E_diff * (C_Em - C_Ew)
+    F_ecm.ecw  <- D_e * (C_Em - C_Ew)
     
     # Enzyme decay
     F_ecw.scw  <- C_Ew * r_ed
@@ -89,7 +89,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     dC_M  <- F_scw.mc  - F_mc.pc   - F_mc.ecm
     dC_R <- F_scw.co2
     
-    return(list(c(dC_P, dC_D, dC_A, dC_Ew, dC_Em, dC_M, dC_R), c(litter_str=litter_str, litter_met=litter_met, temp=temp, moist=moist, diffmod=diffmod)))
+    return(list(c(dC_P, dC_D, dC_A, dC_Ew, dC_Em, dC_M, dC_R), c(I_sl=I_sl, I_ml=I_ml, temp=temp, moist=moist, diffmod=diffmod)))
     
   }) # end of with(...
   

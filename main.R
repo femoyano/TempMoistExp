@@ -60,16 +60,16 @@ end   <- tail(times_input, 1)
 
 # If a constant mean values should be used:
 if(spinup & flag.cmi) {
-  litter_str  <- rep(mean(litter_str, na.rm=TRUE), length.out = 2)
-  litter_met  <- rep(mean(litter_met, na.rm=TRUE), length.out = 2)
+  I_sl  <- rep(mean(I_sl, na.rm=TRUE), length.out = 2)
+  I_ml  <- rep(mean(I_ml, na.rm=TRUE), length.out = 2)
   temp        <- rep(mean(temp      , na.rm=TRUE), length.out = 2)
   moist       <- rep(mean(moist     , na.rm=TRUE), length.out = 2)
   times_input <- c(1,2)
 }
 
 # Define input interpolation functions
-Approx_litter_str <- approxfun(times_input, litter_str, method = "linear", rule = 2)
-Approx_litter_met <- approxfun(times_input, litter_met, method = "linear", rule = 2)
+Approx_I_sl <- approxfun(times_input, I_sl, method = "linear", rule = 2)
+Approx_I_ml <- approxfun(times_input, I_ml, method = "linear", rule = 2)
 Approx_temp       <- approxfun(times_input, temp      , method = "linear", rule = 2)
 Approx_moist      <- approxfun(times_input, moist     , method = "linear", rule = 2)
 
