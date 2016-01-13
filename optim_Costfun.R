@@ -41,9 +41,9 @@ Costfun <- function(pars_opt)
           } else { # else run the stepwise simulation
             out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars)
           } # get model results by calling ode(init_values, outtimes, Model_desolve, pars)
-          CO2.rate <- c(0, diff(out[8]))
-          CO2.rate <- CO2.rate # make necessary unit conversion here
-          costt       <- sum((CO2.rate - data$CO2)^2)
+          C_R.rate <- c(0, diff(out[8]))
+          C_R.rate <- C_R.rate # make necessary unit conversion here
+          costt       <- sum((C_R.rate - data$C_R)^2)
           return(costt)
         })
   }

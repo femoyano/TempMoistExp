@@ -15,30 +15,30 @@
 # The function will depend on the options (flags) chosen
 
 if (!flag.sew & !flag.fcs) {
-  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
-    PC <- PC / depth
-    EC <- EC / depth
-    F <- (V * EC * PC) / (K + PC) * depth
+  F_decomp <- function (C_P, C_E, V, K, moist, fc, depth) {
+    C_P <- C_P / depth
+    C_E <- C_E / depth
+    F <- (V * C_E * C_P) / (K + C_P) * depth
   }
 } else if(!flag.sew & flag.fcs) {
-  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+  F_decomp <- function (C_P, C_E, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
-    PC <- PC / depth * pc.mod
-    EC <- EC / depth
-    F <- (V * EC * PC) / (K + PC) * depth
+    C_P <- C_P / depth * pc.mod
+    C_E <- C_E / depth
+    F <- (V * C_E * C_P) / (K + C_P) * depth
   }
 }  else if(flag.sew & flag.fcs) {
-  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
+  F_decomp <- function (C_P, C_E, V, K, moist, fc, depth) {
     pc.mod <- min(1, moist / fc)
-    PC <- PC / depth * pc.mod
-    EC <- EC / (moist * depth)
-    F <- (V * EC * PC) / (K + PC) * depth
+    C_P <- C_P / depth * pc.mod
+    C_E <- C_E / (moist * depth)
+    F <- (V * C_E * C_P) / (K + C_P) * depth
   }
 } else if(flag.sew & !flag.fcs) {
-  F_decomp <- function (PC, EC, V, K, moist, fc, depth) {
-    PC <- PC / depth
-    EC <- EC / (moist * depth)
-    F <- (V * EC * PC) / (K + PC) * depth
+  F_decomp <- function (C_P, C_E, V, K, moist, fc, depth) {
+    C_P <- C_P / depth
+    C_E <- C_E / (moist * depth)
+    F <- (V * C_E * C_P) / (K + C_P) * depth
   }
 } 
 
@@ -47,7 +47,7 @@ if (!flag.sew & !flag.fcs) {
 # ligand(L)/receptor(M) kinetics used (https://en.wikipedia.org/wiki/Binding_constant)
 # Md stands for density of mineral adsorption site (so is not corrected for depth)
 # Lw and La are ligands in water or adsorbed, respectively.
-# Mmod is used for scaling M and La from 0-1 between 0 and fc
+# r_mdod is used for scaling M and La from 0-1 between 0 and fc
 
 if(flag.fcs & flag.sew) {
   F_adsorp <- function (Lw, La, Md, k, moist, fc, depth) {

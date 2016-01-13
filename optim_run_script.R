@@ -18,8 +18,8 @@ rm(list=ls()) # clear the work space
 # Model flag options ----------------------------------------------------------
 flag.ads  <- 0  # simulate adsorption desorption rates
 flag.mic  <- 0  # simulate microbial pool explicitly
-flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)
-flag.sew  <- 1  # calculate EC and SC concentration in water
+flag.fcs  <- 1  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
+flag.sew  <- 1  # calculate C_E and C_D concentration in water
 flag.des  <- 1  # run using differential equation solver? If TRUE then t_step has no effect.
 
 # Input Setup -----------------------------------------------------------------
@@ -31,7 +31,7 @@ spin.years      <- 5         # maximum years for spinup run
 flag.cmi        <- 1         # use a constant mean input for spinup
 ode.method      <- "lsoda"       # see ode function
 # eq.stop <- 0  # should a spinup run stop when soil C is close enough to equilibrium?
-# eq.md   <- 10 # equilibrium maximum difference allowed for PC (in gC m-3 y-1)
+# eq.md   <- 10 # equilibrium maximum difference allowed for C_P (in gC m-3 y-1)
 
 ### Input-output file and path names ==========================================
 # input

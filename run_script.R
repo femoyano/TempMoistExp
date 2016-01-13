@@ -27,8 +27,8 @@ trans     <- 0  # set to TRUE for a normal (transient) run
 # Model flag options ----------------------------------------------------------
 flag.ads  <- 1  # simulate adsorption desorption rates
 flag.mic  <- 0  # simulate microbial pool explicitly
-flag.fcs  <- 1  # scale PC, SCs, ECs, M to field capacity (with max at fc)
-flag.sew  <- 1  # calculate EC and SC concentration in water
+flag.fcs  <- 1  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
+flag.sew  <- 1  # calculate C_E and C_D concentration in water
 flag.des  <- 1  # run using differential equation solver? If TRUE then t_step has no effect.
 
 # Input Setup -----------------------------------------------------------------
@@ -58,7 +58,7 @@ ode.method  <- "lsoda"  # see ode function
 
 # stop at equilibrium options
 eq.stop <- 0  # should a spinup run stop when soil C is close enough to equilibrium?
-eq.md   <- 10 # equilibrium maximum difference allowed for PC (in gC m-3 y-1)
+eq.md   <- 10 # equilibrium maximum difference allowed for C_P (in gC m-3 y-1)
 
 ### Input-output file and path names ==========================================
 
@@ -100,7 +100,7 @@ if(spin) {
   }
   source("main.R")
   out <- as.data.frame(out)
-  out$CO2.rate <- c(0, diff(out$CO2))
+  out$C_R.rate <- c(0, diff(out$C_R))
   print(tail(out, 1))
   assign(spinup.name, out)
   write.csv(out, file = spin.output.file, row.names =  FALSE)
@@ -123,7 +123,7 @@ if(trans) {
   }
   source("main.R")
   out <- as.data.frame(out)
-  out$CO2.rate <- c(0, diff(out$CO2))
+  out$C_R.rate <- c(0, diff(out$C_R))
   assign(trans.name, out)
   write.csv(out, file = trans.output.file, row.names =  FALSE)
   print(tail(out, 1))

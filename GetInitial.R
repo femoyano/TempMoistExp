@@ -8,12 +8,12 @@
 
 GetInitial <- function(init) {
   c(
-    PC  = init$PC[1]  ,
-    SCw = init$SCw[1] ,
-    SCs = init$SCs[1] ,
-    ECw = init$ECw[1] ,
-    ECm = init$ECm[1] ,
-    MC = init$MC[1] ,
-    CO2 = 0
+    C_P  = init$C_P[1]  ,
+    C_D = init$C_D[1] ,
+    C_A = init$C_A[1] ,
+    C_Ew = init$C_Ew[1] ,
+    C_Em = init$C_Em[1] ,
+    C_M = init$C_M[1] ,
+    C_R = 0
   )
 }

@@ -15,8 +15,8 @@ if(!exists("runscript")) {
   # Flags
   flag.ads  <- 0  # model adsorption desorption rates?
   flag.mic  <- 0  # model microbial pool explicitly?
-  flag.fcs  <- 1  # scale PC, SCs, M with moisture (with max at fc)?
-  flag.sew  <- 1  # calculate EC and SC concentration in water?
+  flag.fcs  <- 1  # scale C_P, C_A, M with moisture (with max at fc)?
+  flag.sew  <- 1  # calculate C_E and C_D concentration in water?
   flag.des  <- 0  # run using differential equation solver?
   flag.cmi  <- 0  # use a constant mean input for spinup?
   
@@ -25,7 +25,7 @@ if(!exists("runscript")) {
   site.file    <- "site.csv"
   spinup       <- FALSE   # If TRUE then spinup run and data will be recylced.
   eq.stop      <- FALSE   # Stop at equilibrium?
-  eq.md        <- 1       # maximum difference for equilibrium conditions [in g PC m-3]. spinup run stops if difference is lower.
+  eq.md        <- 1       # maximum difference for equilibrium conditions [in g C_P m-3]. spinup run stops if difference is lower.
   spin.years   <- 5000    # years for spinup runs
   t_step       <- "hour"  # time unit for all rates values
   t_save       <- "month"  # interval at which to save output during spinup runs (text).

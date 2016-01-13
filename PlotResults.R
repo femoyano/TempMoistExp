@@ -29,7 +29,7 @@ PlotResults <- function(data, agg.time, path, name) {
     graphics.off()
     
     # plot relative changes
-    if(vars[i] == "TOC" | vars[i] == "PC") {
+    if(vars[i] == "TOC" | vars[i] == "C_P") {
       fname <- file.path(path, paste(name, "_", vars[i],"_relative.png",sep=""))
       png(filename = fname)
       plotdata <- (data.agg[,i] / data.agg[1,i] - 1) * 100
