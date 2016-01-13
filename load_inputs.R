@@ -28,7 +28,7 @@ times.input <- times.input * input.tstep / tstep # convert input data to model s
 times_input <- input.data[,1]        # time of input data
 temp        <- input.data$temp       # [K] soil temperature
 moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moisture
-litter_met  <- input.data$litter_met / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model rate
-litter_str  <- input.data$litter_str / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model rate
+I_ml  <- input.data$litter_met / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model rate
+I_sl  <- input.data$litter_str / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model rate
 
 rm(input.data, site.data, times.input, input.tstep)
