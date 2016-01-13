@@ -31,8 +31,8 @@ def T_resp_eq(k_ref, T, T_ref, E, R):
 C_P, C_D, C_A, C_Em, C_Ew, C_M, C_R = \
     sy.symbols('C_P C_D C_A C_Em C_Ew C_M C_R')
 
-r_md, r_ed, V_D, D_dc, D_ec, k_AS, k_DS, K_D, R_gr, f_de, M_fc, Md = (
-    sy.symbols('r_md r_ed V_D D_dc D_ec k_AS k_DS K_D R_gr f_de M_fc Md'))
+r_md, r_ed, V_D, D_dc, D_ec, k_AS, k_DS, K_D, f_gr, f_de, M_fc, Md = (
+    sy.symbols('r_md r_ed V_D D_dc D_ec k_AS k_DS K_D f_gr f_de M_fc Md'))
 
 M, I_sl, I_ml, z = sy.symbols('M I_sl I_ml z')
 
@@ -58,9 +58,9 @@ else:
     F_dcac = 0 * C_A
     F_acdc = 0 * C_A
 
-F_dcrc = D_dc * (C_D - 0) * (1 - R_gr)
-F_dcpc = D_dc * (C_D - 0) * R_gr * (1 - f_de)
-F_dcem = D_dc * (C_D - 0) * R_gr * f_de
+F_dcrc = D_dc * (C_D - 0) * (1 - f_gr)
+F_dcpc = D_dc * (C_D - 0) * f_gr * (1 - f_de)
+F_dcem = D_dc * (C_D - 0) * f_gr * f_de
 F_emew = D_ec * (C_Em - C_Ew)
 F_ewdc = C_Ew * r_ed
 F_emdc = C_Em * r_ed
@@ -94,7 +94,7 @@ D_ec0 = 8.1e-11 / sec * tstep
 k_ASref = 1.08e-6 / sec * tstep
 k_DSref = 1.19e-10 / sec * tstep
 K_Dref = 300000
-mcpc_f = 0.5
+f_mp = 0.5
 T_ref = 293.15
 E_VU = 47
 E_VD = 47
@@ -102,14 +102,14 @@ E_KU = 30
 E_KD = 30
 E_ka = 10
 E_kd = 10
-E_mm = 47
-E_em = 47
-R_gr_ref = 0.7
-R_gr_s = -0.016
+E_md = 47
+E_ed = 47
+f_gr_ref = 0.7
+f_gr_s = -0.016
 pd = 2.7
 psi_Rth = 15000
 psi_fc = 33
-dist = 10**-7
+d_pm = 10**-7
 T = 280
 clay = 0.1
 silt = 0.2
@@ -131,47 +131,47 @@ K_D_v = T_resp_eq(K_Dref, T, T_ref, E_KD, R)
 k_AS_v = T_resp_eq(k_ASref, T, T_ref, E_ka, R)
 k_DS_v = T_resp_eq(k_DSref, T, T_ref, E_kd, R)
 V_D_v = T_resp_eq(V_Dref, T, T_ref, E_VD, R)
-r_md_v = T_resp_eq(r_md_ref, T, T_ref, E_mm, R)
-r_ed_v = T_resp_eq(r_ed_ref, T, T_ref, E_em, R)
-R_gr_v = R_gr_ref
+r_md_v = T_resp_eq(r_md_ref, T, T_ref, E_md, R)
+r_ed_v = T_resp_eq(r_ed_ref, T, T_ref, E_ed, R)
+f_gr_v = f_gr_ref
 diff_mod = (ps - Rth)**1.5 * ((M_v - Rth)/(ps - Rth))**2.5
-D_dc_v = D_dc0 * diff_mod / dist
-D_ec_v = D_ec0 * diff_mod / dist
+D_dc_v = D_dc0 * diff_mod / d_pm
+D_ec_v = D_ec0 * diff_mod / d_pm
 M_fc_v = sy.Min(1, M_v / fc)
 
 # Substitute variables (parameters) with values
 
 v_dC_P = sol_C_P.subs([
     (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
-    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
+    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (f_gr, f_gr_v),
     (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])
 
 v_dC_D = sol_C_D.subs([
     (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
-    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
+    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (f_gr, f_gr_v),
     (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])
 
 v_dC_A = sol_C_A.subs([
     (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
-    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
+    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (f_gr, f_gr_v),
     (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])
 
 v_dC_Ew = sol_C_Ew.subs([
     (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
-    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
+    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (f_gr, f_gr_v),
     (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])
 
 v_dC_Em = sol_C_Em.subs([
     (r_md, r_md_v), (r_ed, r_ed_v), (V_D, V_D_v), (D_dc, D_dc_v), (D_ec, D_ec_v),
-    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (R_gr, R_gr_v),
+    (k_AS, k_AS_v), (k_DS, k_DS_v), (K_D, K_D_v), (f_gr, f_gr_v),
     (f_de, f_de_v), (M_fc, M_fc_v), (Md, Md_v), (M, M_v), (I_sl, I_sl_v),
     (I_ml, I_ml_v), (z, z_v)
     ])
