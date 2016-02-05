@@ -31,11 +31,9 @@ pars <- c(
   K_D_ref  = 300000   , # [gC m-3] Affinity parameter for C_P decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
 #   K_SM_ref = 25       , # [gC m-3] Affinity parameter for C_D sorption (Tang and Riley 2014, Mayes et al. 2012) # now using k_ads and k_des instead.
 #   K_EM_ref = 11       , # [gC m-3] Affinity parameter for C_E sorption (Tang and Riley 2014, Mayes et al. 2012) # now using ka.e and kd.e instead.
-  f_mp   = 0.5      , # [g g^-1] fraction of dead microbes going to C_D (rest goes to C_P)
+  f_mp   = 0.5      , # [g g^-1] fraction of dead microbes going to C_P (rest goes to C_D)
   T_ref    = 293.15   , # [K] reference temperature
-  E_VU    = 47       , # [kJ mol^-1] Gibbs energy for V_U (Tang and Riley 2014)
   E_VD    = 47       , # [kJ mol^-1] Gibbs energy for V_D (average of lignin and cellulose in Wang et al. 2013)
-  E_KU    = 30       , # [kJ mol^-1] Gibbs energy for K_U (Tang and Riley 2014)
   E_KD    = 30       , # [kJ mol^-1] Gibbs energy for K_D (Tang and Riley 2014)
   E_ka     = 10       , # [kJ mol^-1] Gibbs energy for C_D adsorption/desorption fluxes (Tang and Riley 2014)
   E_kd     = 10       , # [kJ mol^-1] Gibbs energy for C_E adsorption/desorption fluxes (Tang and Riley 2014)
