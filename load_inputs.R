@@ -23,9 +23,7 @@ input.data <- read.csv(input.file) # input data file
 # Adjust time units and extract data
 times.input <- input.data[,1]        # time vector of input data
 input.tstep <- get(names(input.data)[1])
-times.input <- times.input * input.tstep / tstep # convert input data to model step unit
-
-times_input <- input.data[,1]        # time of input data
+times_input <- times.input * input.tstep / tstep # convert input data to model step unit
 temp        <- input.data$temp       # [K] soil temperature
 moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moisture
 I_ml  <- input.data$litter_met / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model rate

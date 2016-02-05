@@ -27,6 +27,7 @@ pars <- c(
 
   ### Fixed Parameters ====
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
+  # Note that the K_D value below is very high (over 20% C) so decompostion will be linear in most soils.
   K_D_ref  = 300000   , # [gC m-3] Affinity parameter for C_P decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
 #   K_SM_ref = 25       , # [gC m-3] Affinity parameter for C_D sorption (Tang and Riley 2014, Mayes et al. 2012) # now using k_ads and k_des instead.
 #   K_EM_ref = 11       , # [gC m-3] Affinity parameter for C_E sorption (Tang and Riley 2014, Mayes et al. 2012) # now using ka.e and kd.e instead.
@@ -46,6 +47,6 @@ pars <- c(
   f_de       = 0.01     , # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
   psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   psi_fc   = 33      , # [kPa] Water potential at field capacity
-  d_pm     = 10^-7   # [m] characteristic d_pmance between substrate and microbes (Manzoni manus)
+  d_pm     = 10^-7   # [m] characteristic distance between substrate and microbes (Manzoni manus)
 )
 

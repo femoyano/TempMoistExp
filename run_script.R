@@ -22,7 +22,7 @@ rm(list=ls()) # clear the work space
 
 # Model run type --------------------------------------------------------------
 spin      <- 1  # set to TRUE to run spinup
-trans     <- 0  # set to TRUE for a normal (transient) run
+trans     <- 1  # set to TRUE for a normal (transient) run
 
 # Model flag options ----------------------------------------------------------
 flag.ads  <- 1  # simulate adsorption desorption rates
