@@ -1,16 +1,14 @@
 # Define model run function here
-runModel <- function(pars) {
+runModel <- function(pars_optim) {
   
-  out <- data.frame(colnames(c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "temp", "moist")))
   
-  runSamples <- function() {
+  ### Define the function to run model ---------------------------------------------------
+  runSamples <- function(site) {
     
-    pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, b = b, psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, end = end, spinup = spinup) # add all new parameters
-    
-    for (i in data.samples$sample[data.samples$site == "bare_fallow"]) {
+    for (i in data.samples$sample[data.samples$site == site,]) {
       
       # Get the subset of input for the sample
-      input.data <- input.all[input.all$sample == i]
+      input.data <- input.all[input.all$sample == i,]
       
       # Extract data
       times_input <- input.data$hour        # time of input data
@@ -18,6 +16,10 @@ runModel <- function(pars) {
       moist       <- input.data$moist      # [m3 m-3] specific soil volumetric moisture
       I_ml        <- input.data$litter_met / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model rate
       I_sl        <- input.data$litter_str / hour * tstep # [mgC m^-2 tstep^-1] convert litter input rates to the model rate
+      
+      # Obtain data times: start and end
+      start <- times_input[1]
+      end   <- tail(times_input, 1)
       
       # Define input interpolation functions
       Approx_I_sl  <- approxfun(times_input, I_sl , method = "linear", rule = 2)
@@ -30,10 +32,62 @@ runModel <- function(pars) {
       } else { # else run the stepwise simulation
         out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars)
       }
+      out <- as.data.frame(out)
+      out$C_R <- out$C_R * 
+      out$sample <- i
+      all_out <- rbind(all_out, out) 
     }    
   }
+  # --------------------------------------------------------------------------------------
   
-  site.data  <- site.data.1
+  # Add or replace parameters from from the list of optimized parameters
+  for(n in names(pars_optim)) pars[[n]] <- pars_optim[[n]]
+  # Replace param values where assignment is required
+  pars[["E_r_ed"]] <- pars[["E_r_md"]] <- pars[["E_VD"]] <- pars[["E_V"]]
+  pars[["E_KD"]] <- pars[["E_K"]]
+  pars[["E_ka"]] <- pars[["E_kd"]] <- pars[["E_k"]]
+
+  # Create a data frame to hold output
+  all_out <- data.frame(colnames(c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "temp", "moist", "sample")))
+  
+  
+  ### Prepare and run bare fallow samples ------------------------------------------------
+  
+  # Get site data
+  site.data  <- site.data.bf
+  sand   <- site.data$sand  # [g g^-1] clay fraction values 
+  clay   <- site.data$clay  # [g g^-1] sand fraction values 
+  silt   <- site.data$silt  # [g g^-1] silt fraction values 
+  ps     <- site.data$ps    # [m^3 m^-3] soil pore space
+  depth  <- site.data$depth # [m] soil depth
+  
+  ## Calculate spatially changing variables and add to parameter list
+  b       <- 2.91 + 15.9 * clay                         # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
+  psi_sat <- exp(6.5 - 1.3 * sand) / 1000               # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
+  Rth     <- ps * (psi_sat / pars[["psi_Rth"]])^(1 / b) # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
+  fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+  Md      <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [gC m-3] Mineral surface adsorption capacity in gC-equivalent (Mayes et al. 2012)
+  
+  # Add new parameters to pars
+  pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth, b = b, 
+            psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md)
+  
+  # Set initial states
+  initial_state[["C_P"]]  <- TOC_bf * (1 - f_CA)
+  initial_state[["C_D"]]  <- TOC_bf * 0.001
+  initial_state[["C_A"]]  <- TOC_bf * f_CA
+  initial_state[["C_Ew"]] <- TOC_bf * 0.001
+  initial_state[["C_Em"]] <- TOC_bf * 0.001
+  initial_state[["C_M"]]  <- TOC_bf * 0.01
+  initial_state[["C_R"]]  <- 0
+  
+  runSamples("bare_fallow")
+  
+  
+  ### Prepare and run bare fallow samples ------------------------------------------------
+  
+  # Get site data
+  site.data  <- site.data.mz
   sand   <- site.data$sand  # [g g^-1] clay fraction values 
   clay   <- site.data$clay  # [g g^-1] sand fraction values 
   silt   <- site.data$silt  # [g g^-1] silt fraction values 
@@ -47,7 +101,27 @@ runModel <- function(pars) {
   fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
   Md       <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [gC m-3] Mineral surface adsorption capacity in gC-equivalent (Mayes et al. 2012)
   
-  initial_state <- ???
-
+  # Add new parameters to pars
+  pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth, b = b, 
+            psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md)
   
+  # Set initial states
+  initial_state[["C_P"]]  <- TOC_mz * (1 - f_CA)
+  initial_state[["C_D"]]  <- TOC_mz * 0.001
+  initial_state[["C_A"]]  <- TOC_mz * f_CA
+  initial_state[["C_Ew"]] <- TOC_mz * 0.001
+  initial_state[["C_Em"]] <- TOC_mz * 0.001
+  initial_state[["C_M"]]  <- TOC_mz * 0.01
+  initial_state[["C_R"]]  <- 0
+  
+  runSamples("maize")
+  
+  for (i in 1:nrow(data.meas)) {
+    t1 <- data.meas$hour[i]
+    t0 <- h - data.meas$time_inc[i]
+    s  <- data.meas$sample[i]
+    data.meas$CO2[i] <- sum(all.out$C_R[all.out$sample == s & all.out$hour > t0 & all.out$hour < t1])
+  }
+  
+  return(subset(data.meas, select = c("sample", "hour", "CO2")))
 }
