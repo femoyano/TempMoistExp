@@ -46,9 +46,9 @@ source("Model_stepwise.R")
 source("initial_state.R")
 source("optim_runModel.R")
 source("optim_ModCost.R")
-source("pars_optim_start_sub1.R")
-source("pars_optim_lower_sub1.R")
-source("pars_optim_upper_sub1.R")
+source("pars_optim_start_3.R")
+source("pars_optim_lower_3.R")
+source("pars_optim_upper_3.R")
 
 
 ### Obtain model cost --------------

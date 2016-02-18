@@ -77,6 +77,10 @@ runModel <- function(pars_optim) {
   pars[["E_r_ed"]] <- pars[["E_r_md"]] <- pars[["E_VD"]] <- pars[["E_V"]]
   pars[["E_KD"]] <- pars[["E_K"]]
   pars[["E_ka"]] <- pars[["E_kd"]] <- pars[["E_k"]]
+  TOC_bf <- 0.007  # gC gSoil-1
+  TOC_mz <- 0.013  # gC gSoil-1
+  f_CA <- 0.8      # both soils (bare fallow and maize(Closeaux)) has the same fraction of clay+silt-C to total C
+  
 
   # Create a data frame to hold output
   all.out <- data.frame(colnames(c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "temp", "moist", "sample")))
