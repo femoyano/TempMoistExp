@@ -3,9 +3,10 @@ runModel <- function(pars_optim) {
   
   
   ### Define the function to run model ---------------------------------------------------
-  runSamples <- function(site) {
-    
-    for (i in data.samples$sample[data.samples$site == site,]) {
+  runSamples <- function(site, data.samples, input.all, all.out) {
+
+    site <- site
+    for (i in data.samples$sample[data.samples$site == site]) {
       
       # Get the subset of input for the sample
       input.data <- input.all[input.all$sample == i,]
@@ -20,25 +21,31 @@ runModel <- function(pars_optim) {
       # Obtain data times: start and end
       start <- times_input[1]
       end   <- tail(times_input, 1)
+      times <- seq(start, end)
       
       # Define input interpolation functions
-      Approx_I_sl  <- approxfun(times_input, I_sl , method = "linear", rule = 2)
-      Approx_I_ml  <- approxfun(times_input, I_ml , method = "linear", rule = 2)
-      Approx_temp  <- approxfun(times_input, temp_data  , method = "linear", rule = 2)
-      Approx_moist <- approxfun(times_input, moist_data , method = "linear", rule = 2)
+      Approx_I_sl  <<- approxfun(times_input, I_sl , method = "linear", rule = 2)
+      Approx_I_ml  <<- approxfun(times_input, I_ml , method = "linear", rule = 2)
+      Approx_temp  <<- approxfun(times_input, temp  , method = "linear", rule = 2)
+      Approx_moist <<- approxfun(times_input, moist , method = "linear", rule = 2)
       
       if(flag.des) { # if true, run the differential equation solver
-        out <- ode(initial_state, times, Model_desolve, pars, method = ode.method)
+        out <- ode(initial_state, times, Model_desolve, pars, method = ode.method) # , App_Isl = Approx_I_sl, App_Iml = Approx_I_ml, App_T = Approx_temp, App_M = Approx_moist
       } else { # else run the stepwise simulation
         out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars)
       }
+      
+#       browser()
+      
       out <- as.data.frame(out)
-      out$C_R <- out$C_R * 
+      out$C_R <- out$C_R / (pars[["depth"]] * (1 - pars[["ps"]]) * pars[["pd"]] * 1000)  # converting to gC respired per kg soil
       out$sample <- i
-      all_out <- rbind(all_out, out) 
-    }    
+      all.out <- rbind(all.out, out)
+    }
+    return(all.out)
   }
   # --------------------------------------------------------------------------------------
+  
   
   # Add or replace parameters from from the list of optimized parameters
   for(n in names(pars_optim)) pars[[n]] <- pars_optim[[n]]
@@ -48,11 +55,11 @@ runModel <- function(pars_optim) {
   pars[["E_ka"]] <- pars[["E_kd"]] <- pars[["E_k"]]
 
   # Create a data frame to hold output
-  all_out <- data.frame(colnames(c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "temp", "moist", "sample")))
+  all.out <- data.frame(colnames(c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "temp", "moist", "sample")))
   
   
   ### Prepare and run bare fallow samples ------------------------------------------------
-  
+
   # Get site data
   site.data  <- site.data.bf
   sand   <- site.data$sand  # [g g^-1] clay fraction values 
@@ -73,16 +80,16 @@ runModel <- function(pars_optim) {
             psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md)
   
   # Set initial states
-  initial_state[["C_P"]]  <- TOC_bf * (1 - f_CA)
-  initial_state[["C_D"]]  <- TOC_bf * 0.001
-  initial_state[["C_A"]]  <- TOC_bf * f_CA
-  initial_state[["C_Ew"]] <- TOC_bf * 0.001
-  initial_state[["C_Em"]] <- TOC_bf * 0.001
-  initial_state[["C_M"]]  <- TOC_bf * 0.01
+  TOC <- pars[["TOC_bf"]] * 1000000 * pars[["pd"]] * (1 - pars[["ps"]]) * pars[["depth"]]
+  initial_state[["C_P"]]  <- TOC * (1 - pars[["f_CA"]])
+  initial_state[["C_D"]]  <- TOC * 0.001
+  initial_state[["C_A"]]  <- TOC * pars[["f_CA"]]
+  initial_state[["C_Ew"]] <- TOC * 0.001
+  initial_state[["C_Em"]] <- TOC * 0.001
+  initial_state[["C_M"]]  <- TOC * 0.01
   initial_state[["C_R"]]  <- 0
   
-  runSamples("bare_fallow")
-  
+  all.out <- runSamples("bare_fallow", data.samples, input.all, all.out)
   
   ### Prepare and run bare fallow samples ------------------------------------------------
   
@@ -106,22 +113,24 @@ runModel <- function(pars_optim) {
             psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md)
   
   # Set initial states
-  initial_state[["C_P"]]  <- TOC_mz * (1 - f_CA)
-  initial_state[["C_D"]]  <- TOC_mz * 0.001
-  initial_state[["C_A"]]  <- TOC_mz * f_CA
-  initial_state[["C_Ew"]] <- TOC_mz * 0.001
-  initial_state[["C_Em"]] <- TOC_mz * 0.001
-  initial_state[["C_M"]]  <- TOC_mz * 0.01
+  TOC <- pars[["TOC_mz"]] * 1000000 * pars[["pd"]] * (1 - pars[["ps"]]) * pars[["depth"]]
+  initial_state[["C_P"]]  <- TOC * (1 - pars[["f_CA"]])
+  initial_state[["C_D"]]  <- TOC * 0.001
+  initial_state[["C_A"]]  <- TOC * pars[["f_CA"]]
+  initial_state[["C_Ew"]] <- TOC * 0.001
+  initial_state[["C_Em"]] <- TOC * 0.001
+  initial_state[["C_M"]]  <- TOC * 0.01
   initial_state[["C_R"]]  <- 0
   
-  runSamples("maize")
-  
+  all.out <- runSamples("maize", data.samples, input.all, all.out)
+
+
   for (i in 1:nrow(data.meas)) {
     t1 <- data.meas$hour[i]
-    t0 <- h - data.meas$time_inc[i]
+    t0 <- t1 - data.meas$time_inc[i]
     s  <- data.meas$sample[i]
-    data.meas$CO2[i] <- sum(all.out$C_R[all.out$sample == s & all.out$hour > t0 & all.out$hour < t1])
+    data.meas$C_R_m[i] <- all.out$C_R[all.out$sample == s & all.out$time == t1] - all.out$C_R[all.out$sample == s & all.out$time == t0]
   }
   
-  return(subset(data.meas, select = c("sample", "hour", "CO2")))
+  return(subset(data.meas, select = c("sample", "hour", "C_R", "C_R_m", "temp", "moist_vol")))
 }

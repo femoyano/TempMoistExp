@@ -11,25 +11,25 @@
 Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <- function(t, y, parms,...) for use with ode
   
   with(as.list(c(initial_state, pars)), {
-    
+
     # set time used for interpolating input data.
     t_i <- t
     if(spinup) t_i <- t %% end # this causes spinups to repeat the input data
     
     # Calculate the input and forcing at time t
-    I_sl <- Approx_I_sl(t_i)
-    I_ml <- Approx_I_ml(t_i)
-    temp       <- Approx_temp(t_i)
-    moist      <- Approx_moist(t_i)
+    I_sl  <- Approx_I_sl(t_i)
+    I_ml  <- Approx_I_ml(t_i)
+    temp  <- Approx_temp(t_i)
+    moist <- Approx_moist(t_i)
     
     # Calculate temporally changing variables
-    K_D     <- Temp.Resp.Eq(K_D_ref , temp, T_ref, E_KD, R)
-    k_ads    <- Temp.Resp.Eq(k_ads_ref, temp, T_ref, E_ka , R)
-    k_des    <- Temp.Resp.Eq(k_des_ref, temp, T_ref, E_kd , R)
-    V_D     <- Temp.Resp.Eq(V_D_ref , temp, T_ref, E_VD, R)
-    r_md      <- Temp.Resp.Eq(r_md_ref  , temp, T_ref, E_r_md , R)
-    r_ed      <- Temp.Resp.Eq(r_ed_ref  , temp, T_ref, E_r_ed , R)
-    f_gr     <- f_gr_ref
+    K_D   <- Temp.Resp.Eq(K_D_ref , temp, T_ref, E_KD, R)
+    k_ads <- Temp.Resp.Eq(k_ads_ref, temp, T_ref, E_ka , R)
+    k_des <- Temp.Resp.Eq(k_des_ref, temp, T_ref, E_kd , R)
+    V_D   <- Temp.Resp.Eq(V_D_ref , temp, T_ref, E_VD, R)
+    r_md  <- Temp.Resp.Eq(r_md_ref  , temp, T_ref, E_r_md , R)
+    r_ed  <- Temp.Resp.Eq(r_ed_ref  , temp, T_ref, E_r_ed , R)
+    f_gr  <- f_gr_ref
     
     ## Diffusion calculations  --------------------------------------
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
