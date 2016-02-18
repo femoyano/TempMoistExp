@@ -33,8 +33,8 @@ eq.stop    <- FALSE   # Stop at equilibrium?
 
 # Input Setup -----------------------------------------------------------------
 input.all     <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_model_input.csv"))
-data.meas     <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_co2_test2.csv"))
-data.samples  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "samples_test2.csv"))
+data.meas     <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_co2.csv"))
+data.samples  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "samples.csv"))
 site.data.mz  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "site_Closeaux.csv"))
 site.data.bf  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "site_BareFallow42p.csv"))
 

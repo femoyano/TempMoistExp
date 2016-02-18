@@ -81,11 +81,11 @@ runModel <- function(pars_optim) {
   # Create a data frame to hold output
   all.out <- data.frame(colnames(c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "temp", "moist", "sample")))
   
-  ### Run bare fallow samples ------------------------------------------------
+  ### Run bare fallow samples ------------------------------------------------------------
   
   all.out <- runSamples(site.data.bf, pars, "bare_fallow", data.samples, input.all, all.out)
   
-  ### Run bare fallow samples ------------------------------------------------
+  ### Run bare fallow samples ------------------------------------------------------------
   
   all.out <- runSamples(site.data.mz, pars, "maize", data.samples, input.all, all.out)
   
