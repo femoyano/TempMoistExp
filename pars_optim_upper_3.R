@@ -4,7 +4,6 @@
 #### ==========================================================================
 
 pars_optim_upper <- c(
-  f_CA      = 0.8    , # both soils (bare fallow and maize(Closeaux)) has the same fraction of clay+silt-C to total C
   r_ed_ref  = 0.01   / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   V_D_ref   = 10     / hour * tstep , # [h-1] Maximum speed of C_P decomposition (Li at al. 2014, AWB model)
   E_V       = 70     , # [kJ mol^-1] Gibbs energy for decomposition
