@@ -22,14 +22,14 @@ rm(list=ls()) # clear the work space
 
 # Model run type --------------------------------------------------------------
 spin      <- 1  # set to TRUE to run spinup
-trans     <- 1  # set to TRUE for a normal (transient) run
+trans     <- 0  # set to TRUE for a normal (transient) run
 
 # Model flag options ----------------------------------------------------------
 flag.ads  <- 1  # simulate adsorption desorption rates
 flag.mic  <- 0  # simulate microbial pool explicitly
 flag.fcs  <- 1  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
 flag.sew  <- 1  # calculate C_E and C_D concentration in water
-flag.des  <- 1  # run using differential equation solver? If TRUE then t_step has no effect.
+flag.des  <- 0  # run using differential equation solver? If TRUE then t_step has no effect.
 
 # Input Setup -----------------------------------------------------------------
 site.name      <- "Wetzstein"

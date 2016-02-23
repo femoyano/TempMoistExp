@@ -78,7 +78,11 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         F_scw.scs <- 0
         F_scs.scw <- 0
       }
-      
+      # check that flux is positive
+      if(F_scw.scs < 0 | F_scs.scw < 0) browser("Error: a flux (F_scw.scs or F_scs.scw) is negative")
+      # update pool size before calculating next flux
+      C_D <- C_D - F_
+
       # Microbial growth, mortality, respiration and enzyme production
       if(flag.mic) {
         F_scw.mc  <- C_D.diff * f_gr # concentration at microbe asumed 0
@@ -102,15 +106,18 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       F_ecw.scw  <- C_Ew * r_ed
       F_ecm.scw  <- C_Em * r_ed
       
+
       ## Rate of change calculation for state variables ---------------
       C_P  <- C_P  + F_sl.pc   + F_scw.pc  + F_mc.pc   - F_pc.scw
-      C_D <- C_D + F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw + F_ecm.scw -
-                   F_scw.scs - F_scw.mc  - F_scw.co2 - F_scw.pc  - F_scw.ecm
-      C_A <- C_A + F_scw.scs - F_scs.scw
+      C_D  <- C_D  + F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw + F_ecm.scw -
+                     F_scw.scs - F_scw.mc  - F_scw.co2 - F_scw.pc  - F_scw.ecm
+      C_A  <- C_A  + F_scw.scs - F_scs.scw
       C_Ew <- C_Ew + F_ecm.ecw - F_ecw.scw 
       C_Em <- C_Em + F_scw.ecm + F_mc.ecm  - F_ecm.ecw - F_ecm.scw
       C_M  <- C_M  + F_scw.mc  - F_mc.pc   - F_mc.ecm
-      C_R <- C_R + F_scw.co2
+      C_R  <- C_R  + F_scw.co2
+      
+      if(C_P < 0 | C_D < 0 | C_A < 0 | C_Ew < 0 | C_Em < 0 | C_M < 0) browser("a pool became negative")
       
       # Check for equilibirum conditions: will stop if the change in C_P in gC m-3 y-1 is smaller than eq.md
       if (eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
