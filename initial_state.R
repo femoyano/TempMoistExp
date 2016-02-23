@@ -7,9 +7,9 @@
 
 if(spinup) {
   initial_state <- c(
-    C_P  = 1000  , # [gC m-3] labile carbon 
+    C_P  = 1  , # [gC m-3] labile carbon 
     C_D = 1   , # [gC m-3] soluble carbon in bulk 
-    C_A = 100   , # [gC m-3] sorbed C_D
+    C_A = 1   , # [gC m-3] sorbed C_D
     C_Ew = 1  , # [gC m-3] enzymes in bulk 
     C_Em = 1   , # ...
     C_M  = 1     , # [gC m-3] microbial C
