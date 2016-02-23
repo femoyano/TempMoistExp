@@ -15,10 +15,10 @@ Costfun <- function(pars_opt)
         {
           # First run a spinup to get initial values --------
           # Define input interpolation functions
-          Approx_I_sl <- s.Approx_I_sl
-          Approx_I_ml <- s.Approx_I_ml
-          Approx_temp       <- s.Approx_temp
-          Approx_moist      <- s.Approx_moist
+          Approx_I_sl  <- s.Approx_I_sl
+          Approx_I_ml  <- s.Approx_I_ml
+          Approx_temp  <- s.Approx_temp
+          Approx_moist <- s.Approx_moist
           times <- s.times
           if(exists("initial_state")) rm(initial_state)
           source("initial_state.R")

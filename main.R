@@ -19,6 +19,9 @@ if(!exists("runscript")) {
   flag.sew  <- 1  # calculate C_E and C_D concentration in water?
   flag.des  <- 0  # run using differential equation solver?
   flag.cmi  <- 0  # use a constant mean input for spinup?
+  flag.dte  <- 0  # diffusivity temperature effect on/off
+  flag.dce  <- 0  # diffusicity carbon effect on/off
+  flag.dcf  <- 0  # diffusicity carbon function: 0 = exponential, 1 = linear
   
   # Setup
   input.file   <- "input.csv"

@@ -34,19 +34,19 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       if(spinup) t <- t %% end # this causes spinups to repeat the input data
       
       # Calculate the input and forcing at time t
-      I_sl_i <- Approx_I_sl(t)
-      I_ml_i <- Approx_I_ml(t)
-      temp_i       <- Approx_temp(t)
-      moist_i      <- Approx_moist(t)
+      I_sl_i  <- Approx_I_sl(t)
+      I_ml_i  <- Approx_I_ml(t)
+      temp_i  <- Approx_temp(t)
+      moist_i <- Approx_moist(t)
       
       # Calculate temporally changing variables
-      K_D     <- Temp.Resp.Eq(K_D_ref , temp_i, T_ref, E_KD, R)
-      k_ads    <- Temp.Resp.Eq(k_ads_ref, temp_i, T_ref, E_ka , R)
-      k_des    <- Temp.Resp.Eq(k_des_ref, temp_i, T_ref, E_kd , R)
-      V_D     <- Temp.Resp.Eq(V_D_ref , temp_i, T_ref, E_VD, R)
-      r_md      <- Temp.Resp.Eq(r_md_ref  , temp_i, T_ref, E_r_md , R)
-      r_ed      <- Temp.Resp.Eq(r_ed_ref  , temp_i, T_ref, E_r_ed , R)
-      f_gr     <- f_gr_ref
+      K_D    <- Temp.Resp.Eq(K_D_ref, temp_i, T_ref, E_KD, R)
+      k_ads  <- Temp.Resp.Eq(k_ads_ref, temp_i, T_ref, E_ka , R)
+      k_des  <- Temp.Resp.Eq(k_des_ref, temp_i, T_ref, E_kd , R)
+      V_D    <- Temp.Resp.Eq(V_D_ref, temp_i, T_ref, E_VD, R)
+      r_md   <- Temp.Resp.Eq(r_md_ref, temp_i, T_ref, E_r_md , R)
+      r_ed   <- Temp.Resp.Eq(r_ed_ref, temp_i, T_ref, E_r_ed , R)
+      f_gr   <- f_gr_ref
       
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
@@ -54,12 +54,19 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         out[j,] <- c(times[i], C_P, C_D, C_A, C_Ew, C_Em, C_M, C_R, temp_i, moist_i)
       }
 
+      # browser()
+      
       # Diffusion calculations
       # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
       # concentrations and multiply again for total since they cancel out.
-      if(moist_i <= Rth) diffmod <- 0 else diffmod <- (ps - Rth)^1.5 * ((moist_i - Rth)/(ps - Rth))^2.5 # reference?
-      C_D.diff <- D_d0 * (C_D - 0) * diffmod / d_pm
-      C_E.diff <- D_e0 * (C_Em - C_Ew) * diffmod / d_pm
+      # Diffusion modifiers for soil (texture), temperature and carbon content: D_sm, D_tm, D_cm
+      if(moist_i <= Rth) D_sm <- 0 else D_sm <- (ps - Rth)^1.5 * ((moist_i - Rth)/(ps - Rth))^2.5 # reference?
+      if(flag.dte) D_tm <- temp^8/T_ref^8 else D_tm <- 1
+      if(flag.dce) {
+        if(flag.dcf) D_cm <- C_P^(-1/3) / C_ref^(-1/3) else D_cm <- (C_P-C_max) / (C_ref-C_max)  # non-linear or linear response
+      } else D_cm <- 1
+      D_d <- D_d0 * D_sm * D_tm * D_cm
+      D_e <- D_e0 * D_sm * D_tm * D_cm
       
       ### Calculate all fluxes ------
       
@@ -81,8 +88,8 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       
       # Microbial growth, mortality, respiration and enzyme production
       if(flag.mic) {
-        F_scw.mc  <- C_D.diff * f_gr # concentration at microbe asumed 0
-        F_scw.co2 <- C_D.diff * (1 - f_gr) # concentration at microbe asumed 0
+        F_scw.mc  <- D_d * (C_D - 0) * f_gr
+        F_scw.co2 <- D_d * (C_D - 0) * (1 - f_gr)
         F_mc.pc   <- C_M * r_md
         F_mc.ecm  <- C_M * f_me
         F_scw.pc  <- 0
@@ -91,12 +98,12 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         F_scw.mc  <- 0
         F_mc.pc   <- 0
         F_mc.ecm  <- 0
-        F_scw.co2 <- C_D.diff * (1 - f_gr)
-        F_scw.pc  <- C_D.diff * f_gr * (1 - f_de)
-        F_scw.ecm <- C_D.diff * f_gr * f_de
+        F_scw.co2 <- D_d * (C_D - 0) * (1 - f_gr)
+        F_scw.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_de)
+        F_scw.ecm <- D_d * (C_D - 0) * f_gr * f_de
       }
       
-      F_ecm.ecw  <- C_E.diff
+      F_ecm.ecw  <- D_e * (C_Em - C_Ew)
       
       # Enzyme decay
       F_ecw.scw  <- C_Ew * r_ed
@@ -104,13 +111,13 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       
       ## Rate of change calculation for state variables ---------------
       C_P  <- C_P  + F_sl.pc   + F_scw.pc  + F_mc.pc   - F_pc.scw
-      C_D <- C_D + F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw + F_ecm.scw -
+      C_D  <- C_D + F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw + F_ecm.scw -
                    F_scw.scs - F_scw.mc  - F_scw.co2 - F_scw.pc  - F_scw.ecm
-      C_A <- C_A + F_scw.scs - F_scs.scw
+      C_A  <- C_A + F_scw.scs - F_scs.scw
       C_Ew <- C_Ew + F_ecm.ecw - F_ecw.scw 
       C_Em <- C_Em + F_scw.ecm + F_mc.ecm  - F_ecm.ecw - F_ecm.scw
       C_M  <- C_M  + F_scw.mc  - F_mc.pc   - F_mc.ecm
-      C_R <- C_R + F_scw.co2
+      C_R  <- C_R + F_scw.co2
       
       # Check for equilibirum conditions: will stop if the change in C_P in gC m-3 y-1 is smaller than eq.md
       if (eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
