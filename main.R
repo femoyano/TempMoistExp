@@ -19,6 +19,9 @@ if(!exists("runscript")) {
   flag.sew  <- 1  # calculate C_E and C_D concentration in water?
   flag.des  <- 0  # run using differential equation solver?
   flag.cmi  <- 0  # use a constant mean input for spinup?
+  flag.dte  <- 0  # diffusivity temperature effect on/off
+  flag.dce  <- 0  # diffusicity carbon effect on/off
+  flag.dcf  <- 0  # diffusicity carbon function: 0 = exponential, 1 = linear
   
   # Setup
   input.file   <- "input.csv"
@@ -83,20 +86,25 @@ if(flag.des) { # If using deSolve, only save times are required
   if(spinup) times <- seq(1, spin.time) else times <- seq(start, end)
 }
 
-## Calculate spatially changing variables and add to parameter list
+## Calculate derived variables and add to parameter list
 b       <- 2.91 + 15.9 * clay                         # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
 psi_sat <- exp(6.5 - 1.3 * sand) / 1000               # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
 Rth     <- ps * (psi_sat / pars[["psi_Rth"]])^(1 / b) # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
 fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
 Md      <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [gC m-3] Mineral surface adsorption capacity in gC-equivalent (Mayes et al. 2012)
+D_d0    <- pars[["D_0"]]        # Diffusion conductance for dissolved C
+D_e0    <- pars[["D_0"]] / 10   # Diffusion conductance for enzymes
 
-pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, b = b, psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md) # add all new parameters
+parameters <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, b = b, psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, D_d0 = D_d0, D_e0 = D_e0) # add all new parameters
+
+# If initial C_A exceeds Md capacity, stop run.
+if (initial_state[["C_A"]] > (Md * depth)) stop(cat("Initial C_A is larger than maximum adsorption capacity of", Md * depth, "gC"))
 
 ptm <- proc.time() # save current time to later check run time
 if(flag.des) { # if true, run the differential equation solver
-  out <- ode(initial_state, times, Model_desolve, pars, method = ode.method)
+  out <- ode(initial_state, times, Model_desolve, parameters, method = ode.method)
 } else { # else run the stepwise simulation
-  out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars)
+  out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, parameters)
 }
 print(proc.time()-ptm) # check run time
 

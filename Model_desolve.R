@@ -23,20 +23,25 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     moist <- Approx_moist(t_i)
     
     # Calculate temporally changing variables
-    K_D   <- Temp.Resp.Eq(K_D_ref , temp, T_ref, E_KD, R)
+    K_D   <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_KD, R)
     k_ads <- Temp.Resp.Eq(k_ads_ref, temp, T_ref, E_ka , R)
     k_des <- Temp.Resp.Eq(k_des_ref, temp, T_ref, E_kd , R)
-    V_D   <- Temp.Resp.Eq(V_D_ref , temp, T_ref, E_VD, R)
-    r_md  <- Temp.Resp.Eq(r_md_ref  , temp, T_ref, E_r_md , R)
-    r_ed  <- Temp.Resp.Eq(r_ed_ref  , temp, T_ref, E_r_ed , R)
+    V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_VD, R)
+    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_r_md , R)
+    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_r_ed , R)
     f_gr  <- f_gr_ref
     
     ## Diffusion calculations  --------------------------------------
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
-    if(moist <= Rth) diffmod <- 0 else diffmod <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
-    D_d <- D_d0 * diffmod / d_pm
-    D_e <- D_e0 * diffmod / d_pm
+    # Diffusion modifiers for soil (texture), temperature and carbon content: D_sm, D_tm, D_cm
+    if(moist <= Rth) D_sm <- 0 else D_sm <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
+    if(flag.dte) D_tm <- temp^8/T_ref^8 else D_tm <- 1
+    if(flag.dce) {
+      if(flag.dcf) D_cm <- C_P^(-1/3) / C_ref^(-1/3) else D_cm <- (C_P-C_max) / (C_ref-C_max)  # non-linear or linear response
+    } else D_cm <- 1
+    D_d <- D_d0 * D_sm * D_tm * D_cm
+    D_e <- D_e0 * D_sm * D_tm * D_cm
     
     ### Calculate all fluxes ------
     
@@ -89,7 +94,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     dC_M  <- F_scw.mc  - F_mc.pc   - F_mc.ecm
     dC_R <- F_scw.co2
     
-    return(list(c(dC_P, dC_D, dC_A, dC_Ew, dC_Em, dC_M, dC_R), c(I_sl=I_sl, I_ml=I_ml, temp=temp, moist=moist, diffmod=diffmod)))
+    return(list(c(dC_P, dC_D, dC_A, dC_Ew, dC_Em, dC_M, dC_R), c(I_sl=I_sl, I_ml=I_ml, temp=temp, moist=moist)))
     
   }) # end of with(...
   
