@@ -88,10 +88,11 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         F_cd.ca <- 0
         F_ca.cd <- 0
       }
-      # check that flux is negative (would happen if starting values for C_A are too high)
-      if(F_cd.ca < 0) warning("F_cd.ca is negative. Starting C_A too high?")
-      # make sure fluxes are no larger than pool size
-      if(F_cd.ca > C_D) F_cd.ca <- C_D; if(F_cd.ca < (-C_D)) F_cd.ca <- -C_D
+      
+      # make sure flux is not larger than pool
+      if(F_cd.ca > C_D) F_cd.ca <- C_D
+      # avoid negative flux (would happen if C_A exceeds Md capacity)
+      if(F_cd.ca < 0) F_cd.ca <- 0
       # update pool size before calculating next flux
       C_D <- C_D - F_cd.ca + F_ca.cd
       C_A <- C_A + F_cd.ca - F_ca.cd

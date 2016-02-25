@@ -22,8 +22,7 @@ pars <- c(
   V_D_ref  = 1       / hour * tstep , # [h-1] Maximum speed of C_P decomposition (Li at al. 2014, AWB model)
 #   D_d0     = 8.1e-10 / sec  * tstep , # [m2 s-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
 #   D_e0     = 8.1e-11 / sec  * tstep , # [m2 s-1] Diffusivity in water for enzymes. Vetter et al., 1998
-  D_d0     =  1e-7 / sec  * tstep , # [m s-1] diffusion conductance for dissolved C, representing diffusivity/distance.
-  D_e0     =  1e-7 / sec  * tstep , # [m s-1] diffusion conductance for enzymes, representing diffusivity/distance.
+  D_0      =  1e-5 / sec  * tstep , # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.
 
   # Adsorptino/desorption rates (ka/kd ratio follows Mayes et al. 2012 (alfisols) -> Tang and Riley 2014, but values must be researched)
   k_ads_ref = 1.08e-6  / sec * tstep , # [m3 gC-1 s-1] Adsorption rate constant of C_D. (Ahrens 2015, units converted for gC)
