@@ -13,3 +13,4 @@ The change in rate ratios of decomposition and respiration may result from:
 
 Decomposition and uptake are affected by water changes in two ways: concentration changes and diffusion limitation. Uptake may be additionally affected as described above (uptake modifier), representating a physiological effect.
 
+Adsorption and desorption should be turned off, because rates are too slow to be significant in this experiment.

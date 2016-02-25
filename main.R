@@ -71,10 +71,10 @@ if(spinup & flag.cmi) {
 }
 
 # Define input interpolation functions
-Approx_I_sl <- approxfun(times_input, I_sl, method = "linear", rule = 2)
-Approx_I_ml <- approxfun(times_input, I_ml, method = "linear", rule = 2)
-Approx_temp       <- approxfun(times_input, temp      , method = "linear", rule = 2)
-Approx_moist      <- approxfun(times_input, moist     , method = "linear", rule = 2)
+Approx_I_sl  <- approxfun(times_input, I_sl, method = "linear", rule = 2)
+Approx_I_ml  <- approxfun(times_input, I_ml, method = "linear", rule = 2)
+Approx_temp  <- approxfun(times_input, temp      , method = "linear", rule = 2)
+Approx_moist <- approxfun(times_input, moist     , method = "linear", rule = 2)
 
 ### Prepare time vector used during simulation --------------------------------
 spin.time <- spin.years * year / tstep
@@ -95,7 +95,8 @@ Md      <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [gC m-3] Mineral s
 D_d0    <- pars[["D_0"]]        # Diffusion conductance for dissolved C
 D_e0    <- pars[["D_0"]] / 10   # Diffusion conductance for enzymes
 
-parameters <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, b = b, psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, D_d0 = D_d0, D_e0 = D_e0) # add all new parameters
+parameters <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth, b = b,
+                psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, D_d0 = D_d0, D_e0 = D_e0) # add all new parameters
 
 # If initial C_A exceeds Md capacity, stop run.
 if (initial_state[["C_A"]] > (Md * depth)) stop(cat("Initial C_A is larger than maximum adsorption capacity of", Md * depth, "gC"))

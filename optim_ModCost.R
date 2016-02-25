@@ -16,13 +16,15 @@ ModCost <- function(pars_optim) {
     Rth     <- ps * (psi_sat / pars[["psi_Rth"]])^(1 / b) # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
     fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
     Md      <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) # [gC m-3] Mineral surface adsorption capacity in gC-equivalent (Mayes et al. 2012)
+    D_d0    <- pars[["D_0"]]        # Diffusion conductance for dissolved C
+    D_e0    <- pars[["D_0"]] / 10   # Diffusion conductance for enzymes
     
     # Add new parameters to pars
-    pars <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth, b = b, 
-              psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md)
+    parameters <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth, b = b, 
+                    psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, D_d0 = D_d0, D_e0 = D_e0)
     
     # Set initial states
-    if (site == "bare_fallow") toc <- pars[["TOC_bf"]] else if (site == "maize") toc <- pars[["TOC_mz"]] else stop("eh?")
+    if (site == "bare_fallow") toc <- pars[["TOC_bf"]] else if (site == "maize") toc <- pars[["TOC_mz"]] else stop("wrong site name?")
     TOC <- toc * 1000000 * pars[["pd"]] * (1 - pars[["ps"]]) * pars[["depth"]]
     initial_state[["C_P"]]  <- TOC * (1 - pars[["f_CA"]])
     initial_state[["C_D"]]  <- TOC * 0.001
@@ -76,7 +78,6 @@ ModCost <- function(pars_optim) {
   pars[["E_r_ed"]] <- pars[["E_r_md"]] <- pars[["E_VD"]] <- pars[["E_V"]]
   pars[["E_KD"]] <- pars[["E_K"]]
   if("E_k" %in% names(pars_optim)) pars[["E_ka"]] <- pars[["E_kd"]] <- pars[["E_k"]]
-  pars[["D_e0"]] <- pars[["D_d0"]] / 10
 #   TOC_bf <- 0.007  # gC gSoil-1
 #   TOC_mz <- 0.013  # gC gSoil-1
 #   f_CA <- 0.7      # both soils (bare fallow and maize(Closeaux)) has the same fraction of clay+silt-C to total C

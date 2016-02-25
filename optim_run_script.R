@@ -18,11 +18,15 @@ hour     <- 3600     # seconds in an hour
 sec      <- 1        # seconds in a second!
 
 # Model flags and other options ----------------------------------------------------------
-flag.ads   <- 0  # simulate adsorption desorption rates
-flag.mic   <- 0  # simulate microbial pool explicitly
-flag.fcs   <- 1  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
-flag.sew   <- 1  # calculate C_E and C_D concentration in water
-flag.des   <- 0  # run using differential equation solver? If TRUE then t_step has no effect.
+flag.ads  <- 1  # simulate adsorption desorption
+flag.mic  <- 0  # simulate microbial pool explicitly
+flag.fcs  <- 1  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
+flag.sew  <- 1  # calculate C_E and C_D concentration in water
+flag.des  <- 0  # run using differential equation solver? If TRUE then t_step has no effect.
+flag.dte  <- 0  # diffusivity temperature effect on/off
+flag.dce  <- 0  # diffusicity carbon effect on/off
+flag.dcf  <- 0  # diffusicity carbon function: 0 = exponential, 1 = linear
+
 t_step     <- "hour"  # Model time step (as string). Important when using stepwise run.
 t_save     <- "hour"  # save time step (only for stepwise model?)
 tstep      <- get(t_step)
@@ -46,9 +50,9 @@ source("Model_stepwise.R")
 source("initial_state.R")
 source("optim_runModel.R")
 source("optim_ModCost.R")
-source("pars_optim_start_2.R")
-source("pars_optim_lower_2.R")
-source("pars_optim_upper_2.R")
+source("pars_optim_start_1.R")
+source("pars_optim_lower_1.R")
+source("pars_optim_upper_1.R")
 
 
 ### Obtain model cost --------------
