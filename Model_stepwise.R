@@ -22,9 +22,9 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
     setbreak   <- 0 # break flag for spinup runs
     
 #     # Set initial values for variables that can be optionally saved
-#     F_sl.pc   <- F_ml.scw <- F_pc.scw <- F_scw.scs <- 0
-#     F_ecm.ecb <- F_scw.diff <- F_scw.co2 <- F_scw.ecm <- F_scw.pc <- 0
-#     F_ecm.ecb <- F_ecm.scw  <- F_ecb.scw <- 0
+#     F_sl.cp   <- F_ml.cd <- F_pc.cd <- F_cd.ca <- 0
+#     F_cem.ecb <- F_cd.diff <- F_cd.co2 <- F_cd.cem <- F_cd.pc <- 0
+#     F_cem.ecb <- F_cem.cd  <- F_ecb.cd <- 0
     
     # Loop through each time step
     for(i in 1:length(times)) {
@@ -40,13 +40,13 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       moist_i <- Approx_moist(t)
       
       # Calculate temporally changing variables
-      K_D    <- Temp.Resp.Eq(K_D_ref, temp_i, T_ref, E_KD, R)
-      k_ads  <- Temp.Resp.Eq(k_ads_ref, temp_i, T_ref, E_ka , R)
-      k_des  <- Temp.Resp.Eq(k_des_ref, temp_i, T_ref, E_kd , R)
-      V_D    <- Temp.Resp.Eq(V_D_ref, temp_i, T_ref, E_VD, R)
-      r_md   <- Temp.Resp.Eq(r_md_ref, temp_i, T_ref, E_r_md , R)
-      r_ed   <- Temp.Resp.Eq(r_ed_ref, temp_i, T_ref, E_r_ed , R)
-      f_gr   <- f_gr_ref
+      K_D   <- Temp.Resp.Eq(K_D_ref, temp_i, T_ref, E_KD, R)
+      k_ads <- Temp.Resp.Eq(k_ads_ref, temp_i, T_ref, E_ka , R)
+      k_des <- Temp.Resp.Eq(k_des_ref, temp_i, T_ref, E_kd , R)
+      V_D   <- Temp.Resp.Eq(V_D_ref, temp_i, T_ref, E_VD, R)
+      r_md  <- Temp.Resp.Eq(r_md_ref, temp_i, T_ref, E_r_md , R)
+      r_ed  <- Temp.Resp.Eq(r_ed_ref, temp_i, T_ref, E_r_ed , R)
+      f_gr  <- f_gr_ref
       
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
@@ -54,8 +54,6 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         out[j,] <- c(times[i], C_P, C_D, C_A, C_Ew, C_Em, C_M, C_R, temp_i, moist_i)
       }
 
-      # browser()
-      
       # Diffusion calculations
       # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
       # concentrations and multiply again for total since they cancel out.
@@ -71,53 +69,65 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       ### Calculate all fluxes ------
       
       # Input rate
-      F_sl.pc    <- I_sl_i
-      F_ml.scw   <- I_ml_i
+      F_sl.cp    <- I_sl_i
+      C_P <- C_P + F_sl.cp
+      
+      F_ml.cd   <- I_ml_i
+      C_D <- C_D + F_ml.cd
       
       # Decomposition rate
-      F_pc.scw   <- F_decomp(C_P, C_Ew, V_D, K_D, moist_i, fc, depth)
+      F_pc.cd   <- F_decomp(C_P, C_Ew, V_D, K_D, moist_i, fc, depth)
+      C_D <- C_D + F_pc.cd
+      C_P <- C_P - F_pc.cd
       
       # Adsorption/desorption
       if(flag.ads) {
-        F_scw.scs  <- F_adsorp(C_D, C_A, Md, k_ads, moist_i, fc, depth)
-        F_scs.scw  <- F_desorp(C_A, k_des, moist_i, fc)
+        F_cd.ca  <- F_adsorp(C_D, C_A, Md, k_ads, moist_i, fc, depth)
+        F_ca.cd  <- F_desorp(C_A, k_des, moist_i, fc)
       } else {
-        F_scw.scs <- 0
-        F_scs.scw <- 0
+        F_cd.ca <- 0
+        F_ca.cd <- 0
       }
-      
+      # check that flux is negative (would happen if starting values for C_A are too high)
+      if(F_cd.ca < 0) warning("F_cd.ca is negative. Starting C_A too high?")
+      # update pool size before calculating next flux
+      C_D <- C_D - F_cd.ca + F_ca.cd
+      C_A <- C_A + F_cd.ca - F_ca.cd
+
       # Microbial growth, mortality, respiration and enzyme production
       if(flag.mic) {
-        F_scw.mc  <- D_d * (C_D - 0) * f_gr
-        F_scw.co2 <- D_d * (C_D - 0) * (1 - f_gr)
-        F_mc.pc   <- C_M * r_md
-        F_mc.ecm  <- C_M * f_me
-        F_scw.pc  <- 0
-        F_scw.ecm <- 0
+        F_cd.cm  <- D_d * (C_D - 0) * f_gr # concentration at microbe asumed 0
+        F_cd.co2 <- D_d * (C_D - 0) * (1 - f_gr) # concentration at microbe asumed 0
+        F_cm.pc  <- C_M * r_md
+        F_cm.cem <- C_M * f_me
+        F_cd.pc  <- 0
+        F_cd.cem <- 0
       } else {
-        F_scw.mc  <- 0
-        F_mc.pc   <- 0
-        F_mc.ecm  <- 0
-        F_scw.co2 <- D_d * (C_D - 0) * (1 - f_gr)
-        F_scw.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_de)
-        F_scw.ecm <- D_d * (C_D - 0) * f_gr * f_de
+        F_cd.cm  <- 0
+        F_cm.pc  <- 0
+        F_cm.cem <- 0
+        F_cd.co2 <- D_d * (C_D - 0) * (1 - f_gr)
+        F_cd.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_de)
+        F_cd.cem <- D_d * (C_D - 0) * f_gr * f_de
       }
+      C_D  <- C_D  - F_cd.cm - F_cd.co2 - F_cd.pc - F_cd.cem
+      C_P  <- C_P  + F_cd.pc + F_cm.pc
+      C_Em <- C_Em + F_cd.cem + F_cm.cem
+      C_R  <- C_R  + F_cd.co2
+      C_M  <- C_M  + F_cd.cm - F_cm.pc - F_cm.cem
       
-      F_ecm.ecw  <- D_e * (C_Em - C_Ew)
+      F_cem.cew  <- D_e * (C_Em - C_Ew)
+      C_Ew <- C_Ew + F_cem.cew 
+      C_Em <- C_Em - F_cem.cew
       
       # Enzyme decay
-      F_ecw.scw  <- C_Ew * r_ed
-      F_ecm.scw  <- C_Em * r_ed
+      F_cew.cd  <- C_Ew * r_ed
+      F_cem.cd  <- C_Em * r_ed
+      C_D  <- C_D  + F_cew.cd + F_cem.cd
+      C_Ew <- C_Ew - F_cew.cd 
+      C_Em <- C_Em - F_cem.cd
       
-      ## Rate of change calculation for state variables ---------------
-      C_P  <- C_P  + F_sl.pc   + F_scw.pc  + F_mc.pc   - F_pc.scw
-      C_D  <- C_D + F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw + F_ecm.scw -
-                   F_scw.scs - F_scw.mc  - F_scw.co2 - F_scw.pc  - F_scw.ecm
-      C_A  <- C_A + F_scw.scs - F_scs.scw
-      C_Ew <- C_Ew + F_ecm.ecw - F_ecw.scw 
-      C_Em <- C_Em + F_scw.ecm + F_mc.ecm  - F_ecm.ecw - F_ecm.scw
-      C_M  <- C_M  + F_scw.mc  - F_mc.pc   - F_mc.ecm
-      C_R  <- C_R + F_scw.co2
+      if(C_P < 0 | C_D < 0 | C_A < 0 | C_Ew < 0 | C_Em < 0 | C_M < 0) browser("Error: a pool became negative")
       
       # Check for equilibirum conditions: will stop if the change in C_P in gC m-3 y-1 is smaller than eq.md
       if (eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
