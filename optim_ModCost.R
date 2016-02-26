@@ -24,11 +24,11 @@ ModCost <- function(pars_optim) {
                     psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, D_d0 = D_d0, D_e0 = D_e0)
     
     # Set initial states
-    if (site == "bare_fallow") toc <- pars[["TOC_bf"]] else if (site == "maize") toc <- pars[["TOC_mz"]] else stop("wrong site name?")
-    TOC <- toc * 1000000 * pars[["pd"]] * (1 - pars[["ps"]]) * pars[["depth"]]
-    initial_state[["C_P"]]  <- TOC * (1 - pars[["f_CA"]])
+    if (site == "bare_fallow") toc <- parameters[["TOC_bf"]] else if (site == "maize") toc <- parameters[["TOC_mz"]] else stop("wrong site name?")
+    TOC <- toc * 1000000 * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"]]
+    initial_state[["C_P"]]  <- TOC * (1 - parameters[["f_CA"]])
     initial_state[["C_D"]]  <- TOC * 0.001
-    initial_state[["C_A"]]  <- TOC * pars[["f_CA"]]
+    initial_state[["C_A"]]  <- TOC * parameters[["f_CA"]]
     initial_state[["C_Ew"]] <- TOC * 0.001
     initial_state[["C_Em"]] <- TOC * 0.001
     initial_state[["C_M"]]  <- TOC * 0.01
@@ -58,13 +58,13 @@ ModCost <- function(pars_optim) {
       Approx_moist <<- approxfun(times_input, moist , method = "linear", rule = 2)
       
       if(flag.des) { # if true, run the differential equation solver
-        out <- ode(initial_state, times, Model_desolve, pars, method = ode.method) # , App_Isl = Approx_I_sl, App_Iml = Approx_I_ml, App_T = Approx_temp, App_M = Approx_moist
+        out <- ode(initial_state, times, Model_desolve, parameters, method = ode.method) # , App_Isl = Approx_I_sl, App_Iml = Approx_I_ml, App_T = Approx_temp, App_M = Approx_moist
       } else { # else run the stepwise simulation
-        out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, pars)
+        out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, parameters)
       }
       
       out <- as.data.frame(out)
-      out$C_R <- out$C_R / (pars[["depth"]] * (1 - pars[["ps"]]) * pars[["pd"]] * 1000)  # converting to gC respired per kg soil
+      out$C_R <- out$C_R / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
       out$sample <- i
       all.out <- rbind(all.out, out)
     }
