@@ -72,4 +72,4 @@ summary(Sfun)
 pairs(Sfun, which = c("C_R"), col = c("blue", "green"))
 ident <- collin(Sfun)
 plot(ident, ylim=c(0,20))
-ident[ident$N==6 & ident$collinearity<15,]
+ident[ident$N==8 & ident$collinearity<15,]

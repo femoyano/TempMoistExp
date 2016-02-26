@@ -6,7 +6,8 @@
 pars_optim_lower <- c(
   TOC_bf    = 0.005  , # gC gSoil-1
   TOC_mz    = 0.011  , # gC gSoil-1
-  f_CA      = 0.01    , # both soils (bare fallow and maize(Closeaux)) has the same fraction of clay+silt to total C
+  f_CA_bf   = 0.01   , # fraction of C_A in TOC for bare fallow
+  f_CA_mz   = 0.01   , # fraction of C_A in TOC for maize soil 
 #   f_CD      = 0.0001 , #
 #   f_CEm     = 0.0001 , #
 #   f_CEw     = 0.0001 , #

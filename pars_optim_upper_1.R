@@ -6,11 +6,11 @@
 pars_optim_upper <- c(
   TOC_bf    = 0.007  , # gC gSoil-1
   TOC_mz    = 0.013  , # gC gSoil-1
-  f_CA      = 0.9    , # both soils (bare fallow and maize(Closeaux)) has the same fraction of clay+silt to total C
+  f_CA_bf   = 0.9    , # fraction of C_A in TOC for bare fallow
+  f_CA_mz   = 0.9    , # fraction of C_A in TOC for maize soil 
   f_CD      = 0.005  , #
   f_CEm     = 0.005  , #
   f_CEw     = 0.005  , #
-  f_CM      = 0.05   , #
   r_ed_ref  = 0.01   / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   V_D_ref   = 10     / hour * tstep , # [h-1] Maximum speed of C_P decomposition (Li at al. 2014, AWB model)
   K_D_ref   = 500000 , # [gC m-3] Affinity parameter for C_P decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
@@ -27,6 +27,7 @@ pars_optim_upper <- c(
   E_k       = 30     , # [kJ mol^-1] Gibbs energy for adsorption/desorption fluxes
   
   # Only used if microbes are on
+  f_CM      = 0.05   , #
   r_md_ref  = 0.001   / hour * tstep , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
   f_me      = 1e-04   / hour * tstep , # [gC g-1 C_M h-1] Fraction of C_M converted to C_E (assumed).
   f_mp      = 0.9                      # [g g^-1] fraction of dead microbes going to C_P (rest goes to C_D)
