@@ -15,9 +15,9 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
   with(as.list(c(initial_state, pars)), {
     
     # Create matrix to hold output
-    extra <- 2 # number of extra variables to save (temp, moist, ...)
+    extra <- 0 # number of extra variables to save (temp, moist, ...)
     out <- matrix(ncol = 1 + extra + length(initial_state), nrow = floor(length(times) * tstep / tsave))
-    colnames(out) <- c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "temp", "moist")
+    colnames(out) <- c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R")
     
     setbreak   <- 0 # break flag for spinup runs
     
@@ -51,7 +51,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], C_P, C_D, C_A, C_Ew, C_Em, C_M, C_R, temp_i, moist_i)
+        out[j,] <- c(times[i], C_P, C_D, C_A, C_Ew, C_Em, C_M, C_R)
       }
 
       # Diffusion calculations

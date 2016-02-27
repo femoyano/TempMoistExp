@@ -2,7 +2,13 @@
 ModCost <- function(pars_optim) {
   
   ### Define the function to run model ---------------------------------------------------
-  runSamples <- function(site.data, pars, site, data.samples, input.all, all.out) {
+  runSamples <- function(pars, site, data.samples, input.all, all.out) {
+    
+    if (site == "bare_fallow") {
+      site.data <- site.data.bf
+    } else if (site == "maize") {
+      site.data <- site.data.mz
+    } else stop("wrong site name?")
     
     sand   <- site.data$sand  # [g g^-1] clay fraction values 
     clay   <- site.data$clay  # [g g^-1] sand fraction values 
@@ -29,8 +35,7 @@ ModCost <- function(pars_optim) {
       f_CA <- parameters[["f_CA_bf"]] 
       } else if (site == "maize") {
         toc <- parameters[["TOC_mz"]]
-        f_CA <- parameters[["f_CA_mz"]]
-        } else stop("wrong site name?")
+        f_CA <- parameters[["f_CA_mz"]] }
     
     TOC <- toc * 1000000 * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"]]
     initial_state[["C_P"]]  <- TOC * (1 - f_CA)
@@ -41,10 +46,9 @@ ModCost <- function(pars_optim) {
     initial_state[["C_M"]]  <- TOC * 0.01
     initial_state[["C_R"]]  <- 0
     
-    for (i in data.samples$sample[data.samples$site == site]) {
-      
+    runSingle <- function(sample, all.out) {
       # Get the subset of input for the sample
-      input.data <- input.all[input.all$sample == i,]
+      input.data <- input.all[input.all$sample == sample,]
       
       # Extract data
       times_input <- input.data$hour        # time of input data
@@ -70,47 +74,77 @@ ModCost <- function(pars_optim) {
         out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, parameters)
       }
       
-      out <- as.data.frame(out)
-      out$C_R <- out$C_R / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
-      out$sample <- i
-      all.out <- rbind(all.out, out)
+      out[, 'C_R'] <- out[, 'C_R'] / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
+      all.out <- rbind(all.out, cbind(out, rep(sample, nrow(out))))
+    }
+    
+    for (i in data.samples$sample[data.samples$site == site]) {
+      all.out <- runSingle(i, all.out)
     }
     return(all.out)
   }
-  # --------------------------------------------------------------------------------------
   
-  # Add or replace parameters from the list of optimized parameters
+  # Add or replace parameters from the list of optimized parameters ----------------------
   for(n in names(pars_optim)) pars[[n]] <- pars_optim[[n]]
   # Replace param values where assignment is required
   pars[["E_r_ed"]] <- pars[["E_r_md"]] <- pars[["E_VD"]] <- pars[["E_V"]]
   pars[["E_KD"]] <- pars[["E_K"]]
   if("E_k" %in% names(pars_optim)) pars[["E_ka"]] <- pars[["E_kd"]] <- pars[["E_k"]]
-
-  # Initialize a data frame to hold output ("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "sample")
-  all.out <- data.frame()
   
-  ### Run bare fallow samples ------------------------------------------------------------
+  # Create a matrix to hold output
+  all.out <- matrix(ncol=9, nrow=0)
+  colnames(all.out) <- c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "sample")
   
-  all.out <- runSamples(site.data.bf, pars, "bare_fallow", data.samples, input.all, all.out)
-  
-  ### Run bare fallow samples ------------------------------------------------------------
-  
-  all.out <- runSamples(site.data.mz, pars, "maize", data.samples, input.all, all.out)
+  ### Run both soils in parallel ---------------------------------------------------------
+  ptm <- proc.time()
+  all.out <- foreach(soil=c('bare_fallow', 'maize'), .combine = 'rbind') %dopar% {
+    all.out <- runSamples(pars, soil, data.samples, input.all, all.out)
+  }
+  print(cat('t1', proc.time() - ptm))
   
   ### calculate accumulated fluxes as measured and pass to modCost function --------------
-
-    for (i in 1:nrow(data.meas)) {
-    t1 <- data.meas$hour[i]
-    t0 <- t1 - data.meas$time_inc[i]
-    s  <- data.meas$sample[i]
-    data.meas$C_R_m[i] <- all.out$C_R[all.out$sample == s & all.out$time == t1] - all.out$C_R[all.out$sample == s & all.out$time == t0]
-  }
+ 
+  # Parallel --------------------------------
   
-  obs <- subset(data.meas, select = c("hour", "C_R"))
-  mod <- subset(data.meas, select = c("hour", "C_R_m"))
+  ptm <- proc.time()
+  
+  accumFun <- function(j, all.out) {
+    C_R_m <- NA
+    C_R_o <- NA
+    time <- NA
+    snum <- seq((j-1)*x+1,j*x)
+    if (j == cores) snum <- seq((j-1)*x+1, nrow(data.meas))
+    it <- 1
+    for (i in snum) {
+      t1 <- data.meas$hour[i]
+      t0 <- t1 - data.meas$time_inc[i]
+      s  <- data.meas$sample[i]
+      C_R_m[it] <- all.out[all.out[,'sample'] == s & all.out[,'time'] == t1, 'C_R'] - all.out[all.out[,'sample'] == s & all.out[,'time'] == t0, 'C_R'] 
+      C_R_o[it] <- data.meas$C_R[i]
+      time[it] <- data.meas$hour[i]
+      it <- it+1
+    }
+    return(cbind(C_R_m, C_R_o, time))
+  }
+
+  cores <- getDoParWorkers()
+  x <- floor(nrow(data.meas) / cores)
+  
+  out <- foreach (j=1:cores, combine = 'rbind') %dopar% {
+    accumFun(j, all.out)
+  }
+
+  out <- as.data.frame(out)
+
+  obs <- subset(out, select = c("time", "C_R_o"))
+  mod <- subset(out, select = c("time", "C_R_m"))
   mod$C_R <- mod$C_R_m
   mod$C_R_m <- NULL
-  rm(data.meas)
+  obs$C_R <- obs$C_R_o
+  obs$C_R_o <- NULL
   
-  return(modCost(model=mod, obs=obs, x="hour"))
+  print(cat('t2', proc.time() - ptm))
+  
+  return(modCost(model=mod, obs=obs, x="time"))
+  
 }
