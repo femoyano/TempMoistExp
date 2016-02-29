@@ -15,7 +15,7 @@ require("plyr")
 require("reshape2")
 library("doParallel")
 
-registerDoParallel(cores=2)
+registerDoParallel(cores=4)
 
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
