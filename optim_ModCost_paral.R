@@ -45,7 +45,7 @@ ModCost <- function(pars_optim) {
     return(cbind(C_R_m, C_R_o, time))
   }
 
-  cores <- getDoParWorkers()
+  cores <- clusterSize(cl)
   x <- floor(nrow(data.meas) / cores)
   
   out <- foreach (j=1:cores, combine = 'rbind') %dopar% {
