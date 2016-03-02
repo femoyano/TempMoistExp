@@ -20,6 +20,8 @@ library(doParallel)
 cl <- startMPIcluster()
 registerDoMPI(cl)
 
+cl.size <- clusterSize(cl)
+
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
