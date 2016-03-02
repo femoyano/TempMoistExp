@@ -19,7 +19,6 @@ library(doParallel)
 # load libraries and set up for parallel computing
 cl <- startMPIcluster()
 registerDoMPI(cl)
-registerDoParallel(cores=4)
 
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
