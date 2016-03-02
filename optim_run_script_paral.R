@@ -70,6 +70,8 @@ ptm0 <- proc.time()
 Cost <- ModCost(pars_optim)
 print(cat('t0',proc.time() - ptm0))
 
+save.image("output.RData")
+
 # ### Check sensitivity of parameters ---------------
 # ptm <- proc.time()
 # Sfun <- sensFun(ModCost, pars_optim)
