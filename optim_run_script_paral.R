@@ -13,15 +13,6 @@ require(deSolve)
 require(FME)
 require(plyr)
 require(reshape2)
-library(doMPI)
-library(doParallel)
-
-# load libraries and set up for parallel computing
-cl <- startMPIcluster()
-registerDoMPI(cl)
-
-cl.size <- clusterSize(cl)
-print(cl.size)
 
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
@@ -91,6 +82,4 @@ save.image("output.RData")
 
 # Modfit=modFit(f=ModCost, p=pars_optim, method="Nelder-Mead", upper=pars_optim_upper,lower=pars_optim_lower)
 
-closeCluster(cl)
-mpi.quit()
 
