@@ -14,6 +14,11 @@ require(FME)
 require(plyr)
 require(reshape2)
 
+### Setings for parallel processing
+library(doParallel)
+registerDoParallel(cores=34)
+
+
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
