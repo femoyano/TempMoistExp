@@ -12,12 +12,11 @@
 
 
 # For SMP jobs
-library(randomForest)
 library(doParallel)
 corenum <- detectCores()
 registerDoParallel(cores=corenum)
-print(cornum)
-
+print(corenum)
+print(getDoParWorkers())
 
 # x <- iris[which(iris[,5] != "setosa"), c(1,5)]
 # trials <- 10000
