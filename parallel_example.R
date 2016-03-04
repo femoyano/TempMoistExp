@@ -1,31 +1,23 @@
 # Run only one chunk. Comment out the rest
 
-# For MPI jobs
-library(foreach)
-library(doMPI)
-cl <- startMPIcluster()
-registerDoMPI(cl)
-cat("Step 1")
-cat(clusterSize(cl))
-closeCluster(cl)
-mpi.quit()
+# # For MPI jobs
+# library(foreach)
+# library(doMPI)
+# cl <- startMPIcluster()
+# registerDoMPI(cl)
+# cat("Step 1")
+# cat(clusterSize(cl))
+# closeCluster(cl)
+# mpi.quit()
 
 
 # For SMP jobs
 library(randomForest)
 library(doParallel)
 corenum <- detectCores()
-print(cornum)
 registerDoParallel(cores=corenum)
-x <- matrix(runif(500), 100)
-y <- gl(2, 50)
-st <- proc.time()
-rf <- foreach(ntree=rep(30000, 4), .combine=combine) %do% randomForest(x, y, ntree=ntree)
-proc.time()-st
-st <- proc.time()
-rf <- foreach(ntree=rep(30000, 4), .combine=combine, .packages='randomForest') %dopar% randomForest(x, y, ntree=ntree)
-proc.time()-st
-rm(rf)
+print(cornum)
+
 
 # x <- iris[which(iris[,5] != "setosa"), c(1,5)]
 # trials <- 10000
