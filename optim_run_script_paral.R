@@ -16,7 +16,7 @@ require(reshape2)
 
 ### Setings for parallel processing
 library(doParallel)
-registerDoParallel(cores=10)
+registerDoParallel(cores=4)
 
 
 ### Define time units =========================================================
@@ -57,7 +57,6 @@ source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
 source("initial_state.R")
-source("optim_runModel.R")
 # source("optim_ModCost.R")
 source("optim_ModCost_paral.R")
 source("pars_optim_start_2.R")

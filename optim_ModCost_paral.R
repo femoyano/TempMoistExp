@@ -17,6 +17,7 @@ ModCost <- function(pars_optim) {
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind', 
                      .export = c("runSamples", "pars", "data.samples", "input.all"),
                      .packages = c("deSolve")) %dopar% {
+    print(i) # for debugging
     runSamples(pars, data.samples[data.samples$sample==i, ], input.all[input.all$sample==i, ])
   }
 
@@ -53,7 +54,7 @@ ModCost <- function(pars_optim) {
   x <- floor(nrow(data.meas) / cores)
   
   ## Process in parallel
-  out <- foreach (j=1:cores, combine = 'rbind', .export = c("data.meas")) %dopar% {
+  out <- foreach (j=1:cores, .combine = 'rbind', .export = c("data.meas")) %dopar% {
     accumFun(j, all.out)
   }
 
