@@ -14,11 +14,6 @@ require(FME)
 require(plyr)
 require(reshape2)
 
-### Setings for parallel processing
-library(doParallel)
-registerDoParallel(cores=4)
-
-
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
@@ -57,7 +52,7 @@ source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
 source("initial_state.R")
-source("optim_ModCost_smp.R")
+source("optim_ModCost_mpi.R")
 source("pars_optim_start_2.R")
 source("pars_optim_lower_2.R")
 source("pars_optim_upper_2.R")

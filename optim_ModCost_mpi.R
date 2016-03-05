@@ -14,12 +14,17 @@ ModCost <- function(pars_optim) {
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
   ptm <- proc.time()
   
+  library(doMPI)
+  cl <- startMPIcluster()
+  registerDoMPI(cl)
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind', 
                      .export = c("runSamples", "pars", "data.samples", "input.all"),
                      .packages = c("deSolve")) %dopar% {
     runSamples(pars, data.samples[data.samples$sample==i, ], input.all[input.all$sample==i, ])
   }
-
+  closeCluster(cl)
+  mpi.quit()
+  
   print(cat('t1', proc.time() - ptm))
   
   colnames(all.out) <- c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "sample")
@@ -49,14 +54,19 @@ ModCost <- function(pars_optim) {
     return(cbind(C_R_m, C_R_o, time))
   }
 
-  cores <- getDoParWorkers()
+  cores <- clusterSize(cl)
   x <- floor(nrow(data.meas) / cores)
   
   ## Process in parallel
+  library(doMPI)
+  cl <- startMPIcluster()
+  registerDoMPI(cl)
   out <- foreach (j=1:cores, .combine = 'rbind', .export = c("data.meas")) %dopar% {
     accumFun(j, all.out)
   }
-
+  closeCluster(cl)
+  mpi.quit()
+  
   out <- as.data.frame(out)
 
   obs <- subset(out, select = c("time", "C_R_o"))
