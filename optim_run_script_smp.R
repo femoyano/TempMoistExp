@@ -16,7 +16,7 @@ require(reshape2)
 
 ### Setings for parallel processing
 library(doParallel)
-registerDoParallel(cores=4)
+registerDoParallel(cores=35)
 
 
 ### Define time units =========================================================

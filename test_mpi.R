@@ -1,6 +1,5 @@
-# Run only one chunk. Comment out the rest
+# For MPI jobs
 
-# # For MPI jobs
 library(foreach)
 library(doParallel)
 cl <- startMPIcluster()
@@ -13,13 +12,5 @@ print("print detectCores ", detectCores())
 closeCluster(cl)
 mpi.quit()
 
-
-# For SMP jobs
-# library(doParallel)
-# corenum <- detectCores()
-# registerDoParallel(cores=corenum)
-# cat("cat detectCores ", detectCores())
-# print("print detectCores ", detectCores())
-# print(getDoParWorkers())
 
 
