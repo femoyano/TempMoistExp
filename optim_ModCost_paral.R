@@ -17,7 +17,6 @@ ModCost <- function(pars_optim) {
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind', 
                      .export = c("runSamples", "pars", "data.samples", "input.all"),
                      .packages = c("deSolve")) %dopar% {
-    print(i) # for debugging
     runSamples(pars, data.samples[data.samples$sample==i, ], input.all[input.all$sample==i, ])
   }
 
