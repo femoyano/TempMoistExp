@@ -17,7 +17,7 @@ require(reshape2)
 ### Setings for parallel processing
 library(doParallel)
 cores = detectCores()
-cat("Cores detected:", cores)
+cat("Cores detected:", cores, "\n")
 registerDoParallel(cores = cores-1)
 
 ### Define time units =========================================================
@@ -84,6 +84,4 @@ save.image("output.smp.RData")
 # plot(ident, ylim=c(0,20))
 # ident[ident$N==8 & ident$collinearity<15,]
 
-# Modfit=modFit(f=ModCost, p=pars_optim, method="Nelder-Mead", upper=pars_optim_upper,lower=pars_optim_lower)
-
-
+Modfit=modFit(f=ModCost, p=pars_optim, method="Nelder-Mead", upper=pars_optim_upper,lower=pars_optim_lower)
