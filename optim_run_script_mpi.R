@@ -14,6 +14,11 @@ require(FME)
 require(plyr)
 require(reshape2)
 
+library(doMPI)
+cl <- startMPIcluster()
+registerDoMPI(cl)
+cores <- clusterSize(cl)
+
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
@@ -62,7 +67,7 @@ ptm0 <- proc.time()
 Cost <- ModCost(pars_optim)
 print(cat('t0',proc.time() - ptm0))
 
-save.image("output.RData")
+save.image("output.mpi.RData")
 
 # ### Check sensitivity of parameters ---------------
 # ptm <- proc.time()
@@ -79,5 +84,8 @@ save.image("output.RData")
 # ident[ident$N==8 & ident$collinearity<15,]
 
 # Modfit=modFit(f=ModCost, p=pars_optim, method="Nelder-Mead", upper=pars_optim_upper,lower=pars_optim_lower)
+
+closeCluster(cl)
+mpi.quit()
 
 

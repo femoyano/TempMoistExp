@@ -16,8 +16,9 @@ require(reshape2)
 
 ### Setings for parallel processing
 library(doParallel)
-registerDoParallel(cores=35)
-
+cores = detectCores()
+cat("Cores detected:", cores)
+registerDoParallel(cores = cores-1)
 
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
@@ -67,7 +68,7 @@ ptm0 <- proc.time()
 Cost <- ModCost(pars_optim)
 print(cat('t0',proc.time() - ptm0))
 
-save.image("output.RData")
+save.image("output.smp.RData")
 
 # ### Check sensitivity of parameters ---------------
 # ptm <- proc.time()

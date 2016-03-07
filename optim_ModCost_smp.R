@@ -49,7 +49,6 @@ ModCost <- function(pars_optim) {
     return(cbind(C_R_m, C_R_o, time))
   }
 
-  cores <- getDoParWorkers()
   x <- floor(nrow(data.meas) / cores)
   
   ## Process in parallel
