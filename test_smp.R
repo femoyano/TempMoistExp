@@ -2,9 +2,7 @@
 
 library(doParallel)
 corenum <- detectCores()
-cat("cat detectCores ", corenum)
-print("print detectCores ", corenum)
+cat("detectCores output:", corenum, "\n")
 registerDoParallel(cores=corenum)
-print("Workers ", getDoParWorkers())
-
+cat("getDoParWorkers output:", getDoParWorkers(), "\n")
 
