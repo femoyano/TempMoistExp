@@ -78,7 +78,6 @@ SampleCost <- function(pars, sample.data, input, meas) {
   }
   mod <- data.frame(time = meas$hour, C_R = C_R_m)
   obs <- data.frame(name = rep("C_R", nrow(meas)), time = meas$hour, C_R = meas$C_R, stderr = meas$sd)
-  
   name <- paste("cost", sample.data$sample[1], sep="")
   return(assign(name, modCost(model=mod, obs=obs, y = "C_R", err = "stderr")))
 }

@@ -24,11 +24,11 @@ ModRes <- function(pars_optim) {
   
   # Create a vector of all (un)weighted residuals
   Res <- NULL
-  ResW <- NULL
+  Res.uw <- NULL
   for(i in 1:length(all.cost)) {
-    Res <- c(Res, all.cost[[i]]$residuals$res.unweighted)
-    ResW <- c(Res, all.cost[[i]]$residuals$res)
+    Res <- c(Res, all.cost[[i]]$residuals$res)
+    Res.uw <- c(Res.uw, all.cost[[i]]$residuals$res.unweighted)
   }
   
-  return(Resid = list(Res, ResW))
+  return(Resid = list(Res, Res.uw))
 }
