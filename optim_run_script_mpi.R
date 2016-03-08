@@ -57,17 +57,17 @@ source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
 source("initial_state.R")
-source("optim_ModCost_mpi.R")
+source("ModRes.R")
+source("ModCost.R")
 source("pars_optim_start_2.R")
 source("pars_optim_lower_2.R")
 source("pars_optim_upper_2.R")
 
 ### Obtain model cost --------------
 ptm0 <- proc.time()
-Cost <- ModCost(pars_optim)
+Cost <- ModRes(pars_optim)
 print(cat('t0',proc.time() - ptm0))
 
-save.image("output.mpi.RData")
 
 # ### Check sensitivity of parameters ---------------
 # ptm <- proc.time()
@@ -88,4 +88,5 @@ save.image("output.mpi.RData")
 closeCluster(cl)
 mpi.quit()
 
+save.image("output.optim.mpi.RData")
 

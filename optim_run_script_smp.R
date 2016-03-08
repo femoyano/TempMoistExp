@@ -6,7 +6,7 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
-rm(list=ls())
+# rm(list=ls())
 
 ### Libraries =================================================================
 require(deSolve)
@@ -18,7 +18,7 @@ require(reshape2)
 library(doParallel)
 cores = detectCores()
 cat("Cores detected:", cores, "\n")
-registerDoParallel(cores = cores-1)
+registerDoParallel(cores = cores)
 
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
@@ -58,17 +58,16 @@ source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
 source("initial_state.R")
-source("optim_ModCost_smp.R")
+source("ModRes.R")
+source("ModCost.R")
 source("pars_optim_start_2.R")
 source("pars_optim_lower_2.R")
 source("pars_optim_upper_2.R")
 
-### Obtain model cost --------------
+### Check model cost and computation time --------------
 ptm0 <- proc.time()
-Cost <- ModCost(pars_optim)
+Resid <- ModRes(pars_optim)
 print(cat('t0',proc.time() - ptm0))
-
-save.image("output.smp.RData")
 
 # ### Check sensitivity of parameters ---------------
 # ptm <- proc.time()
@@ -84,4 +83,6 @@ save.image("output.smp.RData")
 # plot(ident, ylim=c(0,20))
 # ident[ident$N==8 & ident$collinearity<15,]
 
-Modfit=modFit(f=ModCost, p=pars_optim, method="Nelder-Mead", upper=pars_optim_upper,lower=pars_optim_lower)
+# Modfit=modFit(f=ModCost, p=pars_optim, method="Nelder-Mead", upper=pars_optim_upper,lower=pars_optim_lower)
+
+save.image("output.optim.smp.RData")

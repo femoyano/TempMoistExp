@@ -2,7 +2,7 @@
 ModCost <- function(pars_optim) {
   
   # Source the model preparing each sample for model run.
-  source("optim_runSamples.R")
+  source("SampleRun.R")
 
   # Add or replace parameters from the list of optimized parameters ----------------------
   for(n in names(pars_optim)) pars[[n]] <- pars_optim[[n]]
@@ -17,7 +17,7 @@ ModCost <- function(pars_optim) {
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind', 
                      .export = c("runSamples", "pars", "data.samples", "input.all"),
                      .packages = c("deSolve")) %dopar% {
-    runSamples(pars, data.samples[data.samples$sample==i, ], input.all[input.all$sample==i, ])
+    SampleRun(pars, data.samples[data.samples$sample==i, ], input.all[input.all$sample==i, ])
   }
 
   print(cat('t1', proc.time() - ptm))
@@ -32,8 +32,6 @@ ModCost <- function(pars_optim) {
   
   accumFun <- function(j, all.out) {
     C_R_m <- NA
-    C_R_o <- NA
-    time <- NA
     snum <- seq((j-1)*x+1,j*x)
     if (j == cores) snum <- seq((j-1)*x+1, nrow(data.meas))
     it <- 1
@@ -42,31 +40,26 @@ ModCost <- function(pars_optim) {
       t0 <- t1 - data.meas$time_inc[i]
       s  <- data.meas$sample[i]
       C_R_m[it] <- all.out[all.out[,'sample'] == s & all.out[,'time'] == t1, 'C_R'] - all.out[all.out[,'sample'] == s & all.out[,'time'] == t0, 'C_R'] 
-      C_R_o[it] <- data.meas$C_R[i]
-      time[it] <- data.meas$hour[i]
       it <- it+1
     }
-    return(cbind(C_R_m, C_R_o, time))
+    return(data.frame(C_R_m = C_R_m))
   }
 
   x <- floor(nrow(data.meas) / cores)
   
   ## Process in parallel
-  out <- foreach (j=1:cores, .combine = 'rbind', .export = c("data.meas")) %dopar% {
+  C_R_mod <- foreach (j=1:cores, .combine = 'rbind', .export = c("data.meas")) %dopar% {
     accumFun(j, all.out)
   }
   
-  out <- as.data.frame(out)
-
-  obs <- subset(out, select = c("time", "C_R_o"))
-  mod <- subset(out, select = c("time", "C_R_m"))
-  mod$C_R <- mod$C_R_m
-  mod$C_R_m <- NULL
-  obs$C_R <- obs$C_R_o
-  obs$C_R_o <- NULL
+  # Times from multiple samples are combined and may be repeated, so passing time to modCost to match
+  # obs to mod may give wrong matches. Creating new time with decimals determined by sample number:
+  time <- data.meas$time + data.meas$sample/100
+  obs <- data.frame(name = rep("C_R", nrow(data.meas)), time = time, C_R = data.meas$C_R, stderr = data.meas$sd)
+  mod <- data.frame(time = time, C_R = C_R_mod$C_R_m)
   
   print(cat('t2', proc.time() - ptm))
   
-  return(modCost(model=mod, obs=obs, x="time"))
+  return(modCost(model=mod, obs=obs, y = "C_R", err = "stderr"))
   
 }

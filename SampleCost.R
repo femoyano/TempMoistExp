@@ -1,5 +1,5 @@
 ### Define the function that runs model for each sample --------------------------------
-runSamples <- function(pars, sample.data, input) {
+SampleCost <- function(pars, sample.data, input, meas) {
   
   if (sample.data$site == "bare_fallow") {
     site.data <- site.data.bf
@@ -65,7 +65,20 @@ runSamples <- function(pars, sample.data, input) {
   
   out[, 'C_R'] <- out[, 'C_R'] / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
   
-  out <- cbind(out, rep(sample.data$sample, nrow(out)))
+  # out <- cbind(out, rep(sample.data$sample, nrow(out)))
+  out <- as.data.frame(out)
   
-  return(out)
+  ## Calculate accumulated values and cost -----------------------------------------------
+  
+  C_R_m <- NULL
+  for (i in 1:nrow(meas)) {
+    t1 <- meas$hour[i]
+    t0 <- t1 - meas$time_inc[i]
+    C_R_m[i] <- out$C_R[out$time == t1] - out$C_R[out$time == t0]
+  }
+  mod <- data.frame(time = meas$hour, C_R = C_R_m)
+  obs <- data.frame(name = rep("C_R", nrow(meas)), time = meas$hour, C_R = meas$C_R, stderr = meas$sd)
+  
+  name <- paste("cost", sample.data$sample[1], sep="")
+  return(assign(name, modCost(model=mod, obs=obs, y = "C_R", err = "stderr")))
 }
