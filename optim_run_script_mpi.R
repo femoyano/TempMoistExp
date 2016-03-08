@@ -68,6 +68,7 @@ ptm0 <- proc.time()
 Cost <- ModRes(pars_optim)
 print(cat('t0',proc.time() - ptm0))
 
+save("Cost", file = "costtest.mpi.RData")
 
 # ### Check sensitivity of parameters ---------------
 # ptm <- proc.time()
@@ -83,10 +84,9 @@ print(cat('t0',proc.time() - ptm0))
 # plot(ident, ylim=c(0,20))
 # ident[ident$N==8 & ident$collinearity<15,]
 
-# Modfit=modFit(f=ModCost, p=pars_optim, method="Nelder-Mead", upper=pars_optim_upper,lower=pars_optim_lower)
+Modfit <- modFit(f = ModRes, p = pars_optim, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
 
 closeCluster(cl)
 mpi.quit()
 
-save.image("output.optim.mpi.RData")
-
+save("Modfit", file = "modfit.mpi.RData")
