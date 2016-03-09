@@ -1,4 +1,4 @@
-#### optim_run_script.R
+#### optim_run_main.R
 
 #### Documentations ===========================================================
 # Script used to prepare settings and run parameter optimization
@@ -6,18 +6,11 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
-rm(list=ls())
-
 ### Libraries =================================================================
 require(deSolve)
 require(FME)
 require(plyr)
 require(reshape2)
-
-library(doMPI)
-cl <- startMPIcluster()
-registerDoMPI(cl)
-cores <- clusterSize(cl)
 
 ### Define time units =========================================================
 year     <- 31104000 # seconds in a year
@@ -42,6 +35,10 @@ ode.method <- "lsoda"  # see ode function
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
 
+# Cost calculation type.
+# Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  ...
+cost.type <- "uwr"
+
 # Input Setup -----------------------------------------------------------------
 input.all     <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_model_input.csv"))
 # data.meas     <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_co2_test2.csv"))
@@ -63,12 +60,10 @@ source("pars_optim_start_2.R")
 source("pars_optim_lower_2.R")
 source("pars_optim_upper_2.R")
 
-### Obtain model cost --------------
-ptm0 <- proc.time()
-Cost <- ModRes(pars_optim)
-print(cat('t0',proc.time() - ptm0))
-
-save("Cost", file = "costtest.mpi.RData")
+### Check model cost and computation time --------------
+# ptm0 <- proc.time()
+# Resid <- ModRes(pars_optim)
+# print(cat('t0',proc.time() - ptm0))
 
 # ### Check sensitivity of parameters ---------------
 # ptm <- proc.time()
@@ -85,8 +80,3 @@ save("Cost", file = "costtest.mpi.RData")
 # ident[ident$N==8 & ident$collinearity<15,]
 
 Modfit <- modFit(f = ModRes, p = pars_optim, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
-
-closeCluster(cl)
-mpi.quit()
-
-save("Modfit", file = "modfit.mpi.RData")

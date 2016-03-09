@@ -14,7 +14,7 @@ ModRes <- function(pars_optim) {
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
   ptm <- proc.time()
   
-  all.cost <- foreach(i = data.samples$sample, .export = c("site.data.bf", "site.data.mz"), .packages = c("deSolve")) %dopar% {
+  all.cost <- foreach(i = data.samples$sample, .export = c("site.data.bf", "site.data.mz", "SampleCost"), .packages = c("deSolve")) %dopar% {
     SampleCost(pars, data.samples[data.samples$sample==i, ],
                input.all[input.all$sample==i, ],
                data.meas[data.meas$sample == i, ])
@@ -22,10 +22,11 @@ ModRes <- function(pars_optim) {
 
   print(cat('t1', proc.time() - ptm))
   
-  # Create a vector of all (un)weighted residuals
+  # Concatenate residuals
   Res <- NULL
   for(i in 1:length(all.cost)) {
-    Res <- c(Res, all.cost[[i]]$residuals$res)
+    if(cost.type == "wr") Res <- c(Res, all.cost[[i]]$residuals$res) else
+      if(cost.type == "uwr") Res <- c(Res, all.cost[[i]]$residuals$res.unweighted) else stop("wrong cost.type")
   }
   
   return(Res)
