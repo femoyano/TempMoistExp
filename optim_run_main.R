@@ -62,6 +62,7 @@ source("ModCost.R")
 source("pars_optim_start_2.R")
 source("pars_optim_lower_2.R")
 source("pars_optim_upper_2.R")
+source("AccumCalc.R")
 
 ### Check model cost and computation time --------------
 ptm0 <- proc.time()

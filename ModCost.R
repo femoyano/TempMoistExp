@@ -28,32 +28,7 @@ ModCost <- function(pars_optim) {
   colnames(all.out) <- c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R", "sample")
   
   ### calculate accumulated fluxes as measured and pass to modCost function --------------
- 
-  # Parallel --------------------------------
-  
-  ptm <- proc.time()
-  
-  accumFun <- function(j, all.out) {
-    C_R_m <- NA
-    snum <- seq((j-1)*x+1,j*x)
-    if (j == cores) snum <- seq((j-1)*x+1, nrow(data.meas))
-    it <- 1
-    for (i in snum) {
-      t1 <- data.meas$hour[i]
-      t0 <- t1 - data.meas$time_inc[i]
-      s  <- data.meas$sample[i]
-      C_R_m[it] <- all.out[all.out[,'sample'] == s & all.out[,'time'] == t1, 'C_R'] - all.out[all.out[,'sample'] == s & all.out[,'time'] == t0, 'C_R'] 
-      it <- it+1
-    }
-    return(data.frame(C_R_m = C_R_m))
-  }
-
-  x <- floor(nrow(data.meas) / cores)
-  
-  ## Process in parallel
-  C_R_mod <- foreach (j=1:cores, .combine = 'rbind', .export = c("data.meas")) %dopar% {
-    accumFun(j, all.out)
-  }
+  AccumCalc(all.out)
   
   # Times from multiple samples are combined and may be repeated, so passing time to modCost to match
   # obs to mod may give wrong matches. Creating new time with decimals determined by sample number:
