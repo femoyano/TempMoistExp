@@ -19,7 +19,8 @@ ModRes <- function(pars_optim) {
   
   all.cost <- foreach(i = data.samples$sample,
                       .export = c("site.data.bf", "site.data.mz", "SampleCost",
-                                  "pars", "data.samples", "input.all", "data.meas"),
+                                  "pars", "data.samples", "input.all", "data.meas", 
+                                  "initial_state"),
                       .packages = c("deSolve")) %dopar% {
     SampleCost(pars, data.samples[data.samples$sample==i, ],
                input.all[input.all$sample == i, ],
