@@ -1,4 +1,7 @@
-# Define model run function here
+# ModRes.R
+# This model calculates the model residuals
+# This version calls SampleCost.R
+
 ModRes <- function(pars_optim) {
   
   # Source the model preparing each sample for model run.
@@ -14,9 +17,12 @@ ModRes <- function(pars_optim) {
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
   ptm <- proc.time()
   
-  all.cost <- foreach(i = data.samples$sample, .export = c("site.data.bf", "site.data.mz", "SampleCost"), .packages = c("deSolve")) %dopar% {
+  all.cost <- foreach(i = data.samples$sample,
+                      .export = c("site.data.bf", "site.data.mz", "SampleCost",
+                                  "pars", "data.samples", "input.all", "data.meas"),
+                      .packages = c("deSolve")) %dopar% {
     SampleCost(pars, data.samples[data.samples$sample==i, ],
-               input.all[input.all$sample==i, ],
+               input.all[input.all$sample == i, ],
                data.meas[data.meas$sample == i, ])
   }
 

@@ -61,9 +61,9 @@ source("pars_optim_lower_2.R")
 source("pars_optim_upper_2.R")
 
 ### Check model cost and computation time --------------
-# ptm0 <- proc.time()
-# Resid <- ModRes(pars_optim)
-# print(cat('t0',proc.time() - ptm0))
+ptm0 <- proc.time()
+Resid <- ModRes(pars_optim)
+print(cat('t0',proc.time() - ptm0))
 
 # ### Check sensitivity of parameters ---------------
 # ptm <- proc.time()
@@ -79,4 +79,4 @@ source("pars_optim_upper_2.R")
 # plot(ident, ylim=c(0,20))
 # ident[ident$N==8 & ident$collinearity<15,]
 
-Modfit <- modFit(f = ModRes, p = pars_optim, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
+# Modfit <- modFit(f = ModRes, p = pars_optim, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
