@@ -16,5 +16,3 @@ source("optim_run_main.R")
 
 closeCluster(cl)
 mpi.quit()
-
-save.image("optimmpi.RData")

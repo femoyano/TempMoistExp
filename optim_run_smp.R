@@ -5,7 +5,7 @@
 # author(s):
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
-
+debug(ModRes)
 ### Setings for parallel processing
 library(doParallel)
 cores = detectCores()
