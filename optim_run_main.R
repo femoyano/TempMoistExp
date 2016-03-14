@@ -26,8 +26,8 @@ setup <- list(
   flag.sew  = 1 ,  # calculate C_E and C_D concentration in water
   flag.des  = 1 ,  # run using differential equation solver? If TRUE then t_step has no effect.
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
-  flag.dce  = 0 ,  # diffusicity carbon effect on/off
-  flag.dcf  = 0 ,  # diffusicity carbon function: 0 = exponential, 1 = linear
+  flag.dce  = 0 ,  # diffusivity carbon effect on/off
+  flag.dcf  = 0 ,  # diffusivity carbon function: 0 = exponential, 1 = linear
   
   t_step     = "hour"  ,  # Model time step (as string). Important when using stepwise run.
   t_save     = "hour"  ,  # save time step (only for stepwise model?)
@@ -90,4 +90,4 @@ source("ParSens.R")
 
 ### Save results
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, data.samples, input.all, site.data.bf, site.data.mz, initial_state)
-save.image(file = paste("ModelCalib", runtime, "png", sep = "_"))
+save.image(file = paste("ModelCalib_", runtime, ".RData", sep = ""))
