@@ -3,19 +3,18 @@
 
 if (sample.data$site == "bare_fallow") {
   site.data <- site.data.bf
-  toc <- pars[["TOC_bf"]]
   f_CA <- pars[["f_CA_bf"]] 
 } else if (sample.data$site == "maize") {
   site.data <- site.data.mz
-  toc <- pars[["TOC_mz"]]
   f_CA <- pars[["f_CA_mz"]] 
-} else stop("site name?")
+} else stop("no site name match in prepare_input.R")
 
 sand   <- site.data$sand  # [g g^-1] clay fraction values 
 clay   <- site.data$clay  # [g g^-1] sand fraction values 
 silt   <- site.data$silt  # [g g^-1] silt fraction values 
 ps     <- site.data$ps    # [m^3 m^-3] soil pore space
 depth  <- site.data$depth # [m] soil depth
+toc    <- site.data$toc   # [gC gSoil-1]
 
 ## Calculate spatially changing variables and add to parameter list
 b       <- 2.91 + 15.9 * clay                         # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.

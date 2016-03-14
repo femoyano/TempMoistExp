@@ -37,7 +37,8 @@ setup <- list(
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  ...
   cost.type = "uwr" ,
   # Which samples to run?
-  sample_list_file = "samples_test2.csv" # e.g. samples.csv, samples_smp.csv, samples_test2.csv
+  sample_list_file = "samples_smp.csv" , # e.g. samples.csv, samples_smp.csv, samples_test2.csv
+  pars_optim_file = "pars_optim_values_3.R"
 )
 
 list2env(setup, envir = .GlobalEnv)
@@ -59,15 +60,13 @@ obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
 ### Sourced required files ----------------------------------------------------
 source("parameters.R")
+source(pars_optim_file)
 source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
 source("initial_state.R")
 source("ModRes.R")
 source("ModCost.R")
-source("pars_optim_start_2.R")
-source("pars_optim_lower_2.R")
-source("pars_optim_upper_2.R")
 source("AccumCalc.R")
 source("ParsReplace.R")
 source("SampleRun.R")
