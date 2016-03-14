@@ -76,14 +76,14 @@ source("ParSens.R")
 
 ### Check model cost and computation time --------------
 # ptm0 <- proc.time()
-# Resid <- ModRes(pars_optim)
+# Resid <- ModRes(pars_optim_init)
 # print(cat('t0',proc.time() - ptm0))
 
 ### Check sensitivity of parameters ---------------
-# par_sens <- ParSens(ModCost, pars_optim)
+# par_sens <- ParSens(ModCost, pars_optim_init)
 
 ## Optimize parameters
-fitMod <- modFit(f = ModRes, p = pars_optim, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
+fitMod <- modFit(f = ModRes, p = pars_optim_init, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
 # Plot and get statistics
 # source("analysis.R")
 
