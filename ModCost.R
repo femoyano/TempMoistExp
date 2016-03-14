@@ -12,7 +12,7 @@ ModCost <- function(pars_optim) {
   
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind', 
                      .export = c("site.data.bf", "site.data.mz", "SampleCost",
-                                 "pars", "data.samples", "input.all", "data.accum", 
+                                 "pars", "data.samples", "input.all", "obs.accum", 
                                  "initial_state", "hour", "tstep"),
                      .packages = c("deSolve")) %dopar% {
     SampleRun(pars, data.samples[data.samples$sample==i, ], input.all[input.all$sample==i, ])
@@ -25,9 +25,9 @@ ModCost <- function(pars_optim) {
   
   # Times from multiple samples are combined and may be repeated, so passing time to modCost to match
   # obs to mod may give wrong matches. Creating new time with decimals determined by sample number:
-  time <- data.accum$time + data.accum$sample/100
-  obs <- data.frame(name = rep("C_R", nrow(data.accum)), time = time, C_R = data.accum$C_R, stderr = data.accum$sd)
-  mod <- data.frame(time = time, C_R = C_R_mod$C_R_m)
+  time <- obs.accum$time + obs.accum$sample/100
+  obs <- data.frame(name = rep("C_R", nrow(obs.accum)), time = time, C_R = obs.accum$C_R, stderr = obs.accum$sd)
+  mod <- data.frame(time = C_R_mod$time, C_R = C_R_mod$C_R_m)
   
   print(cat('t2', proc.time() - ptm))
   

@@ -51,11 +51,11 @@ eq.stop    <- FALSE   # Stop at equilibrium?
 # Input Setup -----------------------------------------------------------------
 data.samples  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", sample_list_file))
 input.all     <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_model_input.csv"))
-data.accum    <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_co2.csv"))
+obs.accum     <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_co2.csv"))
 site.data.mz  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "site_Closeaux.csv"))
 site.data.bf  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "site_BareFallow42p.csv"))
 
-data.accum <- data.accum[data.accum$sample %in% data.samples$sample,]
+obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
 ### Sourced required files ----------------------------------------------------
 source("parameters.R")
@@ -84,7 +84,7 @@ source("ParSens.R")
 # par_sens <- ParSens(ModCost, pars_optim)
 
 ### Optimize parameters
-# Modfit <- modFit(f = ModRes, p = pars_optim, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
+# fitMod <- modFit(f = ModRes, p = pars_optim, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
 # # Plot and get statistics
 # source("analysis.R")
 

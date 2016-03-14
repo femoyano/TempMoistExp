@@ -12,12 +12,12 @@ ModRes <- function(pars_optim) {
   
   all.cost <- foreach(i = data.samples$sample,
                       .export = c("site.data.bf", "site.data.mz", "SampleCost",
-                                  "pars", "data.samples", "input.all", "data.accum", 
+                                  "pars", "data.samples", "input.all", "obs.accum", 
                                   "initial_state", "hour", "tstep"),
                       .packages = c("deSolve")) %dopar% {
     SampleCost(pars, data.samples[data.samples$sample==i, ],
                input.all[input.all$sample == i, ],
-               data.accum[data.accum$sample == i, ])
+               obs.accum[obs.accum$sample == i, ])
   }
 
   print(cat('t1', proc.time() - ptm))
