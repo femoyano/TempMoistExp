@@ -83,10 +83,18 @@ source("ParSens.R")
 ### Check sensitivity of parameters ---------------
 # par_sens <- ParSens(ModCost, pars_optim)
 
-### Optimize parameters
-# fitMod <- modFit(f = ModRes, p = pars_optim, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
-# # Plot and get statistics
+## Optimize parameters
+fitMod <- modFit(f = ModRes, p = pars_optim, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
+# Plot and get statistics
 # source("analysis.R")
+
+### Run Bayesian optimization
+# var0 = fitMod$var_ms_unweighted
+
+# # ACHTUNG! if var0 is NULL, cist function must return -1log(prob.model). See documentation.
+# modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL,  
+#         var0=NULL, lower=low,
+#         upper=up,burninlength = 5000)
 
 ### Save results
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, data.samples, input.all, site.data.bf, site.data.mz, initial_state)
