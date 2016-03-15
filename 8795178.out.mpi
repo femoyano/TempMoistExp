@@ -1,0 +1,623 @@
+Sender: LSF System <lsfadmin@gwdd146>
+Subject: Job 8795178: <#!/bin/sh;#BSUB -a openmpi;#BSUB -q mpi;#BSUB -W 3:00;#BSUB -n 128;#BSUB -o %J.out.mpi; module load intel/mkl/64/11.2/2015.3.187 && module load openmpi/intel; mpirun.lsf Rscript --slave "optim_run_mpi.R"> in cluster <gwd_hpc> Exited
+
+Job <#!/bin/sh;#BSUB -a openmpi;#BSUB -q mpi;#BSUB -W 3:00;#BSUB -n 128;#BSUB -o %J.out.mpi; module load intel/mkl/64/11.2/2015.3.187 && module load openmpi/intel; mpirun.lsf Rscript --slave "optim_run_mpi.R"> was submitted from host <gwdu102> by user <fmoyano> in cluster <gwd_hpc>.
+Job was executed on host(s) <7*gwdd146>, in queue <mpi>, as user <fmoyano> in cluster <gwd_hpc>.
+                            <7*gwdd150>
+                            <4*gwdd159>
+                            <3*gwdd157>
+                            <3*gwdd144>
+                            <2*gwdd154>
+                            <7*gwdd168>
+                            <5*gwdd130>
+                            <7*gwdd139>
+                            <5*gwdd133>
+                            <2*gwdd132>
+                            <5*gwdd099>
+                            <2*gwdd119>
+                            <3*gwdd120>
+                            <6*gwdd115>
+                            <2*gwdd100>
+                            <4*gwdd112>
+                            <4*gwdd106>
+                            <4*gwdd087>
+                            <1*gwdd073>
+                            <7*gwdd086>
+                            <4*gwdd094>
+                            <7*gwdd081>
+                            <2*gwdd091>
+                            <5*gwdd061>
+                            <5*gwdd072>
+                            <2*gwdd052>
+                            <1*gwdd050>
+                            <4*gwdd055>
+                            <1*gwdd056>
+                            <4*gwdd058>
+                            <2*gwdd063>
+                            <1*gwdd060>
+</usr/users/fmoyano> was used as the home directory.
+</usr/users/fmoyano/SoilModel/SoilBGC> was used as the working directory.
+Started at Tue Mar 15 17:22:12 2016
+Results reported on Tue Mar 15 17:23:28 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -a openmpi
+#BSUB -q mpi
+#BSUB -W 3:00
+#BSUB -n 128
+#BSUB -o %J.out.mpi
+
+module load intel/mkl/64/11.2/2015.3.187 && module load openmpi/intel
+
+mpirun.lsf Rscript --slave "optim_run_mpi.R"
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   4927.23 sec.
+    Max Memory :                                 7190 MB
+    Average Memory :                             2975.80 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   90165 MB
+    Max Processes :                              133
+    Max Threads :                                519
+    Run time :                                   71 sec.
+    Turnaround time :                            316 sec.
+
+The output (if any) follows:
+
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: deSolve
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: coda
+Loading required package: plyr
+Loading required package: reshape2
+Error in { : task 15 failed - "object 'flag.des' not found"
+Calls: source ... withVisible -> eval -> eval -> costfun -> %dopar% -> <Anonymous>
+In addition: Warning message:
+In e$fun(obj, substitute(ex), parent.frame(), e$data) :
+  already exporting variable(s): pars
+Execution halted
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+Mar 15 17:22:55 2016 20216 4 9.1.3 handleTSRegisterTerm(): TS reports task <0> pid <20257> on host<gwdd146> killed or core dumped
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[47205,1],0]
+  Exit code:    1
+--------------------------------------------------------------------------
+Job  /opt/lsf/9.1/linux2.6-glibc2.3-x86_64/bin/openmpi_wrapper Rscript --slave optim_run_mpi.R
+
+TID   HOST_NAME   COMMAND_LINE            STATUS            TERMINATION_TIME
+===== ========== ================  =======================  ===================
+00000 gwdd060    Rscript --slave   Exit (1)                 03/15/2016 17:22:50
+00001 gwdd063    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00002 gwdd063    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00003 gwdd058    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:56
+00004 gwdd058    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00005 gwdd058    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00006 gwdd058    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00007 gwdd056    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:14
+00008 gwdd055    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:56
+00009 gwdd055    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00010 gwdd055    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00011 gwdd055    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00012 gwdd050    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00013 gwdd052    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:56
+00014 gwdd052    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00015 gwdd072    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:14
+00016 gwdd072    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:15
+00017 gwdd072    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:17
+00018 gwdd072    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:19
+00019 gwdd072    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:22
+00020 gwdd061    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:57
+00021 gwdd061    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:00
+00022 gwdd061    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:06
+00023 gwdd061    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:12
+00024 gwdd061    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:13
+00025 gwdd091    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00026 gwdd091    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00027 gwdd081    Rscript --slave   Signaled (SIGKILL)       03/15/2016 17:23:00
+00028 gwdd081    Rscript --slave   Signaled (SIGKILL)       03/15/2016 17:23:10
+00029 gwdd081    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:16
+00030 gwdd081    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:17
+00031 gwdd081    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:19
+00032 gwdd081    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:21
+00033 gwdd081    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:23
+00034 gwdd094    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:57
+00035 gwdd094    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00036 gwdd094    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:06
+00037 gwdd094    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:12
+00038 gwdd086    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:57
+00039 gwdd086    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00040 gwdd086    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00041 gwdd086    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:06
+00042 gwdd086    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:08
+00043 gwdd086    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:10
+00044 gwdd086    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:11
+00045 gwdd073    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00046 gwdd087    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:58
+00047 gwdd087    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:01
+00048 gwdd087    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:04
+00049 gwdd087    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:08
+00050 gwdd106    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:56
+00051 gwdd106    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00052 gwdd106    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00053 gwdd106    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00054 gwdd112    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:56
+00055 gwdd112    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00056 gwdd112    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00057 gwdd112    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00058 gwdd100    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:57
+00059 gwdd100    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:00
+00060 gwdd115    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:57
+00061 gwdd115    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00062 gwdd115    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00063 gwdd115    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:09
+00064 gwdd115    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:12
+00065 gwdd115    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:15
+00066 gwdd120    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:56
+00067 gwdd120    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00068 gwdd120    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00069 gwdd119    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:56
+00070 gwdd119    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00071 gwdd099    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:56
+00072 gwdd099    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00073 gwdd099    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00074 gwdd099    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:08
+00075 gwdd099    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:11
+00076 gwdd132    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:57
+00077 gwdd132    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:00
+00078 gwdd133    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00079 gwdd133    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00080 gwdd133    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00081 gwdd133    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00082 gwdd133    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:08
+00083 gwdd139    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00084 gwdd139    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00085 gwdd139    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00086 gwdd139    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00087 gwdd139    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:07
+00088 gwdd139    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:09
+00089 gwdd139    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:11
+00090 gwdd130    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:57
+00091 gwdd130    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:01
+00092 gwdd130    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:04
+00093 gwdd130    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:07
+00094 gwdd130    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:13
+00095 gwdd168    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00096 gwdd168    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00097 gwdd168    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00098 gwdd168    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:07
+00099 gwdd168    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:09
+00100 gwdd168    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:11
+00101 gwdd168    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:13
+00102 gwdd154    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00103 gwdd154    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:58
+00104 gwdd144    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00105 gwdd144    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:58
+00106 gwdd144    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00107 gwdd157    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00108 gwdd157    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00109 gwdd157    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00110 gwdd159    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:56
+00111 gwdd159    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:59
+00112 gwdd159    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00113 gwdd159    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00114 gwdd150    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:55
+00115 gwdd150    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:22:58
+00116 gwdd150    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:02
+00117 gwdd150    Rscript --slave   Killed by PAM (SIGKILL)  03/15/2016 17:23:05
+00118 gwdd150    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:07
+00119 gwdd150    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:09
+00120 gwdd150    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:11
+00121 gwdd146    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:22:53
+00122 gwdd146    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:22:55
+00123 gwdd146    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:22:57
+00124 gwdd146    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:22:59
+00125 gwdd146    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:01
+00126 gwdd146    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:03
+00127 gwdd146    Rscript --slave   Signaled (SIGTERM)       03/15/2016 17:23:05
