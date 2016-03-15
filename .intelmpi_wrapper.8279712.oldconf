@@ -1,0 +1,2 @@
+# This file is constructed by LSF 
+Rscript --slave optim_run_script_mpi.R

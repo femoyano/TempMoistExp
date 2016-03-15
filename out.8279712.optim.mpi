@@ -1,0 +1,2336 @@
+Sender: LSF System <lsfadmin@gwdc040>
+Subject: Job 8279712: <#!/bin/sh;#BSUB -a intelmpi;#BSUB -q mpi-short;#BSUB -W 00:05;#BSUB -n 67;#BSUB -o out.optim.%J; module load intel/mkl/64/11.2/2015.3.187 && module load intel-mpi; mpirun.lsf Rscript --slave "optim_run_script_mpi.R"> in cluster <gwd_hpc> Exited
+
+Job <#!/bin/sh;#BSUB -a intelmpi;#BSUB -q mpi-short;#BSUB -W 00:05;#BSUB -n 67;#BSUB -o out.optim.%J; module load intel/mkl/64/11.2/2015.3.187 && module load intel-mpi; mpirun.lsf Rscript --slave "optim_run_script_mpi.R"> was submitted from host <gwdu102> by user <fmoyano> in cluster <gwd_hpc>.
+Job was executed on host(s) <16*gwdc040>, in queue <mpi-short>, as user <fmoyano> in cluster <gwd_hpc>.
+                            <7*gwdc026>
+                            <9*gwdc006>
+                            <8*gwdc005>
+                            <5*gwdc002>
+                            <16*gwdc056>
+                            <6*gwdc062>
+</usr/users/fmoyano> was used as the home directory.
+</usr/users/fmoyano/SoilModel/SoilBGC> was used as the working directory.
+Started at Sun Mar  6 12:31:50 2016
+Results reported on Sun Mar  6 12:39:22 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -a intelmpi
+#BSUB -q mpi-short
+#BSUB -W 00:05
+#BSUB -n 67
+#BSUB -o out.optim.%J
+
+module load intel/mkl/64/11.2/2015.3.187 && module load intel-mpi
+
+mpirun.lsf Rscript --slave "optim_run_script_mpi.R"
+
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with signal termination: User defined signal 2.
+
+Resource usage summary:
+
+    CPU time :                                   653.00 sec.
+    Max Memory :                                 3426 MB
+    Average Memory :                             3153.83 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   53230 MB
+    Max Processes :                              173
+    Max Threads :                                539
+    Run time :                                   451 sec.
+    Turnaround time :                            67359 sec.
+
+The output (if any) follows:
+
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: rootSolve
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+Loading required package: coda
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+Loading required package: coda
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: coda
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: coda
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: coda
+Loading required package: plyr
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: foreach
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: foreach
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9445)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9451)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9442)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9447)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9440)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+Loading required package: Rmpi
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9444)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9449)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9443)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9452)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9492)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9448)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9446)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc005 (PID 18247)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc005 (PID 18249)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc005 (PID 18244)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc005 (PID 18246)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc005 (PID 18243)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc005 (PID 18248)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc005 (PID 18245)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc005 (PID 18242)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc026 (PID 26243)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc026 (PID 26247)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc026 (PID 26244)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc026 (PID 26246)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc026 (PID 26242)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc026 (PID 26245)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc026 (PID 26248)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc062 (PID 20277)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc062 (PID 20275)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc062 (PID 20280)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc002 (PID 1711)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc002 (PID 1714)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc002 (PID 1715)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc002 (PID 1716)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc002 (PID 1712)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc062 (PID 20279)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc062 (PID 20278)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc062 (PID 20276)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9439)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9450)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9438)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc006 (PID 19394)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc006 (PID 19395)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc040 (PID 9441)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc006 (PID 19388)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc006 (PID 19396)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc006 (PID 19389)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc006 (PID 19390)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc006 (PID 19391)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc006 (PID 19392)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc006 (PID 19393)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22190)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22185)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22189)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22177)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22179)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22181)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22184)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22191)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22178)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22186)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22180)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22188)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22182)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22187)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22183)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+An MPI process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your MPI job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.  
+
+The process that invoked fork was:
+
+  Local host:          gwdc056 (PID 22176)
+  MPI_COMM_WORLD rank: 0
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+User defined signal 2
+Mar  6 12:37:15 2016 9310 3 9.1.3 lsb_sndJRusage(): call_server(gwdc040, 6882) failed, Error 0.
+Job  /opt/lsf/9.1/linux2.6-glibc2.3-x86_64/bin/intelmpi_wrapper Rscript --slave optim_run_script_mpi.R
+
+TID   HOST_NAME   COMMAND_LINE            STATUS            TERMINATION_TIME
+===== ========== ================  =======================  ===================
+00000 gwdc062    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00001 gwdc062    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00002 gwdc062    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00003 gwdc062    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00004 gwdc062    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00005 gwdc062    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00006 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00007 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00008 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00009 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00010 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00011 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00012 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00013 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00014 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00015 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00016 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00017 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00018 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00019 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00020 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00021 gwdc056    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00022 gwdc002    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00023 gwdc002    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00024 gwdc002    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00025 gwdc002    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00026 gwdc002    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00027 gwdc005    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00028 gwdc005    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00029 gwdc005    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00030 gwdc005    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00031 gwdc005    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00032 gwdc005    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00033 gwdc005    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00034 gwdc005    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00035 gwdc006    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00036 gwdc006    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00037 gwdc006    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00038 gwdc006    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00039 gwdc006    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00040 gwdc006    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00041 gwdc006    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00042 gwdc006    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00043 gwdc006    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00044 gwdc026    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00045 gwdc026    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00046 gwdc026    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00047 gwdc026    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00048 gwdc026    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00049 gwdc026    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00050 gwdc026    Rscript --slave   Signaled (SIGTERM)       03/06/2016 12:37:00
+00051 gwdc040    Rscript --slave   Exit (status unknown)                       
+00052 gwdc040    Rscript --slave   Exit (status unknown)                       
+00053 gwdc040    Rscript --slave   Exit (status unknown)                       
+00054 gwdc040    Rscript --slave   Exit (status unknown)                       
+00055 gwdc040    Rscript --slave   Exit (status unknown)                       
+00056 gwdc040    Rscript --slave   Exit (status unknown)                       
+00057 gwdc040    Rscript --slave   Exit (status unknown)                       
+00058 gwdc040    Rscript --slave   Exit (status unknown)                       
+00059 gwdc040    Rscript --slave   Exit (status unknown)                       
+00060 gwdc040    Rscript --slave   Exit (status unknown)                       
+00061 gwdc040    Rscript --slave   Exit (status unknown)                       
+00062 gwdc040    Rscript --slave   Exit (status unknown)                       
+00063 gwdc040    Rscript --slave   Exit (status unknown)                       
+00064 gwdc040    Rscript --slave   Exit (status unknown)                       
+00065 gwdc040    Rscript --slave   Exit (status unknown)                       
+00066 gwdc040    Rscript --slave   Exit (status unknown)                       

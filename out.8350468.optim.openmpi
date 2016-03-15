@@ -1,0 +1,2254 @@
+Sender: LSF System <lsfadmin@gwdd018>
+Subject: Job 8350468: <#!/bin/sh;#BSUB -a openmpi;#BSUB -q mpi;#BSUB -W 00:05;#BSUB -n 128;#BSUB -o out.%J.optim.openmpi; module load intel/mkl/64/11.2/2015.3.187 && module load openmpi/intel; mpirun.lsf Rscript --slave "optim_run_script_mpi.R"> in cluster <gwd_hpc> Exited
+
+Job <#!/bin/sh;#BSUB -a openmpi;#BSUB -q mpi;#BSUB -W 00:05;#BSUB -n 128;#BSUB -o out.%J.optim.openmpi; module load intel/mkl/64/11.2/2015.3.187 && module load openmpi/intel; mpirun.lsf Rscript --slave "optim_run_script_mpi.R"> was submitted from host <gwdu102> by user <fmoyano> in cluster <gwd_hpc>.
+Job was executed on host(s) <20*gwdd018>, in queue <mpi>, as user <fmoyano> in cluster <gwd_hpc>.
+                            <16*gwdd013>
+                            <16*gwdd009>
+                            <14*gwdd019>
+                            <13*gwdd005>
+                            <11*gwdd020>
+                            <9*gwdd002>
+                            <6*gwdd006>
+                            <8*gwdd021>
+                            <7*gwdd010>
+                            <4*gwdd016>
+                            <3*gwdd008>
+                            <1*gwdd011>
+</usr/users/fmoyano> was used as the home directory.
+</usr/users/fmoyano/SoilModel/SoilBGC> was used as the working directory.
+Started at Mon Mar  7 22:35:43 2016
+Results reported on Mon Mar  7 22:37:04 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -a openmpi
+#BSUB -q mpi
+#BSUB -W 00:05
+#BSUB -n 128
+#BSUB -o out.%J.optim.openmpi
+
+module load intel/mkl/64/11.2/2015.3.187 && module load openmpi/intel
+
+mpirun.lsf Rscript --slave "optim_run_script_mpi.R"
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   5460.94 sec.
+    Max Memory :                                 8543 MB
+    Average Memory :                             2620.20 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   102301 MB
+    Max Processes :                              149
+    Max Threads :                                589
+    Run time :                                   81 sec.
+    Turnaround time :                            11194 sec.
+
+The output (if any) follows:
+
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: deSolve
+Loading required package: rootSolve
+Loading required package: deSolve
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: coda
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: rootSolve
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+
+Attaching package: ‘deSolve’
+
+Loading required package: FME
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+Loading required package: rootSolve
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: FME
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: rootSolve
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: FME
+Loading required package: coda
+Loading required package: coda
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: rootSolve
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: coda
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: plyr
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: reshape2
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: Rmpi
+Loading required package: iterators
+Loading required package: Rmpi
+Error in { : task 1 failed - "object 'site.data.bf' not found"
+Calls: ModCost -> %dopar% -> <Anonymous>
+In addition: Warning message:
+In e$fun(obj, substitute(ex), parent.frame(), e$data) :
+  already exporting variable(s): pars
+Execution halted
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+Mar  7 22:36:14 2016 18922 4 9.1.3 handleTSRegisterTerm(): TS reports task <0> pid <18933> on host<gwdd018> killed or core dumped
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[62111,1],0]
+  Exit code:    1
+--------------------------------------------------------------------------
+Job  /opt/lsf/9.1/linux2.6-glibc2.3-x86_64/bin/openmpi_wrapper Rscript --slave optim_run_script_mpi.R
+
+TID   HOST_NAME   COMMAND_LINE            STATUS            TERMINATION_TIME
+===== ========== ================  =======================  ===================
+00000 gwdd011    Rscript --slave   Exit (1)                 03/07/2016 22:36:09
+00001 gwdd008    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:16
+00002 gwdd008    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:19
+00003 gwdd008    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:22
+00004 gwdd016    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:15
+00005 gwdd016    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:18
+00006 gwdd016    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:24
+00007 gwdd016    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:27
+00008 gwdd010    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:15
+00009 gwdd010    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:18
+00010 gwdd010    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:21
+00011 gwdd010    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:24
+00012 gwdd010    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:28
+00013 gwdd010    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:31
+00014 gwdd010    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:35
+00015 gwdd021    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:18
+00016 gwdd021    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:20
+00017 gwdd021    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:24
+00018 gwdd021    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:27
+00019 gwdd021    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:30
+00020 gwdd021    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:33
+00021 gwdd021    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:36
+00022 gwdd021    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:39
+00023 gwdd006    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:15
+00024 gwdd006    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:18
+00025 gwdd006    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:21
+00026 gwdd006    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:24
+00027 gwdd006    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:27
+00028 gwdd006    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:30
+00029 gwdd002    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:15
+00030 gwdd002    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:18
+00031 gwdd002    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:21
+00032 gwdd002    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:24
+00033 gwdd002    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:27
+00034 gwdd002    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:30
+00035 gwdd002    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:33
+00036 gwdd002    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:37
+00037 gwdd002    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:40
+00038 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:15
+00039 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:18
+00040 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:21
+00041 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:24
+00042 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:27
+00043 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:30
+00044 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:33
+00045 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:36
+00046 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:39
+00047 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:42
+00048 gwdd020    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:46
+00049 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:15
+00050 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:18
+00051 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:21
+00052 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:24
+00053 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:27
+00054 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:30
+00055 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:33
+00056 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:36
+00057 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:43
+00058 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:46
+00059 gwdd005    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:49
+00060 gwdd005    Rscript --slave   Killed by PAM (SIGTERM)  03/07/2016 22:36:52
+00061 gwdd005    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:54
+00062 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:15
+00063 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:18
+00064 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:21
+00065 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:24
+00066 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:27
+00067 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:30
+00068 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:33
+00069 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:36
+00070 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:39
+00071 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:42
+00072 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:45
+00073 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:48
+00074 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:51
+00075 gwdd019    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:54
+00076 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:15
+00077 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:18
+00078 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:21
+00079 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:24
+00080 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:27
+00081 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:31
+00082 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:34
+00083 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:37
+00084 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:40
+00085 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:43
+00086 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:46
+00087 gwdd009    Rscript --slave   Killed by PAM (SIGKILL)  03/07/2016 22:36:50
+00088 gwdd009    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:52
+00089 gwdd009    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:54
+00090 gwdd009    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:56
+00091 gwdd009    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:58
+00092 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:15
+00093 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:18
+00094 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:21
+00095 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:24
+00096 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:27
+00097 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:30
+00098 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:33
+00099 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:36
+00100 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:39
+00101 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:43
+00102 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:46
+00103 gwdd013    Rscript --slave   Signaled (SIGKILL)       03/07/2016 22:36:49
+00104 gwdd013    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:52
+00105 gwdd013    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:54
+00106 gwdd013    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:56
+00107 gwdd013    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:58
+00108 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:12
+00109 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:14
+00110 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:16
+00111 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:18
+00112 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:20
+00113 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:22
+00114 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:24
+00115 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:26
+00116 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:28
+00117 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:30
+00118 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:32
+00119 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:34
+00120 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:36
+00121 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:38
+00122 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:40
+00123 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:42
+00124 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:44
+00125 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:46
+00126 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:48
+00127 gwdd018    Rscript --slave   Signaled (SIGTERM)       03/07/2016 22:36:50

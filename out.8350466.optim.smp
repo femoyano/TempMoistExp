@@ -1,0 +1,64 @@
+Sender: LSF System <lsfadmin@gwda046>
+Subject: Job 8350466: <#!/bin/sh;#BSUB -a openmp;#BSUB -q fat-short;#BSUB -W 00:05;#BSUB -o out.%J.optim.smp;#BSUB -n 64;#BSUB -R span[hosts=1];#BSUB -R np64; module load intel/mkl/64/11.2/2015.3.187; Rscript --slave "optim_run_script_smp.R"> in cluster <gwd_hpc> Done
+
+Job <#!/bin/sh;#BSUB -a openmp;#BSUB -q fat-short;#BSUB -W 00:05;#BSUB -o out.%J.optim.smp;#BSUB -n 64;#BSUB -R span[hosts=1];#BSUB -R np64; module load intel/mkl/64/11.2/2015.3.187; Rscript --slave "optim_run_script_smp.R"> was submitted from host <gwdu102> by user <fmoyano> in cluster <gwd_hpc>.
+Job was executed on host(s) <64*gwda046>, in queue <fat-short>, as user <fmoyano> in cluster <gwd_hpc>.
+</usr/users/fmoyano> was used as the home directory.
+</usr/users/fmoyano/SoilModel/SoilBGC> was used as the working directory.
+Started at Mon Mar  7 19:30:20 2016
+Results reported on Mon Mar  7 19:30:38 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -a openmp
+#BSUB -q fat-short
+#BSUB -W 00:05
+#BSUB -o out.%J.optim.smp
+#BSUB -n 64
+#BSUB -R span[hosts=1]
+#BSUB -R np64
+
+module load intel/mkl/64/11.2/2015.3.187
+
+Rscript --slave "optim_run_script_smp.R"
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   168.52 sec.
+    Max Memory :                                 1843 MB
+    Average Memory :                             65.00 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   10 sec.
+    Turnaround time :                            25 sec.
+
+The output (if any) follows:
+
+Loading required package: deSolve
+
+Attaching package: ‘deSolve’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: FME
+Loading required package: rootSolve
+Loading required package: coda
+Loading required package: plyr
+Loading required package: reshape2
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: parallel
+Cores detected: 64t1 0.483 0.291 3.743 112.489 5.692NULL
+t2 0.064 0.513 1.883 43.185 4.35NULL
+t0 0.625 0.819 5.725 155.674 10.042NULL

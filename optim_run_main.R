@@ -37,7 +37,7 @@ setup <- list(
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  ...
   cost.type = "uwr" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_4s.csv" ,
+  sample_list_file = "samples_smp.csv" ,
   pars_optim_file = "pars_optim_values_3.R"
 )
 
@@ -72,7 +72,6 @@ source("ParsReplace.R")
 source("SampleRun.R")
 source("SampleCost.R")
 source("GetModelData.R")
-source("ParSens.R")
 
 costfun <- ModCost # Return modCost object or residuals? Processing is somewhat different
 
@@ -82,25 +81,21 @@ cost <- costfun(pars_optim_init)
 print(cat('t0', proc.time() - ptm0))
 
 ### Check sensitivity of parameters ---------------
-# Sfun <- sensFun(ModCost, pars_optim_init)
+Sfun <- sensFun(ModCost, pars_optim_init)
 # # Visually explore the correlation between parameter sensitivities:
-# par_corr_plot <- pairs(Sfun, which = c("C_R"), col = c("blue", "green"))
-# ident <- collin(Sfun)
-# ident_plot <- plot(ident, ylim=c(0,20))
-# ident[ident$N==9 & ident$collinearity<15,]
+par_corr_plot <- pairs(Sfun, which = c("C_R"), col = c("blue", "green"))
+ident <- collin(Sfun)
+ident_plot <- plot(ident, ylim=c(0,20))
+ident[ident$N==9 & ident$collinearity<15,]
 
 ## Optimize parameters
 fitMod <- modFit(f = costfun, p = pars_optim_init, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
-# Plot and get statistics
-# source("analysis.R")
 
 ### Run Bayesian optimization
 var0 = fitMod$var_ms_unweighted
 
 # # ACHTUNG! if var0 is NULL, cist function must return -2log(prob.model). See documentation.
-modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL,  
-        var0=var0, lower=pars_optim_lower,
-        upper=pars_optim_upper, burninlength = 5000)
+modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper, burninlength = 1000)
 
 ### Save results
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, data.samples, input.all, site.data.bf, site.data.mz, initial_state)

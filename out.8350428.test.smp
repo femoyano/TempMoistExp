@@ -1,0 +1,45 @@
+Sender: LSF System <lsfadmin@gwda020>
+Subject: Job 8350428: <#!/bin/sh;#BSUB -a openmp;#BSUB -q fat-short;#BSUB -W 00:05;#BSUB -n 20;#BSUB -o out.optim.%J;#BSUB -R span[hosts=1]; module load intel/mkl/64/11.2/2015.3.187; Rscript --slave "test_smp.R"> in cluster <gwd_hpc> Done
+
+Job <#!/bin/sh;#BSUB -a openmp;#BSUB -q fat-short;#BSUB -W 00:05;#BSUB -n 20;#BSUB -o out.optim.%J;#BSUB -R span[hosts=1]; module load intel/mkl/64/11.2/2015.3.187; Rscript --slave "test_smp.R"> was submitted from host <gwdu102> by user <fmoyano> in cluster <gwd_hpc>.
+Job was executed on host(s) <20*gwda020>, in queue <fat-short>, as user <fmoyano> in cluster <gwd_hpc>.
+</usr/users/fmoyano> was used as the home directory.
+</usr/users/fmoyano/SoilModel/SoilBGC> was used as the working directory.
+Started at Mon Mar  7 18:43:24 2016
+Results reported on Mon Mar  7 18:43:28 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -a openmp
+#BSUB -q fat-short
+#BSUB -W 00:05
+#BSUB -n 20
+#BSUB -o out.optim.%J
+#BSUB -R span[hosts=1]
+
+module load intel/mkl/64/11.2/2015.3.187
+
+Rscript --slave "test_smp.R"
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   0.49 sec.
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Run time :                                   3 sec.
+    Turnaround time :                            9 sec.
+
+The output (if any) follows:
+
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: parallel
+cat detectCores  64 
+Workers  64 
