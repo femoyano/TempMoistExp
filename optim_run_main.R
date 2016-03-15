@@ -37,7 +37,7 @@ setup <- list(
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  ...
   cost.type = "uwr" ,
   # Which samples to run?
-  sample_list_file = "samples_smp.csv" , # e.g. samples.csv, samples_smp.csv, samples_test2.csv
+  sample_list_file = "samples_test2.csv" , # e.g. samples.csv, samples_smp.csv, samples_test2.csv
   pars_optim_file = "pars_optim_values_3.R"
 )
 
@@ -74,16 +74,18 @@ source("SampleCost.R")
 source("GetModelData.R")
 source("ParSens.R")
 
+costfun <- ModRes # Return modCost object or residuals? Processing is somewhat different
+
 ### Check model cost and computation time --------------
-# ptm0 <- proc.time()
-# Resid <- ModRes(pars_optim_init)
-# print(cat('t0',proc.time() - ptm0))
+ptm0 <- proc.time()
+cost <- costfun(pars_optim_init)
+print(cat('t0', proc.time() - ptm0))
 
 ### Check sensitivity of parameters ---------------
 # par_sens <- ParSens(ModCost, pars_optim_init)
 
 ## Optimize parameters
-fitMod <- modFit(f = ModRes, p = pars_optim_init, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
+# fitMod <- modFit(f = costfun, p = pars_optim_init, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
 # Plot and get statistics
 # source("analysis.R")
 
@@ -91,9 +93,9 @@ fitMod <- modFit(f = ModRes, p = pars_optim_init, method = "Nelder-Mead", upper 
 # var0 = fitMod$var_ms_unweighted
 
 # # ACHTUNG! if var0 is NULL, cist function must return -1log(prob.model). See documentation.
-# modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL,  
+# modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL,  
 #         var0=NULL, lower=low,
-#         upper=up,burninlength = 5000)
+#         upper=up, burninlength = 5000)
 
 ### Save results
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, data.samples, input.all, site.data.bf, site.data.mz, initial_state)

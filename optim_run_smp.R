@@ -13,5 +13,3 @@ cat("Cores detected:", cores, "\n")
 registerDoParallel(cores = cores)
 
 source("optim_run_main.R")
-
-save.image("optimsmp.RData")
