@@ -8,8 +8,7 @@ ModRes <- function(pars_optim) {
   pars <- ParsReplace(pars_optim, pars)
   
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
-  ptm <- proc.time()
-  
+
   all.cost <- foreach(i = data.samples$sample,
                       .export = c("site.data.bf", "site.data.mz", "SampleCost",
                                   "pars", "data.samples", "input.all", "obs.accum", 
@@ -20,8 +19,6 @@ ModRes <- function(pars_optim) {
                obs.accum[obs.accum$sample == i, ])
   }
 
-  print(cat('t1', proc.time() - ptm))
-  
   # Concatenate residuals
   Res <- NULL
   for(i in 1:length(all.cost)) {
