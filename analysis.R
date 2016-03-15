@@ -4,10 +4,10 @@ mod.out <- GetModelData(input.all, fitMod$par)
 data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"), by.y = c("sample", "time"))
 
 # Function that returns Root Mean Squared Error
-rmse <- function(res) sqrt(mean(error^2))
+rmse <- function(res) sqrt(mean(res^2))
 
 # Function that returns Mean Absolute Error
-mae <- function(res) mean(abs(error))
+mae <- function(res) mean(abs(res))
 
 res <- data.accum$C_R - data.accum$C_R_m
 RMSE <- rmse(res)
