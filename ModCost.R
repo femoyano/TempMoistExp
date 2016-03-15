@@ -10,7 +10,7 @@ ModCost <- function(pars_optim) {
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
 
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind', 
-                     .export = c("site.data.bf", "site.data.mz", "SampleCost",
+                     .export = c("site.data.bf", "site.data.mz", "SampleRun",
                                  "pars", "data.samples", "input.all", "obs.accum", 
                                  "initial_state", "hour", "tstep"),
                      .packages = c("deSolve")) %dopar% {
