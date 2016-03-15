@@ -8,8 +8,7 @@ ModCost <- function(pars_optim) {
   pars <- ParsReplace(pars_optim, pars)
   
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
-  ptm <- proc.time()
-  
+
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind', 
                      .export = c("site.data.bf", "site.data.mz", "SampleCost",
                                  "pars", "data.samples", "input.all", "obs.accum", 
@@ -18,8 +17,6 @@ ModCost <- function(pars_optim) {
     SampleRun(pars, data.samples[data.samples$sample==i, ], input.all[input.all$sample==i, ])
   }
 
-  print(cat('t1', proc.time() - ptm))
-  
   ### calculate accumulated fluxes as measured and pass to modCost function --------------
   C_R_mod <- AccumCalc(all.out, obs.accum)
   
@@ -29,8 +26,6 @@ ModCost <- function(pars_optim) {
   obs.accum$time2 <- obs.accum$hour + obs.accum$sample/100
   obs <- data.frame(name = rep("C_R", nrow(obs.accum)), time = obs.accum$time2, C_R = obs.accum$C_R, stderr = obs.accum$sd)
   mod <- data.frame(time = C_R_mod$time2, C_R = C_R_mod$C_R_m)
-  
-  print(cat('t2', proc.time() - ptm))
   
   if(cost.type == "uwr") {
     return(modCost(model=mod, obs=obs, y = "C_R"))

@@ -37,7 +37,7 @@ setup <- list(
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  ...
   cost.type = "uwr" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_4s.csv" ,
+  sample_list_file = "samples_smp.csv" ,
   pars_optim_file = "pars_optim_values_3.R"
 )
 
@@ -77,9 +77,9 @@ source("ParSens.R")
 costfun <- ModCost # Return modCost object or residuals? Processing is somewhat different
 
 ### Check model cost and computation time --------------
-ptm0 <- proc.time()
+# ptm0 <- proc.time()
 cost <- costfun(pars_optim_init)
-print(cat('t0', proc.time() - ptm0))
+# print(cat('t0', proc.time() - ptm0))
 
 ### Check sensitivity of parameters ---------------
 # Sfun <- sensFun(ModCost, pars_optim_init)
@@ -103,5 +103,5 @@ modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL,
         upper=pars_optim_upper, burninlength = 5000)
 
 ### Save results
-rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, data.samples, input.all, site.data.bf, site.data.mz, initial_state)
+rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state)
 save.image(file = paste("ModelCalib_", runtime, ".RData", sep = ""))
