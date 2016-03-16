@@ -43,6 +43,8 @@ require(FME)
 require(plyr)
 require(reshape2)
 
+list2env(setup, envir = .GlobalEnv)
+
 ### Define time variables =====================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
@@ -53,8 +55,6 @@ tstep <- get(t_step)
 tsave <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
-
-list2env(setup, envir = .GlobalEnv)
 
 # Input Setup -----------------------------------------------------------------
 input_path    <- file.path("./")  # ("..", "Analysis", "NadiaTempMoist")
