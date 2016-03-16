@@ -94,11 +94,6 @@ cost <- costfun(pars_optim_init)
 
 ### Check sensitivity of parameters ---------------
 Sfun <- sensFun(ModCost, pars_optim_init)
-# # Visually explore the correlation between parameter sensitivities:
-# par_corr_plot <- pairs(Sfun, which = c("C_R"), col = c("blue", "green"))
-# ident <- collin(Sfun)
-# ident_plot <- plot(ident, ylim=c(0,20))
-# ident[ident$N==9 & ident$collinearity<15,]
 
 ## Optimize parameters
 fitMod <- modFit(f = costfun, p = pars_optim_init, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
@@ -107,7 +102,7 @@ fitMod <- modFit(f = costfun, p = pars_optim_init, method = "Nelder-Mead", upper
 var0 = fitMod$var_ms_unweighted
 
 # # ACHTUNG! if var0 is NULL, cist function must return -2log(prob.model). See documentation.
-# modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper, burninlength = 1000)
+mcmcMod <- modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper, burninlength = 1000)
 
 ### Save results
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state)
