@@ -30,7 +30,7 @@ setup <- list(
   cost.type = "uwr" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
-  pars_optim_file = "pars_optim_values_3.R"
+  pars_optim_file = "pars_optim_values_2.R"
 )
 
 ### ----------------------------------- ###
@@ -43,6 +43,8 @@ require(FME)
 require(plyr)
 require(reshape2)
 
+list2env(setup, envir = .GlobalEnv)
+
 ### Define time variables =====================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
@@ -53,8 +55,6 @@ tstep <- get(t_step)
 tsave <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
-
-list2env(setup, envir = .GlobalEnv)
 
 # Input Setup -----------------------------------------------------------------
 input_path    <- file.path("./")  # ("..", "Analysis", "NadiaTempMoist")
