@@ -7,7 +7,7 @@
 #### ==========================================================================
 
 ### ----------------------------------- ###
-###       Uer Stup                      ###
+###       User Stup                     ###
 ### ----------------------------------- ###
 
 # Model flags and other options ----------------------------------------------------------
@@ -47,15 +47,14 @@ require(reshape2)
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
 sec      <- 1        # seconds in a second!
-runtime  <- format(Sys.time(), "%y-%m-%d-%H-%M")
-
-list2env(setup, envir = .GlobalEnv)
 
 # Other settings
 tstep <- get(t_step)
 tsave <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
+
+list2env(setup, envir = .GlobalEnv)
 
 # Input Setup -----------------------------------------------------------------
 input_path    <- file.path("./")  # ("..", "Analysis", "NadiaTempMoist")
@@ -106,5 +105,6 @@ var0 = fitMod$var_ms_unweighted
 mcmcMod <- modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper, burninlength = 1000)
 
 ### Save results
+savetime  <- format(Sys.time(), "%y-%m-%d-%H-%M")
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state)
-save.image(file = paste("ModelCalib_", runtime, ".RData", sep = ""))
+save.image(file = paste("ModelCalib_", savetime, ".RData", sep = ""))
