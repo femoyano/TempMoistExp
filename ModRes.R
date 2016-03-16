@@ -10,7 +10,7 @@ ModRes <- function(pars_optim) {
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
 
   all.cost <- foreach(i = data.samples$sample,
-                      .export = c(ls(), "pars"),
+                      .export = c(ls(envir = .GlobalEnv), "pars"),
                       .packages = c("deSolve")) %dopar% {
     SampleCost(pars, data.samples[data.samples$sample==i, ],
                input.all[input.all$sample == i, ],

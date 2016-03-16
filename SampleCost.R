@@ -18,7 +18,7 @@ SampleCost <- function(pars, sample.data, input, meas) {
   C_R_m <- NULL
   for (i in 1:nrow(meas)) {
     t1 <- meas$hour[i]
-    t0 <- t1 - meas$time_inc[i]
+    t0 <- t1 - meas$time_accum[i]
     C_R_m[i] <- out$C_R[out$time == t1] - out$C_R[out$time == t0]
   }
   mod <- data.frame(time = meas$hour, C_R = C_R_m)

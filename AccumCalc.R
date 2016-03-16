@@ -10,7 +10,7 @@ AccumCalc <- function(all.out, obs.accum) {
     it <- 1
     for (i in snum) {
       t1 <- obs.accum$hour[i]
-      t0 <- t1 - obs.accum$time_inc[i]
+      t0 <- t1 - obs.accum$time_accum[i]
       s  <- obs.accum$sample[i]
       C_R_m[it] <- all.out[all.out[,'sample'] == s & all.out[,'time'] == t1, 'C_R'] - all.out[all.out[,'sample'] == s & all.out[,'time'] == t0, 'C_R'] 
       sample[it] <- s

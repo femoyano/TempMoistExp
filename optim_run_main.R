@@ -29,7 +29,7 @@ setup <- list(
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  ...
   cost.type = "uwr" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_smp.csv" ,
+  sample_list_file = "samples_4s.csv" ,
   pars_optim_file = "pars_optim_values_2.R"
 )
 
@@ -106,5 +106,5 @@ mcmcMod <- modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lo
 
 ### Save results
 savetime  <- format(Sys.time(), "%y-%m-%d-%H-%M")
-rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state)
+rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state, obs.accum)
 save.image(file = paste("ModelCalib_", savetime, ".RData", sep = ""))
