@@ -1,5 +1,12 @@
 # analysis.R
 # analyse and plot model vs observation
+
+# # Visually explore the correlation between parameter sensitivities:
+par_corr_plot <- pairs(Sfun, which = c("C_R"), col = c("blue", "green"))
+ident <- collin(Sfun)
+ident_plot <- plot(ident, ylim=c(0,20))
+ident[ident$N==9 & ident$collinearity<15,]
+
 mod.out <- GetModelData(input.all, fitMod$par)
 data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"), by.y = c("sample", "time"))
 

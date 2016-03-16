@@ -1,0 +1,5 @@
+sample,site,repetition,field_plot,sample,moist_grav,om_init,om_init_sd,dw_init
+4,bare_fallow,a,22,51,3,6.3,0.3,90
+32,bare_fallow,b,30,36,21,6.3,0.3,90
+37,maize,c,3,41,3,12.9,0.3,90
+66,maize,c,3,50,25,12.9,0.3,90

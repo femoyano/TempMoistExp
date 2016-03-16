@@ -58,11 +58,12 @@ spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
 
 # Input Setup -----------------------------------------------------------------
-data.samples  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", sample_list_file))
-input.all     <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_model_input.csv"))
-obs.accum     <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "mtdata_co2.csv"))
-site.data.mz  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "site_Closeaux.csv"))
-site.data.bf  <- read.csv(file.path("..", "Analysis", "NadiaTempMoist", "site_BareFallow42p.csv"))
+input_path    <- file.path("./")  # ("..", "Analysis", "NadiaTempMoist")
+data.samples  <- read.csv(file.path(input_path, sample_list_file))
+input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
+obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))
+site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
+site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 
 obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
@@ -94,11 +95,6 @@ cost <- costfun(pars_optim_init)
 
 ### Check sensitivity of parameters ---------------
 Sfun <- sensFun(ModCost, pars_optim_init)
-# # Visually explore the correlation between parameter sensitivities:
-# par_corr_plot <- pairs(Sfun, which = c("C_R"), col = c("blue", "green"))
-# ident <- collin(Sfun)
-# ident_plot <- plot(ident, ylim=c(0,20))
-# ident[ident$N==9 & ident$collinearity<15,]
 
 ## Optimize parameters
 fitMod <- modFit(f = costfun, p = pars_optim_init, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
@@ -107,7 +103,7 @@ fitMod <- modFit(f = costfun, p = pars_optim_init, method = "Nelder-Mead", upper
 var0 = fitMod$var_ms_unweighted
 
 # # ACHTUNG! if var0 is NULL, cist function must return -2log(prob.model). See documentation.
-# modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper, burninlength = 1000)
+mcmcMod <- modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper, burninlength = 1000)
 
 ### Save results
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state)
