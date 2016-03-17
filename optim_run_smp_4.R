@@ -17,7 +17,7 @@ setup <- list(
   flag.mic  = 0 ,  # simulate microbial pool explicitly
   flag.fcs  = 1 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
   flag.sew  = 1 ,  # calculate C_E and C_D concentration in water
-  flag.des  = 0 ,  # run using differential equation solver? If TRUE then t_step has no effect.
+  flag.des  = 1 ,  # run using differential equation solver? If TRUE then t_step has no effect.
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
   flag.dcf  = 0 ,  # diffusivity carbon function: 0 = exponential, 1 = linear
