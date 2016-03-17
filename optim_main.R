@@ -57,7 +57,6 @@ source("SampleRun.R")
 # source("SampleCost.R")
 source("GetModelData.R")
 
-ModCost
 
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###
@@ -65,7 +64,7 @@ ModCost
 
 ### Check model cost and computation time --------------
 # ptm0 <- proc.time()
-system.time(cost <- costfun(pars_optim_init))
+system.time(cost <- ModCost(pars_optim_init))
 # print(cat('t0', proc.time() - ptm0))
 # 
 # ### Check sensitivity of parameters ---------------
