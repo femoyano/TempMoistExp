@@ -2,7 +2,6 @@ sample,site,repetition,field_plot,sample,moist_grav,om_init,om_init_sd,dw_init
 1,bare_fallow,a,22,61,1,6.3,0.3,186.2
 2,bare_fallow,b,30,62,1,6.3,0.3,182.2
 3,bare_fallow,c,32,63,1,6.3,0.3,178.8
-4,bare_fallow,a,22,51,3,6.3,0.3,90
 5,bare_fallow,b,30,26,4.8,6.3,0.3,90
 6,bare_fallow,c,32,27,5.1,6.3,0.3,90
 7,bare_fallow,a,22,52,7,6.3,0.3,90
@@ -22,6 +21,7 @@ sample,site,repetition,field_plot,sample,moist_grav,om_init,om_init_sd,dw_init
 21,bare_fallow,c,32,32,13,6.3,0.3,90
 22,bare_fallow,a,22,57,15,6.3,0.3,90
 23,bare_fallow,b,30,34,15,6.3,0.3,90
+24,bare_fallow,c,32,40,15,6.3,0.3,90
 25,bare_fallow,a,22,58,17,6.3,0.3,90
 26,bare_fallow,b,30,35,17,6.3,0.3,90
 27,bare_fallow,c,32,39,17,6.3,0.3,90
@@ -29,12 +29,13 @@ sample,site,repetition,field_plot,sample,moist_grav,om_init,om_init_sd,dw_init
 29,bare_fallow,b,30,33,19,6.3,0.3,90
 30,bare_fallow,c,32,38,19,6.3,0.3,90
 31,bare_fallow,a,22,60,21,6.3,0.3,90
-32,bare_fallow,b,30,36,21,6.3,0.3,90
 33,bare_fallow,c,32,37,21,6.3,0.3,90
 34,maize,a,1,64,1,12.9,0.3,168.5
 35,maize,b,2,65,1,12.9,0.3,171.4
+36,maize,c,3,66,1,12.9,0.3,156.7
 37,maize,c,3,41,3,12.9,0.3,90
 38,maize,a,1,10,6.3,12.9,0.3,90
+39,maize,b,2,12,6.5,12.9,0.3,90
 40,maize,a,1,2,7,12.9,0.3,90
 41,maize,b,2,6,7,12.9,0.3,90
 42,maize,c,3,42,7,12.9,0.3,90
@@ -61,4 +62,3 @@ sample,site,repetition,field_plot,sample,moist_grav,om_init,om_init_sd,dw_init
 63,maize,c,3,49,21,12.9,0.3,90
 64,maize,a,1,18,25,12.9,0.3,90
 65,maize,b,2,20,25,12.9,0.3,90
-66,maize,c,3,50,25,12.9,0.3,90

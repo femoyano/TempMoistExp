@@ -23,21 +23,21 @@ ModCost <- function(pars_optim) {
   data.accum$moist.group <- interaction(data.accum$site, data.accum$moist_vol) # create a group variable
   
   it <- 1
-  for (i in data.accum$moist.group) {
+  for (i in unique(data.accum$moist.group)) {
     df <- data.accum[data.accum$moist.group == i, ]
-    obs <- data.frame(name = rep("C_R", nrow(df)), time = df$hour, C_R = df$C_R_r, stderr = df$sd.r)
-    mod <- data.frame(time = df$time, C_R = df$C_R_mr)
+    obs <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_r, sd.r = df$sd.r)
+    mod <- data.frame(time = df$hour, C_R_r = df$C_R_mr)
     if(it == 1) {
       if(cost.type == "rate.sd") {
-        cost <- modCost(model=mod, obs=obs, y = "C_R", error = "sd.r")
+        cost <- modCost(model=mod, obs=obs, y = "C_R_r", err = "sd.r")
       } else if(cost.type == "rate.mean") {
-        cost <- modCost(model=mod, obs=obs, y = "C_R", weight = "mean") 
+        cost <- modCost(model=mod, obs=obs, y = "C_R_r", weight = "mean") 
       } else stop("Check cost.type option for using group rates: rate.mean or rate.sd")
     } else {
       if(cost.type == "rate.sd") {
-        cost <- modCost(model=mod, obs=obs, y = "C_R", error = "sd.r", cost = cost)
+        cost <- modCost(model=mod, obs=obs, y = "C_R_r", err = "sd.r", cost = cost)
       } else if(cost.type == "rate.mean") {
-        cost <- modCost(model=mod, obs=obs, y = "C_R", weight = "mean", cost = cost) 
+        cost <- modCost(model=mod, obs=obs, y = "C_R_r", weight = "mean", cost = cost) 
       } else stop("Check cost.type option for using group rates: rate.mean or rate.sd")
     }
     it = it + 1

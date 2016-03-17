@@ -29,7 +29,7 @@ setup <- list(
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.sd" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_4s.csv" ,
+  sample_list_file = "samples_smp.csv" ,
   pars_optim_file = "pars_optim_values_2.R"
 )
 
@@ -81,7 +81,7 @@ source("SampleRun.R")
 # source("SampleCost.R")
 source("GetModelData.R")
 
-costfun <- ModCost # Return modCost object or residuals? Processing is somewhat different
+ModCost
 
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###
@@ -89,24 +89,24 @@ costfun <- ModCost # Return modCost object or residuals? Processing is somewhat 
 
 ### Check model cost and computation time --------------
 # ptm0 <- proc.time()
-# system.time(cost <- costfun(pars_optim_init))
+system.time(cost <- costfun(pars_optim_init))
 # print(cat('t0', proc.time() - ptm0))
 # 
 # ### Check sensitivity of parameters ---------------
-# Sfun <- sensFun(ModCost, pars_optim_init)
+Sfun <- sensFun(ModCost, pars_optim_init)
 # 
 # ## Optimize parameters
-fitMod <- modFit(f = costfun, p = pars_optim_init, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
+fitMod <- modFit(f = ModCost, p = pars_optim_init, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
 # 
 # ### Run Bayesian optimization
-# var0 = fitMod$var_ms_unweighted
+var0 = fitMod$var_ms_unweighted
 # 
 # # # ACHTUNG! if var0 is NULL, cist function must return -2log(prob.model). See documentation.
-# mcmcMod <- modMCMC(f=costfun, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper, burninlength = 1000)
+mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper, burninlength = 1000)
 # 
 # ### Save results
-# savetime  <- format(Sys.time(), "%y-%m-%d-%H-%M")
-# rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state, obs.accum)
-# save.image(file = paste("ModelCalib_", savetime, ".RData", sep = ""))
+savetime  <- format(Sys.time(), "%y-%m-%d-%H-%M")
+rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state, obs.accum)
+save.image(file = paste("ModelCalib_", savetime, ".RData", sep = ""))
 
 print(Sys.time() - t0)
