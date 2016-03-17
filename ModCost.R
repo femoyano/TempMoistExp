@@ -4,6 +4,8 @@
 
 ModCost <- function(pars_optim) {
 
+  # t1 <- Sys.time()
+  
   # Add or replace parameters from the list of optimized parameters ----------------------
   pars <- ParsReplace(pars_optim, pars)
   
@@ -14,7 +16,6 @@ ModCost <- function(pars_optim) {
                      .packages = c("deSolve")) %dopar% {
     SampleRun(pars, data.samples[data.samples$sample==i, ], input.all[input.all$sample==i, ])
   }
-
   ### calculate accumulated fluxes as measured and pass to modCost function --------------
   C_R_mod <- AccumCalc(all.out, obs.accum)
   
@@ -22,12 +23,16 @@ ModCost <- function(pars_optim) {
   # obs to mod may give wrong matches. Avoid this by creating new time with decimals determined by sample number:
   C_R_mod$time2 <- C_R_mod$time + C_R_mod$sample/100
   obs.accum$time2 <- obs.accum$hour + obs.accum$sample/100
-  obs <- data.frame(name = rep("C_R", nrow(obs.accum)), time = obs.accum$time2, C_R = obs.accum$C_R, stderr = obs.accum$sd)
+  obs <- data.frame(name = rep("C_R", nrow(obs.accum)), time = obs.accum$time2, C_R = obs.accum$C_R, stderr = obs.accum$sd.acc)
   mod <- data.frame(time = C_R_mod$time2, C_R = C_R_mod$C_R_m)
   
   if(cost.type == "uwr") {
-    return(modCost(model=mod, obs=obs, y = "C_R"))
+    cost <- modCost(model=mod, obs=obs, y = "C_R")
   } else if(cost.type == "wr") {
-    return(modCost(model=mod, obs=obs, y = "C_R", error <- "stderr")) }
+    cost <- modCost(model=mod, obs=obs, y = "C_R", error <- "stderr") }
+  cat(cost$model, cost$minlogp, "\n")
   
+  # cat(Sys.time()-t1, " ")
+  
+  return(cost)
 }
