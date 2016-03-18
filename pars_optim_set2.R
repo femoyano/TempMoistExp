@@ -54,6 +54,6 @@ pars_optim_upper <- c(
   f_gr_ref  = 0.8    , 
   f_de      = 0.1    , 
   psi_Rth   = 17000  , 
-  D_d       = 1e-2  / sec  * tstep 
+  D_0       = 1e-2  / sec  * tstep 
 )
 

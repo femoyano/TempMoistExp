@@ -51,6 +51,6 @@ pars_optim_upper <- c(
   f_gr_ref  = 0.9    , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
   f_de      = 0.5    , # [g g-1] Fraction of C_D taken up that is converted to C_E
   psi_Rth   = 20000  , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  D_d       = 1e-1  / sec  * tstep # [m2 s-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+  D_0       = 1e-1  / sec  * tstep # [m2 s-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
 )
 
