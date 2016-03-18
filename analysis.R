@@ -1,6 +1,7 @@
 ### ===================================== ###
 ### Analyze and plot model vs observation ###
 ### ===================================== ###
+pars_optim = "set2"
 
 ### Libraries
 require(deSolve)
@@ -49,13 +50,12 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 ### Sourced required files ----------------------------------------------------
 source("parameters.R")
-source(pars_optim_file)
+source(paste("pars_optim_", pars_optim, ".R", sep = ""))
 source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
 source("initial_state.R")
 source("GetModelData.R")
-costfun <- ModCost # Return modCost object or residuals? Processing is somewhat different
 
 # Get model output with optimized parameters
 system.time(mod.out <- GetModelData(fitMod$par))
@@ -74,10 +74,12 @@ data.accum$C_R <- NULL
 res <- data.accum$C_R_o - data.accum$C_R_m
 RMSE <- sqrt(mean(res^2))
 MAE <- mean(abs(res))
+
 # Plot residuals
-plot(res, col = data.accum$temp)
-plot(res, col = as.factor(data.accum$moist_vol))
-plot(res, col = data.accum$site)
+palette("default")
+plot(res, col = data.accum$temp, main = "By Temperature")
+plot(res, col = as.factor(data.accum$moist_vol), main = "By Moisture")
+plot(res, col = data.accum$site, main = "By Site")
 
 # Plot model vs data
 plotname <- paste("mod-obs", savetime, "png", sep = "_")
@@ -117,7 +119,7 @@ data.accum$C_R_norm <- NULL
 ## ------------------------------------------------- ##
 ##         Fit simple nl models and plot           ----
 ## ------------------------------------------------- ##
-cv <- heat.colors(10, alpha = 0.5)
+cv <- rainbow(10, alpha = 0.5)  # heat.colors(10, alpha = 0.5)
 palette(cv)
 # define subsets of data:
 data.accum$temp.group <- interaction(data.accum$site, data.accum$temp) # create a group variable
@@ -127,23 +129,24 @@ data.accum$moist.group <- interaction(data.accum$site, data.accum$moist_vol) # c
 FitMoist <- function(df, var) {
     df$C_R <- df[[var]]
     fit <- nls(C_R ~ Rmax * ifelse((moist_vol - Th) < 0, 0, (moist_vol - Th)^2 / (K^2 + (moist_vol - Th)^2)),
-               start=c(Rmax=1, Th=0.01, K=0.15), lower=c(Rmax=0.5, Th=0, K=0.01),
-               upper=c(Rmax=1.5, Th=0.1, K=0.25), algorithm="port", data = df)
+               start=c(Rmax=1, Th=0.1, K=0.175), lower=c(Rmax=0.5, Th=0, K=0.01),
+               upper=c(Rmax=1.5, Th=0.2, K=0.25), algorithm="port", data = df)
     return(list(fit = fit, Rmax = coef(fit)[1], Th = coef(fit)[2], K = coef(fit)[3],
                 site = df$site[1], temp = df$temp[1]))
 }
 fit.moist.obs <- dlply(data.accum, .(temp.group), .fun = FitMoist, var = "C_R_orn")
 fit.moist.mod <- dlply(data.accum, .(temp.group), .fun = FitMoist, var = "C_R_mrn")
+
 # Plot each temp group
 x <- data.frame(moist_vol = seq(0.01, 0.5, 0.001))
 for (i in names(fit.moist.obs)) {
   y.o <- predict(fit.moist.obs[[i]]$fit, newdata = x)
   y.m <- predict(fit.moist.mod[[i]]$fit, newdata = x)
   df <- data.accum[data.accum$temp.group == i,]
-  plot(C_R_orn ~ moist_vol, data = df, main = df$temp.group[1], xlim = c(0,0.5), ylim=c(0,2), col = tstage, pch = 16)
-  points(C_R_mrn ~ moist_vol, data = df, col = tstage, pch = 17)
-  lines (y.o ~ x$moist_vol, col =2)
-  lines (y.m ~ x$moist_vol, col =3)
+  plot(C_R_orn ~ moist_vol, data = df, main = df$temp.group[1], xlim = c(0,0.5), ylim=c(0,2), col = 2, pch = 16)
+  points(C_R_mrn ~ moist_vol, data = df, col = 7, pch = 16)
+  lines (y.o ~ x$moist_vol, col = 2)
+  lines (y.m ~ x$moist_vol, col = 7)
 }
 
 # Fit a temprature function to each moisture subgroup and plot
@@ -160,6 +163,7 @@ FitTemp <- function(df, var) {
 }
 fit.temp.obs <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_R_or")
 fit.temp.mod <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_R_mr")
+
 # Plot each moist group
 x <- data.frame(temp = seq(0, 35, 1))
 for (i in names(fit.temp.obs)) {
@@ -168,12 +172,12 @@ for (i in names(fit.temp.obs)) {
   q.o <- predict(fit.temp.obs[[i]]$fitQ10, newdata = x)
   q.m <- predict(fit.temp.mod[[i]]$fitQ10, newdata = x)
   df <- data.accum[data.accum$moist.group == i,]
-  plot(C_R_or ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = tstage, pch = 16)
-  # points(C_R_mr ~ temp, data = df, col = tstage, pch = 17)
-  lines (e.o ~ x$temp, col =2)
-  # lines (e.m ~ x$temp, col =3)
-#   lines (q.o ~ x$temp, col =4)
-#   lines (q.m ~ x$temp, col =5)
+  plot(C_R_or ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
+  points(C_R_mr ~ temp, data = df, col = 7, pch = 16)
+  lines (e.o ~ x$temp, col = 2)
+  lines (e.m ~ x$temp, col = 7)
+#   lines (q.o ~ x$temp, col = 2)
+#   lines (q.m ~ x$temp, col = 8)
 }
 
 ### Plot of parameters ----
@@ -200,28 +204,29 @@ ggplot(data=fit.pars, aes(x=temperature, y=Th, colour=site)) +
 
 ## Plot pararameters for temp function
 # For observed data
+span=0.9
 fit.pars <- ldply(fit.temp.obs, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
 ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
   geom_point(size = 3) +
   # geom_line()
-  geom_smooth(span=0.5, se=FALSE)
+  geom_smooth(linetype=0, span=span, se=T)
 
-ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
-  geom_point(size = 3) +
-  # geom_line()
-  geom_smooth(span=0.5, se=FALSE)
+# ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
+#   geom_point(size = 3) +
+#   # geom_line()
+#   geom_smooth(span=span, se=FALSE)
 
 # For modeled data
 fit.pars <- ldply(fit.temp.mod, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
 ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
   geom_point(size = 3) +
   # geom_line()
-  geom_smooth(span=1, se=FALSE)
+  geom_smooth(linetype=0, span=span, se=T)
 
-ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
-  geom_point(size = 3) +
-  # geom_line()
-  geom_smooth(span=1, se=FALSE)
+# ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
+#   geom_point(size = 3) +
+#   # geom_line()
+#   geom_smooth(span=span, se=FALSE)
 
 # # Fit model 2: here I fix K and Th and use a "p1" that modifies 
 # # the 'diffusion' directly, and "n" for the shape of the curve.

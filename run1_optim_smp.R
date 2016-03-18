@@ -6,10 +6,12 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
+t0 <- Sys.time()
 
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
+runname <- "RUNOPT1"
 
 # Model flags and other options
 setup <- list(
@@ -31,7 +33,7 @@ setup <- list(
   cost.type = "rate.sd" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
-  pars_optim_file = "pars_optim_values_2.R"
+  pars_optim = "set2"
 )
 
 
@@ -43,4 +45,11 @@ cores = detectCores()
 cat("Cores detected:", cores, "\n")
 registerDoParallel(cores = cores)
 
+
+### ----------------------------------- ###
+###         Run optimization            ###
+### ----------------------------------- ###
 source("optim_main.R")
+
+print(Sys.time() - t0)
+

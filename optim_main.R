@@ -12,7 +12,6 @@
 ### ----------------------------------- ###
 
 ### Libraries =================================================================
-t0 <- Sys.time()
 
 require(deSolve)
 require(FME)
@@ -44,7 +43,7 @@ obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
 ### Sourced required files ----------------------------------------------------
 source("parameters.R")
-source(pars_optim_file)
+source(paste("pars_optim_", pars_optim, ".R", sep = ""))
 source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
@@ -78,10 +77,13 @@ var0 = fitMod$var_ms_unweighted
 # 
 # # # ACHTUNG! if var0 is NULL, cist function must return -2log(prob.model). See documentation.
 mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper, burninlength = 1000)
-# 
-# ### Save results
-savetime  <- format(Sys.time(), "%y-%m-%d-%H-%M")
-rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state, obs.accum)
-save.image(file = paste("ModelCalib_", savetime, ".RData", sep = ""))
 
-print(Sys.time() - t0)
+
+### ----------------------------------- ###
+###        Saving work space            ###
+### ----------------------------------- ###
+savetime  <- format(Sys.time(), "%m%d-%H%M")
+options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew, "_des", flag.des,
+                 "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_par", pars_optim, "_", cost.type, "-", sep = "")
+rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state, obs.accum)
+save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
