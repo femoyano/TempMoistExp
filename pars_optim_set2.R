@@ -3,6 +3,9 @@
 # Time variables and tstep have to be defined before sourcing this file.
 #### ==========================================================================
 
+### Parameter Set 2 for initial and bounds values
+### Subset of full model parameters (noMic, noAds) with conservative bounds.
+
 pars_optim_init <- c(
   f_CA_bf   = 0.2    ,                # fraction of C_A in TOC for bare fallow
   f_CA_mz   = 0.2    ,                # fraction of C_A in TOC for maize soil 
@@ -46,7 +49,7 @@ pars_optim_upper <- c(
   r_ed_ref  = 0.01   / hour * tstep , 
   V_D_ref   = 10     / hour * tstep , 
   K_D_ref   = 500000 , 
-  E_V       = 70     , 
+  E_V       = 100     , 
   E_K       = 40     , 
   f_gr_ref  = 0.8    , 
   f_de      = 0.1    , 
