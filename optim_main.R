@@ -26,6 +26,7 @@ hour     <- 3600     # seconds in an hour
 sec      <- 1        # seconds in a second!
 
 # Other settings
+flag.des  <- 1       # Cannot be changed: model crashes when doing stepwise.
 tstep <- get(t_step)
 tsave <- get(t_save)
 spinup     <- FALSE
