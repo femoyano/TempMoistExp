@@ -11,10 +11,11 @@ t0 <- Sys.time()
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
-runname <- "RUNOPT2.5"
+runname <- "RUNOPT1.0"
 
-# Model flags and other options
+# Setup
 setup <- list(
+  # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
   flag.mic  = 0 ,  # simulate microbial pool explicitly
   flag.fcs  = 0 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
@@ -22,11 +23,12 @@ setup <- list(
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
   flag.dcf  = 0 ,  # diffusivity carbon function: 0 = exponential, 1 = linear
-  
+  diff.func  = "hama"  , # Options: 'hama', 'cubic'
   t_step     = "hour"  ,  # Model time step (as string). Important when using stepwise run.
   t_save     = "hour"  ,  # save time step (only for stepwise model?)
   ode.method = "lsoda" ,  # see ode function
   
+  # -------- Calibration options ----------
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.sd" ,

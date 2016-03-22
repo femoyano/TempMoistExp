@@ -1,7 +1,6 @@
 ### ===================================== ###
 ### Analyze and plot model vs observation ###
 ### ===================================== ###
-pars_optim = "set2"
 
 ### Libraries
 require(deSolve)
@@ -192,6 +191,7 @@ ggplot(data = fit.pars, aes(x=temperature, y=K, colour=site)) +
 ggplot(data=fit.pars, aes(x=temperature, y=Th, colour=site)) +
   geom_point(size = 3) +
   geom_line()
+
 # For modeled data
 fit.pars <- ldply(fit.moist.mod, function(x) {data.frame(Rmax = x$Rmax, K = x$K, Th = x$Th, site = x$site, temperature = x$temp)})
 ggplot(data = fit.pars, aes(x=temperature, y=K, colour=site)) +
@@ -204,7 +204,7 @@ ggplot(data=fit.pars, aes(x=temperature, y=Th, colour=site)) +
 
 ## Plot pararameters for temp function
 # For observed data
-span=0.9
+span=0.5
 fit.pars <- ldply(fit.temp.obs, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
 ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
   geom_point(size = 3) +
