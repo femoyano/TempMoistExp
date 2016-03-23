@@ -4,7 +4,6 @@
 GetModelData <- function(pars_modfit) {
   source("ParsReplace.R")
   source("SampleRun.R")
-  source("AccumCalc.R")
   pars <- ParsReplace(pars_modfit, pars)
   
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind',

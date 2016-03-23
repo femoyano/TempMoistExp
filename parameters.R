@@ -10,12 +10,15 @@
 
 pars <- c(
   
-  ### Fixed Constants ====
-  R = 0.008314  ,  # [kJ K-1 mol-1] gas constant
-  T_ref = 293.15   , # [K] reference temperature
-  C_ref = 10000  ,  # [gC m-3] reference amount of C_P (used for effect on diffusion)
+  # ----- Fixed Constants - Normally not calibrated -----
+  R = 0.008314   ,  # [kJ K-1 mol-1] gas constant.
+  T_ref = 293.15 ,  # [K] reference temperature.
+  C_ref = 10000  ,  # [gC m-3] reference amount of C_P (used for effect on diffusion).
+  psi_fc = 33    ,  # [kPa] Water potential at field capacity
+  pd     = 2.7   , # [g cm^-3] Soil particle density
   
-  ### Time Dependent Parameters
+  
+  # ----- Rate Parameters -----
   r_md_ref = 0.00028 / hour * tstep , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
   r_ed_ref = 0.001   / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   f_me     = 5.6e-06 / hour * tstep , # [gC g-1 C_M h-1] Fraction of C_M converted to C_E (assumed).
@@ -28,7 +31,7 @@ pars <- c(
   k_ads_ref = 1.08e-6  / sec * tstep , # [m3 gC-1 s-1] Adsorption rate constant of C_D. (Ahrens 2015, units converted for gC)
   k_des_ref = 1.19e-10 / sec * tstep , # [s-1] Desorption rate constant of C_A. (Ahrens 2015)
   
-  ### Fixed Parameters ====
+  # ----- Other Parameters -----
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
   # Note that a K_D value of 300000 is very high (over 20% C) so decompostion will be linear in most soils.
   K_D_ref  = 300000   , # [gC m-3] Affinity parameter for C_P decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
@@ -41,10 +44,8 @@ pars <- c(
   E_r_ed   = 47       , # [kJ mol^-1] Gibbs energy for r_ed (assumed equal to E_r_md)
   f_gr_ref = 0.7      , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
   f_gr_s   = -0.016   , # f_gr slope with temperature
-  pd       = 2.7      , # [g cm^-3] Soil particle density
   f_de     = 0.01     , # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
-  psi_Rth  = 15000   , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  psi_fc   = 33      , # [kPa] Water potential at field capacity
-  C_max    = 500000   # some max value of C_P that should not be reached (used for linear effect on diffusion)
+  psi_Rth  = 15000    , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
+  C_max    = 500000    # some max value of C_P that should not be reached (used for linear effect on diffusion). Can be calibrated.
 )
 

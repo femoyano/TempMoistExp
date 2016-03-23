@@ -19,7 +19,7 @@ ModCost <- function(pars_optim) {
   
   # Get accumulated values to match observations and merge datasets
   data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"), by.y = c("sample", "time"))
-  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum * 1000
+  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum * 1000  # observed data was also rescaled
   data.accum$moist.group <- interaction(data.accum$site, data.accum$moist_vol) # create a group variable
   
   it <- 1

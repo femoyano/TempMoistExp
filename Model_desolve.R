@@ -30,16 +30,16 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_r_md , R)
     r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_r_ed , R)
     f_gr  <- f_gr_ref
+    fc.mod <- get.fc.mod(moist, fc)
+    moist.mod <- get.moist.mod(moist)
     
     ## Diffusion calculations  --------------------------------------
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     # Diffusion modifiers for soil (texture), temperature and carbon content: D_sm, D_tm, D_cm
-    if(moist <= Rth) D_sm <- 0 else D_sm <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5 # reference?
-    if(flag.dte) D_tm <- temp^8/T_ref^8 else D_tm <- 1
-    if(flag.dce) {
-      if(flag.dcf) D_cm <- C_P^(-1/3) / C_ref^(-1/3) else D_cm <- (C_P-C_max) / (C_ref-C_max)  # non-linear or linear response
-    } else D_cm <- 1
+    D_sm <- get.D_sm(moist, ps, Rth)
+    D_tm <- get.D_tm(temp, T_ref)
+    D_cm <- get.D_cm(C_P, C_ref, C_max)
     D_d <- D_d0 * D_sm * D_tm * D_cm
     D_e <- D_e0 * D_sm * D_tm * D_cm
     
@@ -50,12 +50,12 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     F_ml.scw   <- I_ml
     
     # Decomposition rate
-    F_pc.scw   <- F_decomp(C_P, C_Ew, V_D, K_D, moist, fc, depth)
+    F_pc.scw   <- F_decomp(C_P, C_Ew, V_D, K_D, moist.mod, depth, fc.mod)
     
     # Adsorption/desorption
     if(flag.ads) {
-      F_scw.scs  <- F_adsorp(C_D, C_A, Md, k_ads, moist, fc, depth)
-      F_scs.scw  <- F_desorp(C_A, k_des, moist, fc)
+      F_scw.scs  <- F_adsorp(C_D, C_A, Md, k_ads, moist.mod, depth, fc.mod)
+      F_scs.scw  <- F_desorp(C_A, k_des, fc.mod)
     } else {
       F_scw.scs <- 0
       F_scs.scw <- 0
