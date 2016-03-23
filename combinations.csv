@@ -1,0 +1,15 @@
+ID,f.dce,f.dte,f.fcs,f.sew,f.mic,diff.fun,dce.fun,cost.type,modFit,modMCMC,select
+,0,0,0,0,0,cubic,- ,rate.sd,option1,option1,cost.type
+,0,0,0,0,0,cubic,- ,rate.mean,option1,option1,cost.type
+,1,1,1,1,1,cubic,exp,rate.sd,option1,option1,cost.type
+,1,1,1,1,1,cubic,exp,rate.mean,option1,option1,cost.type
+,0,0,0,0,0,cubic,- ,best,option2,option2,modFit/MCMC
+,1,1,1,1,1,cubic,exp,best,option2,option2,modFit/MCMC
+,0,0,0,0,0,hama,- ,best,best,best,diff.fun
+,1,1,1,1,1,hama,exp,best,best,best,diff.fun
+,1,0,0,0,0,best,lin,best,best,best,dce + dce.fun
+,1,0,0,0,0,best,exp,best,best,best,dce + dce.fun
+,best,1,0,0,0,best,best,best,best,best,dte
+,best,best,1,1,0,best,best,best,best,best,fcs
+,best,best,best,1,0,best,best,best,best,best,sew
+,best,best,best,best,1,best,best,best,best,best,mic

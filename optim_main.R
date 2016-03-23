@@ -68,33 +68,33 @@ source("GetModelData.R")
 ### Check model cost and computation time --------------
 system.time(cost <- ModCost(pars_optim_init))
 
-# ### Check sensitivity of parameters ---------------
-# Sfun <- sensFun(ModCost, pars_optim_init)
-#  
-# ## Optimize parameters
-# fitMod <- modFit(f = ModCost, p = pars_optim_init, method = "Nelder-Mead",
-#                  upper = pars_optim_upper, lower = pars_optim_lower)
-#  
-# ## Run Bayesian optimization
-# var0 = fitMod$var_ms_unweighted
-#  
-# # If var0 is NULL, cost function must return -2log(prob.model). See documentation.
-# mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL, var0=var0,
-#                    lower=pars_optim_lower, upper=pars_optim_upper)
-# 
-# 
-# ### ----------------------------------- ###
-# ###        Saving work space            ###
-# ### ----------------------------------- ###
-# 
-# savetime  <- format(Sys.time(), "%m%d-%H%M")
-# runname <- paste("RUN", pars_optim, sep="")
-# 
-# options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
-#                  "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_", cost.type,
-#                  "-", sep = "")
-# 
-# rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
-#    site.data.bf, site.data.mz, initial_state, obs.accum)
-# 
-# save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+### Check sensitivity of parameters ---------------
+Sfun <- sensFun(ModCost, pars_optim_init)
+ 
+## Optimize parameters
+fitMod <- modFit(f = ModCost, p = pars_optim_init, method = "Nelder-Mead",
+                 upper = pars_optim_upper, lower = pars_optim_lower)
+ 
+## Run Bayesian optimization
+var0 = fitMod$var_ms_unweighted
+ 
+# If var0 is NULL, cost function must return -2log(prob.model). See documentation.
+mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL, var0=var0,
+                   lower=pars_optim_lower, upper=pars_optim_upper)
+
+
+### ----------------------------------- ###
+###        Saving work space            ###
+### ----------------------------------- ###
+
+savetime  <- format(Sys.time(), "%m%d-%H%M")
+runname <- paste("RUN", pars_optim, sep="")
+
+options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
+                 "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_", dce.fun,
+                 "_", diff.fun, "_", cost.type, "-", sep = "")
+
+rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
+   site.data.bf, site.data.mz, initial_state, obs.accum)
+
+save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
