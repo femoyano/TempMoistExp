@@ -8,22 +8,22 @@
 
 t0 <- Sys.time()
 
+
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
-runname <- "RUNOPT1.0"
 
 # Setup
 setup <- list(
   # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
-  flag.mic  = 0 ,  # simulate microbial pool explicitly
-  flag.fcs  = 0 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
-  flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
-  flag.dte  = 0 ,  # diffusivity temperature effect on/off
-  flag.dce  = 0 ,  # diffusivity carbon effect on/off
-  dce.fun  = "lin"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun = "hama" ,  # Options: 'hama', 'cubic'
+  flag.mic  = 1 ,  # simulate microbial pool explicitly
+  flag.fcs  = 1 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
+  flag.sew  = 1 ,  # calculate C_E and C_D concentration in water
+  flag.dte  = 1 ,  # diffusivity temperature effect on/off
+  flag.dce  = 1 ,  # diffusivity carbon effect on/off
+  dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
+  diff.fun = "cubic" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
   # Cost calculation type.
@@ -31,8 +31,9 @@ setup <- list(
   cost.type = "rate.sd" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_4s.csv" ,
-  # Set of parameters initial values and bounds: set1, set2, ...
-  pars_optim = "set2"
+  # Set of parameters initial values and bounds. Names can have: 
+  # -nb (narrow bounds), -wb (wide bounds), -mic, -nomic, -min, -nomin, -v1, -v2, etc.
+  pars_optim = "-nb-nomic-nomin-v1"
 )
 
 

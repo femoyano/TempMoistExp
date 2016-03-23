@@ -47,7 +47,7 @@ obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
 ### Sourced required files ----------------------------------------------------
 source("parameters.R")
-source(paste("pars_optim_", pars_optim, ".R", sep = ""))
+source(paste("pars", pars_optim, ".R", sep = ""))
 source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
@@ -88,10 +88,11 @@ system.time(cost <- ModCost(pars_optim_init))
 # ### ----------------------------------- ###
 # 
 # savetime  <- format(Sys.time(), "%m%d-%H%M")
+# runname <- paste("RUN", pars_optim, sep="")
 # 
 # options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
-#                  "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_par", pars_optim,
-#                  "_", cost.type, "-", sep = "")
+#                  "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_", cost.type,
+#                  "-", sep = "")
 # 
 # rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
 #    site.data.bf, site.data.mz, initial_state, obs.accum)

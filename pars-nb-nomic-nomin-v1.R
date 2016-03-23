@@ -4,7 +4,7 @@
 #### ==========================================================================
 
 ### Parameter Set 2 for initial and bounds values
-### Subset of full model parameters (noMic, noAds) with conservative bounds.
+### Subset of calibratable model parameters (noMic, noAds) with conservative bounds.
 
 pars_optim_init <- c(
   f_CA_bf   = 0.2    ,                # fraction of C_A in TOC for bare fallow
