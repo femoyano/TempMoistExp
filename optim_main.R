@@ -25,10 +25,13 @@ year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
 sec      <- 1        # seconds in a second!
 
-# Other settings
-flag.des  <- 1       # Cannot be changed: model crashes when doing stepwise.
-tstep <- get(t_step)
-tsave <- get(t_save)
+# ----- fixed model setup ----
+t_step     <- "hour"  # Model time step (as string). Important when using stepwise run.
+t_save     <- "hour"  # save time step (only for stepwise model?)
+ode.method <- "lsoda"  # see ode function
+flag.des   <- 1       # Cannot be changed: model crashes when doing stepwise.
+tstep      <- get(t_step)
+tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
 
@@ -50,7 +53,7 @@ source("Model_desolve.R")
 source("Model_stepwise.R")
 source("initial_state.R")
 # source("ModRes.R")
-source("ModCost2.R")
+source("ModCost_byMoist.R")
 source("AccumCalc.R")
 source("ParsReplace.R")
 source("SampleRun.R")
@@ -63,28 +66,34 @@ source("GetModelData.R")
 ### ----------------------------------- ###
 
 ### Check model cost and computation time --------------
-# ptm0 <- proc.time()
 system.time(cost <- ModCost(pars_optim_init))
-# print(cat('t0', proc.time() - ptm0))
-# 
+
 # ### Check sensitivity of parameters ---------------
-Sfun <- sensFun(ModCost, pars_optim_init)
-# 
+# Sfun <- sensFun(ModCost, pars_optim_init)
+#  
 # ## Optimize parameters
-fitMod <- modFit(f = ModCost, p = pars_optim_init, method = "Nelder-Mead", upper = pars_optim_upper, lower = pars_optim_lower)
+# fitMod <- modFit(f = ModCost, p = pars_optim_init, method = "Nelder-Mead",
+#                  upper = pars_optim_upper, lower = pars_optim_lower)
+#  
+# ## Run Bayesian optimization
+# var0 = fitMod$var_ms_unweighted
+#  
+# # If var0 is NULL, cost function must return -2log(prob.model). See documentation.
+# mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL, var0=var0,
+#                    lower=pars_optim_lower, upper=pars_optim_upper)
 # 
-# ### Run Bayesian optimization
-var0 = fitMod$var_ms_unweighted
 # 
-# # # ACHTUNG! if var0 is NULL, cist function must return -2log(prob.model). See documentation.
-mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL, var0=var0, lower=pars_optim_lower, upper=pars_optim_upper)
-
-
-### ----------------------------------- ###
-###        Saving work space            ###
-### ----------------------------------- ###
-savetime  <- format(Sys.time(), "%m%d-%H%M")
-options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew, "_des", flag.des,
-                 "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_par", pars_optim, "_", cost.type, "-", sep = "")
-rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all, site.data.bf, site.data.mz, initial_state, obs.accum)
-save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+# ### ----------------------------------- ###
+# ###        Saving work space            ###
+# ### ----------------------------------- ###
+# 
+# savetime  <- format(Sys.time(), "%m%d-%H%M")
+# 
+# options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
+#                  "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_par", pars_optim,
+#                  "_", cost.type, "-", sep = "")
+# 
+# rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
+#    site.data.bf, site.data.mz, initial_state, obs.accum)
+# 
+# save.image(file = paste(runname, options, savetime, ".RData", sep = ""))

@@ -22,18 +22,15 @@ setup <- list(
   flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
-  flag.dcf  = 0 ,  # diffusivity carbon function: 0 = exponential, 1 = linear
-  diff.func  = "hama"  , # Options: 'hama', 'cubic'
-  t_step     = "hour"  ,  # Model time step (as string). Important when using stepwise run.
-  t_save     = "hour"  ,  # save time step (only for stepwise model?)
-  ode.method = "lsoda" ,  # see ode function
+  dce.fun  = "lin"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
+  diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.sd" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_smp.csv" ,
+  sample_list_file = "samples_4s.csv" ,
   # Set of parameters initial values and bounds: set1, set2, ...
   pars_optim = "set2"
 )
@@ -44,6 +41,7 @@ setup <- list(
 ### ----------------------------------- ###
 library(doParallel)
 cores = detectCores()
+# cores = 1
 cat("Cores detected:", cores, "\n")
 registerDoParallel(cores = cores)
 

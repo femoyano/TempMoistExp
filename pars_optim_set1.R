@@ -3,6 +3,9 @@
 # Time variables and tstep have to be defined before sourcing this file.
 #### ==========================================================================
 
+### Parameter Set 1 for initial and bounds values
+### All model calibratable parameters with conservative bounds.
+
 pars_optim_init <- c(
   f_CA_bf   = 0.2    ,                # fraction of C_A in TOC for bare fallow
   f_CA_mz   = 0.2    ,                # fraction of C_A in TOC for maize soil 
