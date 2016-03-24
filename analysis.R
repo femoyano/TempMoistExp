@@ -31,6 +31,9 @@ registerDoParallel(cores = cores)
 
 list2env(setup, envir = .GlobalEnv)
 
+pars_optim <- "-nb-nomic-nomin-v1"
+diff.fun <- "hama"
+
 ### Define time variables
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
