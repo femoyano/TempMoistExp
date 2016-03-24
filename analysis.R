@@ -30,6 +30,7 @@ registerDoParallel(cores = cores)
 # Prepare setup
 
 list2env(setup, envir = .GlobalEnv)
+
 ### Define time variables
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
@@ -49,7 +50,7 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 ### Sourced required files ----------------------------------------------------
 source("parameters.R")
-source(paste("pars_optim_", pars_optim, ".R", sep = ""))
+source(paste("pars", pars_optim, ".R", sep = ""))
 source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")

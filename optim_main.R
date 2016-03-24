@@ -79,7 +79,7 @@ fitMod <- modFit(f = ModCost, p = pars_optim_init, method = "Nelder-Mead",
 var0 = fitMod$var_ms_unweighted
  
 # If var0 is NULL, cost function must return -2log(prob.model). See documentation.
-mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL, var0=var0,
+mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, var0=var0,
                    lower=pars_optim_lower, upper=pars_optim_upper)
 
 

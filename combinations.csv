@@ -1,15 +1,29 @@
-ID,f.dce,f.dte,f.fcs,f.sew,f.mic,diff.fun,dce.fun,cost.type,modFit,modMCMC,select
-,0,0,0,0,0,cubic,- ,rate.sd,option1,option1,cost.type
-,0,0,0,0,0,cubic,- ,rate.mean,option1,option1,cost.type
-,1,1,1,1,1,cubic,exp,rate.sd,option1,option1,cost.type
-,1,1,1,1,1,cubic,exp,rate.mean,option1,option1,cost.type
-,0,0,0,0,0,cubic,- ,best,option2,option2,modFit/MCMC
-,1,1,1,1,1,cubic,exp,best,option2,option2,modFit/MCMC
-,0,0,0,0,0,hama,- ,best,best,best,diff.fun
-,1,1,1,1,1,hama,exp,best,best,best,diff.fun
-,1,0,0,0,0,best,lin,best,best,best,dce + dce.fun
-,1,0,0,0,0,best,exp,best,best,best,dce + dce.fun
-,best,1,0,0,0,best,best,best,best,best,dte
-,best,best,1,1,0,best,best,best,best,best,fcs
-,best,best,best,1,0,best,best,best,best,best,sew
-,best,best,best,best,1,best,best,best,best,best,mic
+Planned Runs,,,,,,,,,,,,,,,,
+Run,f.dce,f.dte,f.fcs,f.sew,f.mic,f.ads,diff.fun,dce.fun,cost.type,modFit,modMCMC,pars.type,selecting,RMSE,SR-M fits?,SR-T fits?
+,0,0,0,0,0,0,cubic,- ,rate.sd,option1,option1,wb,cost.type,,,
+,0,0,0,0,0,0,cubic,- ,rate.mean,option1,option1,wb,cost.type,,,
+,1,1,1,1,1,0,cubic,exp,rate.sd,option1,option1,wb,cost.type,,,
+,1,1,1,1,1,0,cubic,exp,rate.mean,option1,option1,wb,cost.type,,,
+,0,0,0,0,0,0,cubic,- ,best,option2,option2,wb,modFit/MCMC,,,
+,1,1,1,1,1,0,cubic,exp,best,option2,option2,wb,modFit/MCMC,,,
+,0,0,0,0,0,0,hama,- ,best,best,best,wb,diff.fun,,,
+,1,1,1,1,1,0,hama,exp,best,best,best,wb,diff.fun,,,
+,1,0,0,0,0,0,best,lin,best,best,best,wb,dce + dce.fun,,,
+,1,0,0,0,0,0,best,exp,best,best,best,wb,dce + dce.fun,,,
+,best,1,0,0,0,0,best,best,best,best,best,wb,dte,,,
+,best,best,1,1,0,0,best,best,best,best,best,wb,fcs,,,
+,best,best,best,1,0,0,best,best,best,best,best,wb,sew,,,
+,best,best,best,best,1,0,best,best,best,best,best,wb,mic,,,
+,best,best,best,best,1,0,best,best,best,best,best,nb,pars.type,,,
+,,,,,,,,,,,,,,,,
+Previous Runs,,,,,,,,,,,,,,,,
+Run,f.dce,f.dte,f.fcs,f.sew,f.mic,f.ads,diff.fun,dce.fun,cost.type,modFit,modMCMC,pars.type,selecting,RMSE,SR-M fits?,SR-T fits?
+yes,0,0,0,0,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1000,nb,-,,,
+yes,0,0,0,0,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1000,nb,-,,,
+yes,0,0,0,1,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1001,nb,-,,,
+yes,0,0,0,1,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1002,nb,-,,,
+yes,0,0,1,0,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1003,nb,-,,,
+yes,0,0,1,0,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1004,nb,-,,,
+yes,0,0,1,1,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1005,nb,-,,,
+yes,0,0,1,1,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1006,nb,-,,,
+yes,0,0,1,1,0,0,hama,- ,uwr,Nelder-Mead,burnin1007,nb,-,,,
