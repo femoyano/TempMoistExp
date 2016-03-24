@@ -17,11 +17,11 @@ t0 <- Sys.time()
 setup <- list(
   # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
-  flag.mic  = 1 ,  # simulate microbial pool explicitly
-  flag.fcs  = 1 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
-  flag.sew  = 1 ,  # calculate C_E and C_D concentration in water
-  flag.dte  = 1 ,  # diffusivity temperature effect on/off
-  flag.dce  = 1 ,  # diffusivity carbon effect on/off
+  flag.mic  = 0 ,  # simulate microbial pool explicitly
+  flag.fcs  = 0 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
+  flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
+  flag.dte  = 0 ,  # diffusivity temperature effect on/off
+  flag.dce  = 0 ,  # diffusivity carbon effect on/off
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun = "cubic" ,  # Options: 'hama', 'cubic'
   
@@ -30,10 +30,10 @@ setup <- list(
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.sd" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_4s.csv" ,
-  # Set of parameters initial values and bounds. Names can have: 
-  # -nb (narrow bounds), -wb (wide bounds), -mic, -nomic, -min, -nomin, -v1, -v2, etc.
-  pars_optim = "-nb-v1" ,
+  sample_list_file = "samples_smp.csv" ,
+  # Set of parameters initial values and bounds. Names must have: 
+  # -nb/-wb (narrow bounds or wide bounds), -mic/-nomic, -min/-nomin, -v1/-v2/...
+  pars_optim = "-nb-nomic-nomin-v1" ,
   # Choose method for modFit
   mf.method = "Pseudo"
 )
