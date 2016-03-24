@@ -72,7 +72,7 @@ system.time(cost <- ModCost(pars_optim_init))
 Sfun <- sensFun(ModCost, pars_optim_init)
  
 ## Optimize parameters
-fitMod <- modFit(f = ModCost, p = pars_optim_init, method = "Nelder-Mead",
+fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
                  upper = pars_optim_upper, lower = pars_optim_lower)
  
 ## Run Bayesian optimization
@@ -91,7 +91,7 @@ runname <- paste("RUN", pars_optim, sep="")
 
 options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
                  "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_", dce.fun,
-                 "_", diff.fun, "_", cost.type, "-", sep = "")
+                 "_", diff.fun, "_", mf.method, "_", cost.type, "-", sep = "")
 
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
    site.data.bf, site.data.mz, initial_state, obs.accum)

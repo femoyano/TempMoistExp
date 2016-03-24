@@ -33,7 +33,9 @@ setup <- list(
   sample_list_file = "samples_4s.csv" ,
   # Set of parameters initial values and bounds. Names can have: 
   # -nb (narrow bounds), -wb (wide bounds), -mic, -nomic, -min, -nomin, -v1, -v2, etc.
-  pars_optim = "-nb-v1"
+  pars_optim = "-nb-v1" ,
+  # Choose method for modFit
+  mf.method = "Pseudo"
 )
 
 
