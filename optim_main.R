@@ -34,6 +34,10 @@ tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
+runname <- paste("RUN", pars_optim, sep="")
+options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
+                 "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
+                 "_", mf.method, "_", cost.type, "-", sep = "")
 
 # Input Setup -----------------------------------------------------------------
 input_path    <- file.path(".")  # ("..", "Analysis", "NadiaTempMoist")
@@ -74,7 +78,11 @@ Sfun <- sensFun(ModCost, pars_optim_init)
 ## Optimize parameters
 fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
                  upper = pars_optim_upper, lower = pars_optim_lower)
- 
+
+savetime  <- format(Sys.time(), "%m%d-%H%M")
+
+save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+
 ## Run Bayesian optimization
 var0 = obs.accum$sd.r
  
@@ -87,11 +95,6 @@ mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, var0=var0,
 ### ----------------------------------- ###
 
 savetime  <- format(Sys.time(), "%m%d-%H%M")
-runname <- paste("RUN", pars_optim, sep="")
-
-options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
-                 "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_", dce.fun,
-                 "_", diff.fun, "_", mf.method, "_", cost.type, "-", sep = "")
 
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
    site.data.bf, site.data.mz, initial_state, obs.accum)

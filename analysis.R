@@ -132,7 +132,7 @@ data.accum$moist.group <- interaction(data.accum$site, data.accum$moist_vol) # c
 FitMoist <- function(df, var) {
     df$C_R <- df[[var]]
     fit <- nls(C_R ~ Rmax * ifelse((moist_vol - Th) < 0, 0, (moist_vol - Th)^2 / (K^2 + (moist_vol - Th)^2)),
-               start=c(Rmax=1, Th=0.1, K=0.175), lower=c(Rmax=0.5, Th=0, K=0.01),
+               start=c(Rmax=1, Th=0.1, K=0.15), lower=c(Rmax=0.5, Th=0, K=0.01),
                upper=c(Rmax=1.5, Th=0.2, K=0.25), algorithm="port", data = df)
     return(list(fit = fit, Rmax = coef(fit)[1], Th = coef(fit)[2], K = coef(fit)[3],
                 site = df$site[1], temp = df$temp[1]))
@@ -167,44 +167,44 @@ FitTemp <- function(df, var) {
 fit.temp.obs <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_R_or")
 fit.temp.mod <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_R_mr")
 
-# Plot each moist group
-x <- data.frame(temp = seq(0, 35, 1))
-for (i in names(fit.temp.obs)) {
-  e.o <- predict(fit.temp.obs[[i]]$fitEa, newdata = x)
-  e.m <- predict(fit.temp.mod[[i]]$fitEa, newdata = x)
-  q.o <- predict(fit.temp.obs[[i]]$fitQ10, newdata = x)
-  q.m <- predict(fit.temp.mod[[i]]$fitQ10, newdata = x)
-  df <- data.accum[data.accum$moist.group == i,]
-  plot(C_R_or ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
-  points(C_R_mr ~ temp, data = df, col = 7, pch = 16)
-  lines (e.o ~ x$temp, col = 2)
-  lines (e.m ~ x$temp, col = 7)
-#   lines (q.o ~ x$temp, col = 2)
-#   lines (q.m ~ x$temp, col = 8)
-}
+# # Plot each moist group
+# x <- data.frame(temp = seq(0, 35, 1))
+# for (i in names(fit.temp.obs)) {
+#   e.o <- predict(fit.temp.obs[[i]]$fitEa, newdata = x)
+#   e.m <- predict(fit.temp.mod[[i]]$fitEa, newdata = x)
+#   q.o <- predict(fit.temp.obs[[i]]$fitQ10, newdata = x)
+#   q.m <- predict(fit.temp.mod[[i]]$fitQ10, newdata = x)
+#   df <- data.accum[data.accum$moist.group == i,]
+#   plot(C_R_or ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
+#   points(C_R_mr ~ temp, data = df, col = 7, pch = 16)
+#   lines (e.o ~ x$temp, col = 2)
+#   lines (e.m ~ x$temp, col = 7)
+# #   lines (q.o ~ x$temp, col = 2)
+# #   lines (q.m ~ x$temp, col = 8)
+# }
 
 ### Plot of parameters ----
 
-## Plot pararameters for moisture function
-# For observed data
-fit.pars <- ldply(fit.moist.obs, function(x) {data.frame(Rmax = x$Rmax, K = x$K, Th = x$Th, site = x$site, temperature = x$temp)})
-ggplot(data = fit.pars, aes(x=temperature, y=K, colour=site)) +
-  geom_point(size = 3) +
-  geom_line()
-# geom_smooth(formula = y ~ poly(x,2), method=lm, se=FALSE)
-ggplot(data=fit.pars, aes(x=temperature, y=Th, colour=site)) +
-  geom_point(size = 3) +
-  geom_line()
-
-# For modeled data
-fit.pars <- ldply(fit.moist.mod, function(x) {data.frame(Rmax = x$Rmax, K = x$K, Th = x$Th, site = x$site, temperature = x$temp)})
-ggplot(data = fit.pars, aes(x=temperature, y=K, colour=site)) +
-  geom_point(size = 3) +
-  geom_line()
-# geom_smooth(formula = y ~ poly(x,2), method=lm, se=FALSE)
-ggplot(data=fit.pars, aes(x=temperature, y=Th, colour=site)) +
-  geom_point(size = 3) +
-  geom_line()
+# ## Plot pararameters for moisture function
+# # For observed data
+# fit.pars <- ldply(fit.moist.obs, function(x) {data.frame(Rmax = x$Rmax, K = x$K, Th = x$Th, site = x$site, temperature = x$temp)})
+# ggplot(data = fit.pars, aes(x=temperature, y=K, colour=site)) +
+#   geom_point(size = 3) +
+#   geom_line()
+# # geom_smooth(formula = y ~ poly(x,2), method=lm, se=FALSE)
+# ggplot(data=fit.pars, aes(x=temperature, y=Th, colour=site)) +
+#   geom_point(size = 3) +
+#   geom_line()
+# 
+# # For modeled data
+# fit.pars <- ldply(fit.moist.mod, function(x) {data.frame(Rmax = x$Rmax, K = x$K, Th = x$Th, site = x$site, temperature = x$temp)})
+# ggplot(data = fit.pars, aes(x=temperature, y=K, colour=site)) +
+#   geom_point(size = 3) +
+#   geom_line()
+# # geom_smooth(formula = y ~ poly(x,2), method=lm, se=FALSE)
+# ggplot(data=fit.pars, aes(x=temperature, y=Th, colour=site)) +
+#   geom_point(size = 3) +
+#   geom_line()
 
 ## Plot pararameters for temp function
 # For observed data
