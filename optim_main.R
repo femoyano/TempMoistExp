@@ -35,7 +35,7 @@ tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
 runname <- paste("RUN", pars_optim, sep="")
-options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
+options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
                  "_", mf.method, "_", cost.type, "-", sep = "")
 
