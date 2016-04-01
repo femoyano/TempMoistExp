@@ -32,7 +32,7 @@ registerDoParallel(cores = cores)
 list2env(setup, envir = .GlobalEnv)
 
 pars_optim <- "-nb-nomic-nomin-v1"
-diff.fun <- "cubic"
+diff.fun <- "hama"
 
 ### Define time variables
 year     <- 31104000 # seconds in a year
@@ -212,6 +212,7 @@ span=0.5
 fit.pars <- ldply(fit.temp.obs, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
 ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
   geom_point(size = 3) +
+  ylim(20,90) +
   # geom_line()
   geom_smooth(linetype=0, span=span, se=T)
 
@@ -224,6 +225,7 @@ ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
 fit.pars <- ldply(fit.temp.mod, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
 ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
   geom_point(size = 3) +
+  ylim(20, 90) +
   # geom_line()
   geom_smooth(linetype=0, span=span, se=T)
 
