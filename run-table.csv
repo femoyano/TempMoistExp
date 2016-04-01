@@ -1,0 +1,32 @@
+Planned Runs,,,,,,,,,,,,,,,,SR-M 5C,,SR-M 20C,,SR-M 35C,,Q10-M,,,,,,,,,,,,,SR-T M0-10,,SR-T M10-20,,SR-T M20-sat,
+ID,Run,f.dce,f.dte,f.fcs,f.sew,f.mic,f.ads,diff.fun,dce.fun,cost.type,modFit,modMCMC,pars.type,selecting,RMSE,Bare Fallow,Maize,Bare Fallow,Maize,Bare Fallow,Maize,Bare Fallow,Maize,Notes,,,,,,,,,,,Bare Fallow,Maize,Bare Fallow,Maize,Bare Fallow,Maize
+run1,yes,0,0,0,0,0,0,cubic,- ,rate.sd,Pseudo,var0=sd.r,nb,cost.type and bounds,0.0227,ok,ok,bad,good,bad,bad,up,up,,,,,,,,,,,,bad,bad,bad,bad,bad,bad
+run2,yes,0,0,0,0,0,0,cubic,- ,rate.mean,Pseudo,var0=sd.r,nb,cost.type and bounds,0.0142,bad,bad,good,ok,bad,bad,up-stable,up-stable,,,,,,,,,,,,bad,bad,bad,bad,ok,bad
+run3,,1,1,1,1,1,0,cubic,exp,rate.sd,Pseudo,var0=sd.r,nb,cost.type and bounds,,,,,,,,,,,,,,,,,,,,,,,,,,
+run4,,1,1,1,1,1,0,cubic,exp,rate.mean,Pseudo,var0=sd.r,nb,cost.type and bounds,,,,,,,,,,,,,,,,,,,,,,,,,,
+run5,,0,0,0,0,0,0,cubic,- ,rate.sd,Pseudo,var0=sd.r,wb,cost.type and bounds,,,,,,,,,,,,,,,,,,,,,,,,,,
+run6,,0,0,0,0,0,0,cubic,- ,rate.mean,Pseudo,var0=sd.r,wb,cost.type and bounds,,,,,,,,,,,,,,,,,,,,,,,,,,
+run7,,1,1,1,1,1,0,cubic,exp,rate.sd,Pseudo,var0=sd.r,wb,cost.type and bounds,,,,,,,,,,,,,,,,,,,,,,,,,,
+run8,,1,1,1,1,1,0,cubic,exp,rate.mean,Pseudo,var0=sd.r,wb,cost.type and bounds,,,,,,,,,,,,,,,,,,,,,,,,,,
+run9,,0,0,0,0,0,0,cubic,- ,rate.mean,Nelder-Mead,updatecov=100,wb,modFit/MCMC,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,0,0,0,0,0,0,cubic,exp,best,option3,option3,wb,modFit/MCMC,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,0,0,0,0,0,0,hama,- ,best,best,best,wb,diff.fun,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,1,1,1,1,1,0,hama,exp,best,best,best,wb,diff.fun,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,1,0,0,0,0,0,best,lin,best,best,best,wb,dce + dce.fun,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,1,0,0,0,0,0,best,exp,best,best,best,wb,dce + dce.fun,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,best,1,0,0,0,0,best,best,best,best,best,wb,dte,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,best,best,1,1,0,0,best,best,best,best,best,wb,fcs,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,best,best,best,1,0,0,best,best,best,best,best,wb,sew,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,best,best,best,best,1,0,best,best,best,best,best,wb,mic,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,best,best,best,best,1,0,best,best,best,best,best,nb,pars.type,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Previous Runs,,,,,,,,,,,,,,,,SR-M 5C,,SR-M 20C,,SR-M 35C,,Q10-M,,,,,,,,,,,,,SR-T M0-10,,SR-T M10-20,,SR-T M20-sat,
+ID,Run,f.dce,f.dte,f.fcs,f.sew,f.mic,f.ads,diff.fun,dce.fun,cost.type,modFit,modMCMC,pars.type,selecting,RMSE,Bare Fallow,Maize,Bare Fallow,Maize,Bare Fallow,Maize,Bare Fallow,Maize,Notes,,,,,,,,,,,Bare Fallow,Maize,Bare Fallow,Maize,Bare Fallow,Maize
+prelim1,yes,0,0,0,0,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1000,nb,-,0.0133,bad,bad,good,bad,good,good,up,up,,,,,,,,,,,,null,null,over,ok,ok,over
+prelim2,yes,0,0,0,0,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1000,nb,-,0.0153,bad,bad,good,bad,good,good,up,up,,,,,,,,,,,,null,null,over,ok,over,over
+prelim3,yes,0,0,0,1,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1000,nb,-,0.0289,bad,bad,bad,bad,bad,bad,up,down-up,,,,,,,,,,,,under,over,under,under,ok,over
+prelim4,yes,0,0,0,1,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1000,nb,-,0.0251,bad,bad,bad,bad,bad,bad,too high,too high,"SR drops too much at higher moisure. T curves generally too low. Q10 shape not bad, but generally too high.",,,,,,,,,,,,,,,,
+prelim5,yes,0,0,1,0,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1000,nb,-,0.0133,bad,ok,good,ok,good,good,up,steady,"Q10vM: good final values for BF, diff BF M ok  but small, change with M incorrect.",,,,,,,,,,,,,,,,
+prelim6,yes,0,0,1,0,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1000,nb,-,0.0146,ok,bad,ok,ok,ok,ok,too high,too high,,,,,,,,,,,,,,,,,
+prelim7,yes,0,0,1,1,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1000,nb,-,0.0341,bad,bad,bad,bad,bad,bad,down-up,down-up,Q10 from 20 stabilizes at 45. No diff between sites. Not too good.,,,,,,,,,,,,,,,,
+prelim8,yes,0,0,1,1,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1000,nb,-,0.0280,bad,bad,bad,bad,bad,bad,down-stable,down-stable,Bad temperature curves but rather good Q10 values.,,,,,,,,,,,,,,,,

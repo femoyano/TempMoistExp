@@ -87,7 +87,7 @@ save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
 var0 = obs.accum$sd.r
  
 mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, var0=var0,
-                   lower=pars_optim_lower, upper=pars_optim_upper)
+                   lower=pars_optim_lower, upper=pars_optim_upper, updatecov = 100)
 
 
 ### ----------------------------------- ###
