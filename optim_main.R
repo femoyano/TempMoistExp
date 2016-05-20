@@ -34,6 +34,10 @@ tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
+runname <- paste("RUN", pars_optim, sep="")
+options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
+                 "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
+                 "_", mf.method, "_", cost.type, "-", sep = "")
 
 # Input Setup -----------------------------------------------------------------
 input_path    <- file.path(".")  # ("..", "Analysis", "NadiaTempMoist")
@@ -47,7 +51,7 @@ obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
 ### Sourced required files ----------------------------------------------------
 source("parameters.R")
-source(paste("pars_optim_", pars_optim, ".R", sep = ""))
+source(paste("pars", pars_optim, ".R", sep = ""))
 source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
@@ -68,32 +72,31 @@ source("GetModelData.R")
 ### Check model cost and computation time --------------
 system.time(cost <- ModCost(pars_optim_init))
 
-# ### Check sensitivity of parameters ---------------
-# Sfun <- sensFun(ModCost, pars_optim_init)
-#  
-# ## Optimize parameters
-# fitMod <- modFit(f = ModCost, p = pars_optim_init, method = "Nelder-Mead",
-#                  upper = pars_optim_upper, lower = pars_optim_lower)
-#  
-# ## Run Bayesian optimization
-# var0 = fitMod$var_ms_unweighted
-#  
-# # If var0 is NULL, cost function must return -2log(prob.model). See documentation.
-# mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, jump=NULL, var0=var0,
-#                    lower=pars_optim_lower, upper=pars_optim_upper)
-# 
-# 
-# ### ----------------------------------- ###
-# ###        Saving work space            ###
-# ### ----------------------------------- ###
-# 
-# savetime  <- format(Sys.time(), "%m%d-%H%M")
-# 
-# options <- paste("-ads", flag.ads, "_mci", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
-#                  "_dte", flag.dte, "_dce", flag.dce, "_dcf", flag.dcf, "_par", pars_optim,
-#                  "_", cost.type, "-", sep = "")
-# 
-# rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
-#    site.data.bf, site.data.mz, initial_state, obs.accum)
-# 
-# save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+### Check sensitivity of parameters ---------------
+Sfun <- sensFun(ModCost, pars_optim_init)
+ 
+## Optimize parameters
+fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
+                 upper = pars_optim_upper, lower = pars_optim_lower)
+
+savetime  <- format(Sys.time(), "%m%d-%H%M")
+
+save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+
+## Run Bayesian optimization
+var0 = obs.accum$sd.r
+ 
+mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, var0=var0,
+                   lower=pars_optim_lower, upper=pars_optim_upper, updatecov = 100)
+
+
+### ----------------------------------- ###
+###        Saving work space            ###
+### ----------------------------------- ###
+
+savetime  <- format(Sys.time(), "%m%d-%H%M")
+
+rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
+   site.data.bf, site.data.mz, initial_state, obs.accum)
+
+save.image(file = paste(runname, options, savetime, ".RData", sep = ""))

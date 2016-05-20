@@ -46,6 +46,6 @@ pars <- c(
   f_gr_s   = -0.016   , # f_gr slope with temperature
   f_de     = 0.01     , # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
   psi_Rth  = 15000    , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  C_max    = 500000    # some max value of C_P that should not be reached (used for linear effect on diffusion). Can be calibrated.
+  C_max    = 500000    # some max value of C_P that should not be reached (used for linear effect on diffusion).
 )
 

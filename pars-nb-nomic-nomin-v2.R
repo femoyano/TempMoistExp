@@ -4,7 +4,7 @@
 #### ==========================================================================
 
 ### Parameter Set 2 for initial and bounds values
-### Subset of full model parameters (noMic, noAds) with conservative bounds.
+### Subset of calibratable model parameters (noMic, noAds) with conservative bounds.
 
 pars_optim_init <- c(
   f_CA_bf   = 0.2    ,                # fraction of C_A in TOC for bare fallow
@@ -14,7 +14,7 @@ pars_optim_init <- c(
   f_CEw     = 0.001  ,                # fraction of CEw in toc
   r_ed_ref  = 0.001  / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   V_D_ref   = 1      / hour * tstep , # [h-1] Maximum speed of C_P decomposition (Li at al. 2014, AWB model)
-  K_D_ref   = 200000 ,                # [gC m-3] Affinity parameter for C_P decomp. Gueesed starting value.
+  K_D_ref   = 100000  ,                # [gC m-3] Affinity parameter for C_P decomp. Gueesed starting value.
   E_V       = 47     ,                # [kJ mol^-1] Gibbs energy for decomposition and turnover times
   E_K       = 30     ,                # [kJ mol^-1] Gibbs energy for K_D
   f_gr_ref  = 0.7    ,                # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)

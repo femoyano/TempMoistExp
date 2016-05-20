@@ -7,16 +7,15 @@ require("reshape2")
 ## Load and process data.
 mtdata1 <- read.table("data.csv",header=T,sep=",",quote="\"")
 sampledata <- read.table("samples.csv", header=T,sep=",",quote="\"")
-mtdata1$moist_vol <- mtdata1$moist_grav * 1.8 # 1.8 is the dry soil bulk density
+# Round moisture to close values
 mtdata1$moist_grav <- mtdata1$moist_grav / 100
-mtdata1$moist_vol <- mtdata1$moist_vol / 100
+mtdata1$moist_grav[mtdata1$moist_grav > 0.047 & mtdata1$moist_grav < 0.053] <- 0.05
+mtdata1$moist_grav[mtdata1$moist_grav > 0.062 & mtdata1$moist_grav < 0.066] <- 0.065
+mtdata1$moist_vol <- mtdata1$moist_grav * 1.8 # 1.8 is the dry soil bulk density
 mtdata1$inc_end <- as.POSIXct(strptime(mtdata1$inc_end, format = "%d/%m/%Y %H:%M", tz = ""))
 mtdata1$inc_start <- as.POSIXct(strptime(mtdata1$inc_start, format = "%d/%m/%Y %H:%M", tz = ""))
 mtdata1$preinc_end <- as.POSIXct(strptime(mtdata1$preinc_end, format = "%d/%m/%Y %H:%M", tz = ""))
 mtdata1$preinc_start <- as.POSIXct(strptime(mtdata1$preinc_start, format = "%d/%m/%Y %H:%M", tz = ""))
-# Round moisture to close values
-mtdata1$moist_grav[mtdata1$moist_grav > 0.047 & mtdata1$moist_grav < 0.053] <- 0.05
-mtdata1$moist_grav[mtdata1$moist_grav > 0.062 & mtdata1$moist_grav < 0.066] <- 0.065
 
 ## ---------------------------------------------------------------------------------------
 # End and start times of incubation periods should coincide.

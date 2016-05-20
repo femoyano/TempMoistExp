@@ -1,7 +1,7 @@
 ---
 output: html_document
 ---
-General Notes on Coding and Model Development
+# General Notes on Coding and Model Development
 
 #### How to implement effects of diffusion, concentrations and disconnection in order to reflect realistic processes and effects such as priming?
 
@@ -9,8 +9,12 @@ One thing to consider are mechanisms that lead to changes in the ratio of decomp
 
 The change in rate ratios of decomposition and respiration may result from:
 - a disconnection effect, either by increasing the diffusion distance or simply through a factor reducing the uptake of the diffused SC. For example using the uptake limitation from the Manzoni paper.
-- If uptake is assumed not to be affectred by concentrations (no positive effect with low water), is is the current case.
+- If uptake is assumed not to be affectred by concentrations while decomposition is. But how can this be jusified?
 
 Decomposition and uptake are affected by water changes in two ways: concentration changes and diffusion limitation. Uptake may be additionally affected as described above (uptake modifier), representating a physiological effect.
 
 Adsorption and desorption should be turned off, because rates are too slow to be significant in this experiment.
+
+Consider adding the physiological response from Manzoni to compare with other fits:
+Uptake = 0.60 + 0.28|psi|^(-1.23), where psi is in MPa
+

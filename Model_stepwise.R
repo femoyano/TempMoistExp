@@ -54,15 +54,13 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         out[j,] <- c(times[i], C_P, C_D, C_A, C_Ew, C_Em, C_M, C_R)
       }
 
-      # Diffusion calculations
+      ## Diffusion calculations  --------------------------------------
       # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
       # concentrations and multiply again for total since they cancel out.
       # Diffusion modifiers for soil (texture), temperature and carbon content: D_sm, D_tm, D_cm
-      if(moist_i <= Rth) D_sm <- 0 else D_sm <- (ps - Rth)^1.5 * ((moist_i - Rth)/(ps - Rth))^2.5 # reference?
-      if(flag.dte) D_tm <- temp^8/T_ref^8 else D_tm <- 1
-      if(flag.dce) {
-        if(flag.dcf) D_cm <- C_P^(-1/3) / C_ref^(-1/3) else D_cm <- (C_P-C_max) / (C_ref-C_max)  # non-linear or linear response
-      } else D_cm <- 1
+      D_sm <- get.D_sm(moist, ps, Rth)
+      D_tm <- get.D_tm(temp, T_ref)
+      D_cm <- get.D_cm(C_P, C_ref, C_max)
       D_d <- D_d0 * D_sm * D_tm * D_cm
       D_e <- D_e0 * D_sm * D_tm * D_cm
       

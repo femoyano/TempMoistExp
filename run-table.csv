@@ -1,0 +1,31 @@
+Previous Runs,,,,,,,,,,,,,,,,,,SR-M 5C,,SR-M 20C,,SR-M 35C,,Q10-M,
+ID,Run,f.dce,f.dte,f.fcs,f.sew,f.mic,f.ads,diff.fun,dce.fun,cost.type,modFit,modMCMC,pars.type,testing,other,RMSE,Notes,Bare Fallow,Maize,Bare Fallow,Maize,Bare Fallow,Maize,Bare Fallow,Maize
+prelim1,yes,0,0,0,0,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1000,nb,-,,0.0133,,bad,bad,good,bad,good,good,up,up
+prelim2,yes,0,0,0,0,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1000,nb,-,,0.0153,,bad,bad,good,bad,good,good,up,up
+prelim3,yes,0,0,0,1,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1000,nb,-,,0.0289,,bad,bad,bad,bad,bad,bad,up,down-up
+prelim4,yes,0,0,0,1,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1000,nb,-,,0.0251,"SR drops too much at higher moisure. T curves generally too low. Q10 shape not bad, but generally too high.",bad,bad,bad,bad,bad,bad,too high,too high
+prelim5,yes,0,0,1,0,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1000,nb,-,,0.0133,"EavM: good final values for BF, change with M incorrect.",bad,ok,good,ok,good,good,up,steady
+prelim6,yes,0,0,1,0,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1000,nb,-,,0.0146,,ok,bad,ok,ok,ok,ok,too high,too high
+prelim7,yes,0,0,1,1,0,0,hama,- ,rate.mean,Nelder-Mead,burnin1000,nb,-,,0.0341,Ea from 20 stabilizes at 45. No diff between sites. Not too good.,bad,bad,bad,bad,bad,bad,down-up,down-up
+prelim8,yes,0,0,1,1,0,0,hama,- ,rate.sd,Nelder-Mead,burnin1000,nb,-,,0.028,Bad temperature curves but rather good Q10 values.,bad,bad,bad,bad,bad,bad,down-stable,down-stable
+run1,yes,0,0,0,0,0,0,cubic,- ,rate.sd,Pseudo,var0=sd.r,nb,cost.type and bounds,,0.0227,,ok,ok,bad,good,bad,bad,up,up
+run2,yes,0,0,0,0,0,0,cubic,- ,rate.mean,Pseudo,var0=sd.r,nb,cost.type and bounds,,0.0142,,bad,bad,good,ok,bad,bad,up-stable,up-stable
+run3,yes,1,1,1,1,1,0,cubic,exp,rate.sd,Pseudo,var0=sd.r,nb,cost.type and bounds,,0.0314,,all bad,,,,,,,
+run4,yes,1,1,1,1,1,0,cubic,exp,rate.mean,Pseudo,var0=sd.r,nb,cost.type and bounds,,0.1424,,all bad,,,,,,,
+run5,yes,0,0,0,0,0,0,cubic,- ,rate.sd,Pseudo,var0=sd.r,wb,cost.type and bounds,,0.0328,Not good. K of MM too large.,,,,,,,,
+run6,yes,0,0,0,0,0,0,cubic,- ,rate.mean,Pseudo,var0=sd.r,wb,cost.type and bounds,,0.0135,No especially good fits.,,,,,,,,
+run7,-,1,1,1,1,1,0,cubic,exp,rate.sd,Pseudo,var0=sd.r,wb,cost.type and bounds,,-,error running,,,,,,,,
+run8,-,1,1,1,1,1,0,cubic,exp,rate.mean,Pseudo,var0=sd.r,wb,cost.type and bounds,,-,error running,,,,,,,,
+run9,yes,0,0,0,0,0,0,cubic,- ,rate.mean,Nelder-Mead,updatecov=100,wb,modFit/MCMC,,0.0234,,,,,,,,,
+run10,yes,0,0,0,0,0,0,cubic,- ,rate.mean,option3,option3,nb,modFit/MCMC,,,Not too good. ,,,,,,,,
+run11,yes,0,0,0,0,0,0,hama,- ,rate.mean,Pseudo,updatecov=100,nb,diff.fun,,0.0168,"M-response good at high T, bad at low T. T-response bad at low M, bad at high M in Maize. Good sign for site diff.",,,,,,,,
+run12,yes,1,0,0,0,0,0,hama,lin,rate.mean,Pseudo,updatecov=100,nb,dce + dce.fun,,0.0171,"M-response good at high T, bad at low T. T-response bad at low M, bad at high M in Maize. Good sign for site diff.",,,,,,,,
+run13,yes,1,0,0,0,0,0,hama,exp,rate.mean,Pseudo,updatecov=100,nb,dce + dce.fun,,0.0172,"M-response good at high T, bad at low T. T-response bad at low M, bad at high M in Maize. No Ea site diff.",,,,,,,,
+run14,yes,0,1,0,0,0,0,hama,- ,rate.mean,Pseudo,updatecov=100,nb,dte,,0.0155,"M-response good at high T, bad at low T. T-response bad at low M, bad at high M in Maize. Good sign for site diff.",,,,,,,,
+run15,yes,0,0,1,0,0,0,cubic,- ,rate.mean,Nelder-Mead,updatecov=100,nb,fcs,,0.0163,"M-response ok at low M, good at high M. T-reponse not great at low M but very good at high M. Very good site diff.",,,,,,,,
+run16,yes,0,0,0,1,0,0,cubic,- ,rate.mean,Nelder-Mead,updatecov=100,nb,sew,,0.0314,Bad M and T responses,,,,,,,,
+run17,yes,0,0,0,0,1,0,cubic,- ,rate.mean,Nelder-Mead,updatecov=100,nb,mic,,0.0275,Poor M and T responses,,,,,,,,
+run18,yes,0,0,1,0,0,0,hama,- ,rate.mean,Nelder-Mead,updatecov=100,nb,,,0.0146,"EavM: good final values for BF, change with M incorrect. Too high for M and wrong diff between sites.",,,,,,,,
+run19,yes,0,1,1,0,0,0,cubic,- ,rate.mean,Nelder-Mead,updatecov=100,nb,,,0.0159,OK. Ea diff right sign but small.,,,,,,,,
+run20,yes,0,1,1,0,0,0,hama,- ,rate.mean,Nelder-Mead,updatecov=100,nb,,,0.0134,T-response diff good in sign but half the magnitude. Ea stable with M. ,,,,,,,,
+run21,yes,0,1,1,0,0,0,hama,- ,rate.mean,Nelder-Mead,updatecov=100,nb,,using nb-nomic-nomin-v2,0.0166,OK but not especially good. K_D_ref = 319000,,,,,,,,

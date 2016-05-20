@@ -8,10 +8,10 @@
 
 t0 <- Sys.time()
 
+
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
-runname <- "RUNOPT1.0"
 
 # Setup
 setup <- list(
@@ -22,17 +22,20 @@ setup <- list(
   flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
-  dce.fun  = "lin"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun = "hama" ,  # Options: 'hama', 'cubic'
+  dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
+  diff.fun = "cubic" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.sd" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_4s.csv" ,
-  # Set of parameters initial values and bounds: set1, set2, ...
-  pars_optim = "set2"
+  sample_list_file = "samples_smp.csv" ,
+  # Set of parameters initial values and bounds. Names must have: 
+  # -nb/-wb (narrow bounds or wide bounds), -mic/-nomic, -min/-nomin, -v1/-v2/...
+  pars_optim = "-nb-nomic-nomin-v1" ,
+  # Choose method for modFit
+  mf.method = "Pseudo"
 )
 
 

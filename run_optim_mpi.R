@@ -11,29 +11,30 @@
 ###       User Stup                     ###
 ### ----------------------------------- ###
 
-# Model flags and other options
+# Setup
 setup <- list(
+  # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
   flag.mic  = 0 ,  # simulate microbial pool explicitly
-  flag.fcs  = 1 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
-  flag.sew  = 1 ,  # calculate C_E and C_D concentration in water
-  flag.des  = 0 ,  # run using differential equation solver? If TRUE then t_step has no effect.
+  flag.fcs  = 0 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
+  flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
-  flag.dcf  = 0 ,  # diffusivity carbon function: 0 = exponential, 1 = linear
+  dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
+  diff.fun = "cubic" ,  # Options: 'hama', 'cubic'
   
-  t_step     = "hour"  ,  # Model time step (as string). Important when using stepwise run.
-  t_save     = "hour"  ,  # save time step (only for stepwise model?)
-  ode.method = "lsoda" ,  # see ode function
-  
+  # -------- Calibration options ----------
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.sd" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_smp.csv" ,
-  pars_optim_file = "pars_optim_values_2.R"
+  sample_list_file = "samples_4s.csv" ,
+  # Set of parameters initial values and bounds. Names must have: 
+  # -nb/-wb (narrow bounds or wide bounds), -mic/-nomic, -min/-nomin, -v1/-v2/...
+  pars_optim = "-nb-nomic-nomin-v1" ,
+  # Choose method for modFit
+  mf.method = "Pseudo"
 )
-
 
 ### ----------------------------------- ###
 ###    Setings for parallel processing  ###
