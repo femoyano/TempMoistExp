@@ -21,6 +21,7 @@ pars <- c(
   # ----- Rate Parameters -----
   r_md_ref = 0.00028 / hour * tstep , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
   r_ed_ref = 0.001   / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
+  r_mm_ref = 0.001   / hour * tstep , # [h-1] rate of microbial maintenance respiration
   f_me     = 5.6e-06 / hour * tstep , # [gC g-1 C_M h-1] Fraction of C_M converted to C_E (assumed).
   V_D_ref  = 1       / hour * tstep , # [h-1] Maximum speed of C_P decomposition (Li at al. 2014, AWB model)
 #   D_d0     = 8.1e-10 / sec  * tstep , # [m2 s-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)

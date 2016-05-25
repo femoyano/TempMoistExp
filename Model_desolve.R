@@ -29,6 +29,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_VD, R)
     r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_r_md , R)
     r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_r_ed , R)
+    r_mm  <- Temp.Resp.Eq(r_mm_ref, temp, T_ref, E_r_ed , R)
     f_gr  <- f_gr_ref
     fc.mod <- get.fc.mod(moist, fc)
     moist.mod <- get.moist.mod(moist)
@@ -67,6 +68,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
       F_scw.co2 <- D_d * (C_D - 0) * (1 - f_gr)
       F_mc.pc   <- C_M * r_md
       F_mc.ecm  <- C_M * f_me
+      F_mc.co2  <- C_M * f_mm
       F_scw.pc  <- 0
       F_scw.ecm <- 0
     } else {
@@ -91,8 +93,8 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     dC_A <- F_scw.scs - F_scs.scw
     dC_Ew <- F_ecm.ecw - F_ecw.scw 
     dC_Em <- F_scw.ecm + F_mc.ecm  - F_ecm.ecw - F_ecm.scw
-    dC_M  <- F_scw.mc  - F_mc.pc   - F_mc.ecm
-    dC_R <- F_scw.co2
+    dC_M  <- F_scw.mc  - F_mc.pc   - F_mc.ecm - F_mc.co2
+    dC_R <- F_scw.co2 + F_mc.co2
     
     return(list(c(dC_P, dC_D, dC_A, dC_Ew, dC_Em, dC_M, dC_R)))
     
