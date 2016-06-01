@@ -1,0 +1,91 @@
+#### Documentation ============================================================
+# Initial estimate values for parameters to optimize.
+# Time variables and tstep have to be defined before sourcing this file.
+#### ==========================================================================
+
+### Parameter Set 1 for initial and bounds values
+### All model calibratable parameters with conservative bounds.
+
+pars_optim_init <- c(
+  
+  # Only used if adsorption/desorption is on
+  # k_ads_ref = 1e-6    , # [m3 gC-1 s-1] Adsorption rate constant of C_D. (Ahrens 2015, units converted for gC)
+  # k_des_ref = 1.2e-10 , # [s-1] Desorption rate constant of C_A. (Ahrens 2015)
+  # E_k       = 10      , # [kJ mol^-1] Gibbs energy for adsorption/desorption fluxes
+  
+  # Only used if microbes are on
+  r_md_ref  = 0.00028 ,  # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
+  f_mr      = 0.1     ,  # [] fraction of microbial turnover going to maintenance respiration  
+  
+  V_D_ref   = 1      ,  # [h-1] max rate of C_P decomposition (Li at al. 2014, AWB model)
+  V_U_ref   = 1      ,  # [h-1] max rate of microbial C uptake (assumed
+  K_D_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_P decomp. Gueesed starting value.
+  f_CA_bf   = 0.2    ,  # fraction of C_A in TOC for bare fallow
+  f_CA_mz   = 0.2    ,  # fraction of C_A in TOC for maize soil 
+  f_CD      = 0.001  ,  # fraction of CD in toc
+  f_CEm     = 0.001  ,  # fraction of CEm in toc
+  f_CEw     = 0.001  ,  # fraction of CEw in toc
+  r_ed_ref  = 0.001  ,  # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
+  E_V       = 47     ,  # [kJ mol^-1] Gibbs energy for decomposition and turnover times
+  E_K       = 30     ,  # [kJ mol^-1] Gibbs energy for K_D
+  f_gr_ref  = 0.7    ,  # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
+  f_ue      = 0.01    , # fraction of uptaken C converted to C_E (assumed)
+  psi_Rth   = 15000  ,  # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
+  D_0      =  1e-4      # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.  
+)
+
+pars_optim_lower <- c(
+  
+  # Only used if adsorption/desorption is on
+  # k_ads_ref = 1e-8    , 
+  # k_des_ref = 1.2e-12 ,
+  # E_k       = 5       ,
+  
+  # Only used if microbes are on
+  r_md_ref  = 0.00001 ,
+  f_mr      = 0.01    ,
+  
+  V_D_ref   = 0.01   ,
+  V_U_ref   = 0.01   ,
+  K_D_ref   = 10000  ,
+  f_CA_bf   = 0.01   ,
+  f_CA_mz   = 0.01   ,
+  f_CD      = 0.0001 ,
+  f_CEm     = 0.0001 ,
+  f_CEw     = 0.0001 ,
+  r_ed_ref  = 0.0001 ,
+  E_V       = 30     ,
+  E_K       = 20     ,
+  f_gr_ref  = 0.5    ,
+  f_ue      = 0.001  ,
+  psi_Rth   = 13000  ,
+  D_0      =  1e-7
+)
+
+pars_optim_upper <- c(
+  
+  # Only used if adsorption/desorption is on
+  # k_ads_ref = 1e-5   ,
+  # k_des_ref = 1.2e-8 ,
+  # E_k       = 30     ,
+  
+  # Only used if microbes are on
+  r_md_ref  = 0.001 ,
+  f_mr      = 0.9   ,
+   
+  V_D_ref   = 100    ,
+  V_U_ref   = 1000   ,
+  K_D_ref   = 500000 ,
+  f_CA_bf   = 0.9    ,
+  f_CA_mz   = 0.9    ,
+  f_CD      = 0.005  ,
+  f_CEm     = 0.005  ,
+  f_CEw     = 0.005  ,
+  r_ed_ref  = 0.01   ,
+  E_V       = 70     ,
+  E_K       = 40     ,
+  f_gr_ref  = 0.8    ,
+  f_ue      = 0.1    ,
+  psi_Rth   = 17000  ,
+  D_0       = 1e-2
+)
