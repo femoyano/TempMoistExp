@@ -84,24 +84,24 @@ for (i in names(fit.moist.obs)) {
   points(C_R_mr ~ moist_vol, data = df, col = 7, pch = 16)
 }
 
-# Plot each moist group
-# x <- data.frame(temp = seq(0, 35, 1))
-# for (i in names(fit.temp.obs)) {
-#   e.o <- predict(fit.temp.obs[[i]]$fitEa, newdata = x)
-#   e.m <- predict(fit.temp.mod[[i]]$fitEa, newdata = x)
-#   q.o <- predict(fit.temp.obs[[i]]$fitQ10, newdata = x)
-#   q.m <- predict(fit.temp.mod[[i]]$fitQ10, newdata = x)
-#   df <- data.accum[data.accum$moist.group == i,]
-#   plotname <- paste("Run", runnum, "-moist-resp-", df$moist.group[1], devname, sep = "")
-#   plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
-#   # devfun(file = plotfile, width = 5, height = 5)
-#   plot(C_R_or ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
-#   points(C_R_mr ~ temp, data = df, col = 7, pch = 16)
-#   lines (e.o ~ x$temp, col = 2)
-#   lines (e.m ~ x$temp, col = 7)
-# #   lines (q.o ~ x$temp, col = 2)
-# #   lines (q.m ~ x$temp, col = 8)
-# }
+Plot each moist group
+x <- data.frame(temp = seq(0, 35, 1))
+for (i in names(fit.temp.obs)) {
+  e.o <- predict(fit.temp.obs[[i]]$fitEa, newdata = x)
+  e.m <- predict(fit.temp.mod[[i]]$fitEa, newdata = x)
+  q.o <- predict(fit.temp.obs[[i]]$fitQ10, newdata = x)
+  q.m <- predict(fit.temp.mod[[i]]$fitQ10, newdata = x)
+  df <- data.accum[data.accum$moist.group == i,]
+  plotname <- paste("Run", runnum, "-moist-resp-", df$moist.group[1], devname, sep = "")
+  plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
+  # devfun(file = plotfile, width = 5, height = 5)
+  plot(C_R_or ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
+  points(C_R_mr ~ temp, data = df, col = 7, pch = 16)
+  lines (e.o ~ x$temp, col = 2)
+  lines (e.m ~ x$temp, col = 7)
+#   lines (q.o ~ x$temp, col = 2)
+#   lines (q.m ~ x$temp, col = 8)
+}
 
 
 ## Plot pararameters for temp function

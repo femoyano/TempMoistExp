@@ -40,10 +40,10 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       moist_i <- Approx_moist(t)
       
       # Calculate temporally changing variables
-      K_D   <- Temp.Resp.Eq(K_D_ref, temp_i, T_ref, E_KD, R)
+      K_D   <- Temp.Resp.Eq(K_D_ref, temp_i, T_ref, E_K, R)
       k_ads <- Temp.Resp.Eq(k_ads_ref, temp_i, T_ref, E_ka , R)
       k_des <- Temp.Resp.Eq(k_des_ref, temp_i, T_ref, E_kd , R)
-      V_D   <- Temp.Resp.Eq(V_D_ref, temp_i, T_ref, E_VD, R)
+      V_D   <- Temp.Resp.Eq(V_D_ref, temp_i, T_ref, E_V, R)
       r_md  <- Temp.Resp.Eq(r_md_ref, temp_i, T_ref, E_r_md , R)
       r_ed  <- Temp.Resp.Eq(r_ed_ref, temp_i, T_ref, E_r_ed , R)
       f_gr  <- f_gr_ref
@@ -100,7 +100,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         F_cd.cm  <- D_d * (C_D - 0) * f_gr # concentration at microbe asumed 0
         F_cd.co2 <- D_d * (C_D - 0) * (1 - f_gr) # concentration at microbe asumed 0
         F_cm.pc  <- C_M * r_md
-        F_cm.cem <- C_M * f_me
+        F_cm.cem <- C_M * f_ue
         F_cd.pc  <- 0
         F_cd.cem <- 0
       } else {
@@ -108,8 +108,8 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         F_cm.pc  <- 0
         F_cm.cem <- 0
         F_cd.co2 <- D_d * (C_D - 0) * (1 - f_gr)
-        F_cd.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_de)
-        F_cd.cem <- D_d * (C_D - 0) * f_gr * f_de
+        F_cd.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_ue)
+        F_cd.cem <- D_d * (C_D - 0) * f_gr * f_ue
       }
       C_D  <- C_D  - F_cd.cm - F_cd.co2 - F_cd.pc - F_cd.cem
       C_P  <- C_P  + F_cd.pc + F_cm.pc
