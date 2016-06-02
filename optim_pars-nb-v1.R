@@ -73,8 +73,8 @@ pars_optim_upper <- c(
   r_md_ref  = 0.001 ,
   f_mr      = 0.9   ,
    
-  V_D_ref   = 100    ,
-  V_U_ref   = 1000   ,
+  V_D_ref   = 10     ,
+  V_U_ref   = 10     ,
   K_D_ref   = 500000 ,
   f_CA_bf   = 0.9    ,
   f_CA_mz   = 0.9    ,
