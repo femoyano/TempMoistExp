@@ -63,10 +63,14 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     }
     
     # Microbial growth, mortality, respiration and enzyme production
+    
+    F_D_d <- D_d * (C_D - 0)  # Calculate the diffusion fluxes
+    F_U <- F_uptake(C_D, V_U, K_U, moist.mod, depth, fc.mod)  # Calculate the uptake flux
+
     if(flag.mic) {
-      F_cd.cm  <- D_d * (C_D - 0) * f_gr * (1 - f_ue)
-      F_cd.cem <- D_d * (C_D - 0) * f_gr * f_ue
-      F_cd.cr  <- D_d * (C_D - 0) * (1 - f_gr)
+      F_cd.cm  <- F_U * f_gr * (1 - f_ep)
+      F_cd.cem <- F_U * f_gr * f_ep
+      F_cd.cr  <- F_U * (1 - f_gr)
       F_cm.cp  <- C_M * r_md * (1 - f_mr)
       F_cm.cr  <- C_M * r_md * f_mr
       F_cd.cp  <- 0
@@ -75,9 +79,9 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
       F_cd.cm  <- 0
       F_cm.cp  <- 0
       F_cm.cem <- 0
-      F_cd.cr  <- D_d * (C_D - 0) * (1 - f_gr)
-      F_cd.cp  <- D_d * (C_D - 0) * f_gr * (1 - f_ue)
-      F_cd.cem <- D_d * (C_D - 0) * f_gr * f_ue
+      F_cd.cr  <- F_U * (1 - f_gr)
+      F_cd.cp  <- F_U * f_gr * (1 - f_ep)
+      F_cd.cem <- F_U * f_gr * f_ep
     }
     
     F_cem.cew  <- D_e * (C_Em - C_Ew)

@@ -43,7 +43,7 @@ pars <- c(
   E_r_ed   = 47       , # [kJ mol-1] Gibbs energy for r_ed (assumed equal to E_r_md)
   f_gr_ref = 0.7      , # Fraction of growth to respiration, i.e. microbial C use or growth efficiency (Hagerty et al.)
   f_gr_s   = -0.016   , # f_gr slope with temperature
-  f_ue     = 0.01     , # [] Fraction of C_D uptake converted to C_E (fitted).
+  f_ep     = 0.01     , # [] Fraction of C_D uptake converted to C_E (fitted).
   f_mr     = 0.1      , # [] fraction of microbial decay going to maintenance respiration
   psi_Rth  = 15000    , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   C_max    = 500000     # some max value of C_P that should not be reached (used for linear effect on diffusion).

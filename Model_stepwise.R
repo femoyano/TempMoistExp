@@ -100,7 +100,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         F_cd.cm  <- D_d * (C_D - 0) * f_gr # concentration at microbe asumed 0
         F_cd.co2 <- D_d * (C_D - 0) * (1 - f_gr) # concentration at microbe asumed 0
         F_cm.pc  <- C_M * r_md
-        F_cm.cem <- C_M * f_ue
+        F_cm.cem <- C_M * f_ep
         F_cd.pc  <- 0
         F_cd.cem <- 0
       } else {
@@ -108,8 +108,8 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
         F_cm.pc  <- 0
         F_cm.cem <- 0
         F_cd.co2 <- D_d * (C_D - 0) * (1 - f_gr)
-        F_cd.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_ue)
-        F_cd.cem <- D_d * (C_D - 0) * f_gr * f_ue
+        F_cd.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_ep)
+        F_cd.cem <- D_d * (C_D - 0) * f_gr * f_ep
       }
       C_D  <- C_D  - F_cd.cm - F_cd.co2 - F_cd.pc - F_cd.cem
       C_P  <- C_P  + F_cd.pc + F_cm.pc
