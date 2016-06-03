@@ -37,10 +37,16 @@ if(flag.dce) {
 } else get.D_cm <- function(C_P, C_ref, C_max) 1
 
 ##  Decomposition flux ---------
-F_decomp <- function (C_P, C_E, V, K, moist.mod, depth, fc.mod) {
+F_decomp <- function (C_P, C_E, V_D, K_D, moist.mod, depth, fc.mod) {
   C_P <- C_P / depth * fc.mod
   C_E <- C_E / (moist.mod * depth)
-  F <- (V * C_E * C_P) / (K + C_P) * depth
+  F <- (V_D * C_E * C_P) / (K_D + C_P) * depth
+}
+
+##  Uptake flux ---------
+F_uptake <- function (C_D, V_U, K_U, moist.mod, depth, fc.mod) {
+  C_D <- C_D / depth * fc.mod
+  F <- (V_U * C_D) / (K_U + C_D) * depth
 }
 
 ## Adsorption to mineral surface -------------------------

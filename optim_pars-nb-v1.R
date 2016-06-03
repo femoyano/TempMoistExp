@@ -19,7 +19,8 @@ pars_optim_init <- c(
   
   V_D_ref   = 1      ,  # [h-1] max rate of C_P decomposition (Li at al. 2014, AWB model)
   V_U_ref   = 1      ,  # [h-1] max rate of microbial C uptake (assumed
-  K_D_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_P decomp. Gueesed starting value.
+  K_D_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_P decomp. Guessed starting value.
+  K_U_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_D uptake.
   f_CA_bf   = 0.2    ,  # fraction of C_A in TOC for bare fallow
   f_CA_mz   = 0.2    ,  # fraction of C_A in TOC for maize soil 
   f_CD      = 0.001  ,  # fraction of CD in toc
@@ -48,6 +49,7 @@ pars_optim_lower <- c(
   V_D_ref   = 0.01   ,
   V_U_ref   = 0.01   ,
   K_D_ref   = 10000  ,
+  K_U_ref   = 10000  ,
   f_CA_bf   = 0.01   ,
   f_CA_mz   = 0.01   ,
   f_CD      = 0.0001 ,
@@ -76,6 +78,7 @@ pars_optim_upper <- c(
   V_D_ref   = 10     ,
   V_U_ref   = 10     ,
   K_D_ref   = 500000 ,
+  K_U_ref   = 500000 ,
   f_CA_bf   = 0.9    ,
   f_CA_mz   = 0.9    ,
   f_CD      = 0.005  ,
