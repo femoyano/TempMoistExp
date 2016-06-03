@@ -17,7 +17,7 @@ t0 <- Sys.time()
 setup <- list(
   # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
-  flag.mic  = 0 ,  # simulate microbial pool explicitly
+  flag.mic  = 1 ,  # simulate microbial pool explicitly
   flag.fcs  = 1 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
   flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
@@ -30,10 +30,10 @@ setup <- list(
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.mean" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_smp.csv" ,
+  sample_list_file = "samples_4s.csv" ,
   # Set of parameters initial values and bounds. Names must have: 
-  # -nb/-wb (narrow bounds or wide bounds), -mic/-nomic, -min/-nomin, -v1/-v2/...
-  pars_optim = "-nb-nomic-nomin-v1" ,
+  # -nb/-wb (narrow bounds or wide bounds), -v1/-v2/...
+  pars_optim = "-nb-v1" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead"
 )

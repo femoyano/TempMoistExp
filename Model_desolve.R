@@ -24,6 +24,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     
     # Calculate temporally changing variables
     K_D   <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K, R)
+    K_U   <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
     k_ads <- Temp.Resp.Eq(k_ads_ref, temp, T_ref, E_ka , R)
     k_des <- Temp.Resp.Eq(k_des_ref, temp, T_ref, E_kd , R)
     V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V, R)
@@ -69,20 +70,18 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
 
     if(flag.mic) {
       F_cd.cm  <- F_U * f_gr * (1 - f_ep)
-      F_cd.cem <- F_U * f_gr * f_ep
-      F_cd.cr  <- F_U * (1 - f_gr)
       F_cm.cp  <- C_M * r_md * (1 - f_mr)
       F_cm.cr  <- C_M * r_md * f_mr
       F_cd.cp  <- 0
-      F_cd.cem <- 0
     } else {
       F_cd.cm  <- 0
       F_cm.cp  <- 0
-      F_cm.cem <- 0
-      F_cd.cr  <- F_U * (1 - f_gr)
+      F_cm.cr  <- 0
       F_cd.cp  <- F_U * f_gr * (1 - f_ep)
-      F_cd.cem <- F_U * f_gr * f_ep
     }
+    F_cd.cr  <- F_U * (1 - f_gr)
+    F_cd.cem <- F_U * f_gr * f_ep
+    
     
     F_cem.cew  <- D_e * (C_Em - C_Ew)
     
@@ -96,8 +95,8 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
              F_cd.ca - F_cd.cm - F_cd.cr - F_cd.cp  - F_cd.cem
     dC_A  <- F_cd.ca - F_ca.cd
     dC_Ew <- F_cem.cew - F_cew.cd 
-    dC_Em <- F_cd.cem + F_cm.cem - F_cem.cew - F_cem.cd
-    dC_M  <- F_cd.cm - F_cm.cp - F_cm.cem - F_cm.cr
+    dC_Em <- F_cd.cem - F_cem.cew - F_cem.cd
+    dC_M  <- F_cd.cm - F_cm.cp - F_cm.cr
     dC_R  <- F_cd.cr + F_cm.cr
     
     return(list(c(dC_P, dC_D, dC_A, dC_Ew, dC_Em, dC_M, dC_R)))

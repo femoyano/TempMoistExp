@@ -30,7 +30,7 @@ pars_optim_init <- c(
   E_V       = 47     ,  # [kJ mol^-1] Gibbs energy for decomposition and turnover times
   E_K       = 30     ,  # [kJ mol^-1] Gibbs energy for K_D
   f_gr_ref  = 0.7    ,  # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
-  f_ep      = 0.01    , # fraction of uptaken C converted to C_E (assumed)
+  f_ep      = 0.01   ,  # fraction of uptaken C converted to C_E (assumed)
   psi_Rth   = 15000  ,  # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   D_0      =  1e-4      # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.  
 )
