@@ -69,12 +69,12 @@ source("GetModelData.R")
 ###      Optimization/Calibration       ###
 ### ----------------------------------- ###
 
-### Check model cost run and computation time --------------
-system.time(cost <- ModCost(pars_optim_init))
-
-### Check sensitivity of parameters ---------------
-Sfun <- sensFun(ModCost, pars_optim_init)
-
+# ### Check model cost run and computation time --------------
+# system.time(cost <- ModCost(pars_optim_init))
+# 
+# ### Check sensitivity of parameters ---------------
+# Sfun <- sensFun(ModCost, pars_optim_init)
+# 
 ## Optimize parameters
 fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
                  upper = pars_optim_upper, lower = pars_optim_lower)
