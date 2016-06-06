@@ -1,0 +1,74 @@
+===================
+Notes
+===================
+
+Currently, remotes are 'gwdg', which is local, or "origin", which is the github repo. The path for gwdg is the local path to gwdg '/media/nano/fmoyano/SoilModel/R.git'
+A pull from gwdg will only work when in /media/nano/fmoyano/SoilModel/R.git.
+
+
+===================
+Remote repositories 
+===================
+
+# Add a remote repository 
+git remote add nameofremoterepo path/to/remoterepo
+
+# Remove remote repository
+git remote remove nameofremoterepo
+
+# Rename remote repo
+git remote rename oldname newname
+
+# Change URL of a remote
+git remote set-url origin <url>
+
+
+===================
+Branches 
+===================
+
+# Deleting a local branch
+git branch -D <branchName>
+
+# Deleting a remote branch:
+git push origin --delete <branchName>
+
+# Add branch to remote and track:
+git push -u origin <branchName>
+
+# Add all branches to remote and track (this activaes the Rstudio push/pull buttons):
+git push --all -u origin
+
+# Add all new branches and update everything to remote
+git push --mirror origin
+
+# Delete remote branch
+git push origin --delete <branchName>
+
+# Track all remote branches
+for remote in `git branch -r | grep -v /HEAD`; do git checkout --track $remote ; done
+
+# Remove deleted files that cannot be committed. (Don't know why)
+git add -u
+(#alternative: git ls-files --deleted -z | xargs)
+
+
+===================
+Files
+===================
+# remove local (untracked) files
+git clean -f -n  # just to see what would be removed
+git clean -f     # this actually deletes the files
+
+
+===================
+Other stuff
+===================
+
+# Merging single files (merge file f from branch B into branch A)
+git checkout A
+git checkout --patch B f
+
+# Merging specific commits
+
+
