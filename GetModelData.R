@@ -7,7 +7,7 @@ GetModelData <- function(pars_modfit) {
   pars <- ParsReplace(pars_modfit, pars)
   
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind',
-                     # .export = c(ls(envir = .GlobalEnv), "pars"),
+                     .export = c(ls(envir = .GlobalEnv), "pars"),
                      .packages = c("deSolve")) %dopar% {
                        SampleRun(pars, data.samples[data.samples$sample==i, ],
                                  input.all[input.all$sample==i, ])
