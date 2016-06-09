@@ -4,7 +4,7 @@
 #### ==========================================================================
 
 ### Parameter Set 3 for initial and bounds values
-### Subset of calibratable model parameters (noMic, noAds) with large bounds.
+### All parameters with large bounds.
 
 pars_optim_init <- c(
   f_CA_bf   = 0.2    ,                # fraction of C_A in TOC for bare fallow
@@ -18,9 +18,18 @@ pars_optim_init <- c(
   E_V       = 47     ,                # [kJ mol^-1] Gibbs energy for decomposition and turnover times
   E_K       = 30     ,                # [kJ mol^-1] Gibbs energy for K_D
   f_gr_ref  = 0.7    ,                # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
-  f_de      = 0.01   ,                # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
+  f_ep      = 0.01   ,                # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
   psi_Rth   = 15000  ,                # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  D_0      =  1e-4 / sec  * tstep     # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.
+  D_0      =  1e-4 / sec  * tstep ,   # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.
+  
+  # Only used if adsorption/desorption is on
+  k_ads_ref = 1e-6   / sec * tstep , # [m3 gC-1 s-1] Adsorption rate constant of C_D. (Ahrens 2015, units converted for gC)
+  k_des_ref = 1.2e-10 / sec * tstep , # [s-1] Desorption rate constant of C_A. (Ahrens 2015)
+  E_k       = 10     , # [kJ mol^-1] Gibbs energy for adsorption/desorption fluxes
+  
+  # Only used if microbes are on
+  r_md_ref  = 0.00028 / hour * tstep , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
+  f_ep      = 5.6e-06 / hour * tstep  # [gC g-1 C_M h-1] Fraction of C_M converted to C_E (assumed).
 )
 
 pars_optim_lower <- c(
@@ -35,9 +44,18 @@ pars_optim_lower <- c(
   E_V       = 10     , # [kJ mol^-1] Gibbs energy for decomposition and turnover times
   E_K       = 10     , # [kJ mol^-1] Gibbs energy for K_D
   f_gr_ref  = 0.01    , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
-  f_de      = 0.0001  , # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
+  f_ep      = 0.0001  , # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
   psi_Rth   = 10000  , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  D_0      =  1e-10 / sec  * tstep # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.
+  D_0      =  1e-10 / sec  * tstep , # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.
+  
+  # Only used if adsorption/desorption is on
+  k_ads_ref = 1e-8   / sec * tstep , 
+  k_des_ref = 1.2e-12 / sec * tstep ,
+  E_k       = 5     , 
+  
+  # Only used if microbes are on
+  r_md_ref  = 0.00001 / hour * tstep , 
+  f_ep      = 1e-08   / hour * tstep 
 )
 
 pars_optim_upper <- c(
@@ -52,8 +70,15 @@ pars_optim_upper <- c(
   E_V       = 100     , # [kJ mol^-1] Gibbs energy for decomposition and turnover times
   E_K       = 50     , # [kJ mol^-1] Gibbs energy for K_D
   f_gr_ref  = 0.9    , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
-  f_de      = 0.5    , # [g g-1] Fraction of C_D taken up that is converted to C_E
+  f_ep      = 0.5    , # [g g-1] Fraction of C_D taken up that is converted to C_E
   psi_Rth   = 20000  , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  D_0       = 1  / sec  * tstep # [m2 s-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+  D_0       = 1  / sec  * tstep , # [m2 s-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
+  
+  # Only used if adsorption/desorption is on
+  k_ads_ref = 1e-5   / sec * tstep , 
+  k_des_ref = 1.2e-8 / sec * tstep , 
+  E_k       = 30     , 
+  
+  # Only used if microbes are on
+  r_md_ref  = 0.001   / hour * tstep , 
 )
-

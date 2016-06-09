@@ -51,7 +51,7 @@ obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
 ### Sourced required files ----------------------------------------------------
 source("parameters.R")
-source(paste("pars", pars_optim, ".R", sep = ""))
+source(paste("optim_pars", pars_optim, ".R", sep = ""))
 source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
