@@ -1,10 +1,11 @@
 # GetModelData.R
 # script to add model to observed data
 
-GetModelData <- function(pars_modfit) {
+GetModelData <- function(pars_optim) {
+  
   source("ParsReplace.R")
   source("SampleRun.R")
-  pars <- ParsReplace(pars_modfit, pars)
+  pars <- ParsReplace(pars_optim, pars)
   
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind',
                      .export = c(ls(envir = .GlobalEnv), "pars"),
