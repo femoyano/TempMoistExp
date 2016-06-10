@@ -18,7 +18,6 @@ pars <- c(
   pd     = 2.7   ,  # [g cm-3] Soil particle density
   
   # ----- Rate Parameters -----
-  f_me     = 5.6e-06 , # [gC g-1 C_M h-1] Fraction of C_M converted to C_E (assumed).
   r_md_ref = 0.0002  , # [h-1] rate of microbe decay (ca. Li at al. 2014, AWB model).
   r_ed_ref = 0.001   , # [h-1] rate of enzyme decay (Li at al. 2014, AWB model).
   V_U_ref  = 1       , # [h-1] max rate of microbial C uptake (assumed)
@@ -36,15 +35,16 @@ pars <- c(
   # Note that a K_D value of 300000 is very high (over 20% C) so decompostion will be linear in most soils.
   K_D_ref  = 100000   , # [gC m-3] Affinity parameter for C_P decomp (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
   K_U_ref  = 100000   , # [gC m-3] Affinity parameter for C_U uptake (guessed) 
-  E_VD      = 47       , # [kJ mol-1] Gibbs energy for V_D (average of lignin and cellulose in Wang et al. 2013)
-  E_KD      = 30       , # [kJ mol-1] Gibbs energy for K_D (Tang and Riley 2014)
+  E_V      = 47       , # [kJ mol-1] Gibbs energy for V_D (average of lignin and cellulose in Wang et al. 2013)
+  E_K      = 30       , # [kJ mol-1] Gibbs energy for K_D (Tang and Riley 2014)
   E_ka     = 10       , # [kJ mol-1] Gibbs energy for C_D adsorption/desorption fluxes (Tang and Riley 2014)
   E_kd     = 10       , # [kJ mol-1] Gibbs energy for C_E adsorption/desorption fluxes (Tang and Riley 2014)
   E_r_md   = 47       , # [kJ mol-1] Gibbs energy for r_md (Hagerty et al. 2014 supplementary info)
   E_r_ed   = 47       , # [kJ mol-1] Gibbs energy for r_ed (assumed equal to E_r_md)
   f_gr_ref = 0.7      , # Fraction of growth to respiration, i.e. microbial C use or growth efficiency (Hagerty et al.)
   f_gr_s   = -0.016   , # f_gr slope with temperature
-  f_de     = 0.01     , # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
+  f_ep     = 0.01     , # [] Fraction of C_D uptake converted to C_E (fitted).
+  f_mr     = 0.1      , # [] fraction of microbial decay going to maintenance respiration
   psi_Rth  = 15000    , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   C_max    = 500000     # some max value of C_P that should not be reached (used for linear effect on diffusion).
 )

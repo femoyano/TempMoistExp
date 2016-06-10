@@ -37,22 +37,28 @@ if(flag.dce) {
 } else get.D_cm <- function(C_P, C_ref, C_max) 1
 
 ##  Decomposition flux ---------
-F_decomp <- function (C_P, C_E, V, K, moist.mod, depth, fc.mod) {
+Decomp <- function (C_P, C_E, V_D, K_D, moist.mod, depth, fc.mod) {
   C_P <- C_P / depth * fc.mod
   C_E <- C_E / (moist.mod * depth)
-  F <- (V * C_E * C_P) / (K + C_P) * depth
+  F <- (V_D * C_E * C_P) / (K_D + C_P) * depth
+}
+
+##  Uptake flux ---------
+Uptake <- function (S, V_U, K_U, moist.mod, depth, fc.mod) {
+  S <- S / depth * fc.mod
+  F_U <- (V_U * S) / (K_U + S) * depth
 }
 
 ## Adsorption to mineral surface -------------------------
 # Md stands for density of mineral adsorption site (so is not corrected for depth)
 # Lw and La are ligands in water or adsorbed, respectively.
 # fc.mod is used for scaling M and La from 0-1 between 0 and fc
-F_adsorp <- function (Lw, La, Md, k, moist.mod, depth, fc.mod) {
+Adsorp <- function (Lw, La, Md, k, moist.mod, depth, fc.mod) {
   L <- Lw / (depth * moist.mod)
   M <- (Md - La / depth) * fc.mod
   return( (L * M * k) * depth )
 }
-F_desorp <- function (La, k, fc.mod) {
+Desorp <- function (La, k, fc.mod) {
   L <- La * fc.mod
   return(L * k)
 }

@@ -23,10 +23,12 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     moist <- Approx_moist(t_i)
     
     # Calculate temporally changing variables
-    K_D   <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_KD, R)
+    K_D   <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K, R)
+    K_U   <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
     k_ads <- Temp.Resp.Eq(k_ads_ref, temp, T_ref, E_ka , R)
     k_des <- Temp.Resp.Eq(k_des_ref, temp, T_ref, E_kd , R)
-    V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_VD, R)
+    V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V, R)
+    V_U   <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V, R)
     r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_r_md , R)
     r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_r_ed , R)
     f_gr  <- f_gr_ref
@@ -50,12 +52,12 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     F_ml.cd <- I_ml
     
     # Decomposition rate
-    F_cp.cd <- F_decomp(C_P, C_Ew, V_D, K_D, moist.mod, depth, fc.mod)
+    F_cp.cd <- Decomp(C_P, C_Ew, V_D, K_D, moist.mod, depth, fc.mod)
     
     # Adsorption/desorption
     if(flag.ads) {
-      F_cd.ca  <- F_adsorp(C_D, C_A, Md, k_ads, moist.mod, depth, fc.mod)
-      F_ca.cd  <- F_desorp(C_A, k_des, fc.mod)
+      F_cd.ca  <- Adsorp(C_D, C_A, Md, k_ads, moist.mod, depth, fc.mod)
+      F_ca.cd  <- Desorp(C_A, k_des, fc.mod)
     } else {
       F_cd.ca <- 0
       F_ca.cd <- 0
@@ -63,23 +65,23 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     
     # Microbial growth, mortality, respiration and enzyme production
     
-    F_D_d <- D_d * (C_D - 0)  # Calculate the diffusion fluxes
-    F_U <- F_D_d # F_uptake(C_D, V_U, K_U, moist.mod, depth, fc.mod)  # Calculate the uptake flux
+    Diff.cd <- D_d * (C_D - 0)  # Calculate the diffusion fluxes
+    U.cd <- Uptake(Diff.cd, V_U, K_U, moist.mod, depth, fc.mod)  # Calculate the uptake flux
 
     if(flag.mic) {
-      F_cd.cm  <- F_U * f_gr
-      F_cm.cp  <- C_M * r_md
+      F_cd.cm  <- U.cd * f_gr * (1 - f_ep)
+      F_cm.cp  <- C_M * r_md * (1 - f_mr)
+      F_cm.cr  <- C_M * r_md * f_mr
       F_cd.cp  <- 0
-      F_cm.cem <- C_M * f_me
-      F_cd.cem <- 0
     } else {
       F_cd.cm  <- 0
       F_cm.cp  <- 0
-      F_cm.cem <- 0
-      F_cd.cp  <- F_U * f_gr * (1 - f_de)
-      F_cd.cem <- F_U * f_gr * f_de
+      F_cm.cr  <- 0
+      F_cd.cp  <- U.cd * f_gr * (1 - f_ep)
     }
-    F_cd.cr  <- F_U * (1 - f_gr)
+    F_cd.cr  <- U.cd * (1 - f_gr)
+    F_cd.cem <- U.cd * f_gr * f_ep
+    
     
     F_cem.cew  <- D_e * (C_Em - C_Ew)
     
@@ -93,9 +95,9 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
              F_cd.ca - F_cd.cm - F_cd.cr - F_cd.cp  - F_cd.cem
     dC_A  <- F_cd.ca - F_ca.cd
     dC_Ew <- F_cem.cew - F_cew.cd 
-    dC_Em <- F_cd.cem + F_cm.cem - F_cem.cew - F_cem.cd
-    dC_M  <- F_cd.cm - F_cm.cp - F_cm.cem
-    dC_R  <- F_cd.cr
+    dC_Em <- F_cd.cem - F_cem.cew - F_cem.cd
+    dC_M  <- F_cd.cm - F_cm.cp - F_cm.cr
+    dC_R  <- F_cd.cr + F_cm.cr
     
     return(list(c(dC_P, dC_D, dC_A, dC_Ew, dC_Em, dC_M, dC_R)))
     
