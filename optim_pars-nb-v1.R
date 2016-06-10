@@ -15,7 +15,7 @@ pars_optim_init <- c(
   
   # Only used if microbes are on
   r_md_ref  = 0.00028 ,  # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
-  f_mr      = 0.1     ,  # [] fraction of microbial turnover going to maintenance respiration  
+  # f_mr      = 0.1     ,  # [] fraction of microbial turnover going to maintenance respiration  
   
   V_D_ref   = 1      ,  # [h-1] max rate of C_P decomposition (Li at al. 2014, AWB model)
   V_U_ref   = 1      ,  # [h-1] max rate of microbial C uptake (assumed
@@ -44,7 +44,7 @@ pars_optim_lower <- c(
   
   # Only used if microbes are on
   r_md_ref  = 0.00001 ,
-  f_mr      = 0.01    ,
+  # f_mr      = 0.01    ,
   
   V_D_ref   = 0.01   ,
   V_U_ref   = 0.01   ,
@@ -73,7 +73,7 @@ pars_optim_upper <- c(
   
   # Only used if microbes are on
   r_md_ref  = 0.001 ,
-  f_mr      = 0.9   ,
+  # f_mr      = 0.9   ,
    
   V_D_ref   = 10     ,
   V_U_ref   = 10     ,
