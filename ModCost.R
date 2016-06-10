@@ -9,6 +9,9 @@ ModCost <- function(pars_optim) {
   # Add or replace parameters from the list of optimized parameters ----------------------
   pars <- ParsReplace(pars_optim, pars)
   
+  # Convert parameter units to the model time step
+  source("convert_units.R")
+  
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
 
   all.out <- foreach(i = data.samples$sample, .combine = 'rbind', 
