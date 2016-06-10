@@ -46,53 +46,56 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     ### Calculate all fluxes ------
     
     # Input rate
-    F_sl.pc    <- I_sl
-    F_ml.scw   <- I_ml
+    F_sl.cp <- I_sl
+    F_ml.cd <- I_ml
     
     # Decomposition rate
-    F_pc.scw   <- F_decomp(C_P, C_Ew, V_D, K_D, moist.mod, depth, fc.mod)
+    F_cp.cd <- F_decomp(C_P, C_Ew, V_D, K_D, moist.mod, depth, fc.mod)
     
     # Adsorption/desorption
     if(flag.ads) {
-      F_scw.scs  <- F_adsorp(C_D, C_A, Md, k_ads, moist.mod, depth, fc.mod)
-      F_scs.scw  <- F_desorp(C_A, k_des, fc.mod)
+      F_cd.ca  <- F_adsorp(C_D, C_A, Md, k_ads, moist.mod, depth, fc.mod)
+      F_ca.cd  <- F_desorp(C_A, k_des, fc.mod)
     } else {
-      F_scw.scs <- 0
-      F_scs.scw <- 0
+      F_cd.ca <- 0
+      F_ca.cd <- 0
     }
     
     # Microbial growth, mortality, respiration and enzyme production
-    if(flag.mic) {
-      F_scw.mc  <- D_d * (C_D - 0) * f_gr
-      F_scw.co2 <- D_d * (C_D - 0) * (1 - f_gr)
-      F_mc.pc   <- C_M * r_md
-      F_mc.ecm  <- C_M * f_me
-      F_scw.pc  <- 0
-      F_scw.ecm <- 0
-    } else {
-      F_scw.mc  <- 0
-      F_mc.pc   <- 0
-      F_mc.ecm  <- 0
-      F_scw.co2 <- D_d * (C_D - 0) * (1 - f_gr)
-      F_scw.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_de)
-      F_scw.ecm <- D_d * (C_D - 0) * f_gr * f_de
-    }
     
-    F_ecm.ecw  <- D_e * (C_Em - C_Ew)
+    F_D_d <- D_d * (C_D - 0)  # Calculate the diffusion fluxes
+    F_U <- F_D_d # F_uptake(C_D, V_U, K_U, moist.mod, depth, fc.mod)  # Calculate the uptake flux
+
+    if(flag.mic) {
+      F_cd.cm  <- F_U * f_gr
+      F_cm.cp  <- C_M * r_md
+      F_cd.cp  <- 0
+      F_cm.cem <- C_M * f_me
+      F_cd.cem <- 0
+    } else {
+      F_cd.cm  <- 0
+      F_cm.cp  <- 0
+      F_cm.cem <- 0
+      F_cd.cp  <- F_U * f_gr * (1 - f_de)
+      F_cd.cem <- F_U * f_gr * f_de
+    }
+    F_cd.cr  <- F_U * (1 - f_gr)
+    
+    F_cem.cew  <- D_e * (C_Em - C_Ew)
     
     # Enzyme decay
-    F_ecw.scw  <- C_Ew * r_ed
-    F_ecm.scw  <- C_Em * r_ed
+    F_cew.cd  <- C_Ew * r_ed
+    F_cem.cd  <- C_Em * r_ed
     
     ## Rate of change calculation for state variables ---------------
-    dC_P  <- F_sl.pc   + F_scw.pc  + F_mc.pc   - F_pc.scw
-    dC_D <- F_ml.scw  + F_pc.scw  + F_scs.scw + F_ecw.scw + F_ecm.scw -
-            F_scw.scs - F_scw.mc - F_scw.co2 - F_scw.pc - F_scw.ecm
-    dC_A <- F_scw.scs - F_scs.scw
-    dC_Ew <- F_ecm.ecw - F_ecw.scw 
-    dC_Em <- F_scw.ecm + F_mc.ecm  - F_ecm.ecw - F_ecm.scw
-    dC_M  <- F_scw.mc  - F_mc.pc   - F_mc.ecm
-    dC_R <- F_scw.co2
+    dC_P  <- F_sl.cp + F_cd.cp + F_cm.cp - F_cp.cd
+    dC_D  <- F_ml.cd + F_cp.cd + F_ca.cd + F_cew.cd + F_cem.cd -
+             F_cd.ca - F_cd.cm - F_cd.cr - F_cd.cp  - F_cd.cem
+    dC_A  <- F_cd.ca - F_ca.cd
+    dC_Ew <- F_cem.cew - F_cew.cd 
+    dC_Em <- F_cd.cem + F_cm.cem - F_cem.cew - F_cem.cd
+    dC_M  <- F_cd.cm - F_cm.cp - F_cm.cem
+    dC_R  <- F_cd.cr
     
     return(list(c(dC_P, dC_D, dC_A, dC_Ew, dC_Em, dC_M, dC_R)))
     
