@@ -17,14 +17,13 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
     # Create matrix to hold output
     extra <- 0 # number of extra variables to save (temp, moist, ...)
     out <- matrix(ncol = 1 + extra + length(initial_state), nrow = floor(length(times) * tstep / tsave))
-    colnames(out) <- c("time", "C_P", "C_D", "C_A", "C_Ew", "C_Em", "C_M", "C_R")
+    colnames(out) <- c("time", "C_P", "C_D", "C_A", "C_E", "C_M", "C_R")
     
     setbreak   <- 0 # break flag for spinup runs
     
 #     # Set initial values for variables that can be optionally saved
 #     F_sl.cp   <- F_ml.cd <- F_pc.cd <- F_cd.ca <- 0
-#     F_cem.ecb <- F_cd.diff <- F_cd.co2 <- F_cd.cem <- F_cd.pc <- 0
-#     F_cem.ecb <- F_cem.cd  <- F_ecb.cd <- 0
+#     F_cd.diff <- F_cd.cr <- F_cd.ce <- F_cd.pc <- F_ce.cd <- 0
     
     # Loop through each time step
     for(i in 1:length(times)) {
@@ -51,7 +50,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], C_P, C_D, C_A, C_Ew, C_Em, C_M, C_R)
+        out[j,] <- c(times[i], C_P, C_D, C_A, C_E, C_M, C_R)
       }
 
       ## Diffusion calculations  --------------------------------------
@@ -74,7 +73,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       C_D <- C_D + F_ml.cd
       
       # Decomposition rate
-      F_pc.cd   <- F_decomp(C_P, C_Ew, V_D, K_D, moist_i, fc, depth)
+      F_pc.cd   <- F_decomp(C_P, C_E, V_D, K_D, moist_i, fc, depth)
       C_D <- C_D + F_pc.cd
       C_P <- C_P - F_pc.cd
       
@@ -97,38 +96,30 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
 
       # Microbial growth, mortality, respiration and enzyme production
       if(flag.mic) {
-        F_cd.cm  <- D_d * (C_D - 0) * f_gr # concentration at microbe asumed 0
-        F_cd.co2 <- D_d * (C_D - 0) * (1 - f_gr) # concentration at microbe asumed 0
-        F_cm.pc  <- C_M * r_md
-        F_cm.cem <- C_M * f_ep
-        F_cd.pc  <- 0
-        F_cd.cem <- 0
+        F_cd.cm <- D_d * (C_D - 0) * f_gr # concentration at microbe asumed 0
+        F_cd.cr <- D_d * (C_D - 0) * (1 - f_gr) # concentration at microbe asumed 0
+        F_cm.pc <- C_M * r_md
+        F_cd.pc <- 0
       } else {
-        F_cd.cm  <- 0
-        F_cm.pc  <- 0
-        F_cm.cem <- 0
-        F_cd.co2 <- D_d * (C_D - 0) * (1 - f_gr)
-        F_cd.pc  <- D_d * (C_D - 0) * f_gr * (1 - f_ep)
-        F_cd.cem <- D_d * (C_D - 0) * f_gr * f_ep
+        F_cd.cm <- 0
+        F_cm.pc <- 0
+        F_cd.cr <- D_d * (C_D - 0) * (1 - f_gr)
+        F_cd.pc <- D_d * (C_D - 0) * f_gr * (1 - f_ep)
       }
-      C_D  <- C_D  - F_cd.cm - F_cd.co2 - F_cd.pc - F_cd.cem
-      C_P  <- C_P  + F_cd.pc + F_cm.pc
-      C_Em <- C_Em + F_cd.cem + F_cm.cem
-      C_R  <- C_R  + F_cd.co2
-      C_M  <- C_M  + F_cd.cm - F_cm.pc - F_cm.cem
+      F_cd.ce <- D_d * (C_D - 0) * f_gr * f_ep
       
-      F_cem.cew  <- D_e * (C_Em - C_Ew)
-      C_Ew <- C_Ew + F_cem.cew 
-      C_Em <- C_Em - F_cem.cew
+      C_D <- C_D - F_cd.cm - F_cd.cr - F_cd.pc - F_cd.ce
+      C_P <- C_P + F_cd.pc + F_cm.pc
+      C_E <- C_E + F_cd.ce + F_cd.ce
+      C_R <- C_R + F_cd.cr
+      C_M <- C_M + F_cd.cm - F_cm.pc
       
       # Enzyme decay
-      F_cew.cd  <- C_Ew * r_ed
-      F_cem.cd  <- C_Em * r_ed
-      C_D  <- C_D  + F_cew.cd + F_cem.cd
-      C_Ew <- C_Ew - F_cew.cd 
-      C_Em <- C_Em - F_cem.cd
-      
-      if(C_P < 0 | C_D < 0 | C_A < 0 | C_Ew < 0 | C_Em < 0 | C_M < 0) browser("Error: a pool became negative")
+      F_ce.cd <- C_E * r_ed
+      C_D <- C_D + F_ce.cd
+      C_E <- C_E - F_ce.cd 
+
+      if(C_P < 0 | C_D < 0 | C_A < 0 | C_E < 0 | C_M < 0) browser("Error: a pool became negative")
       
       # Check for equilibirum conditions: will stop if the change in C_P in gC m-3 y-1 is smaller than eq.md
       if (eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...
