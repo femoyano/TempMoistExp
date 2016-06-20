@@ -1,5 +1,5 @@
 # prepare_input.R
-# Prepares input reuqired for each sample run.
+# Prepares input required for each sample run.
 
 if (sample.data$site == "bare_fallow") {
   site.data <- site.data.bf
@@ -31,11 +31,10 @@ parameters <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, depth = de
 
 TOC <- toc * 1000000 * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"]]
 initial_state[["C_P"]]  <- TOC * (1 - f_CA)
-initial_state[["C_D"]]  <- TOC * 0.001
-initial_state[["C_A"]]  <- TOC * f_CA
-initial_state[["C_Ew"]] <- TOC * 0.001
-initial_state[["C_Em"]] <- TOC * 0.001
-initial_state[["C_M"]]  <- TOC * 0.01
+initial_state[["C_D"]]  <- TOC * pars[["f_CD"]]
+initial_state[["C_A"]]  <- TOC * pars[["f_CA"]]
+initial_state[["C_E"]]  <- TOC * pars[["f_CE"]]
+initial_state[["C_M"]]  <- TOC * pars[["f_CM"]]
 initial_state[["C_R"]]  <- 0
 
 # Extract data

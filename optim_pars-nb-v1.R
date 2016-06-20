@@ -15,7 +15,8 @@ pars_optim_init <- c(
   
   # Only used if microbes are on
   r_md_ref  = 0.00028 ,  # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
-  f_mr      = 0.1     ,  # [] fraction of microbial turnover going to maintenance respiration  
+  f_mr      = 0.1     ,  # [] fraction of microbial turnover going to maintenance respiration
+  f_CM      = 0.01    ,  # fraction of C_M in toc
   
   V_D_ref   = 1      ,  # [h-1] max rate of C_P decomposition (Li at al. 2014, AWB model)
   V_U_ref   = 1      ,  # [h-1] max rate of microbial C uptake (assumed
@@ -23,9 +24,8 @@ pars_optim_init <- c(
   K_U_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_D uptake.
   f_CA_bf   = 0.2    ,  # fraction of C_A in TOC for bare fallow
   f_CA_mz   = 0.2    ,  # fraction of C_A in TOC for maize soil 
-  f_CD      = 0.001  ,  # fraction of CD in toc
-  f_CEm     = 0.001  ,  # fraction of CEm in toc
-  f_CEw     = 0.001  ,  # fraction of CEw in toc
+  f_CD      = 0.001  ,  # fraction of C_D in toc
+  f_CE      = 0.001  ,  # fraction of C_Em in toc
   r_ed_ref  = 0.001  ,  # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   E_V       = 47     ,  # [kJ mol^-1] Gibbs energy for decomposition and turnover times
   E_K       = 30     ,  # [kJ mol^-1] Gibbs energy for K_D
@@ -45,6 +45,8 @@ pars_optim_lower <- c(
   # Only used if microbes are on
   r_md_ref  = 0.00001 ,
   f_mr      = 0.01    ,
+  f_CM      = 0.001   , 
+  
   
   V_D_ref   = 0.01   ,
   V_U_ref   = 0.01   ,
@@ -53,8 +55,7 @@ pars_optim_lower <- c(
   f_CA_bf   = 0.01   ,
   f_CA_mz   = 0.01   ,
   f_CD      = 0.0001 ,
-  f_CEm     = 0.0001 ,
-  f_CEw     = 0.0001 ,
+  f_CE      = 0.0001 ,
   r_ed_ref  = 0.0001 ,
   E_V       = 30     ,
   E_K       = 20     ,
@@ -74,6 +75,8 @@ pars_optim_upper <- c(
   # Only used if microbes are on
   r_md_ref  = 0.001 ,
   f_mr      = 0.9   ,
+  f_CM      = 0.1   , 
+  
    
   V_D_ref   = 10     ,
   V_U_ref   = 10     ,
@@ -82,8 +85,7 @@ pars_optim_upper <- c(
   f_CA_bf   = 0.9    ,
   f_CA_mz   = 0.9    ,
   f_CD      = 0.005  ,
-  f_CEm     = 0.005  ,
-  f_CEw     = 0.005  ,
+  f_CE      = 0.005  ,
   r_ed_ref  = 0.01   ,
   E_V       = 70     ,
   E_K       = 40     ,
