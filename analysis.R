@@ -8,7 +8,6 @@ require(FME)
 require(plyr)
 require(reshape2)
 library(doParallel)
-library(ggplot2)
 
 cores = detectCores()
 registerDoParallel(cores = cores)

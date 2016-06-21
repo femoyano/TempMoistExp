@@ -18,19 +18,20 @@ pars_optim_init <- c(
   f_mr      = 0.1     ,  # [] fraction of microbial turnover going to maintenance respiration
   f_CM      = 0.01    ,  # fraction of C_M in toc
   
+  # For all cases
+  f_CA_bf   = 0.2    ,  # fraction of C_A in TOC for bare fallow
+  f_CA_mz   = 0.2    ,  # fraction of C_A in TOC for maize soil 
+  f_CD      = 0.001  ,  # fraction of CD in toc
+  f_CE      = 0.001  ,  # fraction of CEm in toc
+  f_gr_ref  = 0.7    ,  # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
+  f_ep      = 0.01   ,  # fraction of uptaken C converted to C_E (assumed)
   V_D_ref   = 1      ,  # [h-1] max rate of C_P decomposition (Li at al. 2014, AWB model)
   V_U_ref   = 1      ,  # [h-1] max rate of microbial C uptake (assumed
   K_D_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_P decomp. Guessed starting value.
   K_U_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_D uptake.
-  f_CA_bf   = 0.2    ,  # fraction of C_A in TOC for bare fallow
-  f_CA_mz   = 0.2    ,  # fraction of C_A in TOC for maize soil 
-  f_CD      = 0.001  ,  # fraction of C_D in toc
-  f_CE      = 0.001  ,  # fraction of C_Em in toc
   r_ed_ref  = 0.001  ,  # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   E_V       = 47     ,  # [kJ mol^-1] Gibbs energy for decomposition and turnover times
   E_K       = 30     ,  # [kJ mol^-1] Gibbs energy for K_D
-  f_gr_ref  = 0.7    ,  # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
-  f_ep      = 0.01   ,  # fraction of uptaken C converted to C_E (assumed)
   psi_Rth   = 15000  ,  # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
   D_0      =  1e-4      # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.  
 )
@@ -47,20 +48,20 @@ pars_optim_lower <- c(
   f_mr      = 0.01    ,
   f_CM      = 0.001   , 
   
-  
-  V_D_ref   = 0.01   ,
-  V_U_ref   = 0.01   ,
-  K_D_ref   = 10000  ,
-  K_U_ref   = 10000  ,
+  # For all cases
   f_CA_bf   = 0.01   ,
   f_CA_mz   = 0.01   ,
   f_CD      = 0.0001 ,
   f_CE      = 0.0001 ,
+  f_gr_ref  = 0.5    ,
+  f_ep      = 0.001  ,
+  V_D_ref   = 0.01   ,
+  V_U_ref   = 0.01   ,
+  K_D_ref   = 10000  ,
+  K_U_ref   = 10000  ,
   r_ed_ref  = 0.0001 ,
   E_V       = 30     ,
   E_K       = 20     ,
-  f_gr_ref  = 0.5    ,
-  f_ep      = 0.001  ,
   psi_Rth   = 13000  ,
   D_0      =  1e-7
 )
@@ -77,20 +78,20 @@ pars_optim_upper <- c(
   f_mr      = 0.9   ,
   f_CM      = 0.1   , 
   
-   
-  V_D_ref   = 10     ,
-  V_U_ref   = 10     ,
-  K_D_ref   = 500000 ,
-  K_U_ref   = 500000 ,
+  # For all cases
   f_CA_bf   = 0.9    ,
   f_CA_mz   = 0.9    ,
   f_CD      = 0.005  ,
   f_CE      = 0.005  ,
+  f_gr_ref  = 0.8    ,
+  f_ep      = 0.1    ,
+  V_D_ref   = 10     ,
+  V_U_ref   = 10     ,
+  K_D_ref   = 500000 ,
+  K_U_ref   = 500000 ,
   r_ed_ref  = 0.01   ,
   E_V       = 70     ,
   E_K       = 40     ,
-  f_gr_ref  = 0.8    ,
-  f_ep      = 0.1    ,
   psi_Rth   = 17000  ,
   D_0       = 1e-2
 )

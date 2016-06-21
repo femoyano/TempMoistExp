@@ -7,7 +7,7 @@ require(plyr)
 require(reshape2)
 library(ggplot2)
 
-runnum <- "19"
+runnum <- "99"
 devname <- "pdf"
 devfun <- pdf
 export <- 0
@@ -28,7 +28,7 @@ lines(c(0,1),c(0,1))
 dev.off()
 
 # Plot rates model vs data
-plotname <- paste("Run", runnum, "-rates_mod_obs-", devname, sep = "")
+plotname <- paste("Run", runnum, "-rates_mod_obs.", devname, sep = "")
 plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
 devfun(file = plotfile, width = 5, height = 5)
 plot(data.accum$C_R_or, data.accum$C_R_mr, col = data.accum$site, 
@@ -42,7 +42,7 @@ dev.off()
 # # Run with init pars here!!!
 # palette("default")
 # # Plot rates model vs data
-# plotname <- paste("Run", runnum, "-rates_mod_obs-", devname, sep = "")
+# plotname <- paste("Run", runnum, "-rates_mod_obs.", devname, sep = "")
 # plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
 # devfun(file = plotfile, width = 5, height = 5)
 # plot(data.accum$C_R_or, data.accum$C_R_mr, col = "gray",
@@ -61,7 +61,7 @@ palette(cv)
 #   y.o <- predict(fit.moist.obs[[i]]$fit, newdata = x)
 #   y.m <- predict(fit.moist.mod[[i]]$fit, newdata = x)
 #   df <- data.accum[data.accum$temp.group == i,]
-#   plotname <- paste("Run", runnum, "-moist-resp-norm-", df$temp.group[1], devname, sep = "")
+#   plotname <- paste("Run", runnum, "-moist-resp-norm-", df$temp.group[1], ".", devname, sep = "")
 #   plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
 #   devfun(file = plotfile, width = 5, height = 5)
 #   plot(C_R_orn ~ moist_vol, data = df, main = df$temp.group[1], 
@@ -75,7 +75,7 @@ palette(cv)
 # Plot absolute values for each temp group
 for (i in names(fit.moist.obs)) {
   df <- data.accum[data.accum$temp.group == i,]
-  plotname <- paste("Run", runnum, "-moist-resp-", df$temp.group[1], devname, sep = "")
+  plotname <- paste("Run", runnum, "-moist-resp-", df$temp.group[1], ".", devname, sep = "")
   plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
   devfun(file = plotfile, width = 5, height = 5)
   plot(C_R_or ~ moist_vol, data = df, main = df$temp.group[1], 
@@ -84,7 +84,7 @@ for (i in names(fit.moist.obs)) {
   points(C_R_mr ~ moist_vol, data = df, col = 7, pch = 16)
 }
 
-Plot each moist group
+# Plot each moist group
 x <- data.frame(temp = seq(0, 35, 1))
 for (i in names(fit.temp.obs)) {
   e.o <- predict(fit.temp.obs[[i]]$fitEa, newdata = x)
@@ -92,7 +92,7 @@ for (i in names(fit.temp.obs)) {
   q.o <- predict(fit.temp.obs[[i]]$fitQ10, newdata = x)
   q.m <- predict(fit.temp.mod[[i]]$fitQ10, newdata = x)
   df <- data.accum[data.accum$moist.group == i,]
-  plotname <- paste("Run", runnum, "-moist-resp-", df$moist.group[1], devname, sep = "")
+  plotname <- paste("Run", runnum, "-moist-resp-", df$moist.group[1], ".", devname, sep = "")
   plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
   # devfun(file = plotfile, width = 5, height = 5)
   plot(C_R_or ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
@@ -109,7 +109,7 @@ for (i in names(fit.temp.obs)) {
 span=0.5
 fit.pars <- ldply(fit.temp.obs, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
 
-plotname <- paste("Run", runnum, "-Ea_obs-", devname, sep = "")
+plotname <- paste("Run", runnum, "-Ea_obs.", devname, sep = "")
 plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
 devfun(file = plotfile, width = 5, height = 5)
 ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
@@ -122,7 +122,7 @@ ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
   geom_smooth(linetype=0, span=span, se=F)
   dev.off()
 
-plotname <- paste("Run", runnum, "-Q10_obs-", devname, sep = "")
+plotname <- paste("Run", runnum, "-Q10_obs.", devname, sep = "")
 plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
 devfun(file = plotfile, width = 5, height = 5)
 ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
@@ -137,7 +137,7 @@ ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
 # For modeled data
 fit.pars <- ldply(fit.temp.mod, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
 
-plotname <- paste("Run", runnum, "-Ea_mod-", devname, sep = "")
+plotname <- paste("Run", runnum, "-Ea_mod.", devname, sep = "")
 plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
 devfun(file = plotfile, width = 5, height = 5)
 ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
@@ -149,7 +149,7 @@ ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
   geom_line()
   # geom_smooth(linetype=0, span=span, se=FALSE)
 
-plotname <- paste("Run", runnum, "-Q10_mod-", devname, sep = "")
+plotname <- paste("Run", runnum, "-Q10_mod.", devname, sep = "")
 plotfile <- file.path("..", "Analysis", "NadiaTempMoist", plotname)
 devfun(file = plotfile, width = 5, height = 5)
 ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +

@@ -3,82 +3,95 @@
 # Time variables and tstep have to be defined before sourcing this file.
 #### ==========================================================================
 
-### Parameter Set 3 for initial and bounds values
-### All parameters with large bounds.
+### Parameter Set for initial and bounds values
+### Parameters with large bounds.
 
 pars_optim_init <- c(
-  f_CA_bf   = 0.2    ,                # fraction of C_A in TOC for bare fallow
-  f_CA_mz   = 0.2    ,                # fraction of C_A in TOC for maize soil 
-  f_CD      = 0.001  ,                # fraction of CD in toc
-  f_CEm     = 0.001  ,                # fraction of CEm in toc
-  f_CEw     = 0.001  ,                # fraction of CEw in toc
-  r_ed_ref  = 0.001  / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
-  V_D_ref   = 1      / hour * tstep , # [h-1] Maximum speed of C_P decomposition (Li at al. 2014, AWB model)
-  K_D_ref   = 20000  ,                # [gC m-3] Affinity parameter for C_P decomp. Gueesed starting value.
-  E_V       = 47     ,                # [kJ mol^-1] Gibbs energy for decomposition and turnover times
-  E_K       = 30     ,                # [kJ mol^-1] Gibbs energy for K_D
-  f_gr_ref  = 0.7    ,                # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
-  f_ep      = 0.01   ,                # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
-  psi_Rth   = 15000  ,                # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  D_0      =  1e-4 / sec  * tstep ,   # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.
-  
+
   # Only used if adsorption/desorption is on
-  k_ads_ref = 1e-6   / sec * tstep , # [m3 gC-1 s-1] Adsorption rate constant of C_D. (Ahrens 2015, units converted for gC)
-  k_des_ref = 1.2e-10 / sec * tstep , # [s-1] Desorption rate constant of C_A. (Ahrens 2015)
-  E_k       = 10     , # [kJ mol^-1] Gibbs energy for adsorption/desorption fluxes
+  # k_ads_ref = 1e-6    , # [m3 gC-1 s-1] Adsorption rate constant of C_D. (Ahrens 2015, units converted for gC)
+  # k_des_ref = 1.2e-10 , # [s-1] Desorption rate constant of C_A. (Ahrens 2015)
+  # E_k       = 10      , # [kJ mol^-1] Gibbs energy for adsorption/desorption fluxes
   
   # Only used if microbes are on
-  r_md_ref  = 0.00028 / hour * tstep , # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
-  f_ep      = 5.6e-06 / hour * tstep  # [gC g-1 C_M h-1] Fraction of C_M converted to C_E (assumed).
+  r_md_ref  = 0.00028 ,  # [h-1] Microbe turnover rate (Li at al. 2014, AWB model).
+  f_mr      = 0.1     ,  # [] fraction of microbial turnover going to maintenance respiration
+  f_CM      = 0.01    ,  # fraction of C_M in toc
+  
+  # For all cases
+  f_CA_bf   = 0.2    ,  # fraction of C_A in TOC for bare fallow
+  f_CA_mz   = 0.2    ,  # fraction of C_A in TOC for maize soil 
+  f_CD      = 0.001  ,  # fraction of CD in toc
+  f_CE      = 0.001  ,  # fraction of CEm in toc
+  f_gr_ref  = 0.7    ,  # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
+  f_ep      = 0.01   ,  # fraction of uptaken C converted to C_E (assumed)
+  V_D_ref   = 1      ,  # [h-1] max rate of C_P decomposition (Li at al. 2014, AWB model)
+  V_U_ref   = 1      ,  # [h-1] max rate of microbial C uptake (assumed
+  K_D_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_P decomp. Guessed starting value.
+  K_U_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_D uptake.
+  r_ed_ref  = 0.001  ,  # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
+  E_V       = 47     ,  # [kJ mol^-1] Gibbs energy for decomposition and turnover times
+  E_K       = 30     ,  # [kJ mol^-1] Gibbs energy for K_D
+  psi_Rth   = 15000  ,  # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
+  D_0      =  1e-4      # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.  
 )
 
 pars_optim_lower <- c(
-  f_CA_bf   = 0   , # fraction of C_A in TOC for bare fallow
-  f_CA_mz   = 0   , # fraction of C_A in TOC for maize soil 
-  f_CD      = 0.0001 , #
-  f_CEm     = 0.0001 , #
-  f_CEw     = 0.0001 , #
-  r_ed_ref  = 0.00001 / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
-  V_D_ref   = 0.01   / hour * tstep , # [h-1] Maximum speed of C_P decomposition (Li at al. 2014, AWB model)
-  K_D_ref   = 100   , # [gC m-3] Affinity parameter for C_P decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
-  E_V       = 10     , # [kJ mol^-1] Gibbs energy for decomposition and turnover times
-  E_K       = 10     , # [kJ mol^-1] Gibbs energy for K_D
-  f_gr_ref  = 0.01    , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
-  f_ep      = 0.0001  , # [g g-1] Fraction of C_D taken up that is converted to C_E (fitted).
-  psi_Rth   = 10000  , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  D_0      =  1e-10 / sec  * tstep , # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.
   
   # Only used if adsorption/desorption is on
-  k_ads_ref = 1e-8   / sec * tstep , 
-  k_des_ref = 1.2e-12 / sec * tstep ,
-  E_k       = 5     , 
+  # k_ads_ref = 1e-8    , 
+  # k_des_ref = 1.2e-12 ,
+  # E_k       = 5       ,
   
   # Only used if microbes are on
-  r_md_ref  = 0.00001 / hour * tstep , 
-  f_ep      = 1e-08   / hour * tstep 
+  r_md_ref  = 0.00001  ,
+  f_mr      = 0.001    ,
+  f_CM      = 0.0001   , 
+  
+  # For all cases
+  f_CA_bf   = 0.0   ,
+  f_CA_mz   = 0.0   ,
+  f_CD      = 0.0001 ,
+  f_CE      = 0.0001 ,
+  f_gr_ref  = 0.01    ,
+  f_ep      = 0.0001  ,
+  V_D_ref   = 0.01   ,
+  V_U_ref   = 0.01   ,
+  K_D_ref   = 100    ,
+  K_U_ref   = 10000  ,
+  r_ed_ref  = 0.0001 ,
+  E_V       = 10     ,
+  E_K       = 10     ,
+  psi_Rth   = 10000  ,
+  D_0      =  1e-10
 )
 
 pars_optim_upper <- c(
-  f_CA_bf   = 0.9    , # fraction of C_A in TOC for bare fallow
-  f_CA_mz   = 0.9    , # fraction of C_A in TOC for maize soil 
-  f_CD      = 0.005  , #
-  f_CEm     = 0.005  , #
-  f_CEw     = 0.005  , #
-  r_ed_ref  = 0.01   / hour * tstep , # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
-  V_D_ref   = 10     / hour * tstep , # [h-1] Maximum speed of C_P decomposition (Li at al. 2014, AWB model)
-  K_D_ref   = 500000 , # [gC m-3] Affinity parameter for C_P decomp. (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
-  E_V       = 100     , # [kJ mol^-1] Gibbs energy for decomposition and turnover times
-  E_K       = 50     , # [kJ mol^-1] Gibbs energy for K_D
-  f_gr_ref  = 0.9    , # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
-  f_ep      = 0.5    , # [g g-1] Fraction of C_D taken up that is converted to C_E
-  psi_Rth   = 20000  , # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  D_0       = 1  / sec  * tstep , # [m2 s-1] Diffusivity in water for amino acids, after Jones et al. (2005); see also Poll et al. (2006). (Manzoni paper)
   
   # Only used if adsorption/desorption is on
-  k_ads_ref = 1e-5   / sec * tstep , 
-  k_des_ref = 1.2e-8 / sec * tstep , 
-  E_k       = 30     , 
+  # k_ads_ref = 1e-4   ,
+  # k_des_ref = 1.2e-6 ,
+  # E_k       = 50     ,
   
   # Only used if microbes are on
-  r_md_ref  = 0.001   / hour * tstep , 
+  r_md_ref  = 0.001 ,
+  f_mr      = 0.9   ,
+  f_CM      = 0.1   , 
+  
+  # For all cases
+  f_CA_bf   = 0.99    ,
+  f_CA_mz   = 0.99    ,
+  f_CD      = 0.05  ,
+  f_CE      = 0.05  ,
+  f_gr_ref  = 0.8    ,
+  f_ep      = 0.5    ,
+  V_D_ref   = 20     ,
+  V_U_ref   = 20     ,
+  K_D_ref   = 500000 ,
+  K_U_ref   = 500000 ,
+  r_ed_ref  = 0.1   ,
+  E_V       = 90     ,
+  E_K       = 90     ,
+  psi_Rth   = 20000  ,
+  D_0       = 1
 )
