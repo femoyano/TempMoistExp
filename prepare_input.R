@@ -1,5 +1,13 @@
-# prepare_input.R
-# Prepares input required for each sample run.
+#### ---- Prepares input required for each sample run ----
+
+# Choose site
+if (sample.data$site == "bare_fallow") {
+  site.data <- site.data.bf
+  f_CA <- pars[["f_CA_bf"]] 
+} else if (sample.data$site == "maize") {
+  site.data <- site.data.mz
+  f_CA <- pars[["f_CA_mz"]] 
+} else stop("no site name match in prepare_input.R")
 
 sand   <- site.data$sand  # [g g^-1] clay fraction values 
 clay   <- site.data$clay  # [g g^-1] sand fraction values 
@@ -23,14 +31,7 @@ parameters <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, depth = de
 
 ### ----- Calculate initial C pool sizes
 
-# Rename for easy handling
-if (sample.data$site == "bare_fallow") {
-  site.data <- site.data.bf
-  f_CA <- pars[["f_CA_bf"]] 
-} else if (sample.data$site == "maize") {
-  site.data <- site.data.mz
-  f_CA <- pars[["f_CA_mz"]] 
-} else stop("no site name match in prepare_input.R")
+# Rename
 f_CE <- pars[["f_CE"]]
 f_CM <- pars[["f_CM"]]
 f_CD <- pars[["f_CD"]]
@@ -40,7 +41,7 @@ TOC <- toc * 1000000 * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameter
 initial_state[["C_P"]]  <- TOC * (1 - f_CA - f_CD - f_CE - f_CM)
 initial_state[["C_D"]]  <- TOC * f_CD
 initial_state[["C_A"]]  <- TOC * f_CA
-initial_state[["C_Ew"]] <- TOC * f_CE
+initial_state[["C_E"]]  <- TOC * f_CE
 initial_state[["C_M"]]  <- TOC * f_CM
 initial_state[["C_R"]]  <- 0
 
