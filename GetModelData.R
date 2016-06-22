@@ -3,6 +3,7 @@
 
 GetModelData <- function(pars_optim) {
   
+  source("convert_units.R")
   source("ParsReplace.R")
   source("SampleRun.R")
   pars <- ParsReplace(pars_optim, pars)
