@@ -9,8 +9,8 @@
 pars_optim_init <- c(
   
   # Only used if adsorption/desorption is on
-  # k_ads_ref = 1e-6    , # [m3 gC-1 s-1] Adsorption rate constant of C_D. (Ahrens 2015, units converted for gC)
-  # k_des_ref = 1.2e-10 , # [s-1] Desorption rate constant of C_A. (Ahrens 2015)
+  # k_ads_ref = 0.0039  , # [m3 gC-1 h-1] Adsorption rate constant of C_D. (Ahrens 2015, units converted for gC)
+  # k_des_ref = 4.3e-7  , # [h-1] Desorption rate constant of C_A. (Ahrens 2015)
   # E_k       = 10      , # [kJ mol^-1] Gibbs energy for adsorption/desorption fluxes
   
   # Only used if microbes are on
@@ -33,14 +33,14 @@ pars_optim_init <- c(
   E_V       = 47     ,  # [kJ mol^-1] Gibbs energy for decomposition and turnover times
   E_K       = 30     ,  # [kJ mol^-1] Gibbs energy for K_D
   psi_Rth   = 15000  ,  # [kPa] Threshold water potential for microbial respiration (Manzoni and Katul 2014)
-  D_0      =  1e-4      # [m s-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.  
+  D_0       = 0.36      # [m h-1] reference diffusion conductance for dissolved C (and /10 for enzymes), representing diffusivity/distance.
 )
 
 pars_optim_lower <- c(
   
   # Only used if adsorption/desorption is on
-  # k_ads_ref = 1e-8    , 
-  # k_des_ref = 1.2e-12 ,
+  # k_ads_ref = 0.00039 , 
+  # k_des_ref = 4.3e-8  ,
   # E_k       = 5       ,
   
   # Only used if microbes are on
@@ -63,14 +63,14 @@ pars_optim_lower <- c(
   E_V       = 30     ,
   E_K       = 20     ,
   psi_Rth   = 13000  ,
-  D_0      =  1e-7
+  D_0       = 0.001
 )
 
 pars_optim_upper <- c(
   
   # Only used if adsorption/desorption is on
-  # k_ads_ref = 1e-5   ,
-  # k_des_ref = 1.2e-8 ,
+  # k_ads_ref = 0.039  ,
+  # k_des_ref = 4.3e-6 ,
   # E_k       = 30     ,
   
   # Only used if microbes are on
@@ -93,5 +93,5 @@ pars_optim_upper <- c(
   E_V       = 70     ,
   E_K       = 40     ,
   psi_Rth   = 17000  ,
-  D_0       = 1e-2
+  D_0       = 100
 )
