@@ -66,7 +66,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     # Microbial growth, mortality, respiration and enzyme production
     
     Diff.cd <- D_d * (C_D - 0)  # Calculate the diffusion fluxes
-    U.cd <- Uptake(Diff.cd, V_U, K_U, moist.mod, depth, fc.mod)  # Calculate the uptake flux
+    U.cd <- Diff.cd # Uptake(Diff.cd, V_U, K_U, moist.mod, depth, fc.mod)  # Calculate the uptake flux
 
     if(flag.mic) {
       F_cd.cm <- U.cd * f_gr * (1 - f_ep)
