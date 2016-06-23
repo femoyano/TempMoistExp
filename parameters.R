@@ -34,7 +34,7 @@ pars <- c(
   # K values in gC m-3 calculated assuming a ps 0.5 and pd of 2.7
   # Note that a K_D value of 300000 is very high (over 20% C) so decompostion will be linear in most soils.
   K_D_ref  = 100000   , # [gC m-3] Affinity parameter for C_P decomp (Adjusted. As ref: Li at al. 2014, AWB model => 250 mg gSoil-1)
-  K_U_ref  = 100000   , # [gC m-3] Affinity parameter for C_U uptake (guessed) 
+  K_U_ref  = 10       , # [gC m-3] Affinity parameter for C_U uptake (guessed) 
   E_V      = 47       , # [kJ mol-1] Gibbs energy for V_D (average of lignin and cellulose in Wang et al. 2013)
   E_K      = 30       , # [kJ mol-1] Gibbs energy for K_D (Tang and Riley 2014)
   E_ka     = 10       , # [kJ mol-1] Gibbs energy for C_D adsorption/desorption fluxes (Tang and Riley 2014)

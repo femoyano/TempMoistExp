@@ -28,7 +28,7 @@ pars_optim_init <- c(
   V_D_ref   = 1      ,  # [h-1] max rate of C_P decomposition (Li at al. 2014, AWB model)
   V_U_ref   = 1      ,  # [h-1] max rate of microbial C uptake (assumed
   K_D_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_P decomp. Guessed starting value.
-  K_U_ref   = 100000 ,  # [gC m-3] Affinity parameter for C_D uptake.
+  K_U_ref   = 10     ,  # [gC m-3] Affinity parameter for C_D uptake.
   r_ed_ref  = 0.001  ,  # [h-1] Enzyme turnover rate (Li at al. 2014, AWB model).
   E_V       = 47     ,  # [kJ mol^-1] Gibbs energy for decomposition and turnover times
   E_K       = 30     ,  # [kJ mol^-1] Gibbs energy for K_D
@@ -58,7 +58,7 @@ pars_optim_lower <- c(
   V_D_ref   = 0.01   ,
   V_U_ref   = 0.01   ,
   K_D_ref   = 100    ,
-  K_U_ref   = 10000  ,
+  K_U_ref   = 0.1    ,
   r_ed_ref  = 0.0001 ,
   E_V       = 10     ,
   E_K       = 10     ,
@@ -88,8 +88,8 @@ pars_optim_upper <- c(
   V_D_ref   = 20     ,
   V_U_ref   = 20     ,
   K_D_ref   = 500000 ,
-  K_U_ref   = 500000 ,
-  r_ed_ref  = 0.1   ,
+  K_U_ref   = 50000  ,
+  r_ed_ref  = 0.1    ,
   E_V       = 90     ,
   E_K       = 90     ,
   psi_Rth   = 20000  ,
