@@ -23,6 +23,7 @@ setup <- list(
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
   flag.mmu  = 0 ,  # michalis menten kinetics for uptake, else equal diffusion flux
+  flag.mmr  = 1 ,  # microbial maintenance respiration
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun = "cubic" ,  # Options: 'hama', 'cubic'
   

@@ -14,14 +14,15 @@
 setup <- list(
   # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
-  flag.mic  = 0 ,  # simulate microbial pool explicitly
-  flag.fcs  = 1 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
+  flag.mic  = 1 ,  # simulate microbial pool explicitly
+  flag.fcs  = 0 ,  # scale C_P, C_A, M to field capacity (with max at fc)
   flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
-  flag.mmu  = 0 ,  # michalis menten kinetics for uptake, else equal diffusion flux
+  flag.mmu  = 1 ,  # michalis menten kinetics for uptake, else equal diffusion flux
+  flag.mmr  = 1 ,  # microbial maintenance respiration
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun = "cubic" ,  # Options: 'hama', 'cubic'
+  diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
   # Cost calculation type.
@@ -31,7 +32,7 @@ setup <- list(
   sample_list_file = "samples_smp.csv" ,
   # Set of parameters initial values and bounds. Names must have: 
   # -nb/-wb (narrow bounds or wide bounds), -v1/-v2/...
-  pars_replace = "pars_test1" ,
+  pars_replace = "pars_test" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead"
 )
@@ -85,7 +86,7 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
 ### Sourced required files ----------------------------------------------------
-load("../NadiaTempMoist/parameters.RData")
+load("../NadiaTempMoist/parsets/parameters.RData")
 pars_new <- get(pars_replace)
 source("parameters.R")
 source("flux_functions.R")

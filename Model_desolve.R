@@ -75,8 +75,13 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
   
     if(flag.mic) {
       F_cd.cm <- U.cd * f_gr * (1 - f_ep)
-      F_cm.cp <- C_M * r_md * (1 - f_mr)
-      F_cm.cr <- C_M * r_md * f_mr
+      if(flag.mmr) {
+        F_cm.cp <- C_M * r_md * (1 - f_mr)
+        F_cm.cr <- C_M * r_md * f_mr  
+      } else {
+        F_cm.cp <- C_M * r_md
+        F_cm.cr <- 0
+      }
       F_cd.cp <- 0
     } else {
       F_cd.cm <- 0
