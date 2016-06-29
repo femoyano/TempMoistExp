@@ -22,19 +22,13 @@ setup <- list(
   flag.mmu  = 0 ,  # michalis menten kinetics for uptake, else equal diffusion flux
   flag.mmr  = 0 ,  # microbial maintenance respiration
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun = "cubic" ,  # Options: 'hama', 'cubic'
+  diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
-  # Cost calculation type.
-  # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
-  cost.type = "rate.mean" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
-  # Set of parameters initial values and bounds. Names must have: 
-  # -nb/-wb (narrow bounds or wide bounds), -v1/-v2/...
-  pars_replace = "pars_test" ,
-  # Choose method for modFit
-  mf.method = "Nelder-Mead"
+  # Parameter set used (replaces default values)
+  pars_replace = "optpars15_dev2"
 )
 
 
