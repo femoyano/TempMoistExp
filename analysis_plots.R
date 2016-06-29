@@ -7,7 +7,7 @@ require(plyr)
 require(reshape2)
 library(ggplot2)
 
-# prefix <- "parset4"
+prefix <- "parset4"
 savedir <- file.path("..", "NadiaTempMoist", "plots")
 devname <- "png"
 devfun <- png
