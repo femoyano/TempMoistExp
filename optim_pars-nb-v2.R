@@ -82,7 +82,7 @@ pars_optim_upper <- c(
   f_CA_bf   = 0.99    ,
   f_CA_mz   = 0.99    ,
   f_CD      = 0.0015  ,
-  f_CE      = 0.000015  ,
+  f_CE      = 0.00015  ,
   f_gr_ref  = 0.9   ,
   f_ep      = 0.5    ,
   V_D_ref   = 50     ,

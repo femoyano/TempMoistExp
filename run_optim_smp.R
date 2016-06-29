@@ -22,10 +22,10 @@ setup <- list(
   flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
-  flag.mmu  = 0 ,  # michalis menten kinetics for uptake, else equal diffusion flux
+  flag.mmu  = 1 ,  # michalis menten kinetics for uptake, else equal diffusion flux
   flag.mmr  = 1 ,  # microbial maintenance respiration
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun = "cubic" ,  # Options: 'hama', 'cubic'
+  diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
   # Cost calculation type.
@@ -35,7 +35,7 @@ setup <- list(
   sample_list_file = "samples_smp.csv" ,
   # Set of parameters initial values and bounds. Names must have: 
   # -nb/-wb (narrow bounds or wide bounds), -v1/-v2/...
-  pars_optim = "-nb-v1" ,
+  pars_optim = "-nb-v2" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead"
 )
