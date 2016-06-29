@@ -3,7 +3,7 @@
 #### Documentation ============================================================
 # All fixed parameters and constants should be listed here.
 # Variables calculated from input data (e.g. theta_fc, ..) are in main.
-# Warning: time variables and tstep have to be defined before sourcing this file.
+# Warning: all rates have to at the model time step (default is hourly).
 # author(s):
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================

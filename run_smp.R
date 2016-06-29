@@ -6,6 +6,7 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
+
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
@@ -14,22 +15,32 @@
 setup <- list(
   # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
-  flag.mic  = 0 ,  # simulate microbial pool explicitly
+  flag.mic  = 1 ,  # simulate microbial pool explicitly
   flag.fcs  = 1 ,  # scale C_P, C_A, M to field capacity (with max at fc)
   flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
-  flag.mmu  = 0 ,  # michalis menten kinetics for uptake, else equal diffusion flux
-  flag.mmr  = 0 ,  # microbial maintenance respiration
+  flag.mmu  = 1 ,  # michalis menten kinetics for uptake, else equal diffusion flux
+  flag.mmr  = 1 ,  # microbial maintenance respiration
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
-  # -------- Calibration options ----------
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_smp.csv" ,
-  # Parameter set used (replaces default values)
-  pars_replace = "optpars15_dev2"
+  sample_list_file = "samples_smp.csv"
 )
+
+
+### ----------------------------------- ###
+###           Set parameters            ###
+### ----------------------------------- ###
+# source("parameters.R")  # load default set (e.g. values from literature)
+# pars_new <- pars  # Choose a par set
+# source("ParsReplace.R")
+# pars <- ParsReplace(pars_new, pars) # Replace the default values
+
+load("../NadiaTempMoist/parsets/parset6.Rdata")  # Optional: load other par sets
+source("set_pars.R", local = TRUE)  # change specific par values  
+save(pars, file = "../NadiaTempMoist/parsets/parset.Rdata")  # Optional: save pars
 
 
 ### ----------------------------------- ###
@@ -64,10 +75,10 @@ tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
-runname <- paste("RUN_", pars_replace, sep="")
+runname <- paste("RUN_", sep="")
 options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.mmu, "_mmu", flag.fcs, "_sew", flag.sew,
                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
-                 "_", mf.method, "_", cost.type, "-", sep = "")
+                 "_", sep = "")
 
 # Input Setup -----------------------------------------------------------------
 input_path    <- file.path(".")  # ("..", "NadiaTempMoist")
@@ -80,15 +91,11 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
 ### Sourced required files ----------------------------------------------------
-load("../NadiaTempMoist/parsets/parameters.RData")
-pars_new <- get(pars_replace)
-source("parameters.R")
 source("flux_functions.R")
 source("Model_desolve.R")
 source("initial_state.R")
 source("ModCost_byMoist.R")
 source("AccumCalc.R")
-source("ParsReplace.R")
 source("SampleRun.R")
 source("GetModelData.R")
 
@@ -98,7 +105,7 @@ source("GetModelData.R")
 ### ----------------------------------- ###
 t0 <- Sys.time()
 
-pars <- ParsReplace(pars_new, pars)
+
 
 mod.out <- foreach(i = data.samples$sample, .combine = 'rbind',
                    .export = c(ls(envir = .GlobalEnv), "pars"),
@@ -109,6 +116,7 @@ mod.out <- foreach(i = data.samples$sample, .combine = 'rbind',
 
 print(Sys.time() - t0)
 
+
 # ### ----------------------------------- ###
 # ###        Analysis and Plotting        ###
 # ### ----------------------------------- ###
@@ -116,6 +124,7 @@ print(Sys.time() - t0)
 source("analysis.R")
 
 source("analysis_plots.R")
+
 
 # ### ----------------------------------- ###
 # ###        Saving work space            ###

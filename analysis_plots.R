@@ -7,11 +7,11 @@ require(plyr)
 require(reshape2)
 library(ggplot2)
 
-prefix <- "parset4"
+prefix <- "plot"
 savedir <- file.path("..", "NadiaTempMoist", "plots")
 devname <- "png"
 devfun <- png
-export <- 0
+export <- 1
 
 # # Plot residuals
 # palette("default")

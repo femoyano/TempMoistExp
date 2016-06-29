@@ -58,7 +58,7 @@ data.accum$moist.group <- interaction(data.accum$site, data.accum$moist_vol) # c
 FitMoist <- function(df, var) {
   df$C_R <- df[[var]]
   fit <- nls(C_R ~ Rmax * ifelse((moist_vol - Th) < 0, 0, (moist_vol - Th)^2 / (K^2 + (moist_vol - Th)^2)),
-             start=c(Rmax=1, Th=0.1, K=0.1), lower=c(Rmax=0.5, Th=0, K=0.01),
+             start=c(Rmax=1, Th=0.2, K=0.1), lower=c(Rmax=0.5, Th=0, K=0.01),
              upper=c(Rmax=1.5, Th=0.3, K=0.25), algorithm="port", data = df)
   return(list(fit = fit, Rmax = coef(fit)[1], Th = coef(fit)[2], K = coef(fit)[3],
               site = df$site[1], temp = df$temp[1]))
@@ -72,7 +72,7 @@ FitTemp <- function(df, var) {
   fitEa <- nls(C_R ~ C_R_ref * exp(-Ea/0.008314*(1/(temp+273) - 1/273)),
                start=c(C_R_ref = 0.1, Ea = 100), algorithm="port", data = df)
   fitQ10 <- nls(C_R ~ C_R_ref * Q10^((temp-20)/10),
-                start=c(C_R_ref = 0.1, Q10 = 20), lower = c(C_R_ref = 0, Q10 = 1),
+                start=c(C_R_ref = 0.1, Q10 = 30), lower = c(C_R_ref = 0, Q10 = 1),
                 upper = c(C_R_ref = Inf, Q10 = 100),
                 algorithm="port", data = df)
   return(list(fitEa = fitEa, fitQ10 = fitQ10, C_R_ref = coef(fitEa)[1], Ea = coef(fitEa)[2],
