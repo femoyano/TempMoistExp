@@ -8,9 +8,10 @@ require(reshape2)
 library(ggplot2)
 
 # prefix <- "parset4"
+savedir <- file.path("..", "NadiaTempMoist", "plots")
 devname <- "png"
 devfun <- png
-export <- 1
+export <- 0
 
 # # Plot residuals
 # palette("default")
@@ -20,7 +21,7 @@ export <- 1
 
 # Plot accumulated model vs data
 plotname <- paste(prefix, "-accum_mod_obs.", devname, sep = "")
-plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+plotfile <- file.path(savedir, plotname)
 if(export) devfun(file = plotfile) #, width = 5, height = 5)
 plot(data.accum$C_R_o, data.accum$C_R_m, col = data.accum$site,
      xlab = "Observed Accumulated CO2 (gC)", ylab = "Modeled Accumulated CO2 (gC)")
@@ -28,7 +29,7 @@ lines(c(0,1),c(0,1))
 
 # # Plot rates model vs data
 # plotname <- paste(prefix, "-rates_mod_obs.", devname, sep = "")
-# plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+# plotfile <- file.path(savedir, plotname)
 # if(export) devfun(file = plotfile) #, width = 5, height = 5)
 # plot(data.accum$C_R_or, data.accum$C_R_mr, col = data.accum$site, 
 #      xlab = "Observed Respired CO2 (mgC h-1 m-3)", ylab = "Modeled Respired CO2 (mgC h-1 m-3)")
@@ -41,7 +42,7 @@ lines(c(0,1),c(0,1))
 # palette("default")
 # # Plot rates model vs data
 # plotname <- paste(prefix, "-rates_mod_obs.", devname, sep = "")
-# plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+# plotfile <- file.path(savedir, plotname)
 # if(export) devfun(file = plotfile) #, width = 5, height = 5)
 # plot(data.accum$C_R_or, data.accum$C_R_mr, col = "gray",
 #      xlab = "Observed Respired CO2 (mgC h-1 m-3)", ylab = "Modeled Respired CO2 (mgC h-1 m-3)")
@@ -59,7 +60,7 @@ palette(cv)
 #   y.m <- predict(fit.moist.mod[[i]]$fit, newdata = x)
 #   df <- data.accum[data.accum$temp.group == i,]
 #   plotname <- paste(prefix, "-moist-resp-norm-", df$temp.group[1], ".", devname, sep = "")
-#   plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+#   plotfile <- file.path(savedir, plotname)
 #   if(export) devfun(file = plotfile) #, width = 5, height = 5)
 #   plot(C_R_orn ~ moist_vol, data = df, main = df$temp.group[1], 
 #        xlim = c(0,0.5), ylim=c(0,2), col = 2, pch = 16,
@@ -73,7 +74,7 @@ palette(cv)
 for (i in names(fit.moist.obs)) {
   df <- data.accum[data.accum$temp.group == i,]
   plotname <- paste(prefix, "-moist-resp-", df$temp.group[1], ".", devname, sep = "")
-  plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+  plotfile <- file.path(savedir, plotname)
   if(export) devfun(file = plotfile) #, width = 5, height = 5)
   plot(C_R_or ~ moist_vol, data = df, main = df$temp.group[1],
        xlim = c(0,0.5), col = 2, pch = 16,
@@ -90,7 +91,7 @@ for (i in names(fit.moist.obs)) {
 #   q.m <- predict(fit.temp.mod[[i]]$fitQ10, newdata = x)
 #   df <- data.accum[data.accum$moist.group == i,]
 #   plotname <- paste(prefix, "-moist-resp-", df$moist.group[1], ".", devname, sep = "")
-#   plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+#   plotfile <- file.path(savedir, plotname)
 #   if(export) devfun(file = plotfile) #, width = 5, height = 5)
 #   plot(C_R_or ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
 #   points(C_R_mr ~ temp, data = df, col = 7, pch = 16)
@@ -107,7 +108,7 @@ for (i in names(fit.moist.obs)) {
 # fit.pars <- ldply(fit.temp.obs, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
 # 
 # plotname <- paste(prefix, "-Ea_obs.", devname, sep = "")
-# plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+# plotfile <- file.path(savedir, plotname)
 # if(export) devfun(file = plotfile) #, width = 5, height = 5)
 # p1 <- ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
 #   geom_point(size = 3) +
@@ -120,7 +121,7 @@ for (i in names(fit.moist.obs)) {
 # print(p1)
 
 # plotname <- paste(prefix, "-Q10_obs.", devname, sep = "")
-# plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+# plotfile <- file.path(savedir, plotname)
 # if(export) devfun(file = plotfile) #, width = 5, height = 5)
 # p2 <- ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
 #   geom_point(size = 3) +
@@ -136,7 +137,7 @@ for (i in names(fit.moist.obs)) {
 fit.pars <- ldply(fit.temp.mod, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
 
 plotname <- paste(prefix, "-Ea_mod.", devname, sep = "")
-plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+plotfile <- file.path(savedir, plotname)
 if(export) devfun(file = plotfile) #, width = 5, height = 5)
 p3 <- ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
   geom_point(size = 3) +
@@ -149,7 +150,7 @@ p3 <- ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
 print(p3)
 
 # plotname <- paste(prefix, "-Q10_mod.", devname, sep = "")
-# plotfile <- file.path("..", "NadiaTempMoist", "parsets", plotname)
+# plotfile <- file.path(savedir, plotname)
 # if(export) devfun(file = plotfile) #, width = 5, height = 5)
 # p4 <- ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
 #   geom_point(size = 3) +

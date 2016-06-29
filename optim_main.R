@@ -74,10 +74,6 @@ system.time(cost <- ModCost(pars_optim_init))
 
 ### Check sensitivity of parameters ---------------
 Sfun <- sensFun(ModCost, pars_optim_init)
-
-
-savetime  <- format(Sys.time(), "%m%d-%H%M")
-save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
  
 ## Optimize parameters
 fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
