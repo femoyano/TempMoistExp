@@ -1,10 +1,8 @@
-#### Documentation ============================================================
-# Initial estimate values for parameters to optimize.
-# Time variables and tstep have to be defined before sourcing this file.
-#### ==========================================================================
+####################################################
+### Start and bounds for parameters to optimize. ###
+####################################################
 
-### Parameter Set for initial and bounds values
-### Parameters with large bounds.
+# Initial values taken from optimized of RUN15
 
 pars_optim_init <- c(
 
