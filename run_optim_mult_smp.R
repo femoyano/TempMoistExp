@@ -6,6 +6,16 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
+### ----------------------------------- ###
+###    Setings for parallel processing  ###
+### ----------------------------------- ###
+library(doParallel)
+cores = detectCores()
+# cores = 1
+cat("Cores detected:", cores, "\n")
+registerDoParallel(cores = cores)
+
+
 t0 <- Sys.time()
 
 
@@ -41,12 +51,10 @@ setup <- list(
 ###        Setting up parameters        ###
 ### ----------------------------------- ###
 # Obtain default parameters
-pars.default <- "parset6.csv"  # !!!!!!!!!!!!!!!!!!!!!!!!!!
+pars.default <- "parset6.csv"  # !!!!!!
 pars <- as.vector(read.table(pars.default, sep=","))
 # Obtain initial valeus and bounds for optimized parameters
-pars_calib <- read.csv(file="pars_calib_lh10.csv")  # !!!!!!!!!!!!!!!!!!!!!!!!
-parsind <- commandArgs(trailingOnly = TRUE)  # Get the index from the command line
-pars_optim_init <- pars_calib[parsind, ]
+pars_calib <- read.csv(file="pars_calib_lh10.csv")  # !!!!!!
 # Obtain bounds
 source("pars_bounds_v1.R")
 pars_optim_lower <- pars_bounds[1,]
@@ -54,18 +62,10 @@ pars_optim_upper <- pars_bounds[2,]
 
 
 ### ----------------------------------- ###
-###    Setings for parallel processing  ###
+###      Run multiple optimizations     ###
 ### ----------------------------------- ###
-library(doParallel)
-cores = detectCores()
-# cores = 1
-cat("Cores detected:", cores, "\n")
-registerDoParallel(cores = cores)
-
-
-### ----------------------------------- ###
-###         Run optimization            ###
-### ----------------------------------- ###
-source("optim_main.R")
-print(Sys.time() - t0)
-
+for (i in 1:nrow(pars_calib)) {
+  runname <- paste("MultRun", i, sep="")
+  pars_optim_init <- pars_calib[i, ]
+  source("optim_main.R")
+}

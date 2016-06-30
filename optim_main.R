@@ -34,7 +34,6 @@ tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
-runname <- paste("RUN", pars_optim, sep="")
 options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
                  "_", mf.method, "_", cost.type, "-", sep = "")
@@ -54,12 +53,10 @@ source("flux_functions.R")
 source("Model_desolve.R")
 source("Model_stepwise.R")
 source("initial_state.R")
-# source("ModRes.R")
 source("ModCost_SR_TR.R")
 source("AccumCalc.R")
 source("ParsReplace.R")
 source("SampleRun.R")
-# source("SampleCost.R")
 source("GetModelData.R")
 
 
@@ -67,12 +64,12 @@ source("GetModelData.R")
 ###      Optimization/Calibration       ###
 ### ----------------------------------- ###
 
-### Check model cost and computation time --------------
-system.time(cost <- ModCost(pars_optim_init))
-
-### Check sensitivity of parameters ---------------
-Sfun <- sensFun(ModCost, pars_optim_init)
- 
+# ### Check model cost and computation time --------------
+# system.time(cost <- ModCost(pars_optim_init))
+# 
+# ### Check sensitivity of parameters ---------------
+# Sfun <- sensFun(ModCost, pars_optim_init)
+browser()
 ## Optimize parameters
 fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
                  upper = pars_optim_upper, lower = pars_optim_lower)

@@ -34,7 +34,6 @@ tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
-runname <- "Run0"
 options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
                  "_", mf.method, "_", cost.type, "-", sep = "")
@@ -66,11 +65,12 @@ source("GetModelData.R")
 
 
 ## Optimize parameters
-model.cost <- ModCost(pars_optim_init)
+mod.cost <- list()
+mod.cost[parsind] <- ModCost(pars_optim_init)
 
-savetime  <- format(Sys.time(), "%m%d-%H%M")
+# savetime  <- format(Sys.time(), "%m%d-%H%M")
 
 rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
    site.data.bf, site.data.mz, initial_state, obs.accum)
 
-save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+save.image(file = paste(runname, options, ".RData", sep = ""))
