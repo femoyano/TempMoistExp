@@ -6,13 +6,22 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
+### ----------------------------------- ###
+###    Setings for parallel processing  ###
+### ----------------------------------- ###
+library(doParallel)
+# cores = detectCores()
+cores = 1
+cat("Cores detected:", cores, "\n")
+registerDoParallel(cores = cores)
+
+
 t0 <- Sys.time()
 
 
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
-
 # Setup
 setup <- list(
   # -------- Model options ----------
@@ -33,28 +42,37 @@ setup <- list(
   cost.type = "rate.mean" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
-  # Set of parameters initial values and bounds. Names must have: 
-  # -nb/-wb (narrow bounds or wide bounds), -v1/-v2/...
-  pars_optim = "-nb-v2" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead"
 )
 
 
 ### ----------------------------------- ###
-###    Setings for parallel processing  ###
+###        Setting up parameters        ###
 ### ----------------------------------- ###
-library(doParallel)
-cores = detectCores()
-# cores = 1
-cat("Cores detected:", cores, "\n")
-registerDoParallel(cores = cores)
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
+pars.default.file <- "parset6.csv"
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
+pars.calib.file   <- "pars_calib_lh10.csv"
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose bounds R file
+pars.bounds.file <- "pars_bounds_v1.R"
+
+pars <- as.matrix(read.csv(pars.default.file))[1,]
+pars_calib <- as.matrix(read.csv(file=pars.calib.file))
+source(pars.bounds.file)
+pars_optim_lower <- pars_bounds[1,]
+pars_optim_upper <- pars_bounds[2,]
 
 
 ### ----------------------------------- ###
-###         Run optimization            ###
+###      Run multiple optimizations     ###   #### !!!!!! better use separate mpi runs rather than loop !!!!!
 ### ----------------------------------- ###
-source("optim_main.R")
-
-print(Sys.time() - t0)
+for (i in 1:nrow(pars_calib)) {
+  runname <- paste("MultRun", i, sep="")   
+  pars_optim_init <- pars_calib[i, ]
+  source("optim_main.R")
+}
 

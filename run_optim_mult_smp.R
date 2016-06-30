@@ -50,13 +50,19 @@ setup <- list(
 ### ----------------------------------- ###
 ###        Setting up parameters        ###
 ### ----------------------------------- ###
-# Obtain default parameters
-pars.default <- "parset6.csv"  # !!!!!!
-pars <- as.vector(read.table(pars.default, sep=","))
-# Obtain initial valeus and bounds for optimized parameters
-pars_calib <- read.csv(file="pars_calib_lh10.csv")  # !!!!!!
-# Obtain bounds
-source("pars_bounds_v1.R")
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
+pars.default.file <- "parset6.csv"
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
+pars.calib.file   <- "pars_calib_lh10.csv"
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose bounds R file
+pars.bounds.file <- "pars_bounds_v1.R"
+
+pars <- as.matrix(read.csv(pars.default.file))[1,]
+pars_calib <- as.matrix(read.csv(file=pars.calib.file))
+source(pars.bounds.file)
 pars_optim_lower <- pars_bounds[1,]
 pars_optim_upper <- pars_bounds[2,]
 
@@ -64,8 +70,8 @@ pars_optim_upper <- pars_bounds[2,]
 ### ----------------------------------- ###
 ###      Run multiple optimizations     ###
 ### ----------------------------------- ###
-for (i in 1:nrow(pars_calib)) {
-  runname <- paste("MultRun", i, sep="")
-  pars_optim_init <- pars_calib[i, ]
-  source("optim_main.R")
-}
+runind <- as.integer(commandArgs(trailingOnly = TRUE))
+runname <- paste("MultRun", runind, sep="")
+pars_optim_init <- pars_calib[runind, ]
+cat("Starting run number", runind, "\n")
+source("optim_main.R")

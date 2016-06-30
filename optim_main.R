@@ -69,7 +69,7 @@ source("GetModelData.R")
 # 
 # ### Check sensitivity of parameters ---------------
 # Sfun <- sensFun(ModCost, pars_optim_init)
-browser()
+
 ## Optimize parameters
 fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
                  upper = pars_optim_upper, lower = pars_optim_lower)
