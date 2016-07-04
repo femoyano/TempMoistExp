@@ -1,10 +1,10 @@
 # ModCost.R
 # This model calculates the model residuals
 
-ModCost <- function(pars_optim) {
+ModCost <- function(pars, pars_calib) {
   
   # Add or replace parameters from the list of optimized parameters ----------------------
-  pars <- ParsReplace(pars_optim, pars)
+  pars <- ParsReplace(pars_calib, pars)
   
   ### Run all samples (in series since this is for mpi) ------------------------------------
 
@@ -56,7 +56,19 @@ ModCost <- function(pars_optim) {
     it = it + 1
   }
 
-  # cat(Sys.time()-t1, " ")
+  out <- c(modcost.sr.sd = cost.sr.sd$model,
+           modcost.tr.sd = cost.tr.sd$model, 
+           modcost.sr.m  = cost.sr.m$model, 
+           modcost.tr.m  = cost.tr.m$model, 
+           modcost.sr.uw = cost.sr.uw$model, 
+           modcost.tr.uw = cost.tr.uw$model,
+           minlogp.sr.sd = cost.sr.sd$minlogp,
+           minlogp.tr.sd = cost.tr.sd$minlogp, 
+           minlogp.sr.m  = cost.sr.m$minlogp, 
+           minlogp.tr.m  = cost.tr.m$minlogp, 
+           minlogp.sr.uw = cost.sr.uw$minlogp, 
+           minlogp.tr.uw = cost.tr.uw$minlogp
+  )
   
-  return(list(cost.sr.sd))
+  return(out)
 }

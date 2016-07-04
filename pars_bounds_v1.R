@@ -3,6 +3,7 @@
 ################################################
 
 # version 1: par_bounds_v1
+# This needs some references and documentation
 
 # min and max value of each parameter
 pars_bounds <- cbind(
