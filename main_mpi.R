@@ -69,9 +69,8 @@ RunMain <- function(pars, pars_calib) {
   ### Sourced required files ----------------------------------------------------
   source("flux_functions.R")
   source("Model_desolve.R")
-  source("Model_stepwise.R")
   source("initial_state.R")
-  source("ModCost_SR_TR.R")
+  source("ModCost_mpi.R")
   source("AccumCalc.R")
   source("ParsReplace.R")
   source("SampleRun.R")

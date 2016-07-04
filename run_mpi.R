@@ -36,8 +36,12 @@ runs.out <- foreach(i = 1:nrow(pars_calib),
                     ) %dopar% {
                       RunMain(pars, pars_calib[i,])
                       }
+# Save the output
+cat('Printing out some of the results: \n')
+print(head(runs.out))
+
+cat('Now will save the data to file.')
+save(runs.out, file = 'runs.out.Rdata')
+
 closeCluster(cl)
 mpi.quit()
-
-# Save the output
-save(runs.out, file = 'runs.out.Rdata')
