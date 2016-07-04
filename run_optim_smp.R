@@ -33,16 +33,30 @@ setup <- list(
   cost.type = "rate.mean" ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
-  # Set of parameters initial values and bounds. Names must have: 
-  # -nb/-wb (narrow bounds or wide bounds), -v1/-v2/...
-  pars_optim = "-nb-v2" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead"
 )
 
+### ----------------------------------- ###
+###        Setting up parameters        ###
+### ----------------------------------- ###
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters (csv file)
+pars.default.file <- "parset6.csv"
+pars <- as.matrix(read.csv(pars.default.file))[1,]
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters (csv file)
+# pars.optim.file   <- "parset6.csv"
+# pars_optim_init <- as.matrix(read.csv(pars.optim.file))
+source("optim_pars-v5.R")
+
+# # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose bounds (R script file)
+# source("pars_bounds_v1.R")
+# pars_optim_lower <- pars_bounds[1,]
+# pars_optim_upper <- pars_bounds[2,]
 
 ### ----------------------------------- ###
-###    Setings for parallel processing  ###
+###   Settings for parallel processing  ###
 ### ----------------------------------- ###
 library(doParallel)
 cores = detectCores()

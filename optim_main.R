@@ -39,7 +39,7 @@ options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", f
                  "_", mf.method, "_", cost.type, "-", sep = "")
 
 # Input Setup -----------------------------------------------------------------
-input_path    <- file.path("..", "NadiaTempMoist","input_data")
+input_path    <- file.path(".") # ("..", "NadiaTempMoist","input_data")
 data.samples  <- read.csv(file.path(input_path, sample_list_file))
 input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
 obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))

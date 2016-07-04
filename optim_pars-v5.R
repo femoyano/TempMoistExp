@@ -2,7 +2,7 @@
 ### Start and bounds for parameters to optimize. ###
 ####################################################
 
-# Initial values taken from optimized of RUN15
+# Modified opt RUN15
 
 pars_optim_init <- c(
 
@@ -21,6 +21,7 @@ pars_optim_init <- c(
   f_CA_mz   = 0.35    ,  # fraction of C_A in TOC for maize soil 
   f_CD      = 0.0001  ,  # fraction of CD in toc
   f_CE      = 0.0001  ,  # fraction of CEm in toc
+  f_CM      = 0.01   ,  # fraction of CD in toc
   f_gr_ref  = 0.53    ,  # Carbon use efficieny (= microbial growth efficiency) (Hagerty et al.)
   f_ep      = 0.002   ,  # fraction of uptaken C converted to C_E (assumed)
   V_D_ref   = 0.3      ,  # [h-1] max rate of C_P decomposition (Li at al. 2014, AWB model)
@@ -51,7 +52,8 @@ pars_optim_lower <- c(
   f_CA_mz   = 0.0   ,
   f_CD      = 0.00001 ,
   f_CE      = 0.00001 ,
-  f_gr_ref  = 0.6    ,
+  f_CM      = 0.001   ,
+  f_gr_ref  = 0.5    ,
   f_ep      = 0.0001  ,
   V_D_ref   = 0.01   ,
   # V_U_ref   = 0.01   ,
@@ -79,8 +81,9 @@ pars_optim_upper <- c(
   # For all cases
   f_CA_bf   = 0.99    ,
   f_CA_mz   = 0.99    ,
-  f_CD      = 0.0015  ,
-  f_CE      = 0.00015  ,
+  f_CD      = 0.001  ,
+  f_CE      = 0.0005  ,
+  f_CM      = 0.05   ,
   f_gr_ref  = 0.9   ,
   f_ep      = 0.5    ,
   V_D_ref   = 50     ,
