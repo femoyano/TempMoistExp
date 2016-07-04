@@ -1,6 +1,7 @@
 ### Define the function that runs model for each sample --------------------------------
 SampleRun <- function(pars, sample.data, input) {
-
+  
+  require(deSolve)
   source("prepare_input.R", local=TRUE)
   
   if(flag.des) { # if true, run the differential equation solver

@@ -34,10 +34,10 @@ MainMpi <- function(pars, pars_calib) {
   ###      Non User Setup                 ###
   ### ----------------------------------- ###
   ### Libraries =================================================================
-  # require(deSolve)
-  # require(FME)
-  # require(plyr)
-  # require(reshape2)
+  require(deSolve)
+  require(FME)
+  require(plyr)
+  require(reshape2)
   
   ### Define time variables =====================================================
   year     <- 31104000 # seconds in a year
@@ -69,7 +69,7 @@ MainMpi <- function(pars, pars_calib) {
   source("Model_desolve.R", local = TRUE)
   source("initial_state.R", local = TRUE)
   source("ModCost_mpi.R", local = TRUE)
-  source("AccumCalc.R", local = TRUE)
+  source("AccumCalc_serial.R", local = TRUE)
   source("ParsReplace.R", local = TRUE)
   source("SampleRun.R", local = TRUE)
   source("GetModelData.R", local = TRUE)
