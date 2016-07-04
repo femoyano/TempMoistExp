@@ -1,13 +1,11 @@
-#### optim_run_main.R
-
 #### Documentations ===========================================================
 # Script used to prepare settings before a run
 # author(s):
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
-RunMain <- function(pars, pars_calib) {
-  
+MainMpi <- function(pars, pars_calib) {
+
   ### ----------------------------------- ###
   ###       User Stup                     ###
   ### ----------------------------------- ###
@@ -67,14 +65,14 @@ RunMain <- function(pars, pars_calib) {
   obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
   
   ### Sourced required files ----------------------------------------------------
-  source("flux_functions.R")
-  source("Model_desolve.R")
-  source("initial_state.R")
-  source("ModCost_mpi.R")
-  source("AccumCalc.R")
-  source("ParsReplace.R")
-  source("SampleRun.R")
-  source("GetModelData.R")
+  source("flux_functions.R", local = TRUE)
+  source("Model_desolve.R", local = TRUE)
+  source("initial_state.R", local = TRUE)
+  source("ModCost_mpi.R", local = TRUE)
+  source("AccumCalc.R", local = TRUE)
+  source("ParsReplace.R", local = TRUE)
+  source("SampleRun.R", local = TRUE)
+  source("GetModelData.R", local = TRUE)
   
   ## Run cost function
   ModCost(pars, pars_calib)

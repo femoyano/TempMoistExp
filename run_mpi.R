@@ -18,7 +18,7 @@ pars <- as.matrix(read.csv(pars.default.file))[1,]
 pars.calib.file   <- 'pars_lh100_bounds1_v1.csv'
 pars_calib <- as.matrix(read.csv(file=pars.calib.file))
 
-source('main_mpi.R')
+source('MainMpi.R')
 
 
 ### ----------------------------------- ###
@@ -34,7 +34,8 @@ runs.out <- foreach(i = 1:nrow(pars_calib),
                     .errorhandling = 'remove', 
                     .packages = c('deSolve', 'FME', 'plyr', 'reshape2')
                     ) %dopar% {
-                      RunMain(pars, pars_calib[i,])
+                      pars_replace <- pars_calib[i,]
+                      MainMpi(pars, pars_replace)
                       }
 # Save the output
 cat('Printing out some of the results: \n')
