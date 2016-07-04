@@ -15,7 +15,7 @@ pars.default.file <- 'parset6.csv'
 pars <- as.matrix(read.csv(pars.default.file))[1,]
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-pars.calib.file   <- 'pars_calib_lh100_v1.csv'
+pars.calib.file   <- 'pars_lh100_bounds1_v1.csv'
 pars_calib <- as.matrix(read.csv(file=pars.calib.file))
 
 source('main_mpi.R')
