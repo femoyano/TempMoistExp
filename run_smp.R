@@ -38,9 +38,9 @@ setup <- list(
 # source("ParsReplace.R")
 # pars <- ParsReplace(pars_new, pars) # Replace the default values
 
-load("../NadiaTempMoist/parsets/parset6.Rdata")  # Optional: load other par sets
+load("../parsets/parset6.Rdata")  # Optional: load other par sets
 source("set_pars.R", local = TRUE)  # change specific par values  
-save(pars, file = "../NadiaTempMoist/parsets/parset.Rdata")  # Optional: save pars
+save(pars, file = "../parsets/parset.Rdata")  # Optional: save pars
 
 
 ### ----------------------------------- ###
@@ -81,7 +81,7 @@ options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.mmu, "_mmu", f
                  "_", sep = "")
 
 # Input Setup -----------------------------------------------------------------
-input_path    <- file.path(".")  # ("..", "NadiaTempMoist")
+input_path    <- file.path(".")  # ("..", "input_data")
 data.samples  <- read.csv(file.path(input_path, sample_list_file))
 input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
 obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))

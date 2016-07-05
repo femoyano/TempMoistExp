@@ -8,7 +8,7 @@ require(reshape2)
 library(ggplot2)
 
 prefix <- "plot"
-savedir <- file.path("..", "NadiaTempMoist", "plots")
+savedir <- file.path("..", "plots")
 devname <- "png"
 devfun <- png
 export <- 1

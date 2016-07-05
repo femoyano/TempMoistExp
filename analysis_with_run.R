@@ -12,7 +12,7 @@ library(doParallel)
 cores = detectCores()
 registerDoParallel(cores = cores)
 
-load("../NadiaTempMoist/parsets/parset6.Rdata")
+load("../parsets/parset6.Rdata")
 
 
 ## ------------------------------------ ##
@@ -46,7 +46,7 @@ tsave <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
 # Input Setup -----------------------------------------------------------------
-input_path    <- file.path(".")  # ("..", "NadiaTempMoist")
+input_path    <- file.path(".")  # ("..", "input_data")
 data.samples  <- read.csv(file.path(input_path, sample_list_file))
 input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
 obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))
