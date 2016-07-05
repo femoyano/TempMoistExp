@@ -102,65 +102,43 @@ for (i in names(fit.moist.obs)) {
 # }
 
 
-## Plot pararameters for temp function
-# # For observed data
-# span=0.5
-# fit.pars <- ldply(fit.temp.obs, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
-# 
-# plotname <- paste(prefix, "-Ea_obs.", devname, sep = "")
-# plotfile <- file.path(savedir, plotname)
-# if(export) devfun(file = plotfile) #, width = 5, height = 5)
-# p1 <- ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
-#   geom_point(size = 3) +
-#   ylab("Apparent Temperature Sensitivity, Ea (kJ)") +
-#   xlab("Soil Moisture (m3/m3)") +
-#   theme(legend.justification=c(1,1), legend.position=c(1,1)) +
-#   ylim(30, 80) +
-#   geom_line()
-#   geom_smooth(linetype=0, span=span, se=F)
-# print(p1)
+# Plot pararameters for temp function
 
-# plotname <- paste(prefix, "-Q10_obs.", devname, sep = "")
-# plotfile <- file.path(savedir, plotname)
-# if(export) devfun(file = plotfile) #, width = 5, height = 5)
-# p2 <- ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
-#   geom_point(size = 3) +
-#   ylab("Apparent Temperature Sensitivity, Q10") +
-#   xlab("Soil Moisture (m3/m3)") +
-#   theme(legend.justification=c(1,1), legend.position=c(1,1)) +
-#   ylim(1.6, 3) +
-#   geom_line()
-#   # geom_smooth(span=span, se=FALSE)
-# print(p2)
+PlotTR <- function(naming, fit.pars, TR, ylab) {
+  plotname <- paste(prefix, naming, devname, sep = "")
+  plotfile <- file.path(savedir, plotname)
+  if(export) devfun(file = plotfile) #, width = 5, height = 5)
+  p <- ggplot(data = fit.pars, aes(x=moist_vol, y=TR, colour=site)) +
+    geom_point(size = 3) +
+    ylab(ylab) +
+    xlab("Soil Moisture (m3/m3)") +
+    theme(legend.justification=c(1,1), legend.position=c(1,1)) +
+    ylim(30, 80) +
+    geom_line()
+  # geom_smooth(linetype=0, span=span, se=FALSE)
+  print(p)
+}
 
+span=0.5
+
+# For observed data
+fit.pars <- ldply(fit.temp.obs, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
+PlotTR("-Q10_obs", fit.pars, 'Q10', "Apparent Temperature Sensitivity, Q10")
 # For modeled data
 fit.pars <- ldply(fit.temp.mod, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
-
-plotname <- paste(prefix, "-Ea_mod.", devname, sep = "")
-plotfile <- file.path(savedir, plotname)
-if(export) devfun(file = plotfile) #, width = 5, height = 5)
-p3 <- ggplot(data = fit.pars, aes(x=moist_vol, y=Ea, colour=site)) +
-  geom_point(size = 3) +
-  ylab("Apparent Temperature Sensitivity, Ea (kJ)") +
-  xlab("Soil Moisture (m3/m3)") +
-  theme(legend.justification=c(1,1), legend.position=c(1,1)) +
-  ylim(30, 80) +
-  geom_line()
-  # geom_smooth(linetype=0, span=span, se=FALSE)
-print(p3)
-
-# plotname <- paste(prefix, "-Q10_mod.", devname, sep = "")
-# plotfile <- file.path(savedir, plotname)
-# if(export) devfun(file = plotfile) #, width = 5, height = 5)
-# p4 <- ggplot(data=fit.pars, aes(x=moist_vol, y=Q10, colour=site)) +
-#   geom_point(size = 3) +
-#   ylab("Apparent Temperature Sensitivity, Q10") +
-#   xlab("Soil Moisture (m3/m3)") +
-#   theme(legend.justification=c(1,1), legend.position=c(1,1)) +
-#   ylim(1.6, 3) +
-#   geom_line()
-#   # geom_smooth(span=span, se=FALSE)
-# print(p4)
+PlotTR("-Ea_mod", fit.pars, 'Ea', "Apparent Temperature Sensitivity, Ea (kJ)")
+# For observed data 5-20
+fit.pars <- ldply(fit.temp.obs.5_20, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
+PlotTR("-Q10_obs.5_20.", fit.pars, 'Q10', "Apparent Temperature Sensitivity, Q10")
+# For modeled data 5-20
+fit.pars <- ldply(fit.temp.mod.5_20, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
+PlotTR("-Ea_mod.5_20.", fit.pars, 'Ea', "Apparent Temperature Sensitivity, Ea (kJ)")
+# For observed data 20-35
+fit.pars <- ldply(fit.temp.obs.20_35, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
+PlotTR("-Q10_obs.20_35.", fit.pars, 'Q10', "Apparent Temperature Sensitivity, Q10")
+# For modeled data 20_35
+fit.pars <- ldply(fit.temp.mod.20_35, function(x) {data.frame(Ea = x$Ea, Q10 = x$Q10, site = x$site, moist_vol = x$moist_vol)})
+PlotTR("-Ea_mod.20_35.", fit.pars, 'Ea', "Apparent Temperature Sensitivity, Ea (kJ)")
 
 # # Fit model 2: here I fix K and Th and use a "p1" that modifies 
 # # the 'diffusion' directly, and "n" for the shape of the curve.

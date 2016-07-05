@@ -78,6 +78,12 @@ FitTemp <- function(df, var) {
   return(list(fitEa = fitEa, fitQ10 = fitQ10, C_R_ref = coef(fitEa)[1], Ea = coef(fitEa)[2],
               Q10 = coef(fitQ10)[2], site = df$site[1], moist_vol = df$moist_vol[1]))
 }
+# For for entire temperature range
 fit.temp.obs <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_R_or")
 fit.temp.mod <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_R_mr")
-
+# Fit for 5C to 20C
+fit.temp.obs.5_20 <- dlply(data.accum[data.accum$temp!=35,], .(moist.group), .fun = FitTemp, var = "C_R_or")
+fit.temp.mod.5_20 <- dlply(data.accum[data.accum$temp!=35,], .(moist.group), .fun = FitTemp, var = "C_R_mr")
+# Fit for 20C to 35C
+fit.temp.obs.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_R_or")
+fit.temp.mod.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_R_mr")
