@@ -11,12 +11,12 @@
 ### ----------------------------------- ###
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
-pars.default.file <- 'parset6.csv'
+pars.default.file <- '../parsets/parset6.csv'
 pars <- as.matrix(read.csv(pars.default.file))[1,]
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-pars.calib.file   <- 'pars_lh100_bounds1_v1.csv'
-pars_calib <- as.matrix(read.csv(file=pars.calib.file))
+pars.calib.file   <- '../parsets/pars_lh10000_bounds1_v1.csv'
+pars_calib <- as.matrix(read.csv(pars.calib.file))
 
 source('MainMpi.R')
 

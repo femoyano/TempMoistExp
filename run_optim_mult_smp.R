@@ -53,12 +53,12 @@ setup <- list(
 pars.path <- file.path('..', 'parsets')
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
-pars.default.file <- "parset6.csv"
-pars <- as.matrix(read.csv(file.path(pars.path, pars.default.file)))[1,]
+pars.default.file <- "../parsets/parset6.csv"
+pars <- as.matrix(read.csv(pars.default.file))[1,]
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-pars.calib.file   <- "pars_lh10_bounds1_v1.csv"
-pars_calib <- as.matrix(read.csv(file=file.path(pars.path, pars.calib.file)))
+pars.calib.file   <- "../parsets/pars_lh10_bounds1_v1.csv"
+pars_calib <- as.matrix(read.csv(pars.calib.file))
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose bounds R file
 pars.bounds.file <- "pars_bounds_v1.R"

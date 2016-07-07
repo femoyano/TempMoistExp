@@ -35,16 +35,13 @@ setup <- list(
 ### ----------------------------------- ###
 source("ParsReplace.R")
 
-pars.path <- file.path('..', 'parsets')
-
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters (csv file)
-pars.default.file <- "parset6.csv"
-pars <- as.matrix(read.csv(file.path(pars.path, pars.default.file)))[1,]
+pars.default.file <- "../parsets/parset6.csv"
+pars <- as.matrix(read.csv(pars.default.file))[1,]
 
 # # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-# pars.new.file   <- "parset10_lhs5385.csv"
-# pars_new <- as.matrix(read.csv(file.path(pars.path, pars.new.file)))[1,]
-# 
+# pars.new.file   <- "../parsets/parset6"
+# pars_new <- as.matrix(read.csv(pars.new.file))[1,]
 # 
 # pars <- ParsReplace(pars_new, pars)
 
