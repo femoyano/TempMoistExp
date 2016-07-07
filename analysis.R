@@ -72,7 +72,7 @@ FitTemp <- function(df, var) {
   fitEa <- nls(C_R ~ C_R_ref * exp(-Ea/0.008314*(1/(temp+273) - 1/273)),
                start=c(C_R_ref = 0.1, Ea = 100), algorithm="port", data = df)
   fitQ10 <- nls(C_R ~ C_R_ref * Q10^((temp-20)/10),
-                start=c(C_R_ref = 0.1, Q10 = 30), lower = c(C_R_ref = 0, Q10 = 1),
+                start=c(C_R_ref = 0.1, Q10 = 2), lower = c(C_R_ref = 0, Q10 = 1),
                 upper = c(C_R_ref = Inf, Q10 = 100),
                 algorithm="port", data = df)
   return(list(fitEa = fitEa, fitQ10 = fitQ10, C_R_ref = coef(fitEa)[1], Ea = coef(fitEa)[2],

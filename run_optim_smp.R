@@ -41,13 +41,15 @@ setup <- list(
 ###        Setting up parameters        ###
 ### ----------------------------------- ###
 
+pars.path <- file.path('..', 'parsets')
+
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters (csv file)
 pars.default.file <- "parset6.csv"
-pars <- as.matrix(read.csv(pars.default.file))[1,]
+pars <- as.matrix(read.csv(file.path(pars.path, pars.default.file)))[1,]
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters (csv file)
 # pars.optim.file   <- "parset6.csv"
-# pars_optim_init <- as.matrix(read.csv(pars.optim.file))
+# pars_optim_init <- as.matrix(read.csv(file.path(pars.path, pars.optim.file)))[1,]
 source("optim_pars-v5.R")
 
 # # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose bounds (R script file)

@@ -33,15 +33,23 @@ setup <- list(
 ### ----------------------------------- ###
 ###           Set parameters            ###
 ### ----------------------------------- ###
-# source("parameters.R")  # load default set (e.g. values from literature)
-# pars_new <- pars  # Choose a par set
-# source("ParsReplace.R")
-# pars <- ParsReplace(pars_new, pars) # Replace the default values
+source("ParsReplace.R")
 
-load("../parsets/parset6.Rdata")  # Optional: load other par sets
-source("set_pars.R", local = TRUE)  # change specific par values  
-save(pars, file = "../parsets/parset.Rdata")  # Optional: save pars
+pars.path <- file.path('..', 'parsets')
 
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters (csv file)
+pars.default.file <- "parset6.csv"
+pars <- as.matrix(read.csv(file.path(pars.path, pars.default.file)))[1,]
+
+# # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
+# pars.new.file   <- "parset10_lhs5385.csv"
+# pars_new <- as.matrix(read.csv(file.path(pars.path, pars.new.file)))[1,]
+# 
+# 
+# pars <- ParsReplace(pars_new, pars)
+
+# source("set_pars.R", local = TRUE)  # change specific par values  
+# save(pars, file = "../parsets/parset.Rdata")  # Optional: save pars
 
 ### ----------------------------------- ###
 ###    Setings for parallel processing  ###
@@ -81,7 +89,7 @@ options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.mmu, "_mmu", f
                  "_", sep = "")
 
 # Input Setup -----------------------------------------------------------------
-input_path    <- file.path(".")  # ("..", "input_data")
+input_path    <- file.path("..", "input_data")
 data.samples  <- read.csv(file.path(input_path, sample_list_file))
 input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
 obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))

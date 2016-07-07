@@ -12,8 +12,6 @@ library(doParallel)
 cores = detectCores()
 registerDoParallel(cores = cores)
 
-load("../parsets/parset6.Rdata")
-
 
 ## ------------------------------------ ##
 ##  Check parameter sensitivities     ----
@@ -32,9 +30,6 @@ load("../parsets/parset6.Rdata")
 # Prepare setup
 
 list2env(setup, envir = .GlobalEnv)
-
-# pars_optim <- "-nb-nomic-nomin-v1"
-# diff.fun <- "hama"
 
 ### Define time variables
 year     <- 31104000 # seconds in a year
