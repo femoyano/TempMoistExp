@@ -11,8 +11,9 @@
 ### ----------------------------------- ###
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
-pars.default.file <- '../parsets/parset6.csv'
-pars <- as.matrix(read.csv(pars.default.file))[1,]
+pars.default.file <- '../parsets/parset6-dev2-3_all.csv'
+pars <- read.csv(pars.default.file, row.names = 1)
+pars <- setNames(pars[[1]], row.names(pars))
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
 pars.calib.file   <- '../parsets/pars_lh10000_bounds1_v1.csv'

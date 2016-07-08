@@ -49,18 +49,20 @@ setup <- list(
 pars.path <- file.path('..', 'parsets')
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters (csv file)
-pars.default.file <- "../parsets/parset6.csv"
-pars <- as.matrix(read.csv(pars.default.file))[1,]
+pars.default.file <- '../parsets/parset6-dev2-3_all.csv'
+pars <- read.csv(pars.default.file, row.names = 1)
+pars <- setNames(pars[[1]], row.names(pars))
+
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters (csv file)
-# pars.optim.file   <- "../parsets/parset6.csv"
-# pars_optim_init <- as.matrix(read.csv(pars.optim.file))[1,]
-source("optim_pars-v5.R")
+pars.optim.file <- '../parsets/parset6-dev2-3_all.csv'
+pars_optim_init <- read.csv(pars.optim.file, row.names = 1)
+pars_optim_init <- setNames(pars_optim_init[[1]], row.names(pars_optim_init))
 
 # # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose bounds (R script file)
-# source("pars_bounds_v1.R")
-# pars_optim_lower <- pars_bounds[1,]
-# pars_optim_upper <- pars_bounds[2,]
+source("../parsets/pars_bounds_v1.R")
+pars_optim_lower <- pars_bounds[1,]
+pars_optim_upper <- pars_bounds[2,]
 
 ### ----------------------------------- ###
 ###   Settings for parallel processing  ###

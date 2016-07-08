@@ -43,7 +43,8 @@ setup <- list(
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
-  mf.method = "Nelder-Mead"
+  mf.method = "Nelder-Mead" ,
+  cost.fun = "ModCost_TR.R"
 )
 
 
@@ -53,8 +54,9 @@ setup <- list(
 pars.path <- file.path('..', 'parsets')
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
-pars.default.file <- "../parsets/parset6.csv"
-pars <- as.matrix(read.csv(pars.default.file))[1,]
+pars.default.file <- '../parsets/parset6-dev2-3_all.csv'
+pars <- read.csv(pars.default.file, row.names = 1)
+pars <- setNames(pars[[1]], row.names(pars))
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
 pars.calib.file   <- "../parsets/pars_lh10_bounds1_v1.csv"
