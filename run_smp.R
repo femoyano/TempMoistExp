@@ -45,11 +45,10 @@ pars.new.file <- '../parsets/parset6-dev2-3_all.csv'
 pars_new <- read.csv(pars.new.file, row.names = 1)
 pars_new <- setNames(pars_new[[1]], row.names(pars_new))
 
- 
-# pars <- ParsReplace(pars_new, pars)
+pars <- ParsReplace(pars_new, pars)
 
-# source("set_pars.R", local = TRUE)  # change specific par values  
-# save(pars, file = "../parsets/parset.Rdata")  # Optional: save pars
+source("set_pars.R", local = TRUE)  # change specific par values  
+write.csv(pars, file = "../parsets/parset_new.csv", row.names = TRUE)  # Optional: save pars
 
 ### ----------------------------------- ###
 ###    Setings for parallel processing  ###
