@@ -25,9 +25,9 @@ setup <- list(
   flag.mmu  = 1 ,  # michalis menten kinetics for uptake, else equal diffusion flux
   flag.mmr  = 1 ,  # microbial maintenance respiration
   run.test  = 0 ,  # run model cost once as test?
-  run.sens  = 0 ,  # run FME sensitivity analysis?
+  run.sens  = 1 ,  # run FME sensitivity analysis?
   run.mfit  = 1 ,  # run modFit for optimization?
-  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
+  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
@@ -55,14 +55,11 @@ pars <- setNames(pars[[1]], row.names(pars))
 
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters (csv file)
-pars.optim.file <- '../parsets/parset6-dev2-3_all.csv'
-pars_optim_init <- read.csv(pars.optim.file, row.names = 1)
-pars_optim_init <- setNames(pars_optim_init[[1]], row.names(pars_optim_init))
-
-# # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose bounds (R script file)
-source("../parsets/pars_bounds_v1.R")
-pars_optim_lower <- pars_bounds[1,]
-pars_optim_upper <- pars_bounds[2,]
+pars.optim.file <- '../parsets/parset10_temp.csv'
+pars_optim <- read.csv(pars.optim.file, row.names = 1)
+pars_optim_init  <- setNames(pars_optim[[1]], row.names(pars_optim))
+pars_optim_lower <- setNames(pars_optim[[2]], row.names(pars_optim))
+pars_optim_upper <- setNames(pars_optim[[3]], row.names(pars_optim))
 
 ### ----------------------------------- ###
 ###   Settings for parallel processing  ###

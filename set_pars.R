@@ -57,6 +57,9 @@ pars["r_md_ref"] <- 0.001
 pars["f_CE"] <- 0.0005
 pars["f_CA_bf"] <- 0.9 # 0.96
 pars["f_CA_mz"] <- 0.3 # 0.96
+pars["E_r_ed"] <- 100
+pars["E_r_md"] <- 100
+
 
 # pars["f_CM"] <- 0.01
 
