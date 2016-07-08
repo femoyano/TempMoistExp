@@ -52,7 +52,7 @@ obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 source("flux_functions.R")
 source("Model_desolve.R")
 source("initial_state.R")
-source("ModCost_SR_TR.R")
+source(cost.fun)
 source("AccumCalc.R")
 source("ParsReplace.R")
 source("SampleRun.R")
@@ -62,34 +62,32 @@ source("GetModelData.R")
 ###      Optimization/Calibration       ###
 ### ----------------------------------- ###
 
-# ### Check model cost and computation time --------------
-# system.time(cost <- ModCost(pars_optim_init))
-# 
-# ### Check sensitivity of parameters ---------------
-# Sfun <- sensFun(ModCost, pars_optim_init)
+# Test model cost and computation time --------------
+if (run.test) system.time(cost <- ModCost(pars_optim_init))
+
+### Check sensitivity of parameters ---------------
+if(run.sens) Sfun <- sensFun(ModCost, pars_optim_init)
 
 ## Optimize parameters
-fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
-                 upper = pars_optim_upper, lower = pars_optim_lower)
+if (run.mfit) {
+  fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method, 
+                   upper = pars_optim_upper, lower = pars_optim_lower)
+}
 
+## Saving work space
 savetime  <- format(Sys.time(), "%m%d-%H%M")
-
 save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
 
-# ## Run Bayesian optimization
-# var0 = obs.accum$sd.r
-#  
-# mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, var0=var0,
-#                    lower=pars_optim_lower, upper=pars_optim_upper, updatecov = 100)
-# 
-# 
-# ### ----------------------------------- ###
-# ###        Saving work space            ###
-# ### ----------------------------------- ###
-# 
-# savetime  <- format(Sys.time(), "%m%d-%H%M")
-# 
-# rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
-#    site.data.bf, site.data.mz, initial_state, obs.accum)
-# 
-# save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+## Run Bayesian optimization
+var0 = obs.accum$sd.r
+
+if(run.mcmc) {
+  mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, var0=var0,
+                     lower=pars_optim_lower, upper=pars_optim_upper, updatecov = 100)
+}
+
+## Saving work space
+savetime  <- format(Sys.time(), "%m%d-%H%M")
+rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
+   site.data.bf, site.data.mz, initial_state, obs.accum)
+save.image(file = paste(runname, options, savetime, ".RData", sep = ""))

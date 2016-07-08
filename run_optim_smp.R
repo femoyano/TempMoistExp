@@ -24,6 +24,10 @@ setup <- list(
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
   flag.mmu  = 1 ,  # michalis menten kinetics for uptake, else equal diffusion flux
   flag.mmr  = 1 ,  # microbial maintenance respiration
+  run.test  = 0 ,  # run model cost once as test?
+  run.sens  = 0 ,  # run FME sensitivity analysis?
+  run.mfit  = 1 ,  # run modFit for optimization?
+  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
@@ -34,7 +38,8 @@ setup <- list(
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
-  mf.method = "Nelder-Mead"
+  mf.method = "Nelder-Mead" ,
+  cost.fun = "ModCost_TR.R"
 )
 
 ### ----------------------------------- ###

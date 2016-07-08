@@ -7,7 +7,7 @@
 #### ==========================================================================
 
 ### ----------------------------------- ###
-###        Setting up parameters        ###
+###        Setting parameters        ###
 ### ----------------------------------- ###
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
@@ -37,11 +37,7 @@ runs.out <- foreach(i = 1:nrow(pars_calib),
                       pars_replace <- pars_calib[i,]
                       MainMpi(pars, pars_replace)
                       }
-# Save the output
-cat('Printing out some of the results: \n')
-print(head(runs.out))
 
-cat('Now will save the data to file.')
 save(runs.out, file = 'runs.out.Rdata')
 
 closeCluster(cl)

@@ -27,7 +27,8 @@ MainMpi <- function(pars, pars_calib) {
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  'rate.sd', 'rate.mean'...
   cost.type <- 'rate.mean' 
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file <- 'samples_smp.csv' 
+  sample_list_file <- 'samples_smp.csv'
+  cost.fun <- "ModCost_TR.R"
   
   
   ### ----------------------------------- ###
@@ -68,7 +69,7 @@ MainMpi <- function(pars, pars_calib) {
   source("flux_functions.R", local = TRUE)
   source("Model_desolve.R", local = TRUE)
   source("initial_state.R", local = TRUE)
-  source("ModCost_mpi.R", local = TRUE)
+  source(cost.fun, local = TRUE)
   source("AccumCalc_serial.R", local = TRUE)
   source("ParsReplace.R", local = TRUE)
   source("SampleRun.R", local = TRUE)

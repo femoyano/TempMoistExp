@@ -5,7 +5,7 @@ source("pars_bounds_v1.R")
 ################################################################
 ################################################################
 
-num <- 100 # number of simulations starts
+num <- 10000 # number of simulations starts
 
 require(lhs)
 ### latin hypercube sampling from uniform distribution [0,1] 
@@ -25,4 +25,4 @@ colnames(pars.calib) <- colnames(pars_bounds)
 ################################################################
 
 #Write the parameter matrix and the pars min-max in a file
-write.csv (pars.calib, file="pars_calib.csv", quote=FALSE, row.names = FALSE)
+write.csv (pars.calib, file="pars_lh10000_bounds1_v2", quote=FALSE, row.names = FALSE)
