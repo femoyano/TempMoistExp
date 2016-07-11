@@ -15,8 +15,6 @@ t0 <- Sys.time()
 
 # Setup
 setup <- list(
-  # Run Name
-  runname = "RunOpt" ,
   # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
   flag.mic  = 1 ,  # simulate microbial pool explicitly
@@ -30,10 +28,10 @@ setup <- list(
   diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
-  run.test  = 0 ,  # run model cost once as test?
-  run.sens  = 1 ,  # run FME sensitivity analysis?
-  run.mfit  = 1 ,  # run modFit for optimization?
-  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
+  run.test  = 1 ,  # run model cost once as test?
+  run.sens  = 0 ,  # run FME sensitivity analysis?
+  run.mfit  = 0 ,  # run modFit for optimization?
+  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.mean" ,
@@ -47,7 +45,7 @@ setup <- list(
   # csv file with default parameters
   pars.default.file = '../parsets/parset6-dev2-3_all.csv' ,
   # csv file with initial valeus and bounds for optimized parameters
-  pars.optim.file = '../parsets/parset10_temp.csv'
+  pars.optim.file = '../parsets/parset10_test.csv'
 )
 
 

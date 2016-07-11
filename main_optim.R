@@ -32,7 +32,7 @@ tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
-options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
+savename   <- paste("RunOpt", "-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
                  "_", mf.method, "_", cost.type, "-", sep = "")
 
@@ -84,18 +84,15 @@ if (run.mfit) {
 
 ## Saving work space
 savetime  <- format(Sys.time(), "%m%d-%H%M")
-save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+save.image(file = paste(savename, savetime, ".RData", sep = ""))
 
 ## Run Bayesian optimization
-var0 = obs.accum$sd.r
-
 if(run.mcmc) {
+  var0 = obs.accum$sd.r
   mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, var0=var0,
                      lower=pars_optim_lower, upper=pars_optim_upper, updatecov = 100)
 }
 
 ## Saving work space
 savetime  <- format(Sys.time(), "%m%d-%H%M")
-rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
-   site.data.bf, site.data.mz, initial_state, obs.accum)
-save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+save.image(file = paste(savename, savetime, ".RData", sep = ""))
