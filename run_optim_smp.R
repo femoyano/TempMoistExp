@@ -28,10 +28,10 @@ setup <- list(
   diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
-  run.test  = 1 ,  # run model cost once as test?
+  run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 0 ,  # run modFit for optimization?
-  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
+  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.mean" ,
@@ -43,9 +43,9 @@ setup <- list(
   
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = '../parsets/parset6-dev2-3_all.csv' ,
+  pars.default.file = '../parsets/parset11_all_TRopt.csv' ,
   # csv file with initial valeus and bounds for optimized parameters
-  pars.optim.file = '../parsets/parset10_test.csv'
+  pars.optim.file = '../parsets/parset11_optim_TRopt.csv'
 )
 
 

@@ -37,7 +37,6 @@ savename   <- paste("RunOpt", "-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.f
                  "_", mf.method, "_", cost.type, "-", sep = "")
 
 # Parameter setup -------------------------------------------------------------
-pars.path <- file.path('..', 'parsets')
 pars <- read.csv(pars.default.file, row.names = 1)
 pars <- setNames(pars[[1]], row.names(pars))
 
@@ -89,7 +88,8 @@ save.image(file = paste(savename, savetime, ".RData", sep = ""))
 ## Run Bayesian optimization
 if(run.mcmc) {
   var0 = obs.accum$sd.r
-  mcmcMod <- modMCMC(f=ModCost, p=fitMod$par, niter=5000, var0=var0,
+  if(run.mfit) pars.mcmc <- fitMod$par else pars.mcmc <- pars)
+  mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, niter=5000, var0=var0,
                      lower=pars_optim_lower, upper=pars_optim_upper, updatecov = 100)
 }
 

@@ -50,7 +50,7 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 ### Sourced required files ----------------------------------------------------
 
-source('../parsets/pars_lit_dev2-3.R')
+pars <- read.csv(pars.default.file)
 
 source("flux_functions.R")
 source("Model_desolve.R")
@@ -130,7 +130,7 @@ fit.moist.mod <- dlply(data.accum, .(temp.group), .fun = FitMoist, var = "C_R_mr
 FitTemp <- function(df, var) {
   df$C_R <- df[[var]]
   fitEa <- nls(C_R ~ C_R_ref * exp(-Ea/0.008314*(1/(temp+273) - 1/273)),
-             start=c(C_R_ref = 0.1, Ea = 60), algorithm="port", data = df)
+             start=c(C_R_ref = 0.1, Ea = 100), algorithm="port", data = df)
   fitQ10 <- nls(C_R ~ C_R_ref * Q10^((temp-20)/10),
                start=c(C_R_ref = 0.1, Q10 = 2), lower = c(C_R_ref = 0, Q10 = 1),
                upper = c(C_R_ref = Inf, Q10 = Inf),
