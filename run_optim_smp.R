@@ -15,6 +15,8 @@ t0 <- Sys.time()
 
 # Setup
 setup <- list(
+  # Run Name
+  runname = "RunOpt" ,
   # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
   flag.mic  = 1 ,  # simulate microbial pool explicitly
@@ -24,14 +26,14 @@ setup <- list(
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
   flag.mmu  = 1 ,  # michalis menten kinetics for uptake, else equal diffusion flux
   flag.mmr  = 1 ,  # microbial maintenance respiration
-  run.test  = 0 ,  # run model cost once as test?
-  run.sens  = 1 ,  # run FME sensitivity analysis?
-  run.mfit  = 1 ,  # run modFit for optimization?
-  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
+  run.test  = 0 ,  # run model cost once as test?
+  run.sens  = 1 ,  # run FME sensitivity analysis?
+  run.mfit  = 1 ,  # run modFit for optimization?
+  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.mean" ,
@@ -39,27 +41,15 @@ setup <- list(
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead" ,
-  cost.fun = "ModCost_TR.R"
+  cost.fun = "ModCost_TR.R" ,
+  
+  # -------- Parameter options ----------
+  # csv file with default parameters
+  pars.default.file = '../parsets/parset6-dev2-3_all.csv' ,
+  # csv file with initial valeus and bounds for optimized parameters
+  pars.optim.file = '../parsets/parset10_temp.csv'
 )
 
-### ----------------------------------- ###
-###        Setting up parameters        ###
-### ----------------------------------- ###
-
-pars.path <- file.path('..', 'parsets')
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters (csv file)
-pars.default.file <- '../parsets/parset6-dev2-3_all.csv'
-pars <- read.csv(pars.default.file, row.names = 1)
-pars <- setNames(pars[[1]], row.names(pars))
-
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters (csv file)
-pars.optim.file <- '../parsets/parset10_temp.csv'
-pars_optim <- read.csv(pars.optim.file, row.names = 1)
-pars_optim_init  <- setNames(pars_optim[[1]], row.names(pars_optim))
-pars_optim_lower <- setNames(pars_optim[[2]], row.names(pars_optim))
-pars_optim_upper <- setNames(pars_optim[[3]], row.names(pars_optim))
 
 ### ----------------------------------- ###
 ###   Settings for parallel processing  ###
@@ -74,7 +64,7 @@ registerDoParallel(cores = cores)
 ### ----------------------------------- ###
 ###         Run optimization            ###
 ### ----------------------------------- ###
-source("optim_main.R")
+source("main_optim.R")
 
 print(Sys.time() - t0)
 

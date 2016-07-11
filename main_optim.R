@@ -1,5 +1,3 @@
-#### optim_run_main.R
-
 #### Documentations ===========================================================
 # Script used to prepare settings and run parameter optimization
 # author(s):
@@ -37,6 +35,16 @@ eq.stop    <- FALSE   # Stop at equilibrium?
 options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
                  "_", mf.method, "_", cost.type, "-", sep = "")
+
+# Parameter setup -------------------------------------------------------------
+pars.path <- file.path('..', 'parsets')
+pars <- read.csv(pars.default.file, row.names = 1)
+pars <- setNames(pars[[1]], row.names(pars))
+
+pars_optim <- read.csv(pars.optim.file, row.names = 1)
+pars_optim_init  <- setNames(pars_optim[[1]], row.names(pars_optim))
+pars_optim_lower <- setNames(pars_optim[[2]], row.names(pars_optim))
+pars_optim_upper <- setNames(pars_optim[[3]], row.names(pars_optim))
 
 # Input Setup -----------------------------------------------------------------
 input_path    <- file.path("..","input_data")
