@@ -87,10 +87,12 @@ save.image(file = paste(savename, savetime, ".RData", sep = ""))
 
 ## Run Bayesian optimization
 if(run.mcmc) {
-  var0 = obs.accum$sd.r
+  # var0 = obs.accum$sd.r
+  var0 <- summary(fitMod)$modVariance
   if(run.mfit) pars.mcmc <- fitMod$par else pars.mcmc <- pars
   mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, niter=5000, var0=var0,
-                     lower=pars_optim_lower, upper=pars_optim_upper, updatecov = 100)
+                     lower=pars_optim_lower, upper=pars_optim_upper, 
+                     updatecov = 100, burninlength = 0)
 }
 
 ## Saving work space
