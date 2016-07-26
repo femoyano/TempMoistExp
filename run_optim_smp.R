@@ -40,6 +40,7 @@ setup <- list(
   # Choose method for modFit
   mf.method = "Nelder-Mead" ,
   cost.fun = "ModCost_TR.R" ,
+  mfit.file = "RunOpt_sha-00e65993_job-6851556.RData",
   
   # -------- Parameter options ----------
   # csv file with default parameters

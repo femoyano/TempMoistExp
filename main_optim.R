@@ -79,18 +79,21 @@ if(run.sens) Sfun <- sensFun(ModCost, pars_optim_init)
 if (run.mfit) {
   fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method, 
                    upper = pars_optim_upper, lower = pars_optim_lower)
+  
+  ## Saving work space
+  savetime  <- format(Sys.time(), "%m%d-%H%M")
+  save.image(file = paste(savename, savetime, ".RData", sep = ""))
 }
 
-## Saving work space
-savetime  <- format(Sys.time(), "%m%d-%H%M")
-save.image(file = paste(savename, savetime, ".RData", sep = ""))
 
 ## Run Bayesian optimization
 if(run.mcmc) {
+  if(!run.mfit) load(mfit.file)
   # var0 = obs.accum$sd.r
   var0 <- summary(fitMod)$modVariance
+  Covar   <- fitMod$cov.scaled * 2.38^2/(length(fitMod$par))
   if(run.mfit) pars.mcmc <- fitMod$par else pars.mcmc <- pars
-  mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, niter=5000, var0=var0,
+  mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, jump = Covar, niter=5000, var0=var0,
                      lower=pars_optim_lower, upper=pars_optim_upper, 
                      updatecov = 100, burninlength = 0)
 }
