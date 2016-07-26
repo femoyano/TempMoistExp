@@ -32,7 +32,7 @@ setup <- list(
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
-  run.mfit  = 0 ,  # run modFit for optimization?
+  run.mfit  = 1 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
@@ -41,14 +41,14 @@ setup <- list(
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead" ,
-  cost.fun = "ModCost_TR.R" ,
+  cost.fun = "ModCost_TR2.R" ,
   mfit.file = "RunOpt_sha-00e65993_job-6851556.RData",
   
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = '../parsets/parset11_all_TRopt.csv' ,
+  pars.default.file = "../parsets/parset6-dev2-3_all.csv" ,
   # csv file with initial valeus and bounds for optimized parameters
-  pars.optim.file = '../parsets/parset11_optim_TRopt.csv'
+  pars.optim.file = "../parsets/parset10_test.csv"
 )
 
 
