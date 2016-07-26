@@ -50,7 +50,10 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 ### Sourced required files ----------------------------------------------------
 
-pars <- read.csv(pars.default.file)
+pars <- read.csv(pars.default.file, row.names = 1)
+pars <- setNames(pars[[1]], row.names(pars))
+pars_replace <- mcmcMod$bestpar
+pars <- ParsReplace(pars_replace, pars)
 
 source("flux_functions.R")
 source("Model_desolve.R")
@@ -59,7 +62,7 @@ source("initial_state.R")
 source("GetModelData.R")
 
 # Get model output with optimized parameters
-system.time(mod.out <- GetModelData(fitMod$par))
+system.time(mod.out <- GetModelData(pars))
 
 # Get accumulated values to match observations and merge datasets
 data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"), by.y = c("sample", "time"))

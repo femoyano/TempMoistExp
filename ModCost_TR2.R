@@ -25,7 +25,7 @@ ModCost <- function(pars_optim) {
   it <- 1
   for (i in unique(data.accum$moist.group)) {
     df <- data.accum[data.accum$moist.group == i, ]
-    obsSR <- data.frame(name = "C_R_r", time = df$hour, C_R_r = df$C_R_r, sd.r = df$sd.r)
+    obsSR <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_r, sd.r = df$sd.r)
     modSR <- data.frame(time = df$hour, C_R_r = df$C_R_mr)
     
     # Calculate T response
@@ -39,11 +39,9 @@ ModCost <- function(pars_optim) {
     TR20_35_o <- SR35_o/SR20_o
     TR5_20_m  <- SR20_m/SR5_m
     TR20_35_m <- SR35_m/SR20_m
-    TR5_20_diff <- TR5_20_o - TR5_20_m
-    TR20_35_diff <- TR20_35_o - TR20_35_m
     
-    obsTR <- data.frame(name = "TR", step = c(1,2,3,4), TR = c(TR5_20_o, TR20_35_o, TR5_20_diff, TR20_35_diff))
-    modTR <- data.frame(step = c(1,2,3,4), TR = c(TR5_20_m, TR20_35_m, TR5_20_diff, TR20_35_diff))
+    obsTR <- data.frame(name = "TR", step = c(1,2), TR = c(TR5_20_o, TR20_35_o))
+    modTR <- data.frame(step = c(1,2), TR = c(TR5_20_m, TR20_35_m))
     
     if(it == 1) {
       if(cost.type == "rate.sd") {

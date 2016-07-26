@@ -73,8 +73,7 @@ MainMpi <- function(pars, pars_calib) {
   source("AccumCalc_serial.R", local = TRUE)
   source("ParsReplace.R", local = TRUE)
   source("SampleRun.R", local = TRUE)
-  source("GetModelData.R", local = TRUE)
-  
+
   ## Run cost function
   ModCost(pars, pars_calib)
 }

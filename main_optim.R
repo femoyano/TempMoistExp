@@ -63,7 +63,6 @@ source(cost.fun)
 source("AccumCalc.R")
 source("ParsReplace.R")
 source("SampleRun.R")
-source("GetModelData.R")
 
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###

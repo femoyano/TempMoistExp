@@ -15,6 +15,8 @@ t0 <- Sys.time()
 
 # Setup
 setup <- list(
+  RunInfo = "Description of this run",
+  
   # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
   flag.mic  = 1 ,  # simulate microbial pool explicitly
