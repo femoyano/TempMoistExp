@@ -90,7 +90,7 @@ if(run.mcmc) {
   if(!run.mfit) load(mfit.file)
   # var0 = obs.accum$sd.r
   var0 <- summary(fitMod)$modVariance
-  Covar   <- fitMod$cov.scaled * 2.38^2/(length(fitMod$par))
+  Covar <- summary(fitMod)$cov.scaled * 2.38^2/(length(fitMod$par))
   if(run.mfit) pars.mcmc <- fitMod$par else pars.mcmc <- pars
   mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, jump = Covar, niter=5000, var0=var0,
                      lower=pars_optim_lower, upper=pars_optim_upper, 
