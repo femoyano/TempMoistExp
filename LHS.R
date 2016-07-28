@@ -1,6 +1,6 @@
 #latin Hypercube matrix generators (THANKS TO KARIN STEFFENS!!!)
 
-source("pars_bounds_v1.R")
+source("../parsets/pars_bounds_v1.R")
 
 ################################################################
 ################################################################
@@ -25,4 +25,4 @@ colnames(pars.calib) <- colnames(pars_bounds)
 ################################################################
 
 #Write the parameter matrix and the pars min-max in a file
-write.csv (pars.calib, file="pars_lh10000_bounds1_v2", quote=FALSE, row.names = FALSE)
+write.csv (pars.calib, file="pars_lh10000_bounds1_v3.csv", quote=FALSE, row.names = FALSE)

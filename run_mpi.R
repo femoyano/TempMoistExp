@@ -16,7 +16,7 @@ pars <- read.csv(pars.default.file, row.names = 1)
 pars <- setNames(pars[[1]], row.names(pars))
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-pars.calib.file   <- '../parsets/pars_lh10000_bounds1_v1.csv'
+pars.calib.file   <- '../parsets/pars_lh10000_bounds1_v3.csv'
 pars_calib <- as.matrix(read.csv(pars.calib.file))
 
 source('MainMpi.R')
