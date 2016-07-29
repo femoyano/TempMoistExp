@@ -28,7 +28,7 @@ MainMpi <- function(pars, pars_calib) {
   cost.type <- 'rate.mean' 
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file <- 'samples_smp.csv'
-  cost.fun <- "ModCost_TR.R"
+  cost.fun <- "ModCost_mpi.R"
   
   
   ### ----------------------------------- ###
