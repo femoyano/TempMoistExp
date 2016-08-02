@@ -16,6 +16,7 @@ require(FME)
 require(plyr)
 require(reshape2)
 
+### Extract setup variables ===================================================
 list2env(setup, envir = .GlobalEnv)
 
 ### Define time variables =====================================================
@@ -36,16 +37,27 @@ savename   <- paste("RunOpt", "-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.f
                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
                  "_", mf.method, "_", cost.type, "-", sep = "")
 
-# Parameter setup -------------------------------------------------------------
-pars <- read.csv(pars.default.file, row.names = 1)
-pars <- setNames(pars[[1]], row.names(pars))
+### Sourced required files ====================================================
+source("flux_functions.R")
+source("Model_desolve.R")
+source("initial_state.R")
+source(cost.fun)
+source("AccumCalc.R")
+source("ParsReplace.R")
+source("SampleRun.R")
 
-pars_optim <- read.csv(pars.optim.file, row.names = 1)
-pars_optim_init  <- setNames(pars_optim[[1]], row.names(pars_optim))
-pars_optim_lower <- setNames(pars_optim[[2]], row.names(pars_optim))
-pars_optim_upper <- setNames(pars_optim[[3]], row.names(pars_optim))
+# Parameter setup =============================================================
+pars_default <- read.csv(pars.default.file, row.names = 1)
+pars_default <- setNames(pars_default[[1]], row.names(pars_default))
 
-# Input Setup -----------------------------------------------------------------
+pars_optim_init <- read.csv(pars.optim.file, row.names = 1)
+pars_optim_init <- setNames(pars_optim_init[[1]], row.names(pars_optim_init))
+
+pars_bounds <- read.csv(pars.bounds.file, row.names = 1)
+pars_optim_lower <- setNames(pars_bounds[[1]], row.names(pars_bounds))
+pars_optim_upper <- setNames(pars_bounds[[2]], row.names(pars_bounds))
+
+# Input Setup =================================================================
 input_path    <- file.path("..","input_data")
 data.samples  <- read.csv(file.path(input_path, sample_list_file))
 input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
@@ -55,14 +67,6 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 
 obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
-### Sourced required files ----------------------------------------------------
-source("flux_functions.R")
-source("Model_desolve.R")
-source("initial_state.R")
-source(cost.fun)
-source("AccumCalc.R")
-source("ParsReplace.R")
-source("SampleRun.R")
 
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###
@@ -87,7 +91,6 @@ if (run.mfit) {
 
 ## Run Bayesian optimization
 if(run.mcmc) {
-  if(!run.mfit) load(mfit.file)
   # var0 = obs.accum$sd.r
   var0 <- summary(fitMod)$modVariance
   Covar <- summary(fitMod)$cov.scaled * 2.38^2/(length(fitMod$par))

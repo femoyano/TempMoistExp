@@ -7,7 +7,7 @@ ModCost <- function(pars_optim) {
   # t1 <- Sys.time()
   
   # Add or replace parameters from the list of optimized parameters ----------------------
-  pars <- ParsReplace(pars_optim, pars)
+  pars <- ParsReplace(pars_optim, pars_default)
   
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
 

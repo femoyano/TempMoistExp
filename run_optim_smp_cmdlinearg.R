@@ -22,8 +22,9 @@ t0 <- Sys.time()
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
-# Setup
 setup <- list(
+  RunInfo = "Description of this run",
+  
   # -------- Model options ----------
   flag.ads  = 0 ,  # simulate adsorption desorption
   flag.mic  = 1 ,  # simulate microbial pool explicitly
@@ -37,6 +38,10 @@ setup <- list(
   diff.fun = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
+  run.test  = 0 ,  # run model cost once as test?
+  run.sens  = 0 ,  # run FME sensitivity analysis?
+  run.mfit  = 1 ,  # run modFit for optimization?
+  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
   cost.type = "rate.mean" ,
@@ -44,36 +49,33 @@ setup <- list(
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead" ,
-  cost.fun = "ModCost_TR.R"
+  cost.fun = "ModCost_TR.R" ,
+  mfit.file = "RunOpt_sha-00e65993_job-6851556.RData",
+  
+  # -------- Parameter options ----------
+  # csv file with default parameters
+  pars.default.file = "../parsets/parset6-dev2-3_all.csv" ,
+  # csv file with initial valeus and bounds for optimized parameters
+  pars.optim.file = "../parsets/parset_temp.csv",
+  # csv file with bounds for optimized parameters
+  pars.bounds.file = "../parsets/pars_bounds_v1.csv"
 )
 
 
 ### ----------------------------------- ###
 ###        Setting up parameters        ###
 ### ----------------------------------- ###
-pars.path <- file.path('..', 'parsets')
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
-pars.default.file <- '../parsets/parset6-dev2-3_all.csv'
-pars <- read.csv(pars.default.file, row.names = 1)
-pars <- setNames(pars[[1]], row.names(pars))
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-pars.calib.file   <- "../parsets/pars_lh10_bounds1_v1.csv"
-pars_calib <- as.matrix(read.csv(pars.calib.file))
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose bounds R file
-pars.bounds.file <- "pars_bounds_v1.R"
-source(pars.bounds.file)
-pars_optim_lower <- pars_bounds[1,]
-pars_optim_upper <- pars_bounds[2,]
+pars.mult.file   <- "../parsets/pars_lh10000_top10.csv"
+pars_calib <- as.matrix(read.csv(pars.mult.file))
+runind <- as.integer(commandArgs(trailingOnly = TRUE))
+write.csv(pars_calib[runind, ], file = pars.optim.file)
 
 
 ### ----------------------------------- ###
 ###      Run multiple optimizations     ###
 ### ----------------------------------- ###
-runind <- as.integer(commandArgs(trailingOnly = TRUE))
 runname <- paste("MultRun", runind, sep="")
-pars_optim_init <- pars_calib[runind, ]
 cat("Starting run number", runind, "\n")
-source("optim_main.R")
+source("main_optim.R")

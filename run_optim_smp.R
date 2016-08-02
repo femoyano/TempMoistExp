@@ -41,14 +41,15 @@ setup <- list(
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead" ,
-  cost.fun = "ModCost_TR2.R" ,
-  mfit.file = "RunOpt_sha-00e65993_job-6851556.RData",
+  cost.fun = "ModCost_TR.R" ,
   
   # -------- Parameter options ----------
   # csv file with default parameters
   pars.default.file = "../parsets/parset6-dev2-3_all.csv" ,
   # csv file with initial valeus and bounds for optimized parameters
-  pars.optim.file = "../parsets/parset10_test.csv"
+  pars.optim.file = "../parsets/parset10_test.csv",
+  # csv file with bounds for optimized parameters
+  pars.bounds.file = "../parsets/pars_bounds_v1.csv"
 )
 
 

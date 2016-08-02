@@ -50,10 +50,10 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 ### Sourced required files ----------------------------------------------------
 
-pars <- read.csv(pars.default.file, row.names = 1)
-pars <- setNames(pars[[1]], row.names(pars))
+pars_default <- read.csv(pars.default.file, row.names = 1)
+pars_default <- setNames(pars_default[[1]], row.names(pars_default))
 pars_replace <- mcmcMod$bestpar
-pars <- ParsReplace(pars_replace, pars)
+pars <- ParsReplace(pars_replace, pars_default)
 
 source("flux_functions.R")
 source("Model_desolve.R")

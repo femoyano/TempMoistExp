@@ -37,15 +37,15 @@ source("ParsReplace.R")
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters (csv file)
 pars.default.file <- '../parsets/parset6-dev2-3_all.csv'
-pars <- read.csv(pars.default.file, row.names = 1)
-pars <- setNames(pars[[1]], row.names(pars))
+pars_default <- read.csv(pars.default.file, row.names = 1)
+pars_default <- setNames(pars_default[[1]], row.names(pars_default))
 
 # # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
 pars.new.file <- '../parsets/parset6-dev2-3_all.csv'
 pars_new <- read.csv(pars.new.file, row.names = 1)
 pars_new <- setNames(pars_new[[1]], row.names(pars_new))
 
-pars <- ParsReplace(pars_new, pars)
+pars <- ParsReplace(pars_new, pars_default)
 
 source("set_pars.R", local = TRUE)  # change specific par values  
 write.csv(pars, file = "../parsets/parset_new.csv", row.names = TRUE)  # Optional: save pars
