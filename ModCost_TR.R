@@ -46,21 +46,11 @@ ModCost <- function(pars_optim) {
     modTR <- data.frame(step = c(1,2,3,4), TR = c(TR5_20_m, TR20_35_m, TR5_20_diff, TR20_35_diff))
     
     if(it == 1) {
-      if(cost.type == "rate.sd") {
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = 'std', scaleVar = TRUE)
-      } else if(cost.type == "rate.mean") {
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = "mean", scaleVar = TRUE)
-      } else if(cost.type == "uwr") {
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", scaleVar = TRUE)
-      } else stop("Check cost.type option for using group rates: uwr or rate.mean or rate.sd", scaleVar = TRUE)
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", error = TRerror,
+                      weight = TRweight, scaleVar = TRUE)
     } else {
-      if(cost.type == "rate.sd") {
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = 'std', cost = cost, scaleVar = TRUE)
-      } else if(cost.type == "rate.mean") {
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = "mean", cost = cost, scaleVar = TRUE)
-      } else if(cost.type == "uwr") {
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", cost = cost, scaleVar = TRUE)
-      } else stop("Check cost.type option for using group rates: uwr or rate.mean or rate.sd")
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", error = TRerror,
+                      weight = TRweight, scaleVar = TRUE, cost = cost)
     }
     it = it + 1
   }

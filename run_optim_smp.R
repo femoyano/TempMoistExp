@@ -36,12 +36,15 @@ setup <- list(
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
-  cost.type = "rate.mean" ,
+  SRerror = NULL ,
+  TRerror = NULL ,
+  SRweight = 'std' ,
+  TRweight = 'std' ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead" ,
-  cost.fun = "ModCost_TR.R" ,
+  cost.fun = "ModCost_SR_TR.R" ,
   
   # -------- Parameter options ----------
   # csv file with default parameters

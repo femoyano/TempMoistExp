@@ -44,27 +44,11 @@ ModCost <- function(pars_optim) {
     modTR <- data.frame(step = c(1,2), TR = c(TR5_20_m, TR20_35_m))
     
     if(it == 1) {
-      if(cost.type == "rate.sd") {
-        cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = "sd.r", scaleVar = TRUE)
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = 'std', cost = cost, scaleVar = TRUE)
-      } else if(cost.type == "rate.mean") {
-        cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", weight = "mean", scaleVar = TRUE)
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = "mean", cost = cost, scaleVar = TRUE)
-      } else if(cost.type == "uwr") {
-        cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r")
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", cost = cost, scaleVar = TRUE)
-      } else stop("Check cost.type option for using group rates: uwr or rate.mean or rate.sd", scaleVar = TRUE)
+      cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = SRerror, weight = SRweight, scaleVar = TRUE)
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = TRerror, weight = TRweight, cost = cost, scaleVar = TRUE)
     } else {
-      if(cost.type == "rate.sd") {
-        cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = "sd.r", cost = cost, scaleVar = TRUE)
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = 'std', cost = cost, scaleVar = TRUE)
-      } else if(cost.type == "rate.mean") {
-        cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", weight = "mean", cost = cost, scaleVar = TRUE)
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = "mean", cost = cost, scaleVar = TRUE)
-      } else if(cost.type == "uwr") {
-        cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", cost = cost, scaleVar = TRUE)
-        cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", cost = cost, scaleVar = TRUE)
-      } else stop("Check cost.type option for using group rates: uwr or rate.mean or rate.sd")
+      cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = SRerror, weight = SRweight, scaleVar = TRUE, cost = cost)
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = TRerror, weight = TRweight, scaleVar = TRUE, cost = cost)
     }
     it = it + 1
   }
