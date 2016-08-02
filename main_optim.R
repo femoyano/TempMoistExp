@@ -33,9 +33,11 @@ tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
-savename   <- paste("RunOpt", "-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
-                 "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
-                 "_", mf.method, "_", cost.type, "-", sep = "")
+# savename   <- paste("RunOpt", "-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
+#                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
+#                  "_", mf.method, "_", cost.type, "-", sep = "")
+savename   <- paste("RunOpt", cost.fun, "_", diff.fun,
+                    "_", mf.method, "_", cost.type, "-", sep = "")
 
 ### Sourced required files ====================================================
 source("flux_functions.R")
