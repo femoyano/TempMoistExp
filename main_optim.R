@@ -93,10 +93,15 @@ if (run.mfit) {
 ## Run Bayesian optimization
 if(run.mcmc) {
   # var0 = obs.accum$sd.r
-  var0 <- summary(fitMod)$modVariance
-  Covar <- summary(fitMod)$cov.scaled * 2.38^2/(length(fitMod$par))
-  jump <- abs(fitMod$par/jumpfrac)
-  if(run.mfit) pars.mcmc <- fitMod$par else pars.mcmc <- pars
+  if(run.mfit) {
+    pars.mcmc <- fitMod$par
+    var0 <- summary(fitMod)$modVariance
+    # Covar <- summary(fitMod)$cov.scaled * 2.38^2/(length(fitMod$par)) # can use as jump
+    } else {
+      pars.mcmc <- pars_optim_init
+      var0 <- 0.0025
+    }
+  jump <- abs(pars.mcmc/jfrac)
   mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, jump = jump, niter=niter, var0=var0,
                      lower=pars_optim_lower, upper=pars_optim_upper, 
                      updatecov = udcov, burninlength = burnin)
