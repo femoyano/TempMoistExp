@@ -22,6 +22,7 @@ t0 <- Sys.time()
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
+
 setup <- list(
   RunInfo = "Description of this run",
   
@@ -44,19 +45,19 @@ setup <- list(
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
-  cost.type = "rate.mean" ,
+  SRerror = NULL ,
+  TRerror = NULL ,
+  SRweight = 'std' ,
+  TRweight = 'std' ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
   mf.method = "Nelder-Mead" ,
-  cost.fun = "ModCost_TR.R" ,
-  mfit.file = "RunOpt_sha-00e65993_job-6851556.RData",
+  cost.fun = "ModCost_SR_TR.R" ,
   
   # -------- Parameter options ----------
   # csv file with default parameters
   pars.default.file = "../parsets/parset6-dev2-3_all.csv" ,
-  # csv file with initial valeus and bounds for optimized parameters
-  pars.optim.file = "../parsets/parset_temp.csv",
   # csv file with bounds for optimized parameters
   pars.bounds.file = "../parsets/pars_bounds_v1.csv"
 )
@@ -67,9 +68,10 @@ setup <- list(
 ### ----------------------------------- ###
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-pars.mult.file   <- "../parsets/pars_lh10000_top10.csv"
-pars_calib <- as.matrix(read.csv(pars.mult.file))
 runind <- as.integer(commandArgs(trailingOnly = TRUE))
+pars.mult.file   <- "../parsets/parset_selection.csv"
+pars_calib <- as.matrix(read.csv(pars.mult.file))
+pars.optim.file <- paste0("../parsets/parset_temp", runind, ".csv")
 write.csv(pars_calib[runind, ], file = pars.optim.file)
 
 

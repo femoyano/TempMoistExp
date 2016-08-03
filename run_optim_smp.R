@@ -49,7 +49,7 @@ setup <- list(
   # -------- Parameter options ----------
   # csv file with default parameters
   pars.default.file = "../parsets/parset6-dev2-3_all.csv" ,
-  # csv file with initial valeus and bounds for optimized parameters
+  # csv file with initial valeus for optimized parameters
   pars.optim.file = "../parsets/parset10_test.csv",
   # csv file with bounds for optimized parameters
   pars.bounds.file = "../parsets/pars_bounds_v1.csv"
