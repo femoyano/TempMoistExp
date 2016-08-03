@@ -13,14 +13,16 @@ ModCost <- function(pars, pars_calib) {
   }
   
   # Get accumulated values to match observations and merge datasets
-  data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"), by.y = c("sample", "time"))
-  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum * 1000  # observed data was also rescaled
+  data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum),
+                      by.x = c("sample", "hour"), by.y = c("sample", "time"))
+  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum * 1000         # observed data was also rescaled
   data.accum$moist.group <- interaction(data.accum$site, data.accum$moist_vol) # create a group variable
   
   it <- 1
   for (i in unique(data.accum$moist.group)) {
     df <- data.accum[data.accum$moist.group == i, ]
-    obsSR <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_r, sd.r = df$sd.r)
+    obsSR <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, 
+                        C_R_r = df$C_R_r, sd.r = df$sd.r)
     modSR <- data.frame(time = df$hour, C_R_r = df$C_R_mr)
     
     # Calculate T response
@@ -46,10 +48,14 @@ ModCost <- function(pars, pars_calib) {
       cost.sr.uw <- modCost(model=modSR, obs=obsSR, y = "C_R_r")
       cost.tr.uw <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR")
     } else {
-      cost.sr.sd <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = "sd.r", cost = cost.sr.sd)
-      cost.tr.sd <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = 'std', cost = cost.tr.sd)
-      cost.sr.m  <- modCost(model=modSR, obs=obsSR, y = "C_R_r", weight = "mean", cost = cost.sr.m)
-      cost.tr.m  <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = "mean", cost = cost.tr.m)
+      cost.sr.sd <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = "sd.r",
+                            cost = cost.sr.sd)
+      cost.tr.sd <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR",
+                            weight = 'std', cost = cost.tr.sd)
+      cost.sr.m  <- modCost(model=modSR, obs=obsSR, y = "C_R_r", weight = "mean",
+                            cost = cost.sr.m)
+      cost.tr.m  <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR",
+                            weight = "mean", cost = cost.tr.m)
       cost.sr.uw <- modCost(model=modSR, obs=obsSR, y = "C_R_r", cost = cost.sr.uw)
       cost.tr.uw <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", cost = cost.tr.uw)
     }

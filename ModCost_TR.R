@@ -18,8 +18,9 @@ ModCost <- function(pars_optim) {
   }
   
   # Get accumulated values to match observations and merge datasets
-  data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"), by.y = c("sample", "time"))
-  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum * 1000  # observed data was also rescaled
+  data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"),
+                      by.y = c("sample", "time"))
+  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum * 1000         # observed data was also rescaled
   data.accum$moist.group <- interaction(data.accum$site, data.accum$moist_vol) # create a group variable
   
   it <- 1
@@ -42,8 +43,10 @@ ModCost <- function(pars_optim) {
     TR5_20_diff <- TR5_20_o - TR5_20_m
     TR20_35_diff <- TR20_35_o - TR20_35_m
     
-    obsTR <- data.frame(name = "TR", step = c(1,2,3,4), TR = c(TR5_20_o, TR20_35_o, TR5_20_diff, TR20_35_diff))
-    modTR <- data.frame(step = c(1,2,3,4), TR = c(TR5_20_m, TR20_35_m, TR5_20_diff, TR20_35_diff))
+    obsTR <- data.frame(name = "TR", step = c(1,2,3,4),
+                        TR = c(TR5_20_o, TR20_35_o, TR5_20_diff, TR20_35_diff))
+    modTR <- data.frame(step = c(1,2,3,4), 
+                        TR = c(TR5_20_m, TR20_35_m, TR5_20_diff, TR20_35_diff))
     
     if(it == 1) {
       cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", error = TRerror,

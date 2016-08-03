@@ -30,19 +30,23 @@ setup <- list(
   diff.fun  = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
+  # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
+  sample_list_file = "samples_smp.csv" ,
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 1 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
-  # Cost error or weighting type in modCost function.
+  # Observation error: NULL or name of column with error values
   SRerror  = NULL  ,
   TRerror  = NULL  ,
+  # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
   SRweight = 'std' ,
   TRweight = 'std' ,
-  # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_smp.csv" ,
+  # Scale variables? TRUE or FALSE
+  scalevar = TRUE  ,
   # Choose method for modFit
   mf.method = "Nelder-Mead"     ,
+  # Choose cost function
   cost.fun  = "ModCost_SR_TR.R" ,
   # Choose MCMC options:
   niter  = 10000,  # number of iterations

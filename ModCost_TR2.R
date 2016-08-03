@@ -18,14 +18,16 @@ ModCost <- function(pars_optim) {
   }
   
   # Get accumulated values to match observations and merge datasets
-  data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"), by.y = c("sample", "time"))
-  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum * 1000  # observed data was also rescaled
+  data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"),
+                      by.y = c("sample", "time"))
+  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum * 1000         # observed data was also rescaled
   data.accum$moist.group <- interaction(data.accum$site, data.accum$moist_vol) # create a group variable
   
   it <- 1
   for (i in unique(data.accum$moist.group)) {
     df <- data.accum[data.accum$moist.group == i, ]
-    obsSR <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_r, sd.r = df$sd.r)
+    obsSR <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour,
+                        C_R_r = df$C_R_r, sd.r = df$sd.r)
     modSR <- data.frame(time = df$hour, C_R_r = df$C_R_mr)
     
     # Calculate T response
