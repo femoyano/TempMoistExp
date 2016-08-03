@@ -43,17 +43,21 @@ setup <- list(
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 1 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
-  # Cost calculation type.
-  # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
-  SRerror = NULL ,
-  TRerror = NULL ,
+  # Cost error or weighting type in modCost function.
+  SRerror  = NULL  ,
+  TRerror  = NULL  ,
   SRweight = 'std' ,
   TRweight = 'std' ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
-  mf.method = "Nelder-Mead" ,
-  cost.fun = "ModCost_SR_TR.R" ,
+  mf.method = "Nelder-Mead"     ,
+  cost.fun  = "ModCost_SR_TR.R" ,
+  # Choose MCMC options:
+  niter  = 10000,  # number of iterations
+  jfrac  = 200  ,  # fraction of parameters size for jumps
+  burnin = 5000 ,  # length of burn in
+  udcov  = 200  ,  # iteration period for updating covariance matrix 
   
   # -------- Parameter options ----------
   # csv file with default parameters

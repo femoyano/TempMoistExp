@@ -26,33 +26,37 @@ setup <- list(
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
   flag.mmu  = 1 ,  # michalis menten kinetics for uptake, else equal diffusion flux
   flag.mmr  = 1 ,  # microbial maintenance respiration
-  dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun = "hama" ,  # Options: 'hama', 'cubic'
+  dce.fun   = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
+  diff.fun  = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 1 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
-  # Cost calculation type.
-  # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  "rate.sd", "rate.mean"...
-  SRerror = NULL ,
-  TRerror = NULL ,
+  # Cost error or weighting type in modCost function.
+  SRerror  = NULL  ,
+  TRerror  = NULL  ,
   SRweight = 'std' ,
   TRweight = 'std' ,
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   sample_list_file = "samples_smp.csv" ,
   # Choose method for modFit
-  mf.method = "Nelder-Mead" ,
-  cost.fun = "ModCost_SR_TR.R" ,
+  mf.method = "Nelder-Mead"     ,
+  cost.fun  = "ModCost_SR_TR.R" ,
+  # Choose MCMC options:
+  niter  = 10000,  # number of iterations
+  jfrac  = 200  ,  # fraction of parameters size for jumps
+  burnin = 5000 ,  # length of burn in
+  udcov  = 200  ,  # iteration period for updating covariance matrix 
   
   # -------- Parameter options ----------
   # csv file with default parameters
   pars.default.file = "../parsets/parset6-dev2-3_all.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file = "../parsets/parset10_optim.csv",
+  pars.optim.file   = "../parsets/parset10_optim.csv"     ,
   # csv file with bounds for optimized parameters
-  pars.bounds.file = "../parsets/pars_bounds_v1.csv"
+  pars.bounds.file  = "../parsets/pars_bounds_v1.csv"
 )
 
 

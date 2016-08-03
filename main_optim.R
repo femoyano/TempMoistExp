@@ -95,11 +95,11 @@ if(run.mcmc) {
   # var0 = obs.accum$sd.r
   var0 <- summary(fitMod)$modVariance
   Covar <- summary(fitMod)$cov.scaled * 2.38^2/(length(fitMod$par))
-  jump <- abs(fitMod$par/200)
+  jump <- abs(fitMod$par/jumpfrac)
   if(run.mfit) pars.mcmc <- fitMod$par else pars.mcmc <- pars
-  mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, jump = jump, niter=10000, var0=var0,
+  mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, jump = jump, niter=niter, var0=var0,
                      lower=pars_optim_lower, upper=pars_optim_upper, 
-                     updatecov = 200, burninlength = 5000)
+                     updatecov = udcov, burninlength = burnin)
 }
 
 ## Saving work space
