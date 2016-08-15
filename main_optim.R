@@ -83,10 +83,6 @@ if(run.sens) Sfun <- sensFun(ModCost, pars_optim_init)
 if (run.mfit) {
   fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method, 
                    upper = pars_optim_upper, lower = pars_optim_lower)
-  
-  ## Saving work space
-  savetime  <- format(Sys.time(), "%m%d-%H%M")
-  save.image(file = paste(savename, savetime, ".RData", sep = ""))
 }
 
 
@@ -106,6 +102,8 @@ if(run.mcmc) {
                      lower=pars_optim_lower, upper=pars_optim_upper, 
                      updatecov = udcov, burninlength = burnin)
 }
+
+source('post_process.R')
 
 ## Saving work space
 savetime  <- format(Sys.time(), "%m%d-%H%M")

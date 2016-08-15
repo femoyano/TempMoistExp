@@ -1,16 +1,6 @@
 ### ===================================== ###
-### Analyze and plot model vs observation ###
+### Post-process at end of run ###
 ### ===================================== ###
-
-### Libraries
-require(deSolve)
-require(FME)
-require(plyr)
-require(reshape2)
-library(doParallel)
-
-cores = detectCores()
-registerDoParallel(cores = cores)
 
 
 ## ------------------------------------ ##
@@ -27,39 +17,9 @@ registerDoParallel(cores = cores)
 ### -------- Get model data ----------- ##           
 ## ------------------------------------ ##
 
-# Prepare setup
-
-list2env(setup, envir = .GlobalEnv)
-
-### Define time variables
-year     <- 31104000 # seconds in a year
-hour     <- 3600     # seconds in an hour
-sec      <- 1        # seconds in a second!
-# Other settings
-tstep <- get(t_step)
-tsave <- get(t_save)
-spinup     <- FALSE
-eq.stop    <- FALSE   # Stop at equilibrium?
-# Input Setup -----------------------------------------------------------------
-input_path    <- file.path("..", "input_data")
-data.samples  <- read.csv(file.path(input_path, sample_list_file))
-input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
-obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))
-site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
-site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
-obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
-### Sourced required files ----------------------------------------------------
-
-pars_default <- read.csv(pars.default.file, row.names = 1)
-pars_default <- setNames(pars_default[[1]], row.names(pars_default))
 pars_replace <- mcmcMod$bestpar
-#  pars_replace <- fitMod$par
 pars <- ParsReplace(pars_replace, pars_default)
 
-source("flux_functions.R")
-source("Model_desolve.R")
-source("Model_stepwise.R")
-source("initial_state.R")
 source("GetModelData.R")
 
 # Get model output with optimized parameters
@@ -110,7 +70,7 @@ data.accum$C_R_norm <- NULL
 
 
 ## ------------------------------------------------- ##
-##         Fit simple nl models and plot           ----
+##         Fit simple models           ----
 ## ------------------------------------------------- ##
 cv <- rainbow(10, alpha = 0.5)  # heat.colors(10, alpha = 0.5)
 palette(cv)
@@ -148,5 +108,3 @@ fit.temp.mod.5_20 <- dlply(data.accum[data.accum$temp!=35,], .(moist.group), .fu
 # Fit for 20C to 35C
 fit.temp.obs.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_R_or")
 fit.temp.mod.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_R_mr")
-
-source('analysis_plots.R')
