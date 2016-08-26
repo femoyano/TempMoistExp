@@ -107,7 +107,7 @@ obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 source("flux_functions.R")
 source("Model_desolve.R")
 source("initial_state.R")
-source("ModCost_byMoist.R")
+source("ModCost_SR.R")
 source("AccumCalc.R")
 source("SampleRun.R")
 source("GetModelData.R")
