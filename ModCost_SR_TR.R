@@ -40,7 +40,7 @@ ModCost <- function(pars_optim) {
   obsTR <- data.frame(name = rep("TR", 2), step = c(1,2), TR = c(TR5_20_o, TR20_35_o))
   modTR <- data.frame(step = c(1,2), TR = c(TR5_20_m, TR20_35_m))
   
-  cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = sd, 
+  cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = 'sd', 
                   weight = 'none', scaleVar = scalevar)
   cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = NULL,
                   weight = 'none', cost = cost, scaleVar = scalevar)

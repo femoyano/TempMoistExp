@@ -32,7 +32,7 @@ setup <- list(
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
-  run.mfit  = 0 ,  # run modFit for optimization?
+  run.mfit  = 1 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Scale variables? TRUE or FALSE
   scalevar = TRUE  ,

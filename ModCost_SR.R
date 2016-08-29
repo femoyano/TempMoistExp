@@ -25,7 +25,7 @@ ModCost <- function(pars_optim) {
   obs <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_r, sd = df$C_R_sd)
   mod <- data.frame(time = df$hour, C_R_r = df$C_R_mr)
   
-  cost <- modCost(model=mod, obs=obs, y = "C_R_r", err = sd, weight = 'none') 
+  cost <- modCost(model=mod, obs=obs, y = "C_R_r", err = 'sd', weight = 'none') 
   
   cat(cost$model, cost$minlogp, "\n")
   
