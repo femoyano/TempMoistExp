@@ -22,8 +22,8 @@ ModCost <- function(pars_optim) {
   data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum
   
   df <- data.accum
-  obsSR <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_r, sd = df$C_R_sd)
-  modSR <- data.frame(time = df$hour, C_R_r = df$C_R_mr)
+  obsSR <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_r * 1000, sd = df$C_R_sd * 1000)
+  modSR <- data.frame(time = df$hour, C_R_r = df$C_R_mr * 1000)
     
   # Calculate T response
   SR5_o  <- mean(df$C_R_r[df$temp==5])
