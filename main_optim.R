@@ -60,14 +60,10 @@ pars_optim_upper <- setNames(pars_bounds[[2]], row.names(pars_bounds))
 
 # Input Setup =================================================================
 input_path    <- file.path("..","input_data")
-data.samples  <- read.csv(file.path(input_path, sample_list_file))
 input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
 obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))
 site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
 site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
-
-obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
-
 
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###

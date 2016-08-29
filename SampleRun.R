@@ -1,5 +1,5 @@
 ### Define the function that runs model for each sample --------------------------------
-SampleRun <- function(pars, sample.data, input) {
+SampleRun <- function(pars, input) {
   
   require(deSolve)
   source("prepare_input.R", local=TRUE)
@@ -12,7 +12,7 @@ SampleRun <- function(pars, sample.data, input) {
   
   out[, 'C_R'] <- out[, 'C_R'] / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
 
-  out <- cbind(out, sample = rep(sample.data$sample, nrow(out)))
+  out <- cbind(out, treatment = rep(input$treatment, nrow(out)))
   
   return(out)
 }

@@ -31,28 +31,21 @@ setup <- list(
   
   # -------- Calibration options ----------
   # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_smp.csv" ,
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 0 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
-  # Observation error: NULL or name of column with error values
-  SRerror  = NULL  ,
-  TRerror  = NULL  ,
-  # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
-  SRweight = 'std' ,
-  TRweight = 'std' ,
   # Scale variables? TRUE or FALSE
   scalevar = TRUE  ,
   # Choose method for modFit
   mf.method = "Nelder-Mead"     ,
   # Choose cost function
-  cost.fun  = "ModCost_SR_TR.R" ,
+  cost.fun  = "ModCost_SR.R" ,
   # Choose MCMC options:
-  niter  = 10000,  # number of iterations
+  niter  = 50000,  # number of iterations
   jfrac  = 200  ,  # fraction of parameters size for jumps
-  burnin = 5000 ,  # length of burn in
-  udcov  = 200  ,  # iteration period for updating covariance matrix 
+  burnin = 10000 ,  # length of burn in
+  udcov  = 500  ,  # iteration period for updating covariance matrix 
   
   # -------- Parameter options ----------
   # csv file with default parameters
