@@ -26,8 +26,6 @@ MainMpi <- function(pars, pars_calib) {
   # Cost calculation type.
   # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  'rate.sd', 'rate.mean'...
   cost.type <- 'rate.mean' 
-  # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file <- 'samples_smp.csv'
   cost.fun <- "ModCost_mpi.R"
   
   
@@ -57,13 +55,10 @@ MainMpi <- function(pars, pars_calib) {
   
   # Input Setup -----------------------------------------------------------------
   input_path    <- file.path("..", "input_data")
-  data.samples  <- read.csv(file.path(input_path, sample_list_file))
   input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
   obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))
   site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
   site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
-  
-  obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
   
   ### Sourced required files ----------------------------------------------------
   source("flux_functions.R", local = TRUE)

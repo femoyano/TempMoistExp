@@ -11,11 +11,12 @@ ModCost <- function(pars_optim) {
   
   ### Run all samples (in parallel if cores avaiable) ------------------------------------
 
-  all.out <- foreach(i = data.samples$sample, .combine = 'rbind', 
+  all.out <- foreach(i = unique(input.all$treatment), .combine = 'rbind', 
                      .export = c(ls(envir = .GlobalEnv), "pars"),
                      .packages = c("deSolve")) %dopar% {
-    SampleRun(pars, data.samples[data.samples$sample==i, ], input.all[input.all$sample==i, ])
-  }
+                       SampleRun(pars, input.all[input.all$treatment==i, ])
+                     }
+  
   ### calculate accumulated fluxes as measured and pass to modCost function --------------
   C_R_mod <- AccumCalc(all.out, obs.accum)
   

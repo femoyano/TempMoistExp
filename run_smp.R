@@ -25,9 +25,6 @@ setup <- list(
   flag.mmr  = 1 ,  # microbial maintenance respiration
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun = "hama" ,  # Options: 'hama', 'cubic'
-  
-  # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
-  sample_list_file = "samples_smp.csv"
 )
 
 
@@ -95,13 +92,10 @@ options <- paste("-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.mmu, "_mmu", f
 
 # Input Setup -----------------------------------------------------------------
 input_path    <- file.path("..", "input_data")
-data.samples  <- read.csv(file.path(input_path, sample_list_file))
 input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
 obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))
 site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
 site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
-
-obs.accum <- obs.accum[obs.accum$sample %in% data.samples$sample,]
 
 ### Sourced required files ----------------------------------------------------
 source("flux_functions.R")
@@ -118,13 +112,10 @@ source("GetModelData.R")
 ### ----------------------------------- ###
 t0 <- Sys.time()
 
-
-
-mod.out <- foreach(i = data.samples$sample, .combine = 'rbind',
+mod.out <- foreach(i = unique(input.all$treatment), .combine = 'rbind', 
                    .export = c(ls(envir = .GlobalEnv), "pars"),
                    .packages = c("deSolve")) %dopar% {
-                     SampleRun(pars, data.samples[data.samples$sample==i, ],
-                               input.all[input.all$sample==i, ])
+                     SampleRun(pars, input.all[input.all$treatment==i, ])
                    }
 
 print(Sys.time() - t0)

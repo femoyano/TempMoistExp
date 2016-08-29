@@ -5,11 +5,11 @@ GetModelData <- function(pars) {
   
   source("SampleRun.R")
 
-  all.out <- foreach(i = data.samples$sample, .combine = 'rbind',
+  all.out <- foreach(i = unique(input.all$treatment), .combine = 'rbind', 
                      .export = c(ls(envir = .GlobalEnv), "pars"),
                      .packages = c("deSolve")) %dopar% {
-                       SampleRun(pars, data.samples[data.samples$sample==i, ],
-                                 input.all[input.all$sample==i, ])
+                       SampleRun(pars, input.all[input.all$treatment==i, ])
                      }
+  
   return(all.out)
 }
