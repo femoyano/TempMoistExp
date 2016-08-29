@@ -30,7 +30,6 @@ setup <- list(
   diff.fun  = "hama" ,  # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
-  # Which samples to run? E.g. samples.csv, samples_smp.csv, samples_4s.csv, samples_10s.csv
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 0 ,  # run modFit for optimization?

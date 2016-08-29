@@ -1,10 +1,10 @@
-#### ---- Prepares input required for each sample run ----
+#### ---- Prepares input required for each run ----
 
 # Choose site
-if (sample.data$site == "bare_fallow") {
+if (input$site[1] == "bare_fallow") {
   site.data <- site.data.bf
   f_CA <- pars[["f_CA_bf"]] 
-} else if (sample.data$site == "maize") {
+} else if (input$site[1] == "maize") {
   site.data <- site.data.mz
   f_CA <- pars[["f_CA_mz"]] 
 } else stop("no site name match in prepare_input.R")
