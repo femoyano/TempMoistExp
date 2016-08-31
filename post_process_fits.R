@@ -1,11 +1,5 @@
-### Analysis without run.
-
-## ------------------------------------------------- ##
-##            Get accumulated values               ----
-## ------------------------------------------------- ##
-
-# Check units: convert all to gC kg-1Soil h-1
-# Model output should be gC kg-1
+require(plyr)
+require(reshape2)
 
 
 # Get accumulated values to match observations and merge datasets

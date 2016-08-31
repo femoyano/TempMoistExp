@@ -34,9 +34,9 @@ setup <- list(
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 0 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
-  # Observation error: NULL or name of column with error values
+  # Observation error: name of column with error values ('sd' or 'uw'). NULL to use weight.
   SRerror  = 'sd'  ,
-  TRerror  = 'sd'  ,
+  TRerror  = NULL  ,
   # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
   SRweight = 'none' ,
   TRweight = 'none' ,

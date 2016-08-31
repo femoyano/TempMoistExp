@@ -2,6 +2,14 @@
 ### Post-process at end of run ###
 ### ===================================== ###
 
+require(deSolve)
+require(FME)
+library(doParallel)
+cores = detectCores()
+# cores = 1
+cat("Cores detected:", cores, "\n")
+registerDoParallel(cores = cores)
+
 
 ## ------------------------------------ ##
 ##  Check parameter sensitivities     ----
