@@ -14,19 +14,19 @@ ModCost <- function(pars, pars_calib) {
   
   # Get accumulated values to match observations and merge datasets
   data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("treatment", "hour"), by.y = c("treatment", "time"))
-  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum
+  data.accum$C_R_rm <- data.accum$C_R_m / data.accum$time_accum
   
   df <- data.accum
-  obsSR <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_r, sd = df$C_R_sd)
-  modSR <- data.frame(time = df$hour, C_R_r = df$C_R_mr)
+  obsSR <- data.frame(name = "C_R_r", time = df$hour, C_R_r = df$C_R_r, sd = df$C_R_sd, uw = 1)
+  modSR <- data.frame(time = df$hour, C_R_r = df$C_R_rm)
   
   # Calculate T response
   SR5_o  <- mean(df$C_R_r[df$temp==5])
   SR20_o <- mean(df$C_R_r[df$temp==20])
   SR35_o <- mean(df$C_R_r[df$temp==35])
-  SR5_m  <- mean(df$C_R_mr[df$temp==5])
-  SR20_m <- mean(df$C_R_mr[df$temp==20])
-  SR35_m <- mean(df$C_R_mr[df$temp==35])
+  SR5_m  <- mean(df$C_R_rm[df$temp==5])
+  SR20_m <- mean(df$C_R_rm[df$temp==20])
+  SR35_m <- mean(df$C_R_rm[df$temp==35])
   TR5_20_o  <- SR20_o/SR5_o
   TR20_35_o <- SR35_o/SR20_o
   TR5_20_m  <- SR20_m/SR5_m
@@ -35,8 +35,8 @@ ModCost <- function(pars, pars_calib) {
   obsTR <- data.frame(name = rep("TR", 2), step = c(1,2), TR = c(TR5_20_o, TR20_35_o))
   modTR <- data.frame(step = c(1,2), TR = c(TR5_20_m, TR20_35_m))
   
-  cost.sr.sd <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = "sd")
-  cost.tr.sd <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", weight = 'none')
+  cost.sr.sd <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = SRerror)
+  cost.tr.sd <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = SRweight = TRweight)
 
   out <- c(modcost.sr.sd = cost.sr.sd$model,
            modcost.tr.sd = cost.tr.sd$model, 

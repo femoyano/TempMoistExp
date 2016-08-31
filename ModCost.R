@@ -30,7 +30,7 @@ ModCost <- function(pars_optim) {
   if(cost.type == "uwr") {
     cost <- modCost(model=mod, obs=obs, y = "C_R")
   } else if(cost.type == "wr") {
-    cost <- modCost(model=mod, obs=obs, y = "C_R", error <- "stderr") }
+    cost <- modCost(model=mod, obs=obs, y = "C_R", error = "stderr") }
   cat(cost$model, cost$minlogp, "\n")
   
   # cat(Sys.time()-t1, " ")
