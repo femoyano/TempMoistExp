@@ -24,7 +24,7 @@ setup <- list(
   flag.mmu  = 1 ,  # michalis menten kinetics for uptake, else equal diffusion flux
   flag.mmr  = 1 ,  # microbial maintenance respiration
   dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun = "hama" ,  # Options: 'hama', 'cubic'
+  diff.fun = "hama"  # Options: 'hama', 'cubic'
 )
 
 
@@ -125,9 +125,9 @@ print(Sys.time() - t0)
 # ###        Analysis and Plotting        ###
 # ### ----------------------------------- ###
 
-source("analysis.R")
+source("post_process_fits.R")
 
-source("analysis_plots.R")
+source("post_process_plots.R")
 
 
 # ### ----------------------------------- ###

@@ -11,7 +11,7 @@ prefix <- "plot_"
 savedir <- file.path("..", "plots")
 devname <- "png"
 devfun <- png
-export <- 1
+export <- 0
 
 # # Plot residuals
 # palette("default")
@@ -23,7 +23,7 @@ export <- 1
 plotname <- paste(prefix, "accum_mod_obs.", devname, sep = "")
 plotfile <- file.path(savedir, plotname)
 if(export) devfun(file = plotfile) #, width = 5, height = 5)
-plot(data.accum$C_R_o, data.accum$C_R_m, col = data.accum$site,
+plot(data.accum$C_R_ro, data.accum$C_R_rm, col = data.accum$site,
      xlab = "Observed Accumulated CO2 (gC)", ylab = "Modeled Accumulated CO2 (gC)")
 lines(c(0,1),c(0,1))
 
@@ -31,20 +31,20 @@ lines(c(0,1),c(0,1))
 # plotname <- paste(prefix, "rates_mod_obs.", devname, sep = "")
 # plotfile <- file.path(savedir, plotname)
 # if(export) devfun(file = plotfile) #, width = 5, height = 5)
-# plot(data.accum$C_R_or, data.accum$C_R_mr, col = data.accum$site, 
+# plot(data.accum$C_R_ro, data.accum$C_R_rm, col = data.accum$site, 
 #      xlab = "Observed Respired CO2 (mgC h-1 m-3)", ylab = "Modeled Respired CO2 (mgC h-1 m-3)")
 # lines(c(0,1),c(0,1))
 
 # # Plot rates model vs data adding non-calibrated values
-# calib.accum.obs.r <- data.accum$C_R_or
-# calib.accum.mod.r <- data.accum$C_R_mr
+# calib.accum.obs.r <- data.accum$C_R_ro
+# calib.accum.mod.r <- data.accum$C_R_rm
 # # Run with init pars here!!!
 # palette("default")
 # # Plot rates model vs data
 # plotname <- paste(prefix, "rates_mod_obs.", devname, sep = "")
 # plotfile <- file.path(savedir, plotname)
 # if(export) devfun(file = plotfile) #, width = 5, height = 5)
-# plot(data.accum$C_R_or, data.accum$C_R_mr, col = "gray",
+# plot(data.accum$C_R_ro, data.accum$C_R_rm, col = "gray",
 #      xlab = "Observed Respired CO2 (mgC h-1 m-3)", ylab = "Modeled Respired CO2 (mgC h-1 m-3)")
 # points(calib.accum.obs.r, calib.accum.mod.r, col = "green")
 # lines(c(0,1),c(0,1))
@@ -76,10 +76,10 @@ for (i in names(fit.moist.obs)) {
   plotname <- paste(prefix, "moist-resp-", df$temp.group[1], ".", devname, sep = "")
   plotfile <- file.path(savedir, plotname)
   if(export) devfun(file = plotfile) #, width = 5, height = 5)
-  plot(C_R_or ~ moist_vol, data = df, main = df$temp.group[1],
+  plot(C_R_ro ~ moist_vol, data = df, main = df$temp.group[1],
        xlim = c(0,0.5), col = 2, pch = 16,
        xlab = "Soil Moisture (m3/m3)", ylab = "Respired CO2 (mgC m-3 h-1)")
-  points(C_R_mr ~ moist_vol, data = df, col = 7, pch = 16)
+  points(C_R_rm ~ moist_vol, data = df, col = 7, pch = 16)
 }
 
 # # Plot each moist group
@@ -93,8 +93,8 @@ for (i in names(fit.moist.obs)) {
 #   plotname <- paste(prefix, "moist-resp-", df$moist.group[1], ".", devname, sep = "")
 #   plotfile <- file.path(savedir, plotname)
 #   if(export) devfun(file = plotfile) #, width = 5, height = 5)
-#   plot(C_R_or ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
-#   points(C_R_mr ~ temp, data = df, col = 7, pch = 16)
+#   plot(C_R_ro ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
+#   points(C_R_rm ~ temp, data = df, col = 7, pch = 16)
 #   lines (e.o ~ x$temp, col = 2)
 #   lines (e.m ~ x$temp, col = 7)
 # #   lines (q.o ~ x$temp, col = 2)

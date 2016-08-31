@@ -4,7 +4,7 @@
 ##            Get accumulated values               ----
 ## ------------------------------------------------- ##
 # Get accumulated values to match observations and merge datasets
-data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("sample", "hour"), by.y = c("sample", "time"))
+data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("treatment", "hour"), by.y = c("treatment", "time"))
 data.accum$C_R_o <- data.accum$C_R
 data.accum$C_R <- NULL
 
@@ -21,7 +21,7 @@ MAE <- mean(abs(res))
 ## ------------------------------------------------- ##
 ##         Calculate rates and normalize           ----
 ## ------------------------------------------------- ##
-# Calculate the rates for each accumulated period (* 1000 converts to mg)
+# Calculate the rates for each accumulated period (* 1000 converts to mg/kg-1)
 data.accum$C_R_or <- data.accum$C_R_o / data.accum$time_accum * 1000
 data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum * 1000
 

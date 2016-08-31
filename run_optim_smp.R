@@ -32,7 +32,7 @@ setup <- list(
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
-  run.mfit  = 1 ,  # run modFit for optimization?
+  run.mfit  = 0 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Scale variables? TRUE or FALSE
   scalevar = TRUE  ,
@@ -48,9 +48,9 @@ setup <- list(
   
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "../parsets/parset6-dev2-3_all.csv" ,
+  pars.default.file = "../parsets/parset11_all_TRopt.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "../parsets/parset10_optim.csv"     ,
+  pars.optim.file   = "../parsets/parset4.csv"     ,
   # csv file with bounds for optimized parameters
   pars.bounds.file  = "../parsets/pars_bounds_v1.csv"
 )

@@ -16,14 +16,19 @@ ModCost <- function(pars_optim) {
                      .packages = c("deSolve")) %dopar% {
                        SampleRun(pars, input.all[input.all$treatment==i, ])
                      }
-  
   # Get accumulated values to match observations and merge datasets
   data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("treatment", "hour"), by.y = c("treatment", "time"))
-  data.accum$C_R_mr <- data.accum$C_R_m / data.accum$time_accum
+  data.accum$C_R_rm <- data.accum$C_R_m / data.accum$time_accum # convert to hourly rates [gC kg-1 h-1]
+  data.accum$C_R_ro <- data.accum$C_R_r  # Observed data should be already gC kg-1 h-1
+  data.accum$C_R <- NULL
+  # Convert to mg kg-1 h-1
+  data.accum$C_R_ro <- data.accum$C_R_ro * 1000
+  data.accum$C_R_rm <- data.accum$C_R_rm * 1000
+  data.accum$C_R_sd <- data.accum$C_R_sd * 1000
   
   df <- data.accum
-  obs <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_r * 1000, sd = df$C_R_sd * 1000)
-  mod <- data.frame(time = df$hour, C_R_r = df$C_R_mr * 1000)
+  obs <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_ro, sd = df$C_R_sd)
+  mod <- data.frame(time = df$hour, C_R_r = df$C_R_rm)
   
   cost <- modCost(model=mod, obs=obs, y = "C_R_r", err = 'sd', weight = 'none') 
   
