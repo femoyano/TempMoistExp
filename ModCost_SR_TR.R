@@ -35,16 +35,16 @@ ModCost <- function(pars_optim) {
     
     df <- data.accum[data.accum$moist.group == i, ]    
     df <- data.accum
-    obsSR <- data.frame(name = "C_R_r", time = df$hour, C_R_r = df$C_R_ro, sd = df$C_R_sd, uw = 1)
-    modSR <- data.frame(time = df$hour, C_R_r = df$C_R_mr)
+    obsSR <- data.frame(name = "C_R_r", time = df$hour, C_R_r = df$C_R_ro, error = df[,SRerror])
+    modSR <- data.frame(time = df$hour, C_R_r = df$C_R_rm)
     
     # Calculate T response
     SR5_o  <- mean(df$C_R_ro[df$temp==5])
     SR20_o <- mean(df$C_R_ro[df$temp==20])
     SR35_o <- mean(df$C_R_ro[df$temp==35])
-    SR5_m  <- mean(df$C_R_mr[df$temp==5])
-    SR20_m <- mean(df$C_R_mr[df$temp==20])
-    SR35_m <- mean(df$C_R_mr[df$temp==35])
+    SR5_m  <- mean(df$C_R_rm[df$temp==5])
+    SR20_m <- mean(df$C_R_rm[df$temp==20])
+    SR35_m <- mean(df$C_R_rm[df$temp==35])
     TR5_20_o  <- SR20_o/SR5_o
     TR20_35_o <- SR35_o/SR20_o
     TR5_20_m  <- SR20_m/SR5_m
@@ -54,14 +54,14 @@ ModCost <- function(pars_optim) {
     modTR <- data.frame(step = c(1,2), TR = c(TR5_20_m, TR20_35_m))
     
     if(it == 1) {
-      cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = SRerror, 
+      cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = error, 
                       weight = SRweight, scaleVar = scalevar)
-      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = TRerror,
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = 'error',
                       weight = TRweight, cost = cost, scaleVar = scalevar)
     } else {
       cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = SRerror,
                       weight = SRweight, scaleVar = scalevar, cost = cost)
-      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = TRerror,
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = 'error',
                       weight = TRweight, scaleVar = scalevar, cost = cost)
     }
     

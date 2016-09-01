@@ -28,10 +28,10 @@ ModCost <- function(pars_optim) {
   data.accum$C_R_sd <- data.accum$C_R_sd
   
   df <- data.accum
-  obs <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_ro, sd = df$C_R_sd, uw = 1)
+  obs <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_ro, error = df[,SRerror])
   mod <- data.frame(time = df$hour, C_R_r = df$C_R_rm)
   
-  cost <- modCost(model=mod, obs=obs, y = "C_R_r", err = SRerror, weight = SRweight) 
+  cost <- modCost(model=mod, obs=obs, y = "C_R_r", err = 'error', weight = SRweight) 
   
   cat(cost$model, cost$minlogp, "\n")
   

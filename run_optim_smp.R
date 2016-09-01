@@ -35,7 +35,7 @@ setup <- list(
   run.mfit  = 0 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Observation error: name of column with error values ('sd' or 'uw'). NULL to use weight.
-  SRerror  = 'sd'  ,
+  SRerror  = 'C_R_sd'  ,
   TRerror  = NULL  ,
   # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
   SRweight = 'none' ,
@@ -47,9 +47,9 @@ setup <- list(
   # Choose cost function
   cost.fun  = "ModCost_SR.R" ,
   # Choose MCMC options:
-  niter  = 50000,  # number of iterations
+  niter  = 1,  # number of iterations
   jfrac  = 200  ,  # fraction of parameters size for jumps
-  burnin = 10000 ,  # length of burn in
+  burnin = 0 ,  # length of burn in
   udcov  = 500  ,  # iteration period for updating covariance matrix 
   
   # -------- Parameter options ----------

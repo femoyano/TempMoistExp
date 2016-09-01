@@ -46,14 +46,14 @@ ModCost <- function(pars_optim) {
     TR5_20_m  <- SR20_m/SR5_m
     TR20_35_m <- SR35_m/SR20_m
     
-    obsTR <- data.frame(name = "TR", step = c(1,2), TR = c(TR5_20_o, TR20_35_o))
+    obsTR <- data.frame(name = "TR", step = c(1,2), TR = c(TR5_20_o, TR20_35_o), error = 1)
     modTR <- data.frame(step = c(1,2), TR = c(TR5_20_m, TR20_35_m))
     
     if(it == 1) {
-      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", error = TRerror,
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", error = 'error',
                       weight = TRweight, scaleVar = TRUE)
     } else {
-      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", error = TRerror,
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", error = 'error',
                       weight = TRweight, scaleVar = TRUE, cost = cost)
     }
     it = it + 1

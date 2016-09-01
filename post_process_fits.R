@@ -92,3 +92,5 @@ fit.temp.mod.5_20 <- dlply(data.accum[data.accum$temp!=35,], .(moist.group), .fu
 # Fit for 20C to 35C
 fit.temp.obs.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_R_ro")
 fit.temp.mod.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_R_rm")
+
+source('post_process_plots.R')

@@ -12,6 +12,7 @@ savedir <- file.path("..", "plots")
 devname <- "png"
 devfun <- png
 export <- 0
+opar <- par(no.readonly=TRUE)
 
 # # Plot residuals
 # palette("default")
@@ -27,6 +28,24 @@ plot(data.accum$C_R_ro, data.accum$C_R_rm, col = data.accum$site,
      xlab = "Observed Accumulated CO2 (gC)", ylab = "Modeled Accumulated CO2 (gC)")
 lines(c(0,1),c(0,1))
 
+if(exists('mcmcMod')) {
+  library(RColorBrewer)
+  col_palette<-c(brewer.pal(9,"Set1"), brewer.pal(9,"Set3"))
+  densities<-list()
+  for(i in 1:dim(mcmcMod$pars)[2]){
+    densities[[i]]<-density(mcmcMod$pars[,i])
+  }
+  plotname <- paste(prefix, "pars_probdens.", devname, sep = "")
+  plotfile <- file.path(savedir, plotname)
+  if(export) devfun(file = plotfile)
+  par(mfrow=c(5,4))
+  for(i in 1:dim(mcmcMod$pars)[2]){
+    plot(densities[[i]], main=colnames(mcmcMod$pars)[i])
+    polygon(densities[[i]], col=col_palette[i])
+  }
+}
+
+par(opar)
 # # Plot rates model vs data
 # plotname <- paste(prefix, "rates_mod_obs.", devname, sep = "")
 # plotfile <- file.path(savedir, plotname)
@@ -119,7 +138,7 @@ PlotTR <- function(naming, fit.pars, TR, ylab) {
 }
 
 span=0.5
-TR='Q10'   # Either 'Q10' or 'Ea'
+TR='Ea'   # Either 'Q10' or 'Ea'
 ylabel <- paste("Apparent Temperature Sensitivity ", TR)
 # For observed data
 fit.pars <- ldply(fit.temp.obs, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})

@@ -32,3 +32,5 @@ source("GetModelData.R")
 
 # Get model output with optimized parameters
 system.time(mod.out <- GetModelData(pars))
+
+source('post_process_fits.R')

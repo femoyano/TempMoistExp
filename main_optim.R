@@ -99,8 +99,6 @@ if(run.mcmc) {
                      updatecov = udcov, burninlength = burnin)
 }
 
-source('post_process.R')
-
 ## Saving work space
 savetime  <- format(Sys.time(), "%m%d-%H%M")
 save.image(file = paste(savename, savetime, ".RData", sep = ""))
