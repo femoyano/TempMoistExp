@@ -33,7 +33,7 @@ setup <- list(
   run.mfit  = 0 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Observation error: name of column with error values ('sd' or 'uw'). NULL to use weight.
-  SRerror  = 'C_R_sd'  ,
+  SRerror  = 'C_R_sd2'  ,
   TRerror  = NULL  ,
   # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
   SRweight = 'none' ,

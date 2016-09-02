@@ -27,8 +27,8 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     K_U   <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
     V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V, R)
     V_U   <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V, R)
-    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_r_d , R)
-    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_r_d , R)
+    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_d , R)
+    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_d , R)
     f_gr  <- f_gr_ref
     fc.mod <- get.fc.mod(moist, fc)
     moist.mod <- get.moist.mod(moist)
@@ -85,7 +85,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
 
     ## Rate of change calculation for state variables ---------------
     dC_P <- F_sl.cp + F_cd.cp + F_cm.cp - F_cp.cd
-    dC_D <- F_ml.cd + F_cp.cd + F_ca.cd + F_ce.cd - F_cd.ca - F_cd.cm -
+    dC_D <- F_ml.cd + F_cp.cd + F_ce.cd - F_cd.cm -
             F_cd.cr - F_cd.cp  - F_cd.ce
     dC_E <- F_cd.ce - F_ce.cd
     dC_M <- F_cd.cm - F_cm.cp - F_cm.cr

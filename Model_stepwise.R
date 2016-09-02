@@ -41,8 +41,8 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       # Calculate temporally changing variables
       K_D   <- Temp.Resp.Eq(K_D_ref, temp_i, T_ref, E_K, R)
       V_D   <- Temp.Resp.Eq(V_D_ref, temp_i, T_ref, E_V, R)
-      r_md  <- Temp.Resp.Eq(r_md_ref, temp_i, T_ref, E_r_d , R)
-      r_ed  <- Temp.Resp.Eq(r_ed_ref, temp_i, T_ref, E_r_d , R)
+      r_md  <- Temp.Resp.Eq(r_md_ref, temp_i, T_ref, E_d , R)
+      r_ed  <- Temp.Resp.Eq(r_ed_ref, temp_i, T_ref, E_d , R)
       f_gr  <- f_gr_ref
       
       # Write out values at save time intervals
@@ -75,14 +75,6 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       C_D <- C_D + F_pc.cd
       C_P <- C_P - F_pc.cd
       
-      # make sure flux is not larger than pool
-      if(F_cd.ca > C_D) F_cd.ca <- C_D
-      # avoid negative flux (would happen if C_A exceeds Md capacity)
-      if(F_cd.ca < 0) F_cd.ca <- 0
-      # update pool size before calculating next flux
-      C_D <- C_D - F_cd.ca + F_ca.cd
-      C_A <- C_A + F_cd.ca - F_ca.cd
-
       # Microbial growth, mortality, respiration and enzyme production
       if(flag.mic) {
         F_cd.cm <- U.cd * f_gr * (1 - f_ep)

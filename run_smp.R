@@ -31,22 +31,22 @@ setup <- list(
 ### ----------------------------------- ###
 ###           Set parameters            ###
 ### ----------------------------------- ###
-source("ParsReplace.R")
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters (csv file)
-pars.default.file <- '../parsets/parset11_all_TRopt.csv'# parset6-dev2-3_all.csv
+pars.default.file <- 'parsets/parset6-6noAC_all.csv'# parset6-dev2-3_all.csv
 pars_default <- read.csv(pars.default.file, row.names = 1)
 pars_default <- setNames(pars_default[[1]], row.names(pars_default))
 
 # # # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-# pars.mult.file   <- "../parsets/pars_lhs30000_v1_top10_modcost.tr.m.csv"
+# pars.mult.file   <- "parsets/pars_lhs30000_v1_top10_modcost.tr.m.csv"
 # pars_new <- as.matrix(read.csv(pars.mult.file))
 # pars_new <- pars_new[parind,]
 
-pars.new.file <- '../parsets/parset4.csv'
+pars.new.file <- 'parsets/parset6_noAC.csv'
 pars_new <- read.csv(pars.new.file, row.names = 1)
 pars_new <- setNames(pars_new[[1]], row.names(pars_new))
 
+source("ParsReplace.R")
 pars <- ParsReplace(pars_new, pars_default)
 
 

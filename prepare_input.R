@@ -26,7 +26,7 @@ D_d0    <- pars[["D_0"]]        # Diffusion conductance for dissolved C
 D_e0    <- pars[["D_0"]] / 10   # Diffusion conductance for enzymes
 
 # Add new parameters to pars
-parameters <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth, b = b, 
+parameters <- c(pars, V_D_ref = V_D_ref, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth, b = b, 
                 psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, D_d0 = D_d0, D_e0 = D_e0)
 
 ### ----- Calculate initial C pool sizes
