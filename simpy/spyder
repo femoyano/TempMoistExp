@@ -1,4 +1,0 @@
-#! /bin/bash
-
-gnome-terminal -e /home/nano/anaconda2/bin/spyder
-
