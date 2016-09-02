@@ -25,12 +25,10 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     # Calculate temporally changing variables
     K_D   <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K, R)
     K_U   <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
-    k_ads <- Temp.Resp.Eq(k_ads_ref, temp, T_ref, E_ka , R)
-    k_des <- Temp.Resp.Eq(k_des_ref, temp, T_ref, E_kd , R)
     V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V, R)
     V_U   <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V, R)
-    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_r_md , R)
-    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_r_ed , R)
+    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_r_d , R)
+    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_r_d , R)
     f_gr  <- f_gr_ref
     fc.mod <- get.fc.mod(moist, fc)
     moist.mod <- get.moist.mod(moist)
@@ -54,17 +52,6 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     # Decomposition rate
     F_cp.cd <- Decomp(C_P, C_E, V_D, K_D, moist.mod, depth, fc.mod)
     
-    # Adsorption/desorption
-    if(flag.ads) {
-      F_cd.ca  <- Adsorp(C_D, C_A, Md, k_ads, moist.mod, depth, fc.mod)
-      F_ca.cd  <- Desorp(C_A, k_des, fc.mod)
-    } else {
-      F_cd.ca <- 0
-      F_ca.cd <- 0
-    }
-    
-    # Microbial growth, mortality, respiration and enzyme production
-    
     Diff.cd <- D_d * (C_D - 0)  # Calculate the diffusion fluxes
     
     if(flag.mmu) {
@@ -72,7 +59,8 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     } else {
       U.cd <- Diff.cd
     }
-  
+    
+    # Microbial growth, mortality, respiration and enzyme production
     if(flag.mic) {
       F_cd.cm <- U.cd * f_gr * (1 - f_ep)
       if(flag.mmr) {
@@ -99,12 +87,11 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     dC_P <- F_sl.cp + F_cd.cp + F_cm.cp - F_cp.cd
     dC_D <- F_ml.cd + F_cp.cd + F_ca.cd + F_ce.cd - F_cd.ca - F_cd.cm -
             F_cd.cr - F_cd.cp  - F_cd.ce
-    dC_A <- F_cd.ca - F_ca.cd
     dC_E <- F_cd.ce - F_ce.cd
     dC_M <- F_cd.cm - F_cm.cp - F_cm.cr
     dC_R <- F_cd.cr + F_cm.cr
     
-    return(list(c(dC_P, dC_D, dC_A, dC_E, dC_M, dC_R)))
+    return(list(c(dC_P, dC_D, dC_E, dC_M, dC_R)))
     
   }) # end of with(...
   

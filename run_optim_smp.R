@@ -8,7 +8,6 @@
 
 t0 <- Sys.time()
 
-
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
@@ -18,9 +17,8 @@ setup <- list(
   RunInfo = "Description of this run",
   
   # -------- Model options ----------
-  flag.ads  = 0 ,  # simulate adsorption desorption
   flag.mic  = 1 ,  # simulate microbial pool explicitly
-  flag.fcs  = 1 ,  # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
+  flag.fcs  = 1 ,  # scale C_P and M to field capacity (with max at fc)
   flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
@@ -54,11 +52,11 @@ setup <- list(
   
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "../parsets/parset11_all_TRopt.csv" ,
+  pars.default.file = "parsets/parset6-6noAC_all.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "../parsets/parset4.csv"     ,
+  pars.optim.file   = "parsets/parset6_noAC.csv"     ,
   # csv file with bounds for optimized parameters
-  pars.bounds.file  = "../parsets/pars_bounds_v1.csv"
+  pars.bounds.file  = "parsets/pars_bounds_v1.csv"
 )
 
 

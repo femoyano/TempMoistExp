@@ -17,7 +17,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
     # Create matrix to hold output
     extra <- 0 # number of extra variables to save (temp, moist, ...)
     out <- matrix(ncol = 1 + extra + length(initial_state), nrow = floor(length(times) * tstep / tsave))
-    colnames(out) <- c("time", "C_P", "C_D", "C_A", "C_E", "C_M", "C_R")
+    colnames(out) <- c("time", "C_P", "C_D", "C_E", "C_M", "C_R")
     
     setbreak   <- 0 # break flag for spinup runs
     
@@ -40,17 +40,15 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       
       # Calculate temporally changing variables
       K_D   <- Temp.Resp.Eq(K_D_ref, temp_i, T_ref, E_K, R)
-      k_ads <- Temp.Resp.Eq(k_ads_ref, temp_i, T_ref, E_ka , R)
-      k_des <- Temp.Resp.Eq(k_des_ref, temp_i, T_ref, E_kd , R)
       V_D   <- Temp.Resp.Eq(V_D_ref, temp_i, T_ref, E_V, R)
-      r_md  <- Temp.Resp.Eq(r_md_ref, temp_i, T_ref, E_r_md , R)
-      r_ed  <- Temp.Resp.Eq(r_ed_ref, temp_i, T_ref, E_r_ed , R)
+      r_md  <- Temp.Resp.Eq(r_md_ref, temp_i, T_ref, E_r_d , R)
+      r_ed  <- Temp.Resp.Eq(r_ed_ref, temp_i, T_ref, E_r_d , R)
       f_gr  <- f_gr_ref
       
       # Write out values at save time intervals
       if((i * tstep) %% (tsave) == 0) {
         j <- i * tstep / tsave
-        out[j,] <- c(times[i], C_P, C_D, C_A, C_E, C_M, C_R)
+        out[j,] <- c(times[i], C_P, C_D, C_E, C_M, C_R)
       }
 
       ## Diffusion calculations  --------------------------------------
@@ -77,15 +75,6 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       C_D <- C_D + F_pc.cd
       C_P <- C_P - F_pc.cd
       
-      # Adsorption/desorption
-      if(flag.ads) {
-        F_cd.ca  <- F_adsorp(C_D, C_A, Md, k_ads, moist_i, fc, depth)
-        F_ca.cd  <- F_desorp(C_A, k_des, moist_i, fc)
-      } else {
-        F_cd.ca <- 0
-        F_ca.cd <- 0
-      }
-      
       # make sure flux is not larger than pool
       if(F_cd.ca > C_D) F_cd.ca <- C_D
       # avoid negative flux (would happen if C_A exceeds Md capacity)
@@ -96,17 +85,23 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
 
       # Microbial growth, mortality, respiration and enzyme production
       if(flag.mic) {
-        F_cd.cm <- D_d * (C_D - 0) * f_gr # concentration at microbe asumed 0
-        F_cd.cr <- D_d * (C_D - 0) * (1 - f_gr) # concentration at microbe asumed 0
-        F_cm.pc <- C_M * r_md
-        F_cd.pc <- 0
+        F_cd.cm <- U.cd * f_gr * (1 - f_ep)
+        if(flag.mmr) {
+          F_cm.cp <- C_M * r_md * (1 - f_mr)
+          F_cm.cr <- C_M * r_md * f_mr  
+        } else {
+          F_cm.cp <- C_M * r_md
+          F_cm.cr <- 0
+        }
+        F_cd.cp <- 0
       } else {
         F_cd.cm <- 0
-        F_cm.pc <- 0
-        F_cd.cr <- D_d * (C_D - 0) * (1 - f_gr)
-        F_cd.pc <- D_d * (C_D - 0) * f_gr * (1 - f_ep)
+        F_cm.cp <- 0
+        F_cm.cr <- 0
+        F_cd.cp <- U.cd * f_gr * (1 - f_ep)
       }
-      F_cd.ce <- D_d * (C_D - 0) * f_gr * f_ep
+      F_cd.cr <- U.cd * (1 - f_gr)
+      F_cd.ce <- U.cd * f_gr * f_ep
       
       C_D <- C_D - F_cd.cm - F_cd.cr - F_cd.pc - F_cd.ce
       C_P <- C_P + F_cd.pc + F_cm.pc
@@ -119,7 +114,7 @@ Model_stepwise <- function(spinup, eq.stop, times, tstep, tsave, initial_state, 
       C_D <- C_D + F_ce.cd
       C_E <- C_E - F_ce.cd 
 
-      if(C_P < 0 | C_D < 0 | C_A < 0 | C_E < 0 | C_M < 0) browser("Error: a pool became negative")
+      if(C_P < 0 | C_D < 0 | C_E < 0 | C_M < 0) browser("Error: a pool became negative")
       
       # Check for equilibirum conditions: will stop if the change in C_P in gC m-3 y-1 is smaller than eq.md
       if (eq.stop & (i * tstep / year) >= 10 & ((i * tstep / year) %% 5) == 0) { # If it is a spinup run and time is over 10 years and multiple of 5 years, then ...

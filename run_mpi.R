@@ -11,7 +11,7 @@
 ### ----------------------------------- ###
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
-pars.default.file <- '../parsets/parset6-dev2-3_all.csv'
+pars.default.file <-'parsets/parset6-6noAC_all.csv'
 pars <- read.csv(pars.default.file, row.names = 1)
 pars <- setNames(pars[[1]], row.names(pars))
 

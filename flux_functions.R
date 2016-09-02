@@ -49,20 +49,6 @@ Uptake <- function (S, V_U, K_U, moist.mod, depth, fc.mod) {
   F_U <- (V_U * S) / (K_U + S) * depth
 }
 
-## Adsorption to mineral surface -------------------------
-# Md stands for density of mineral adsorption site (so is not corrected for depth)
-# Lw and La are ligands in water or adsorbed, respectively.
-# fc.mod is used for scaling M and La from 0-1 between 0 and fc
-Adsorp <- function (Lw, La, Md, k, moist.mod, depth, fc.mod) {
-  L <- Lw / (depth * moist.mod)
-  M <- (Md - La / depth) * fc.mod
-  return( (L * M * k) * depth )
-}
-Desorp <- function (La, k, fc.mod) {
-  L <- La * fc.mod
-  return(L * k)
-}
-
 # ==============================================================================
 # Temperature responses after Tang and Riley 2014 (supplementary information)
 
