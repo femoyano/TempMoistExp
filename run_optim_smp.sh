@@ -6,4 +6,4 @@
 #BSUB -n 25
 #BSUB -R span[hosts=1]
 
-Rscript --slave "run_optim_smp.R"
+Rscript --slave "run_optim_smp-8.R"

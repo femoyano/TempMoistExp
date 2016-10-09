@@ -30,10 +30,10 @@ setup <- list(
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
-  run.mfit  = 0 ,  # run modFit for optimization?
-  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
+  run.mfit  = 1 ,  # run modFit for optimization?
+  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
   # Observation error: name of column with error values ('sd' or 'uw'). NULL to use weight.
-  SRerror  = 'C_R_sd2'  ,
+  SRerror  = 'C_R_sd10'  ,
   TRerror  = NULL  ,
   # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
   SRweight = 'none' ,
@@ -41,14 +41,14 @@ setup <- list(
   # Scale variables? TRUE or FALSE
   scalevar = TRUE  ,
   # Choose method for modFit
-  mf.method = "Nelder-Mead"     ,
+  mf.method = "Marq"     ,
   # Choose cost function
   cost.fun  = "ModCost_SR.R" ,
   # Choose MCMC options:
   niter  = 1,  # number of iterations
   jfrac  = 200  ,  # fraction of parameters size for jumps
   burnin = 0 ,  # length of burn in
-  udcov  = 500  ,  # iteration period for updating covariance matrix 
+  udcov  = 200  ,  # iteration period for updating covariance matrix 
   
   # -------- Parameter options ----------
   # csv file with default parameters

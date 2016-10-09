@@ -11,7 +11,7 @@ prefix <- "plot_"
 savedir <- file.path("..", "plots")
 devname <- "png"
 devfun <- png
-export <- 0
+export <- 1
 opar <- par(no.readonly=TRUE)
 
 # # Plot residuals
