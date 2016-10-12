@@ -12,7 +12,7 @@ SampleRun <- function(pars, input) {
   
   out[, 'C_R'] <- out[, 'C_R'] / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
   
-  out <- cbind(out, treatment = rep(input$treatment, nrow(out)))
+  out <- cbind(out, treatment = rep(input$treatment[1], nrow(out)))
   
   return(out)
 }
