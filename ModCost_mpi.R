@@ -1,10 +1,10 @@
 # ModCost.R
 # This model calculates the model residuals
 
-ModCost <- function(pars, pars_calib) {
+ModCost <- function(pars, pars_replace) {
   
   # Add or replace parameters from the list of optimized parameters ----------------------
-  pars <- ParsReplace(pars_calib, pars_default)
+  pars <- ParsReplace(pars_replace, pars_default)
   
   ### Run all samples (in series since this is for mpi) ------------------------------------
   
@@ -13,11 +13,19 @@ ModCost <- function(pars, pars_calib) {
   }
   
   # Get accumulated values to match observations and merge datasets
+  # Make sure the model output was converted already to gC kg-1Soil!!!
   data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("treatment", "hour"), by.y = c("treatment", "time"))
-  data.accum$C_R_rm <- data.accum$C_R_m / data.accum$time_accum
+  data.accum$C_R_rm <- data.accum$C_R_m / data.accum$time_accum # convert to hourly rates [gC kg-1 h-1]
+  data.accum$C_R_ro <- data.accum$C_R_r  # Observed data should be already gC kg-1 h-1
+  data.accum$C_R <- NULL
+  
+  # # Convert to mg kg-1 h-1    ------- ???????? what's this? already ok units?
+  # data.accum$C_R_ro <- data.accum$C_R_ro
+  # data.accum$C_R_rm <- data.accum$C_R_rm
+  # data.accum$C_R_sd <- data.accum$C_R_sd
   
   df <- data.accum
-  obsSR <- data.frame(name = "C_R_r", time = df$hour, C_R_r = df$C_R_r, sd = df$C_R_sd, uw = 1)
+  obsSR <- data.frame(name = "C_R_r", time = df$hour, C_R_r = df$C_R_ro, error = df[,SRerror])
   modSR <- data.frame(time = df$hour, C_R_r = df$C_R_rm)
   
   # Calculate T response
@@ -32,16 +40,16 @@ ModCost <- function(pars, pars_calib) {
   TR5_20_m  <- SR20_m/SR5_m
   TR20_35_m <- SR35_m/SR20_m
   
-  obsTR <- data.frame(name = rep("TR", 2), step = c(1,2), TR = c(TR5_20_o, TR20_35_o))
+  obsTR <- data.frame(name = "TR", step = c(1,2), TR = c(TR5_20_o, TR20_35_o))
   modTR <- data.frame(step = c(1,2), TR = c(TR5_20_m, TR20_35_m))
   
-  cost.sr.sd <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = SRerror)
-  cost.tr.sd <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = SRweight = TRweight)
+  cost.sr <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = 'error', weight = SRweight)
+  cost.tr <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = NULL, weight = TRweight)
 
-  out <- c(modcost.sr.sd = cost.sr.sd$model,
-           modcost.tr.sd = cost.tr.sd$model, 
-           minlogp.sr.sd = cost.sr.sd$minlogp,
-           minlogp.tr.sd = cost.tr.sd$minlogp
+  out <- c(modcost.sr = cost.sr$model,
+           modcost.tr = cost.tr$model, 
+           minlogp.sr = cost.sr$minlogp,
+           minlogp.tr = cost.tr$minlogp
   )
   
   return(out)

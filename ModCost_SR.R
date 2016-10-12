@@ -22,10 +22,11 @@ ModCost <- function(pars_optim) {
   data.accum$C_R_rm <- data.accum$C_R_m / data.accum$time_accum # convert to hourly rates [gC kg-1 h-1]
   data.accum$C_R_ro <- data.accum$C_R_r  # Observed data should be already gC kg-1 h-1
   data.accum$C_R <- NULL
-  # Convert to mg kg-1 h-1
-  data.accum$C_R_ro <- data.accum$C_R_ro
-  data.accum$C_R_rm <- data.accum$C_R_rm
-  data.accum$C_R_sd <- data.accum$C_R_sd
+  
+  # # Convert to mg kg-1 h-1    ------- ???????? what's this? already ok units?
+  # data.accum$C_R_ro <- data.accum$C_R_ro
+  # data.accum$C_R_rm <- data.accum$C_R_rm
+  # data.accum$C_R_sd <- data.accum$C_R_sd
   
   df <- data.accum
   obs <- data.frame(name = rep("C_R_r", nrow(df)), time = df$hour, C_R_r = df$C_R_ro, error = df[,SRerror])

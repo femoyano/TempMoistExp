@@ -4,7 +4,7 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
-MainMpi <- function(pars, pars_calib) {
+MainMpi <- function(pars, pars_replace) {
 
   ### ----------------------------------- ###
   ###       User Stup                     ###
@@ -25,14 +25,13 @@ MainMpi <- function(pars, pars_calib) {
   # -------- Calibration options ----------
   # Observation error: name of column with error values ('sd' or 'uw'). NULL to use weight.
   SRerror   <- 'C_R_sd01'
-  TRerror   <- NULL 
   # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
   SRweight  <- 'none'
   TRweight  <- 'none'
   # Scale variables? TRUE or FALSE.
   scalevar  <- TRUE
   # Choose cost function
-  cost.fun  <- "ModCost_SR.R"
+  cost.fun  <- "ModCost_mpi.R"
   
   
   ### ----------------------------------- ###
@@ -71,10 +70,10 @@ MainMpi <- function(pars, pars_calib) {
   source("Model_desolve.R", local = TRUE)
   source("initial_state.R", local = TRUE)
   source(cost.fun, local = TRUE)
-  source("AccumCalc_serial.R", local = TRUE)
+  source("AccumCalc.R", local = TRUE)
   source("ParsReplace.R", local = TRUE)
   source("SampleRun.R", local = TRUE)
 
   ## Run cost function
-  ModCost(pars, pars_calib)
+  ModCost(pars, pars_replace)
 }
