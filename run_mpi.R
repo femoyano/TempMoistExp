@@ -12,8 +12,8 @@
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
 pars.default.file <-'parsets/parset6-6noAC_all.csv'
-pars <- read.csv(pars.default.file, row.names = 1)
-pars <- setNames(pars[[1]], row.names(pars))
+pars_default <- read.csv(pars.default.file, row.names = 1)
+pars_default <- setNames(pars_default[[1]], row.names(pars_default))
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
 pars.calib.file   <- 'parsets/pars_lh100_bounds1_v1.csv'
@@ -36,7 +36,7 @@ runs.out <- foreach(i = 1:nrow(pars_calib),
                     .packages = c('deSolve', 'FME', 'plyr', 'reshape2')
                     ) %dopar% {
                       pars_replace <- pars_calib[i,]
-                      MainMpi(pars, pars_replace)
+                      MainMpi(pars_default, pars_replace)
                       }
 
 save(runs.out, file = 'runs.out.Rdata')

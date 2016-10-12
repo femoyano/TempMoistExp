@@ -1,7 +1,7 @@
 # ModCost.R
 # This model calculates the model residuals
 
-ModCost <- function(pars, pars_replace) {
+ModCost <- function(pars_default, pars_replace) {
   
   # Add or replace parameters from the list of optimized parameters ----------------------
   pars <- ParsReplace(pars_replace, pars_default)

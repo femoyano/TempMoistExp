@@ -4,7 +4,7 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
-MainMpi <- function(pars, pars_replace) {
+MainMpi <- function(pars_default, pars_replace) {
 
   ### ----------------------------------- ###
   ###       User Stup                     ###
@@ -75,5 +75,5 @@ MainMpi <- function(pars, pars_replace) {
   source("SampleRun.R", local = TRUE)
 
   ## Run cost function
-  ModCost(pars, pars_replace)
+  ModCost(pars_default, pars_replace)
 }
