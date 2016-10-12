@@ -23,10 +23,16 @@ MainMpi <- function(pars, pars_calib) {
   diff.fun <- 'hama' # Options: 'hama', 'cubic'
   
   # -------- Calibration options ----------
-  # Cost calculation type.
-  # Options: 'uwr' = unweighted residuals, 'wr' = wieghted residuals,  'rate.sd', 'rate.mean'...
-  cost.type <- 'rate.mean' 
-  cost.fun <- "ModCost_mpi.R"
+  # Observation error: name of column with error values ('sd' or 'uw'). NULL to use weight.
+  SRerror   <- 'C_R_sd01'
+  TRerror   <- NULL 
+  # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
+  SRweight  <- 'none'
+  TRweight  <- 'none'
+  # Scale variables? TRUE or FALSE.
+  scalevar  <- TRUE
+  # Choose cost function
+  cost.fun  <- "ModCost_SR.R"
   
   
   ### ----------------------------------- ###

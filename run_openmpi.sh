@@ -5,6 +5,6 @@
 #BSUB -n 500,1000
 #BSUB -o out.%J.mpi.out
 
-module load intel/mkl/64 && module load openmpi/gcc
+module load openmpi/gcc
 
 mpirun.lsf Rscript --slave "run_mpi.R"
