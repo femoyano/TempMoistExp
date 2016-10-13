@@ -16,7 +16,7 @@ pars_default <- read.csv(pars.default.file, row.names = 1)
 pars_default <- setNames(pars_default[[1]], row.names(pars_default))
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-pars.calib.file   <- 'parsets/pars_lh100_bounds1_v1.csv'
+pars.calib.file   <- 'parsets/pars_lh100000_bounds1_v1.csv'
 pars_calib <- as.matrix(read.csv(pars.calib.file))
 
 source('MainMpi.R')
@@ -39,7 +39,8 @@ runs.out <- foreach(i = 1:nrow(pars_calib),
                       MainMpi(pars_default, pars_replace)
                       }
 
-save(runs.out, file = 'runs.out.Rdata')
+savetime  <- format(Sys.time(), "%m%d-%H%M")
+save.image(file = paste("RunMPI_", savetime, ".RData", sep = ""))
 
 closeCluster(cl)
 mpi.quit()
