@@ -6,21 +6,10 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
-### ----------------------------------- ###
-###        Setting parameters        ###
-### ----------------------------------- ###
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters
-pars.default.file <-'parsets/parset6-6noAC_all.csv'
-pars_default <- read.csv(pars.default.file, row.names = 1)
-pars_default <- setNames(pars_default[[1]], row.names(pars_default))
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
-pars.calib.file   <- 'parsets/pars_lh100000_bounds1_v1.csv'
-pars_calib <- as.matrix(read.csv(pars.calib.file))
-
 source('MainMpi.R')
-
+source('setup.R')
+list2env(setup, envir = .GlobalEnv)
+pars_mpi <- as.matrix(read.csv(pars.mpi.file))
 
 ### ----------------------------------- ###
 ###    Run parallel processing  ###
@@ -30,17 +19,17 @@ library(doMPI)
 cl <- startMPIcluster()
 registerDoMPI(cl)
 cores <- clusterSize(cl)
-runs.out <- foreach(i = 1:nrow(pars_calib),
+
+runs.out <- foreach(pars_replace = iter(pars_mpi, by='row'),
                     .combine = 'rbind', 
-                    .errorhandling = 'remove', 
-                    .packages = c('deSolve', 'FME', 'plyr', 'reshape2')
+                    .errorhandling = 'remove',
+                    .packages = c('deSolve', 'FME', 'plyr', 'reshape2', 'foreach')
                     ) %dopar% {
-                      pars_replace <- pars_calib[i,]
-                      MainMpi(pars_default, pars_replace)
+                      MainMpi(pars_replace)
                       }
 
 savetime  <- format(Sys.time(), "%m%d-%H%M")
-save.image(file = paste("RunMPI_", savetime, ".RData", sep = ""))
+save.image(file = paste("Run_MPI_", savetime, savetxt, ".RData", sep = ""))
 
 closeCluster(cl)
 mpi.quit()

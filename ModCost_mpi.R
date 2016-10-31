@@ -1,12 +1,7 @@
 # ModCost.R
 # This model calculates the model residuals
 
-ModCost <- function(pars_default, pars_replace) {
-  
-  # Add or replace parameters from the list of optimized parameters ----------------------
-  pars <- ParsReplace(pars_replace, pars_default)
-  
-  ### Run all samples (in series since this is for mpi) ------------------------------------
+ModCost <- function(pars) {
   
   mod.out <- foreach(i = unique(input.all$treatment), .combine = 'rbind') %do% {
     SampleRun(pars, input.all[input.all$treatment==i, ])

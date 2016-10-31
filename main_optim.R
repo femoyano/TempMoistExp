@@ -16,9 +16,6 @@ require(FME)
 require(plyr)
 require(reshape2)
 
-### Extract setup variables ===================================================
-list2env(setup, envir = .GlobalEnv)
-
 ### Define time variables =====================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
@@ -33,10 +30,6 @@ tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
-# savename   <- paste("RunOpt", "-ads", flag.ads, "_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
-#                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
-#                  "_", mf.method, "_", cost.type, "-", sep = "")
-savename   <- "RunOpt"
 
 ### Sourced required files ====================================================
 source("flux_functions.R")
@@ -101,4 +94,4 @@ if(run.mcmc) {
 
 ## Saving work space
 savetime  <- format(Sys.time(), "%m%d-%H%M")
-save.image(file = paste(savename, savetime, ".RData", sep = ""))
+save.image(file = paste("Run_Optim_", savetime, savetxt, ".RData", sep = ""))

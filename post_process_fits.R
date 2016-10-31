@@ -1,6 +1,9 @@
 require(plyr)
 require(reshape2)
 
+mod.out[, 'decomp'] <- cumsum(mod.out[, 'F_cp.cd'])
+mod.out[, 'decomp'] <- mod.out[, 'decomp'] / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
+
 
 # Get accumulated values to match observations and merge datasets
 data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("treatment", "hour"), by.y = c("treatment", "time"))

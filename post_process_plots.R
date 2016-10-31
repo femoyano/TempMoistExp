@@ -1,6 +1,7 @@
 ### ===================================== ###
-### Analyze and plot model vs observation ###
+### Plots of model results                ###
 ### ===================================== ###
+
 
 ### Libraries
 require(plyr)
@@ -14,13 +15,13 @@ devfun <- png
 export <- 1
 opar <- par(no.readonly=TRUE)
 
-# # Plot residuals
+# # Plot residuals ----------------------------------------------------------------
 # palette("default")
 # plot(res, col = data.accum$temp, main = "By Temperature")
 # plot(res, col = as.factor(data.accum$moist_vol), main = "By Moisture")
 # plot(res, col = data.accum$site, main = "By Site")
 
-# Plot accumulated model vs data
+# Plot accumulated model vs data --------------------------------------------------
 plotname <- paste(prefix, "accum_mod_obs.", devname, sep = "")
 plotfile <- file.path(savedir, plotname)
 if(export) devfun(file = plotfile) #, width = 5, height = 5)
@@ -44,9 +45,9 @@ if(exists('mcmcMod')) {
     polygon(densities[[i]], col=col_palette[i])
   }
 }
-
 par(opar)
-# # Plot rates model vs data
+
+# # Plot rates model vs data -----------------------------------------------------
 # plotname <- paste(prefix, "rates_mod_obs.", devname, sep = "")
 # plotfile <- file.path(savedir, plotname)
 # if(export) devfun(file = plotfile) #, width = 5, height = 5)
@@ -54,7 +55,7 @@ par(opar)
 #      xlab = "Observed Respired CO2 (mgC h-1 m-3)", ylab = "Modeled Respired CO2 (mgC h-1 m-3)")
 # lines(c(0,1),c(0,1))
 
-# # Plot rates model vs data adding non-calibrated values
+# # Plot rates model vs data adding non-calibrated values ------------------------
 # calib.accum.obs.r <- data.accum$C_R_ro
 # calib.accum.mod.r <- data.accum$C_R_rm
 # # Run with init pars here!!!
@@ -72,7 +73,7 @@ par(opar)
 cv <- rainbow(10, alpha = 0.5)  # heat.colors(10, alpha = 0.5)
 palette(cv)
 
-# # Plot normalized values for each temp group
+# # Plot normalized values for each temp group -------------------------------------
 # x <- data.frame(moist_vol = seq(0.01, 0.5, 0.001))
 # for (i in names(fit.moist.obs)) {
 #   y.o <- predict(fit.moist.obs[[i]]$fit, newdata = x)
@@ -89,7 +90,7 @@ palette(cv)
 #   lines (y.m ~ x$moist_vol, col = 7)
 # }
 # 
-# Plot absolute values for each temp group
+# Plot absolute values for each temp group ----------------------------------------
 for (i in names(fit.moist.obs)) {
   df <- data.accum[data.accum$temp.group == i,]
   plotname <- paste(prefix, "moist-resp-", df$temp.group[1], ".", devname, sep = "")
@@ -101,7 +102,7 @@ for (i in names(fit.moist.obs)) {
   points(C_R_rm ~ moist_vol, data = df, col = 7, pch = 16)
 }
 
-# # Plot each moist group
+# # Plot each moist group -----------------------------------------------------
 # x <- data.frame(temp = seq(0, 35, 1))
 # for (i in names(fit.temp.obs)) {
 #   e.o <- predict(fit.temp.obs[[i]]$fitEa, newdata = x)
@@ -121,8 +122,7 @@ for (i in names(fit.moist.obs)) {
 # }
 
 
-# Plot pararameters for temp function
-
+# Plot pararameters for temp function -------------------------------------------
 PlotTR <- function(naming, fit.pars, TR, ylab) {
   plotname <- paste(prefix, naming, devname, sep = "")
   plotfile <- file.path(savedir, plotname)
@@ -167,7 +167,7 @@ try({
 })
 
 
-# # Fit model 2: here I fix K and Th and use a "p1" that modifies 
+# # Fit model 2: here I fix K and Th and use a "p1" that modifies ------------------------------
 # # the 'diffusion' directly, and "n" for the shape of the curve.
 # # Th is taken from model 1 fits or can be fixed at different values.
 # #   fit<-nls(
@@ -175,5 +175,8 @@ try({
 #     start=c(p1=1, n=2),
 #     algorithm="port",
 #     data=df)
+
+# Plot T-response of decomposition flux
+
 
 if(export) while(dev.cur() > 1) dev.off()

@@ -11,40 +11,17 @@ parind <- as.integer(commandArgs(trailingOnly = TRUE))
 ### ----------------------------------- ###
 ###       User Stup                     ###
 ### ----------------------------------- ###
+source('setup.R')
+list2env(setup, envir = .GlobalEnv)
 
-# Setup
-setup <- list(
-  # -------- Model options ----------
-  flag.ads  = 0 ,  # simulate adsorption desorption
-  flag.mic  = 1 ,  # simulate microbial pool explicitly
-  flag.fcs  = 1 ,  # scale C_P, C_A, M to field capacity (with max at fc)
-  flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
-  flag.dte  = 0 ,  # diffusivity temperature effect on/off
-  flag.dce  = 0 ,  # diffusivity carbon effect on/off
-  flag.mmu  = 1 ,  # michalis menten kinetics for uptake, else equal diffusion flux
-  flag.mmr  = 1 ,  # microbial maintenance respiration
-  dce.fun  = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun = "hama"  # Options: 'hama', 'cubic'
-)
-
-
-### ----------------------------------- ###
-###           Set parameters            ###
-### ----------------------------------- ###
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose default parameters (csv file)
-pars.default.file <- 'parsets/parset6-6noAC_all.csv'# parset6-dev2-3_all.csv
 pars_default <- read.csv(pars.default.file, row.names = 1)
 pars_default <- setNames(pars_default[[1]], row.names(pars_default))
-
+pars_new <- read.csv(pars.new.file, row.names = 1)
+pars_new <- setNames(pars_new[[1]], row.names(pars_new))
 # # # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
 # pars.mult.file   <- "parsets/pars_lhs30000_v1_top10_modcost.tr.m.csv"
 # pars_new <- as.matrix(read.csv(pars.mult.file))
 # pars_new <- pars_new[parind,]
-
-pars.new.file <- 'parsets/parset6_noAC.csv'
-pars_new <- read.csv(pars.new.file, row.names = 1)
-pars_new <- setNames(pars_new[[1]], row.names(pars_new))
 
 source("ParsReplace.R")
 pars <- ParsReplace(pars_new, pars_default)

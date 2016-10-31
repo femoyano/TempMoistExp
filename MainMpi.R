@@ -4,35 +4,16 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
-MainMpi <- function(pars_default, pars_replace) {
+MainMpi <- function(pars_replace) {
 
   ### ----------------------------------- ###
   ###       User Stup                     ###
   ### ----------------------------------- ###
-  # Setup
-  # -------- Model options ----------
-  flag.ads  <- 0     # simulate adsorption desorption
-  flag.mic  <- 1     # simulate microbial pool explicitly
-  flag.fcs  <- 1     # scale C_P, C_A, C_Es, M to field capacity (with max at fc)
-  flag.sew  <- 0     # calculate C_E and C_D concentration in water
-  flag.dte  <- 0     # diffusivity temperature effect on/off
-  flag.dce  <- 0     # diffusivity carbon effect on/off
-  flag.mmu  <- 1     # michalis menten kinetics for uptake, else equal diffusion flux
-  flag.mmr  <- 1     # microbial maintenance respiration
-  dce.fun  <- 'exp'  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun <- 'hama' # Options: 'hama', 'cubic'
-  
-  # -------- Calibration options ----------
-  # Observation error: name of column with error values ('sd' or 'uw'). NULL to use weight.
-  SRerror   <- 'C_R_sd01'
-  # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
-  SRweight  <- 'none'
-  TRweight  <- 'none'
-  # Scale variables? TRUE or FALSE.
-  scalevar  <- TRUE
-  # Choose cost function
+  list2env(setup, envir = .GlobalEnv)
+  # Set cost function specific for MPI runs
   cost.fun  <- "ModCost_mpi.R"
-  
+  pars_default <- read.csv(pars.default.file, row.names = 1)
+  pars_default <- setNames(pars_default[[1]], row.names(pars_default))
   
   ### ----------------------------------- ###
   ###      Non User Setup                 ###
@@ -73,7 +54,12 @@ MainMpi <- function(pars_default, pars_replace) {
   source("AccumCalc.R", local = TRUE)
   source("ParsReplace.R", local = TRUE)
   source("SampleRun.R", local = TRUE)
-
+  
+  # Add or replace parameters from the list of optimized parameters ------------------------
+  names(pars_replace) <- colnames(pars_replace)
+  pars <- ParsReplace(pars_replace, pars_default)
+  ### Run all samples (in series since this is for mpi) ------------------------------------
+  
   ## Run cost function
-  ModCost(pars_default, pars_replace)
+  ModCost(pars)
 }
