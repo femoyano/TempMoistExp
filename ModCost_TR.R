@@ -52,10 +52,10 @@ ModCost <- function(pars_optim) {
     
     if(it == 1) {
       cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", error = 'error',
-                      weight = TRweight, scaleVar = TRUE)
+                      weight = TRweight, scaleVar = scalevar)
     } else {
       cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", error = 'error',
-                      weight = TRweight, scaleVar = TRUE, cost = cost)
+                      weight = TRweight, scaleVar = scalevar, cost = cost)
     }
     it = it + 1
   }
