@@ -19,26 +19,26 @@ setup <- list(
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
-  run.mfit  = 1 ,  # run modFit for optimization?
+  run.mfit  = 0 ,  # run modFit for optimization?
   run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Observation error: name of column with error values:
   # 'C_R_gm', 'C_R_sdnorm', 'C_R_sd001', 'C_R_sd005', 'C_R_sd01', 'one' or NULL to use weight.
-  SRerror  = 'C_R_sd01'  ,
+  SRerror  = 'one'  ,
   TRerror  = NULL  ,
   # Weight for cost:  only if error is NULL. One of 'none', 'mean', 'std'.
   SRweight = 'none' ,
   TRweight = 'none' ,
   # Scale variables? TRUE or FALSE
-  scalevar = TRUE   ,
+  scalevar = FALSE   ,
   # Choose method for modFit
   mf.method = "Marq"     ,
   # Choose cost function
-  cost.fun  = "ModCost_SR.R" ,
+  cost.fun  = "ModCost_SR_TR.R" ,
   # Choose MCMC options:
   niter  = 50000 ,  # number of iterations
   jfrac  = 200   ,  # fraction of parameters size for jumps
   burnin = 10000 ,  # length of burn in
-  udcov  = 1000  ,  # iteration period for updating covariance matrix 
+  udcov  = 500  ,  # iteration period for updating covariance matrix 
   
   # -------- Parameter options ----------
   # csv file with default parameters
@@ -50,5 +50,7 @@ setup <- list(
   # for single runs (run_smp.R)
   pars.new.file = 'parsets/parset6_noAC.csv'  ,
   # for mpi runs
-  pars.mpi.file = 'parsets/pars_lh100000_bounds1_v1.csv'
+  pars.mpi.file = 'parsets/pars_lh100000_bounds1_v1.csv' ,
+  # For mupliple runs using command line input
+  pars.mult.file = "parsets/pars_lhs100000_top10.csv"
 )

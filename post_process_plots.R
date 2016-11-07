@@ -9,7 +9,7 @@ require(reshape2)
 library(ggplot2)
 
 prefix <- "plot_"
-savedir <- file.path("..", "plots")
+savedir <- file.path("plots")
 devname <- "png"
 devfun <- png
 export <- 1
@@ -137,7 +137,7 @@ PlotTR <- function(naming, fit.pars, TR, ylab) {
   print(p)
 }
 
-span=0.5
+span = 0.5
 TR='Ea'   # Either 'Q10' or 'Ea'
 ylabel <- paste("Apparent Temperature Sensitivity ", TR)
 # For observed data
@@ -166,17 +166,22 @@ try({
   PlotTR(paste0(TR, "_mod.20_35."), fit.pars, TR, ylabel)
 })
 
-
-# # Fit model 2: here I fix K and Th and use a "p1" that modifies ------------------------------
-# # the 'diffusion' directly, and "n" for the shape of the curve.
-# # Th is taken from model 1 fits or can be fixed at different values.
-# #   fit<-nls(
-#     C_R_orn~Rmax * ifelse((moist_vol - Th)<0, 0, ((moist_vol - Th)^n * p1) / (K + (moist_vol - Th)^n * p1)),
-#     start=c(p1=1, n=2),
-#     algorithm="port",
-#     data=df)
-
 # Plot T-response of decomposition flux
+try({
+  # For modeled data
+  fit.pars <- ldply(fit.temp.decomp, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+  PlotTR(paste0(TR, "_decomp."), fit.pars, TR, ylabel) 
+})
+try({
+  # For modeled data 5-20
+  fit.pars <- ldply(fit.temp.decomp.5_20, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+  PlotTR(paste0(TR, "_decomp.5_20."), fit.pars, TR, ylabel)
+})
+try({
+  # For modeled data 20_35
+  fit.pars <- ldply(fit.temp.decomp.20_35, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+  PlotTR(paste0(TR, "_decomp.20_35."), fit.pars, TR, ylabel)
+})
 
 
 if(export) while(dev.cur() > 1) dev.off()

@@ -32,15 +32,16 @@ ModCost <- function(pars_optim) {
   
   it <- 1
   for (i in unique(data.accum$moist.group)) {
+  
     df <- data.accum[data.accum$moist.group == i, ]
     
     # Calculate T response
-      SR5_o  <- mean(df$C_R_ro[df$temp==5])
+    SR5_o  <- mean(df$C_R_ro[df$temp==5])
     SR20_o <- mean(df$C_R_ro[df$temp==20])
     SR35_o <- mean(df$C_R_ro[df$temp==35])
-    SR5_m  <- mean(df$C_R_mr[df$temp==5])
-    SR20_m <- mean(df$C_R_mr[df$temp==20])
-    SR35_m <- mean(df$C_R_mr[df$temp==35])
+    SR5_m  <- mean(df$C_R_rm[df$temp==5])
+    SR20_m <- mean(df$C_R_rm[df$temp==20])
+    SR35_m <- mean(df$C_R_rm[df$temp==35])
     TR5_20_o  <- SR20_o/SR5_o
     TR20_35_o <- SR35_o/SR20_o
     TR5_20_m  <- SR20_m/SR5_m

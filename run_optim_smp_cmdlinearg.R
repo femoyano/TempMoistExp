@@ -24,9 +24,9 @@ t0 <- Sys.time()
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Choose initial valeus for optimized parameters
 runind <- as.integer(commandArgs(trailingOnly = TRUE))
-pars.mult.file   <- "../parsets/parset_selection.csv"
+pars.mult.file   <- "parsets/pars_lhs100000_top10.csv"
 pars_calib <- as.matrix(read.csv(pars.mult.file))
-pars.optim.file <- paste0("../parsets/parset_temp", runind, ".csv")
+pars.optim.file <- paste0("./parsets/parset_temp.csv")
 write.csv(pars_calib[runind, ], file = pars.optim.file)
 
 ### ----------------------------------- ###

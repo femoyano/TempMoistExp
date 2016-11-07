@@ -34,23 +34,45 @@
 #   write.csv(pars, file, row.names = FALSE)
 # }
 
+plotdens <- function(pars, id) {
+  library(RColorBrewer)
+  col_palette<-c(brewer.pal(9,"Set1"), brewer.pal(9,"Set3"))
+  densities<-list()
+  for(i in 1:dim(pars)[2]){
+    densities[[i]]<-density(pars[,i])
+  }
+  png(paste0(id, "_18pars.png"), height=800, width=1000)
+  par(mfrow=c(5,4))
+  for(i in 1:dim(pars)[2]){
+    plot(densities[[i]], main=colnames(pars)[i])
+    polygon(densities[[i]], col=col_palette[i])
+  }
+  dev.off()  
+}
+
+lhs_pars <- read.csv('../parsets/pars_lh100000_bounds1_v1.csv')
+
 # For each column containing model cost estimates, print the row with the lowest cost
-for(i in 1:2) cat(colnames(runs.out)[i], '\n', which(runs.out[,i]==min(runs.out[,i])), '  ', runs.out[runs.out[,i]==min(runs.out[,i]),i], '\n')
+# for(i in 1:2) cat(colnames(runs.out)[i], '\n', which(runs.out[,i]==min(runs.out[,i])), '  ', runs.out[runs.out[,i]==min(runs.out[,i]),i], '\n')
 
 # Calculate the sum of costs for SR and TR and print the the row with the lowest value
 
-file <- paste0('parsets/pars_lhs100000_top10.csv')
-sumrank <- rank(rank(runs.out[,1])+rank(runs.out[,2]))
-top10 <- match(c(1:10), sumrank)
-pars <- pars_calib[top10,]
+topnum <- 100
+file <- paste0('parsets/pars_lhs100000_top', topnum,'.csv')
+sumrank <- rank(runs.out[,1])+rank(runs.out[,2])
+top <- match(sort(sumrank)[1:topnum], sumrank)
+pars <- lhs_pars[top,]
 write.csv(pars, file, row.names = FALSE)
-
+plotdens(pars, 'sumrank')
 
 for (i in c(1:2)) {
   cost <- runs.out[,i]
-  top10 <- match(c(1:10), rank(cost))
-  print(runs.out[top10,1:2])
-  file <- paste0('parsets/pars_lhs100000_top10_',colnames(runs.out)[i],'.csv')
-  pars <- lhs_pars[top10,]
+  top <- match(sort(cost)[1:topnum], cost)
+  # print(runs.out[top,1:2])
+  file <- paste0('parsets/pars_lhs100000_top', topnum, colnames(runs.out)[i],'.csv')
+  pars <- lhs_pars[top,]
   write.csv(pars, file, row.names = FALSE)
+  plotdens(pars,colnames(runs.out)[i])
 }
+
+

@@ -1,10 +1,6 @@
 require(plyr)
 require(reshape2)
 
-mod.out[, 'decomp'] <- cumsum(mod.out[, 'F_cp.cd'])
-mod.out[, 'decomp'] <- mod.out[, 'decomp'] / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
-
-
 # Get accumulated values to match observations and merge datasets
 data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("treatment", "hour"), by.y = c("treatment", "time"))
 data.accum$C_R_rm <- data.accum$C_R_m / data.accum$time_accum # convert to hourly rates [gC kg-1 h-1]
@@ -86,14 +82,23 @@ FitTemp <- function(df, var) {
   return(l1)
 }
 
-# For for entire temperature range
+# Fits for respired CO2 vs temperature
+# Entire temperature range
 fit.temp.obs <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_R_ro")
 fit.temp.mod <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_R_rm")
-# Fit for 5C to 20C
+# 5C to 20C
 fit.temp.obs.5_20 <- dlply(data.accum[data.accum$temp!=35,], .(moist.group), .fun = FitTemp, var = "C_R_ro")
 fit.temp.mod.5_20 <- dlply(data.accum[data.accum$temp!=35,], .(moist.group), .fun = FitTemp, var = "C_R_rm")
-# Fit for 20C to 35C
+# 20C to 35C
 fit.temp.obs.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_R_ro")
 fit.temp.mod.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_R_rm")
+
+# Fits for decomposition flux vs temperature
+# Entire temperature range
+fit.temp.decomp <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_dec")
+# 5C to 20C
+fit.temp.decomp.5_20 <- dlply(data.accum[data.accum$temp!=35,], .(moist.group), .fun = FitTemp, var = "C_dec")
+# 20C to 35C
+fit.temp.decomp.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_dec")
 
 source('post_process_plots.R')

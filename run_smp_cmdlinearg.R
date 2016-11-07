@@ -16,8 +16,9 @@ list2env(setup, envir = .GlobalEnv)
 
 pars_default <- read.csv(pars.default.file, row.names = 1)
 pars_default <- setNames(pars_default[[1]], row.names(pars_default))
-pars_new <- read.csv(pars.new.file, row.names = 1)
-pars_new <- setNames(pars_new[[1]], row.names(pars_new))
+
+pars_new <- as.matrix(read.csv(pars.mult.file))
+pars_new <- pars_new[parind,]
 
 source("ParsReplace.R")
 pars <- ParsReplace(pars_new, pars_default)

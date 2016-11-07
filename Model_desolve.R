@@ -91,7 +91,7 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     dC_M <- F_cd.cm - F_cm.cp - F_cm.cr
     dC_R <- F_cd.cr + F_cm.cr
     
-    return(list(c(dC_P, dC_D, dC_E, dC_M, dC_R)))
+    return(list(c(dC_P, dC_D, dC_E, dC_M, dC_R), decomp = F_cp.cd, temp = temp, moist = moist))
     
   }) # end of with(...
   

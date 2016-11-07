@@ -34,7 +34,6 @@ ModCost <- function(pars_optim) {
   for (i in unique(data.accum$moist.group)) {
     
     df <- data.accum[data.accum$moist.group == i, ]    
-    df <- data.accum
     obsSR <- data.frame(name = "C_R_r", time = df$hour, C_R_r = df$C_R_ro, error = df[,SRerror])
     modSR <- data.frame(time = df$hour, C_R_r = df$C_R_rm)
     
@@ -54,14 +53,14 @@ ModCost <- function(pars_optim) {
     modTR <- data.frame(step = c(1,2), TR = c(TR5_20_m, TR20_35_m))
     
     if(it == 1) {
-      cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = error, 
+      cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = 'error', 
                       weight = SRweight, scaleVar = scalevar)
-      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = 'error',
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = NULL,
                       weight = TRweight, cost = cost, scaleVar = scalevar)
     } else {
-      cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = SRerror,
+      cost <- modCost(model=modSR, obs=obsSR, y = "C_R_r", err = 'error',
                       weight = SRweight, scaleVar = scalevar, cost = cost)
-      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = 'error',
+      cost <- modCost(model=modTR, obs=obsTR, x = "step", y = "TR", err = NULL,
                       weight = TRweight, scaleVar = scalevar, cost = cost)
     }
     
