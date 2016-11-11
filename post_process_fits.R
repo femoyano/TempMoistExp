@@ -5,6 +5,7 @@ require(reshape2)
 data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("treatment", "hour"), by.y = c("treatment", "time"))
 data.accum$C_R_rm <- data.accum$C_R_m / data.accum$time_accum # convert to hourly rates [gC kg-1 h-1]
 data.accum$C_R_ro <- data.accum$C_R_r  # Observed data should be already gC kg-1 h-1
+data.accum$C_dec_r <- data.accum$C_dec / data.accum$time_accum # convert to hourly rates [gC kg-1 h-1]
 data.accum$C_R <- NULL
 # Convert to mg kg-1 h-1
 data.accum$C_R_ro <- data.accum$C_R_ro * 1000
@@ -95,10 +96,10 @@ fit.temp.mod.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fu
 
 # Fits for decomposition flux vs temperature
 # Entire temperature range
-fit.temp.decomp <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_dec")
+fit.temp.decomp <- dlply(data.accum, .(moist.group), .fun = FitTemp, var = "C_dec_r")
 # 5C to 20C
-fit.temp.decomp.5_20 <- dlply(data.accum[data.accum$temp!=35,], .(moist.group), .fun = FitTemp, var = "C_dec")
+fit.temp.decomp.5_20 <- dlply(data.accum[data.accum$temp!=35,], .(moist.group), .fun = FitTemp, var = "C_dec_r")
 # 20C to 35C
-fit.temp.decomp.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_dec")
+fit.temp.decomp.20_35 <- dlply(data.accum[data.accum$temp!=5,], .(moist.group), .fun = FitTemp, var = "C_dec_r")
 
 source('post_process_plots.R')
