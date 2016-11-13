@@ -7,7 +7,7 @@ setup <- list(
   
   # -------- Model options ----------
   flag.mic  = 1 ,  # simulate microbial pool explicitly
-  flag.fcs  = 1 ,  # scale C_P and M to field capacity (with max at fc)
+  flag.fcs  = 0 ,  # scale C_P and M to field capacity (with max at fc)
   flag.sew  = 0 ,  # calculate C_E and C_D concentration in water
   flag.dte  = 0 ,  # diffusivity temperature effect on/off
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
