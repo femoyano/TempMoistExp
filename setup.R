@@ -48,7 +48,7 @@ setup <- list(
   # csv file with bounds for optimized parameters
   pars.bounds.file  = "parsets/pars_bounds_dev7_3.csv" ,
   # for single runs (run_smp.R)
-  pars.new.file = 'parsets/pars_mcmc4.csv'  ,
+  pars.new.file = 'parsets/pars_1124-0251runsmp4.csv'  ,
   # for mpi runs
   pars.mpi.file = 'parsets/' ,
   # For mupliple runs using command line input

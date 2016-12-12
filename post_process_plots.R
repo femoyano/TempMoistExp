@@ -139,7 +139,7 @@ PlotTR <- function(naming, fit.pars, TR, ylab) {
 }
 
 span = 0.5
-TR='Q10'   # Either 'Q10' or 'Ea'
+TR='Ea'   # Either 'Q10' or 'Ea'
 ylabel <- paste("Apparent Temperature Sensitivity ", TR)
 # For observed data
 fit.pars <- fit.temp.obs
