@@ -70,32 +70,25 @@ FitMoist <- function(df, var) {
 fit.moist.obs <- dlply(data.accum, .(temp.group), .fun = FitMoist, var = "C_R_orn")
 fit.moist.mod <- dlply(data.accum, .(temp.group), .fun = FitMoist, var = "C_R_mrn")
 
-# Define functions for fitting
-fitExpfun <- function(df, Q10) { try(nls(x ~ a * Q10^(temp/10), start=list(a=0.01, Q10=Q10),
-                                         data = df, na.action = na.exclude)) }
-fitArrfun <- function(df, Ea) { nls(x ~ a * exp(-Ea/0.008314*(1/(temp+273) - 1/273)),
-                                    start=c(a = 0.1, Ea = Ea), algorithm="port", data = df) }
-
 # Fit a temprature function to each moisture subgroup and plot
 FitTemp <- function(df, var) {
   # browser()
   df$x <- df[[var]]
-  
-  fitExp <- try(fitExpfun(df, 1.3))
-  if(class(fitExp)=="try-error") fitExp <- try(fitExpfun(df, 3))
+  fitExp <- try(lm(log(x) ~ temp, data = df, na.action = na.exclude))
   if(class(fitExp)!="try-error") {
-    Q10 = coef(fitExp)[[2]]; R0 = coef(fitExp)[[1]] } else {
+    Q10 = exp(10*coef(fitExp)[[2]]); R0 = coef(fitExp)[[1]] } else {
     Q10 = NA; R0 = NA
     }
-
-  fitArr <- try(fitArrfun(df, 100))
-  if(class(fitArr)=="try-error") fitArr <- try(fitArrfun(df, 40))
+  # fitEafun <- function(df, Ea) { nls(x ~ A * exp(-Ea/0.008314*(1/(temp+273) - 1/273)),
+  #                                    start=c(A = 0.1, Ea = 100), algorithm="port", data = df) }
+  # fitEa <- try(fitEafun(df, 100))
+  # if(class(fitEa)=="try-error") fitEa <- try(fitEafun(df, 40))
+  fitArr <- try(lm(log(x) ~ I(1/(temp+273)), data = df, na.action = na.exclude))
   if(class(fitArr)!="try-error") {
-    A = coef(fitArr)[[1]]; Ea = coef(fitArr)[[2]]
+    A = coef(fitArr)[[1]]; Ea = coef(fitArr)[[2]] * 0.008314 * (-1)
   } else {
     A = NA; Ea = NA
   }
-  
   out <- data.frame(site = df$site[1], var = var, moist_vol = df$moist_vol[1], Q10 = Q10, R0 = R0, A = A, Ea = Ea)
 }
 

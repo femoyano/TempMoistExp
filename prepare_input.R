@@ -3,10 +3,16 @@
 # Choose site
 if (input$site[1] == "bare_fallow") {
   site.data <- site.data.bf
-  V_D_ref <- pars[["V_D_bf"]] 
+  V_D_ref <- pars[["V_D_bf"]]
+  f_CD    <- pars[["f_CD_bf"]]
+  f_CE    <- pars[["f_CE_bf"]] 
+  f_CM    <- pars[["f_CM_bf"]] 
 } else if (input$site[1] == "maize") {
   site.data <- site.data.mz
-  V_D_ref <- pars[["V_D_mz"]] 
+  V_D_ref <- pars[["V_D_mz"]]
+  f_CD    <- pars[["f_CD_mz"]]
+  f_CE    <- pars[["f_CE_mz"]] 
+  f_CM    <- pars[["f_CM_mz"]] 
 } else stop("no site name match in prepare_input.R")
 
 sand   <- site.data$sand  # [g g^-1] clay fraction values 
@@ -30,11 +36,6 @@ parameters <- c(pars, V_D_ref = V_D_ref, sand = sand, silt = silt, clay = clay, 
                 psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, D_d0 = D_d0, D_e0 = D_e0)
 
 ### ----- Calculate initial C pool sizes
-
-# Rename
-f_CE <- pars[["f_CE"]]
-f_CM <- pars[["f_CM"]]
-f_CD <- pars[["f_CD"]]
 
 # Assign the pool sizes
 TOC <- toc * 1000000 * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"]]

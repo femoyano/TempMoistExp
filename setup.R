@@ -19,8 +19,8 @@ setup <- list(
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
-  run.mfit  = 0 ,  # run modFit for optimization?
-  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
+  run.mfit  = 1 ,  # run modFit for optimization?
+  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
   # Observation error: name of column with error values:
   # 'C_R_gm', 'C_R_sdnorm', 'C_R_sd001', 'C_R_sd005', 'C_R_sd01', 'one' or NULL to use weight.
   SRerror  = 'one'  ,
@@ -31,26 +31,26 @@ setup <- list(
   # Scale variables? TRUE or FALSE
   scalevar = FALSE   ,
   # Choose method for modFit
-  mf.method = "Marq"     ,
+  mf.method = "Nelder-Mead"     ,
   # Choose cost function
-  cost.fun  = "ModCost_SR_TR.R" ,
+  cost.fun  = "ModCost_SR.R" ,
   # Choose MCMC options:
-  niter  = 50000 ,  # number of iterations
-  jfrac  = 200   ,  # fraction of parameters size for jumps
-  burnin = 10000 ,  # length of burn in
-  udcov  = 500  ,  # iteration period for updating covariance matrix 
+  niter  = 100000 ,  # number of iterations
+  jfrac  = 200    ,  # fraction of parameters size for jumps
+  burnin = 30000  ,  # length of burn in
+  udcov  = 500    ,  # iteration period for updating covariance matrix 
   
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "parsets/parset6-6noAC_all.csv" ,
+  pars.default.file = "parsets/parset_dev7_all.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "parsets/parset6_noAC.csv"      ,
+  pars.optim.file   = "parsets/pars_mcmc4.csv"      ,
   # csv file with bounds for optimized parameters
-  pars.bounds.file  = "parsets/pars_bounds_v1.csv" ,
+  pars.bounds.file  = "parsets/pars_bounds_dev7_3.csv" ,
   # for single runs (run_smp.R)
-  pars.new.file = 'parsets/parset6_noAC.csv'  ,
+  pars.new.file = 'parsets/pars_mcmc4.csv'  ,
   # for mpi runs
-  pars.mpi.file = 'parsets/pars_lh100000_bounds1_v1.csv' ,
+  pars.mpi.file = 'parsets/' ,
   # For mupliple runs using command line input
-  pars.mult.file = "parsets/pars_lhs100000_top10.csv"
+  pars.mult.file = "parsets/"
 )

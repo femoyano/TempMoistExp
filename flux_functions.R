@@ -44,8 +44,8 @@ Decomp <- function (C_P, C_E, V_D, K_D, moist.mod, depth, fc.mod) {
 }
 
 ##  Uptake flux ---------
-Uptake <- function (S, V_U, K_U, moist.mod, depth, fc.mod) {
-  S <- S / depth * fc.mod
+Uptake <- function (S, V_U, K_U, moist.mod, depth) {
+  S <- S / (depth * moist.mod)
   F_U <- (V_U * S) / (K_U + S) * depth
 }
 

@@ -25,7 +25,8 @@ registerDoParallel(cores = cores)
 ### -------- Get model data ----------- ##           
 ## ------------------------------------ ##
 
-pars_replace <- mcmcMod$bestpar
+# pars_replace <- mcmcMod$bestpar
+pars_replace <- fitMod$par
 pars <- ParsReplace(pars_replace, pars_default)
 
 source("GetModelData.R")

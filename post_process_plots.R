@@ -31,21 +31,22 @@ lines(c(0,1),c(0,1))
 
 if(exists('mcmcMod')) {
   library(RColorBrewer)
-  col_palette<-c(brewer.pal(9,"Set1"), brewer.pal(9,"Set3"))
+  col_palette<-c(brewer.pal(7,"Set1"), brewer.pal(7,"Set2"), brewer.pal(7,"Set3"))
   densities<-list()
   for(i in 1:dim(mcmcMod$pars)[2]){
     densities[[i]]<-density(mcmcMod$pars[,i])
   }
   plotname <- paste(prefix, "pars_probdens.", devname, sep = "")
   plotfile <- file.path(savedir, plotname)
-  if(export) devfun(file = plotfile)
-  par(mfrow=c(5,4))
+  if(export) devfun(file = plotfile, width = 1700, height = 800)
+  par(mfrow=c(3,7), pin = c(1.3, 1.3), mar = c(5,4,3.5,3))
   for(i in 1:dim(mcmcMod$pars)[2]){
     plot(densities[[i]], main=colnames(mcmcMod$pars)[i])
     polygon(densities[[i]], col=col_palette[i])
   }
 }
 par(opar)
+
 
 # # Plot rates model vs data -----------------------------------------------------
 # plotname <- paste(prefix, "rates_mod_obs.", devname, sep = "")
@@ -102,21 +103,21 @@ for (i in names(fit.moist.obs)) {
   points(C_R_rm ~ moist_vol, data = df, col = 7, pch = 16)
 }
 
-# # Plot each moist group -----------------------------------------------------
+# Plot each moist group -----------------------------------------------------
 # x <- data.frame(temp = seq(0, 35, 1))
 # for (i in names(fit.temp.obs)) {
-#   e.o <- predict(fit.temp.obs[[i]]$fitEa, newdata = x)
-#   e.m <- predict(fit.temp.mod[[i]]$fitEa, newdata = x)
-#   q.o <- predict(fit.temp.obs[[i]]$fitQ10, newdata = x)
-#   q.m <- predict(fit.temp.mod[[i]]$fitQ10, newdata = x)
+#   # e.o <- predict(fit.temp.obs[[i]]$fitEa, newdata = x)
+#   # e.m <- predict(fit.temp.mod[[i]]$fitEa, newdata = x)
+#   # q.o <- predict(fit.temp.obs[[i]]$fitQ10, newdata = x)
+#   # q.m <- predict(fit.temp.mod[[i]]$fitQ10, newdata = x)
 #   df <- data.accum[data.accum$moist.group == i,]
 #   plotname <- paste(prefix, "moist-resp-", df$moist.group[1], ".", devname, sep = "")
 #   plotfile <- file.path(savedir, plotname)
 #   if(export) devfun(file = plotfile) #, width = 5, height = 5)
 #   plot(C_R_ro ~ temp, data = df, main = df$moist.group[1], xlim=c(0,40),  col = 2, pch = 16)
 #   points(C_R_rm ~ temp, data = df, col = 7, pch = 16)
-#   lines (e.o ~ x$temp, col = 2)
-#   lines (e.m ~ x$temp, col = 7)
+#   # lines (e.o ~ x$temp, col = 2)
+#   # lines (e.m ~ x$temp, col = 7)
 # #   lines (q.o ~ x$temp, col = 2)
 # #   lines (q.m ~ x$temp, col = 8)
 # }
@@ -138,48 +139,48 @@ PlotTR <- function(naming, fit.pars, TR, ylab) {
 }
 
 span = 0.5
-TR='Ea'   # Either 'Q10' or 'Ea'
+TR='Q10'   # Either 'Q10' or 'Ea'
 ylabel <- paste("Apparent Temperature Sensitivity ", TR)
 # For observed data
-fit.pars <- ldply(fit.temp.obs, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+fit.pars <- fit.temp.obs
 PlotTR(paste0(TR, "_obs."), fit.pars, TR, ylabel)
 # For observed data 5-20
-fit.pars <- ldply(fit.temp.obs.5_20, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+fit.pars <- fit.temp.obs.5_20
 PlotTR(paste0(TR, "_obs.5_20."), fit.pars, TR, ylabel)
 # For observed data 20-35
-fit.pars <- ldply(fit.temp.obs.20_35, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+fit.pars <- fit.temp.obs.20_35
 PlotTR(paste0(TR, "_obs.20_35."), fit.pars, TR, ylabel)
 
 try({
   # For modeled data
-  fit.pars <- ldply(fit.temp.mod, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+  fit.pars <- fit.temp.mod
   PlotTR(paste0(TR, "_mod."), fit.pars, TR, ylabel) 
 })
 try({
   # For modeled data 5-20
-  fit.pars <- ldply(fit.temp.mod.5_20, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+  fit.pars <- fit.temp.mod.5_20
   PlotTR(paste0(TR, "_mod.5_20."), fit.pars, TR, ylabel)
 })
 try({
   # For modeled data 20_35
-  fit.pars <- ldply(fit.temp.mod.20_35, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+  fit.pars <- fit.temp.mod.20_35
   PlotTR(paste0(TR, "_mod.20_35."), fit.pars, TR, ylabel)
 })
 
 # Plot T-response of decomposition flux
 try({
   # For modeled data
-  fit.pars <- ldply(fit.temp.decomp, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+  fit.pars <- fit.temp.decomp
   PlotTR(paste0(TR, "_decomp."), fit.pars, TR, ylabel) 
 })
 try({
   # For modeled data 5-20
-  fit.pars <- ldply(fit.temp.decomp.5_20, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+  fit.pars <- fit.temp.decomp.5_20
   PlotTR(paste0(TR, "_decomp.5_20."), fit.pars, TR, ylabel)
 })
 try({
   # For modeled data 20_35
-  fit.pars <- ldply(fit.temp.decomp.20_35, function(x) {data.frame(assign(TR, x[TR]), site = x$site, moist_vol = x$moist_vol)})
+  fit.pars <- fit.temp.decomp.20_35
   PlotTR(paste0(TR, "_decomp.20_35."), fit.pars, TR, ylabel)
 })
 

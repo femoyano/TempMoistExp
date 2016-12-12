@@ -52,10 +52,10 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     # Decomposition rate
     F_cp.cd <- Decomp(C_P, C_E, V_D, K_D, moist.mod, depth, fc.mod)
     
-    Diff.cd <- D_d * (C_D - 0)  # Calculate the diffusion fluxes
+    Diff.cd <- D_d * (C_D - 0)  # Concentration near cells assumed 0
     
     if(flag.mmu) {
-      U.cd <- Uptake(Diff.cd, V_U, K_U, moist.mod, depth, fc.mod)  # Calculate the uptake flux    
+      U.cd <- Uptake(Diff.cd, V_U, K_U, moist.mod, depth)  # Calculate the uptake flux    
     } else {
       U.cd <- Diff.cd
     }
