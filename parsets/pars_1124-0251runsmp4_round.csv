@@ -4,12 +4,12 @@ E_K,47
 E_d,70
 E_V,84
 f_CD_bf,0.021
-f_CD_mz,0.00123
+f_CD_mz,0.0012
 f_CE_bf,0.0046
 f_CE_mz,0.0049
 f_CM_bf,0.049
 f_CM_mz,0.00042
-f_ep,0.00986
+f_ep,0.01
 f_gr_ref,0.81
 f_mr,0.11
 K_D_ref,186000
@@ -17,6 +17,6 @@ K_U_ref,23
 psi_Rth,14000
 r_ed_ref,0.00024
 r_md_ref,0.00041
-V_D_mz,0.195
+V_D_mz,0.19
 V_D_bf,0.27
 V_U_ref,1.65
