@@ -10,7 +10,7 @@ cores = detectCores()
 cat("Cores detected:", cores, "\n")
 registerDoParallel(cores = cores)
 
-
+load('Optim_1215-1352_mmu0-hama-one.RData')
 ## ------------------------------------ ##
 ##  Check parameter sensitivities     ----
 ## ------------------------------------ ##

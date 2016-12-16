@@ -18,14 +18,15 @@ cat("Cores detected:", cores, "\n")
 registerDoParallel(cores = cores)
 
 ### ----------------------------------- ###
-###       User Stup                     ###
+###       User Setup                     ###
 ### ----------------------------------- ###
 source('setup.R')
-list2env(setup, envir = .GlobalEnv)
 
 ### ----------------------------------- ###
 ###         Run optimization            ###
 ### ----------------------------------- ###
+list2env(setup, envir = .GlobalEnv)
+
 source("main_optim.R")
 
 print(Sys.time() - t0)

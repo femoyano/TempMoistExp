@@ -6,7 +6,7 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ==========================================================================
 
-parind <- as.integer(commandArgs(trailingOnly = TRUE))
+# parind <- as.integer(commandArgs(trailingOnly = TRUE))
 
 ### ----------------------------------- ###
 ###       User Stup                     ###
@@ -58,7 +58,7 @@ tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
-runname <- "Run"
+runname <- "Run_final_mmr1"
 options <- paste("_mic", flag.mic, "_fcs", flag.mmu, "_mmu", flag.fcs, "_sew", flag.sew,
                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
                  "_", sep = "")

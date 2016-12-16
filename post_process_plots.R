@@ -139,50 +139,50 @@ PlotTR <- function(naming, fit.pars, TR, ylab) {
 }
 
 span = 0.5
-TR='Ea'   # Either 'Q10' or 'Ea'
-ylabel <- paste("Apparent Temperature Sensitivity ", TR)
-# For observed data
-fit.pars <- fit.temp.obs
-PlotTR(paste0(TR, "_obs."), fit.pars, TR, ylabel)
-# For observed data 5-20
-fit.pars <- fit.temp.obs.5_20
-PlotTR(paste0(TR, "_obs.5_20."), fit.pars, TR, ylabel)
-# For observed data 20-35
-fit.pars <- fit.temp.obs.20_35
-PlotTR(paste0(TR, "_obs.20_35."), fit.pars, TR, ylabel)
-
-try({
-  # For modeled data
-  fit.pars <- fit.temp.mod
-  PlotTR(paste0(TR, "_mod."), fit.pars, TR, ylabel) 
-})
-try({
-  # For modeled data 5-20
-  fit.pars <- fit.temp.mod.5_20
-  PlotTR(paste0(TR, "_mod.5_20."), fit.pars, TR, ylabel)
-})
-try({
-  # For modeled data 20_35
-  fit.pars <- fit.temp.mod.20_35
-  PlotTR(paste0(TR, "_mod.20_35."), fit.pars, TR, ylabel)
-})
-
-# Plot T-response of decomposition flux
-try({
-  # For modeled data
-  fit.pars <- fit.temp.decomp
-  PlotTR(paste0(TR, "_decomp."), fit.pars, TR, ylabel) 
-})
-try({
-  # For modeled data 5-20
-  fit.pars <- fit.temp.decomp.5_20
-  PlotTR(paste0(TR, "_decomp.5_20."), fit.pars, TR, ylabel)
-})
-try({
-  # For modeled data 20_35
-  fit.pars <- fit.temp.decomp.20_35
-  PlotTR(paste0(TR, "_decomp.20_35."), fit.pars, TR, ylabel)
-})
-
+for(TR in c('Ea', 'Q10')) {
+  ylabel <- paste("Apparent Temperature Sensitivity ", TR)
+  # For observed data
+  fit.pars <- fit.temp.obs
+  PlotTR(paste0(TR, "_obs."), fit.pars, TR, ylabel)
+  # For observed data 5-20
+  fit.pars <- fit.temp.obs.5_20
+  PlotTR(paste0(TR, "_obs.5_20."), fit.pars, TR, ylabel)
+  # For observed data 20-35
+  fit.pars <- fit.temp.obs.20_35
+  PlotTR(paste0(TR, "_obs.20_35."), fit.pars, TR, ylabel)
+  
+  try({
+    # For modeled data
+    fit.pars <- fit.temp.mod
+    PlotTR(paste0(TR, "_mod."), fit.pars, TR, ylabel) 
+  })
+  try({
+    # For modeled data 5-20
+    fit.pars <- fit.temp.mod.5_20
+    PlotTR(paste0(TR, "_mod.5_20."), fit.pars, TR, ylabel)
+  })
+  try({
+    # For modeled data 20_35
+    fit.pars <- fit.temp.mod.20_35
+    PlotTR(paste0(TR, "_mod.20_35."), fit.pars, TR, ylabel)
+  })
+  
+  # Plot T-response of decomposition flux
+  try({
+    # For modeled data
+    fit.pars <- fit.temp.decomp
+    PlotTR(paste0(TR, "_decomp."), fit.pars, TR, ylabel) 
+  })
+  try({
+    # For modeled data 5-20
+    fit.pars <- fit.temp.decomp.5_20
+    PlotTR(paste0(TR, "_decomp.5_20."), fit.pars, TR, ylabel)
+  })
+  try({
+    # For modeled data 20_35
+    fit.pars <- fit.temp.decomp.20_35
+    PlotTR(paste0(TR, "_decomp.20_35."), fit.pars, TR, ylabel)
+  })
+}
 
 if(export) while(dev.cur() > 1) dev.off()

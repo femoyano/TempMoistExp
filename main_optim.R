@@ -16,6 +16,8 @@ require(FME)
 require(plyr)
 require(reshape2)
 
+starttime  <- format(Sys.time(), "%m%d-%H%M")
+
 ### Define time variables =====================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
@@ -74,6 +76,8 @@ if (run.mfit) {
                    upper = pars_optim_upper, lower = pars_optim_lower)
 }
 
+## Saving work space
+save.image(file = paste("Run_Optim_", starttime, savetxt, ".RData", sep = ""))
 
 ## Run Bayesian optimization
 if(run.mcmc) {
@@ -90,8 +94,7 @@ if(run.mcmc) {
   mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, jump = jump, niter=niter, var0=var0,
                      lower=pars_optim_lower, upper=pars_optim_upper, 
                      updatecov = udcov, burninlength = burnin)
+## Saving work space
+save(mcmcMod, file = paste("Run_mcmc_", starttime, savetxt, ".RData", sep = ""))
 }
 
-## Saving work space
-savetime  <- format(Sys.time(), "%m%d-%H%M")
-save.image(file = paste("Run_Optim_", savetime, savetxt, ".RData", sep = ""))
