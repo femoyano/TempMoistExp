@@ -1,0 +1,75 @@
+---
+title: "Documentation"
+author: "Fernando Moyano"
+date: "17 December 2016"
+output: html_document
+---
+
+# Description of model
+
+The model will be modified to have enzyme production as fraction of microbial biomass (not of uptake).
+Enzyme will be produced to maintain a concentration outside the cells equal to a fixed fraction of micrbial biomass.
+
+## Some parameter values from literature:
+
+### Uptake
+
+0.1 - 10 d^-1^ -> 0.004 - 0.4
+Manzoni et al. 2016 -> Hobbie and Hobbie 2012
+
+0.01 g C g^-1^ MBC h^-1^
+Li et al. 2014 -> AWB model
+
+### Microbial decay
+
+0.00028 h^-1^
+Allison et al. 2010, Li et al. 2014
+
+0.022 d^-1^ -> 0.00092 h^-1^
+
+### Enzyme decay
+
+0.01 - 1 d^-1^
+Manzoni et al. 2016 -> Allison 2006, Becerra et al. 2014
+
+0.001 h^-1
+Allison et al. 2010
+
+0.05 d^-1^ -> 0.02 h^-1^
+Schimel and Weintraub 2003
+
+### Enzyme production
+
+0.05 - 0.2 fraction of C_M
+Schimel and Weintraub 2003 -> Umikalson et al., 1997; Romero et al., 1999; Tholudur et al., 1999
+
+0.000005 h^-1^
+Allison et al. 2010
+
+0.0000056 h^-1^
+Li et al. 2014 -> AWB model
+
+0.01 of mic turnover
+Li et al. 2014 -> MEND model
+
+Two ways of calculating the concentration outside the cell:
+1: Assuming the decay for C_E is 0.001 h^-1^ and E production is 0.000005 h^-1^, equilibrium C_E will be (C_M * 0.000005)/0.001 = C_M * 0.005, so the ratio of C_E/C_M = 0.005.
+2: Assuming 0.05 of uptake is used for enzyme production, decay for C_E and C_M is 0.001 and 0.00028 h^-1^. for a uptake = x, C_M equilibrium is x/0.00028 and for C_E (x*0.05)/0.001, so the ratio is ((x*0.05)/0.001)/(x/0.00028) = 0.014
+
+### V_D 
+1 d^-1^
+Schimel and Weintraub 2003
+
+
+## Variables and constants added or changed
+
+mc_b: Basal microbial carbon Represents dormant microbes. Does not decay, respire or produce enzymes, but adds to the microbial term in the MM-kinetics for uptake. Initial value: the measured MBC concentration in Versailles bare fallow given in Guenet et al. 2011, 40 mg C kg^-1^ Soil = 0.00004 g C g^-1^ Soil.
+
+f_em: Fraction of enzyme to microbial C. Level of enzyme concentration as a fraction of microbial biomass. Enzyme production is proportional to the difference between (C_M * f_em) and C_E0.
+
+r_ep: Not a new parameter, but value changes. Start with 1 h^-1.
+
+f_ue: Fraction of uptake to enzyme. Used only if flag_mic is off. 
+
+C_Em: Enzyme C at microbe surface. 
+
