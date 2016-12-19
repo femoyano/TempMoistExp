@@ -27,6 +27,14 @@ Allison et al. 2010, Li et al. 2014
 
 0.022 d^-1^ -> 0.00092 h^-1^
 
+### Microbial C minimum
+
+mc_b0: Basal microbial carbon. Represents minimum (e.g. dormant) microbes. Does not decay, respire or produce enzymes, but adds to the microbial term in the MM-kinetics for uptake. 
+0.00001 g C g^-1^ Soil
+From Xu et al. 2013 (A global analysis of soil microbial biomass carbon). Lower valeus reported ca. 1mmol Cmic kg^-1^ Soil.
+Also,compare to Guenet et al. 2011, 40 mg C kg^-1^ Soil = 0.00004 g C g^-1^ Soil in Versailles bare fallow.
+
+
 ### Enzyme decay
 
 0.01 - 1 d^-1^
@@ -49,27 +57,21 @@ Allison et al. 2010
 0.0000056 h^-1^
 Li et al. 2014 -> AWB model
 
-0.01 of mic turnover
+0.01 of mic turnover, i.e. 0.01 * 0.00028 = 0.0000028
 Li et al. 2014 -> MEND model
 
-Two ways of calculating the concentration outside the cell:
-1: Assuming the decay for C_E is 0.001 h^-1^ and E production is 0.000005 h^-1^, equilibrium C_E will be (C_M * 0.000005)/0.001 = C_M * 0.005, so the ratio of C_E/C_M = 0.005.
-2: Assuming 0.05 of uptake is used for enzyme production, decay for C_E and C_M is 0.001 and 0.00028 h^-1^. for a uptake = x, C_M equilibrium is x/0.00028 and for C_E (x*0.05)/0.001, so the ratio is ((x*0.05)/0.001)/(x/0.00028) = 0.014
 
 ### V_D 
 1 d^-1^
 Schimel and Weintraub 2003
 
 
-## Variables and constants added or changed
+## Variables and constants added or changed with initial best guess.
 
-mc_b: Basal microbial carbon Represents dormant microbes. Does not decay, respire or produce enzymes, but adds to the microbial term in the MM-kinetics for uptake. Initial value: the measured MBC concentration in Versailles bare fallow given in Guenet et al. 2011, 40 mg C kg^-1^ Soil = 0.00004 g C g^-1^ Soil.
+mc_b0: 0.00001 g C g^-1^ Soil.Minimum microbial biomass.
 
-f_em: Fraction of enzyme to microbial C. Level of enzyme concentration as a fraction of microbial biomass. Enzyme production is proportional to the difference between (C_M * f_em) and C_E0.
+f_de: 0.01. Fraction of microbial decay going to enzymes.
 
-r_ep: Not a new parameter, but value changes. Start with 1 h^-1.
-
-f_ue: Fraction of uptake to enzyme. Used only if flag_mic is off. 
+f_ue: 0.01. Fraction of uptake going to enzymes. Used only if flag_mic is off.
 
 C_Em: Enzyme C at microbe surface. 
-

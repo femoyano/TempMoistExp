@@ -55,43 +55,51 @@ Model_desolve <- function(t, initial_state, pars) { # must be defined as: func <
     Diff.cd <- D_d * (C_D - 0)  # Concentration near cells assumed 0
     
     if(flag.mmu) {
-      U.cd <- Uptake(Diff.cd, V_U, K_U, moist.mod, depth)  # Calculate the uptake flux    
+      U.cd <- Uptake(Diff.cd, (C_M + mc), V_U, K_U, moist.mod, depth)  # Calculate the uptake flux    
     } else {
       U.cd <- Diff.cd
     }
     
     # Microbial growth, mortality, respiration and enzyme production
     if(flag.mic) {
-      F_cd.cm <- U.cd * f_gr * (1 - f_ep)
+      F_cd.cm <- U.cd * f_gr
       if(flag.mmr) {
-        F_cm.cp <- C_M * r_md * (1 - f_mr)
-        F_cm.cr <- C_M * r_md * f_mr  
+        F_cm.cp <- C_M * r_md * (1 - f_dr - f_de)
+        F_cm.cr <- C_M * r_md * f_dr
       } else {
-        F_cm.cp <- C_M * r_md
+        F_cm.cp <- C_M * r_md * (1 - f_de)
         F_cm.cr <- 0
       }
+      F_cm.em <- C_M * r_md * f_de
       F_cd.cp <- 0
+      F_cd.em <- 0
     } else {
       F_cd.cm <- 0
       F_cm.cp <- 0
       F_cm.cr <- 0
-      F_cd.cp <- U.cd * f_gr * (1 - f_ep)
+      F_cm.em <- 0
+      F_cd.cp <- U.cd * f_gr * (1 - f_ue)
+      F_cd.em <- U.cd * f_gr * f_ue
     }
-    F_cd.cr <- U.cd * (1 - f_gr)
-    F_cd.ce <- U.cd * f_gr * f_ep
     
+    F_cd.cr <- U.cd * (1 - f_gr)
+    
+    F_em.ce <- D_e * (C_Em - C_E)
+
     # Enzyme decay
+    F_em.cd <- C_Em * r_ed
     F_ce.cd <- C_E * r_ed
 
     ## Rate of change calculation for state variables ---------------
-    dC_P <- F_sl.cp + F_cd.cp + F_cm.cp - F_cp.cd
-    dC_D <- F_ml.cd + F_cp.cd + F_ce.cd - F_cd.cm -
-            F_cd.cr - F_cd.cp  - F_cd.ce
-    dC_E <- F_cd.ce - F_ce.cd
-    dC_M <- F_cd.cm - F_cm.cp - F_cm.cr
-    dC_R <- F_cd.cr + F_cm.cr
+    dC_P  <- F_sl.cp + F_cd.cp + F_cm.cp - F_cp.cd
+    dC_D  <- F_ml.cd + F_cp.cd + F_ce.cd + F_em.cd -
+             F_cd.cm - F_cd.cr - F_cd.cp - F_cd.em
+    dC_Em <- F_cm.em + F_cd.em - F_em.ce - F_em.cd
+    dC_E  <- F_em.ce - F_ce.cd
+    dC_M  <- F_cd.cm - F_cm.cp - F_cm.cr - F_cm.em
+    dC_R  <- F_cd.cr + F_cm.cr
     
-    return(list(c(dC_P, dC_D, dC_E, dC_M, dC_R), decomp = F_cp.cd, temp = temp, moist = moist))
+    return(list(c(dC_P, dC_D, dC_E, dC_Em, dC_M, dC_R), decomp = F_cp.cd, temp = temp, moist = moist))
     
   }) # end of with(...
   
