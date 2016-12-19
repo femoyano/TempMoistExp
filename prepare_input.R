@@ -29,7 +29,7 @@ Rth     <- ps * (psi_sat / pars[["psi_Rth"]])^(1 / b) # [m3 m-3] Threshold relat
 fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
 D_d0    <- pars[["D_0"]]        # Diffusion conductance for dissolved C
 D_e0    <- pars[["D_0"]] / 10   # Diffusion conductance for enzymes
-mc      <- pars[['mc_0']] * pars[["pd"]] * (1 - ps) * depth * 1000000 # [gC m-3] basal microbial carbon
+mc      <- pars[['mc_0']] * pars[["pd"]] * (1 - ps) * depth # [gC m-3] basal microbial carbon
 
 # Add new parameters to pars
 parameters <- c(pars, V_D_ref = V_D_ref, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth,
@@ -38,7 +38,7 @@ parameters <- c(pars, V_D_ref = V_D_ref, sand = sand, silt = silt, clay = clay, 
 ### ----- Calculate initial C pool sizes
 
 # Assign the pool sizes
-TOC <- toc * 1000000 * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"]]
+TOC <- toc * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"]]
 initial_state[["C_P"]]  <- TOC * (1 - f_CD - f_CE - f_CM)
 initial_state[["C_D"]]  <- TOC * f_CD
 initial_state[["C_E"]]  <- TOC * f_CE

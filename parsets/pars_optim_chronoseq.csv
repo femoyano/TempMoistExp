@@ -1,0 +1,12 @@
+par,value
+f_de,0.01
+f_dr,0.1
+f_gr_ref,0.65
+f_ue,0.01
+K_D_ref,100
+K_U_ref,0.1
+r_ed_ref,0.001
+r_md_ref,0.0003
+V_D_bf,1
+V_D_mz,1
+V_U_ref,1
