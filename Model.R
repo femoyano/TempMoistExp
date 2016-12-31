@@ -74,7 +74,7 @@ Model_desolve <- function(t, initial_state, pars) {
 
     # Microbial growth, mortality, respiration and enzyme production
     if(flag.mic) {
-      F_cd.cm <- U.cd * f_gr * (1 - f_de)
+      F_cd.cm <- U.cd * f_gr * (1 - f_ue)
       F_cm.cp <- C_M * r_md * (1 - f_mr)
       F_cm.cr <- C_M * r_md * f_mr
       F_cd.cp <- 0
@@ -82,10 +82,10 @@ Model_desolve <- function(t, initial_state, pars) {
       F_cd.cm <- 0
       F_cm.cp <- 0
       F_cm.cr <- 0
-      F_cd.cp <- U.cd * f_gr * (1 - f_de)
+      F_cd.cp <- U.cd * f_gr * (1 - f_ue)
     }
     F_cd.cr <- U.cd * (1 - f_gr)
-    F_cd.ce <- U.cd * f_gr * f_de
+    F_cd.ce <- U.cd * f_gr * f_ue
 
     # Enzyme decay
     F_ce.cd <- C_E * r_ed

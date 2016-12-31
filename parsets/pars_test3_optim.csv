@@ -5,7 +5,7 @@ f_CE_bf,0.0001
 f_CE_mz,0.0001
 f_CM_bf,0.01
 f_CM_mz,0.01
-f_de,0.01
+f_ue,0.01
 K_D_ref,186
 K_U_ref,0.023
 r_ed_ref,0.00024
