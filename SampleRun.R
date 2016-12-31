@@ -1,19 +1,22 @@
 ### Define the function that runs model for each sample --------------------------------
 SampleRun <- function(pars, input) {
-  
+
   require(deSolve)
-  source("prepare_input.R", local=TRUE)
-  
-  if(flag.des) { # if true, run the differential equation solver
-    out <- ode(initial_state, times, Model_desolve, parameters, method = ode.method) # , App_Isl = Approx_I_sl, App_Iml = Approx_I_ml, App_T = Approx_temp, App_M = Approx_moist
-  } else { # else run the stepwise simulation
-    out <- Model_stepwise(spinup, eq.stop, times, tstep, tsave, initial_state, parameters)
-  }
-  
-  out[, 'C_R'] <- out[, 'C_R'] / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
-  out[, 'decomp'] <- out[, 'decomp'] / (parameters[["depth"]] * (1 - parameters[["ps"]]) * parameters[["pd"]] * 1000)  # converting to gC respired per kg soil
-  out[, 'decomp'] <- cumsum(out[, 'decomp'])
-  out <- cbind(out, treatment = rep(input$treatment[1], nrow(out)))
-  
+  source("prepare_input.R", local = TRUE)
+
+  out <- ode(initial_state, times, Model_desolve, parameters,
+             method = ode.method)
+
+  out <- with(as.list(parameters), {
+    # converting to gC respired per kg soil
+    out[, "C_Rg"] <- out[, "C_Rg"]/(depth * (1 - ps) * pd) * 1000
+    out[, "C_Rm"] <- out[, "C_Rm"]/(depth * (1 - ps) * pd) * 1000
+    out[, "C_dec_r"] <- out[, "C_dec_r"]/(depth * (1 - ps) * pd) * 1000
+    return(out)
+  })
+
+  out <- cbind(out, C_R = out[, "C_Rg"] + out[, "C_Rm"],
+               C_dec = cumsum(out[, "C_dec_r"]),
+               treatment = rep(input$treatment[1], nrow(out)))
   return(out)
 }

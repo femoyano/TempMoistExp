@@ -26,7 +26,7 @@ if (flag.sew) {
 
 ## Functions to calculate diffusion depending on options -----
 if (diff.fun == "hama") {
-  get.D_sm <- function(moist, ps, Rth) if (moist <= Rth)
+  get.D_sm <- function(moist, ps, Rth) if (moist <= Rth) 
     D_sm <- 0 else D_sm <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
 } else if (diff.fun == "cubic") {
   get.D_sm <- function(moist, ps, Rth) D_sm <- moist^3
@@ -41,7 +41,7 @@ if (flag.dce) {
   if (dce.fun == "exp") {
     get.D_cm <- function(C_P, C_ref, C_max) C_P^(-1/3)/C_ref^(-1/3)
   } else if (dce.fun == "lin") {
-    get.D_cm <- function(C_P, C_ref, C_max) (C_P - C_max)/(C_ref -
+    get.D_cm <- function(C_P, C_ref, C_max) (C_P - C_max)/(C_ref - 
       C_max)
   } else stop("Wrong dce.fun value?")
 } else get.D_cm <- function(C_P, C_ref, C_max) 1

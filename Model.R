@@ -8,19 +8,19 @@
 # Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ========================================================================
 
-Model_desolve <- function(t, initial_state, pars) { 
+Model_desolve <- function(t, initial_state, pars) {
   # must be defined as: func <- function(t, y, parms,...) for use with ode
 
   with(as.list(c(initial_state, pars)), {
 
     # set time used for interpolating input data.
     t_i <- t
-    if(spinup) t_i <- t %% end # this causes spinups to repeat the input data
+    if (spinup) t_i <- t%%end  # this causes spinups to repeat the input data
 
     # Calculate the input and forcing at time t
-    I_sl  <- Approx_I_sl(t_i)
-    I_ml  <- Approx_I_ml(t_i)
-    temp  <- Approx_temp(t_i)
+    I_sl <- Approx_I_sl(t_i)
+    I_ml <- Approx_I_ml(t_i)
+    temp <- Approx_temp(t_i)
     moist <- Approx_moist(t_i)
 
     # Calculate temporally changing variables
@@ -30,7 +30,6 @@ Model_desolve <- function(t, initial_state, pars) {
     V_U   <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V, R)
     r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_d , R)
     r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_d , R)
-    f_gr  <- f_gr_ref
     fc.mod <- get.fc.mod(moist, fc)
     moist.mod <- get.moist.mod(moist)
 
@@ -45,7 +44,6 @@ Model_desolve <- function(t, initial_state, pars) {
     D_e <- D_e0 * D_sm * D_tm * D_cm
 
     ### Calculate all fluxes ------
-
     # Input rate
     F_sl.cp <- I_sl
     F_ml.cd <- I_ml
@@ -76,7 +74,7 @@ Model_desolve <- function(t, initial_state, pars) {
 
     # Microbial growth, mortality, respiration and enzyme production
     if(flag.mic) {
-      F_cd.cm <- U.cd * f_gr * (1 - f_ep)
+      F_cd.cm <- U.cd * f_gr * (1 - f_de)
       F_cm.cp <- C_M * r_md * (1 - f_mr)
       F_cm.cr <- C_M * r_md * f_mr
       F_cd.cp <- 0
@@ -84,10 +82,10 @@ Model_desolve <- function(t, initial_state, pars) {
       F_cd.cm <- 0
       F_cm.cp <- 0
       F_cm.cr <- 0
-      F_cd.cp <- U.cd * f_gr * (1 - f_ep)
+      F_cd.cp <- U.cd * f_gr * (1 - f_de)
     }
     F_cd.cr <- U.cd * (1 - f_gr)
-    F_cd.ce <- U.cd * f_gr * f_ep
+    F_cd.ce <- U.cd * f_gr * f_de
 
     # Enzyme decay
     F_ce.cd <- C_E * r_ed
@@ -98,10 +96,12 @@ Model_desolve <- function(t, initial_state, pars) {
             F_cd.cr - F_cd.cp  - F_cd.ce
     dC_E <- F_cd.ce - F_ce.cd
     dC_M <- F_cd.cm - F_cm.cp - F_cm.cr
-    dC_R <- F_cd.cr + F_cm.cr
+    dC_Rg <- F_cd.cr
+    dC_Rm <- F_cm.cr
 
-    return(list(c(dC_P, dC_D, dC_E, dC_M, dC_R), decomp = F_cp.cd, temp = temp, moist = moist))
+    return(list(c(dC_P, dC_D, dC_E, dC_M, dC_Rg, dC_Rm),
+      C_dec_r = F_cp.cd, temp = temp, moist = moist, D_d = D_d))
 
-  }) # end of with(...
+  })  # end of with(...
 
-} # end of Model
+}  # end of Model
