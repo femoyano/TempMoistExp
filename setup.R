@@ -14,7 +14,7 @@ setup <- list(
   flag.mmr  = 1 ,  # activate microbial maintenance respiration
   dce.fun   = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun  = "hama" ,  # Options: 'hama', 'cubic'
-  dec.fun   = "1st" , # One of: 'MM', '2nd', '1st'
+  dec.fun   = "MM" , # One of: 'MM', '2nd', '1st'
   upt.fun   = "1st" , # One of: 'MM', '2nd', '1st'
 
   # -------- Calibration options ----------
@@ -49,7 +49,7 @@ setup <- list(
   # csv file with bounds for optimized parameters
   pars.bounds.file  = "parsets/pars_bounds_test2.csv" ,
   # for single runs (run_smp.R)
-  pars.new.file = 'parsets/pars_1124-0251runsmp4_round.csv'  ,
+  pars.new.file = 'parsets/pars_PDME-decMM-uptk1st-hama_161231_rounds.csv'  ,
   # for mpi runs
   pars.mpi.file = 'parsets/' ,
   # For mupliple runs using command line input
