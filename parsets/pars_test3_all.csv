@@ -17,7 +17,7 @@ f_gr_s,-0.016
 f_mr,0.1
 K_D_ref,186000
 K_U_ref,1
-pd,2.7
+pd,2700
 psi_fc,33
 psi_Rth,15000
 R,0.008314
