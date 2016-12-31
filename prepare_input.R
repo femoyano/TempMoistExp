@@ -5,44 +5,44 @@ if (input$site[1] == "bare_fallow") {
   site.data <- site.data.bf
   V_D_ref <- pars[["V_D_bf"]]
   f_CD    <- pars[["f_CD_bf"]]
-  f_CE    <- pars[["f_CE_bf"]] 
-  f_CM    <- pars[["f_CM_bf"]] 
+  f_CE    <- pars[["f_CE_bf"]]
+  f_CM    <- pars[["f_CM_bf"]]
 } else if (input$site[1] == "maize") {
   site.data <- site.data.mz
   V_D_ref <- pars[["V_D_mz"]]
   f_CD    <- pars[["f_CD_mz"]]
-  f_CE    <- pars[["f_CE_mz"]] 
-  f_CM    <- pars[["f_CM_mz"]] 
+  f_CE    <- pars[["f_CE_mz"]]
+  f_CM    <- pars[["f_CM_mz"]]
 } else stop("no site name match in prepare_input.R")
 
-sand   <- site.data$sand  # [g g^-1] clay fraction values 
-clay   <- site.data$clay  # [g g^-1] sand fraction values 
-silt   <- site.data$silt  # [g g^-1] silt fraction values 
+sand   <- site.data$sand  # [g g^-1] clay fraction values
+clay   <- site.data$clay  # [g g^-1] sand fraction values
+silt   <- site.data$silt  # [g g^-1] silt fraction values
 ps     <- site.data$ps    # [m^3 m^-3] soil pore space
 depth  <- site.data$depth # [m] soil depth
 toc    <- site.data$toc   # [gC gSoil-1]
 
-### ----- Calculate spatially changing variables and add to parameter list
+### ----- Calculate variables and add to parameter list
 b       <- 2.91 + 15.9 * clay                         # [] b parameter (Campbell 1974) as in Cosby  et al. 1984 - Alternatively: obtain from land model.
 psi_sat <- exp(6.5 - 1.3 * sand) / 1000               # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
 Rth     <- ps * (psi_sat / pars[["psi_Rth"]])^(1 / b) # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
 fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
+Md      <- 200 * (100 * clay)^0.6 * pars[["pd"]] * (1 - ps) * 1000 / 1000 # [gC m-3] Mineral surface adsorption capacity in gC-equivalent (Mayes et al. 2012)
 D_d0    <- pars[["D_0"]]        # Diffusion conductance for dissolved C
 D_e0    <- pars[["D_0"]] / 10   # Diffusion conductance for enzymes
-mc      <- pars[['mc_0']] * pars[["pd"]] * (1 - ps) * depth # [gC m-3] basal microbial carbon
+if(!flag.mmr) pars[["f_mr"]] <- 0
 
 # Add new parameters to pars
-parameters <- c(pars, V_D_ref = V_D_ref, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth,
-                Rth = Rth, fc = fc, D_d0 = D_d0, D_e0 = D_e0, mc = mc)
+parameters <- c(pars, V_D_ref = V_D_ref, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth, b = b,
+                psi_sat = psi_sat, Rth = Rth, fc = fc, Md = Md, D_d0 = D_d0, D_e0 = D_e0)
 
 ### ----- Calculate initial C pool sizes
 
 # Assign the pool sizes
-TOC <- toc * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"]]
+TOC <- toc * 1000000 * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"]]
 initial_state[["C_P"]]  <- TOC * (1 - f_CD - f_CE - f_CM)
 initial_state[["C_D"]]  <- TOC * f_CD
 initial_state[["C_E"]]  <- TOC * f_CE
-initial_state[["C_Em"]] <- TOC * f_CE
 initial_state[["C_M"]]  <- TOC * f_CM
 initial_state[["C_R"]]  <- 0
 

@@ -15,7 +15,7 @@ setup <- list(
   dce.fun   = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun  = "hama" ,  # Options: 'hama', 'cubic'
   dec.fun   = "1st" , # One of: 'MM', '2nd', '1st'
-  upt.fun   = "1st" , # One of: 'MM', '2nd', '1st'
+  upt.fun   = "MM" , # One of: 'MM', '2nd', '1st'
 
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
@@ -43,11 +43,11 @@ setup <- list(
 
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "parsets/pars_all_test2.csv" ,
+  pars.default.file = "parsets/pars_test3_all.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "parsets/pars_optim_test2.csv"      ,
+  pars.optim.file   = "parsets/pars_test3_optim.csv"      ,
   # csv file with bounds for optimized parameters
-  pars.bounds.file  = "parsets/pars_bounds_test2.csv" ,
+  pars.bounds.file  = "parsets/pars_test3_bounds.csv" ,
   # for single runs (run_smp.R)
   pars.new.file = 'parsets/pars_1124-0251runsmp4_round.csv'  ,
   # for mpi runs

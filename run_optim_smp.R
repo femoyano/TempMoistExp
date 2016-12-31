@@ -18,7 +18,7 @@ cat("Cores detected:", cores, "\n")
 registerDoParallel(cores = cores)
 
 ### ----------------------------------- ###
-###       User Setup                     ###
+###       User Setup                    ###
 ### ----------------------------------- ###
 source('setup.R')
 

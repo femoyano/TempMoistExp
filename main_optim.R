@@ -35,7 +35,7 @@ eq.stop    <- FALSE   # Stop at equilibrium?
 
 ### Sourced required files ====================================================
 source("flux_functions.R")
-source("Model_desolve.R")
+source("Model.R")
 source("initial_state.R")
 source(cost.fun)
 source("AccumCalc.R")
@@ -60,6 +60,9 @@ obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))
 site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
 site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 
+# Save text
+savetxt <- paste0('_dec', dec.fun, '-upt', upt.fun, '-diff', diff.fun, '_')
+
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###
 ### ----------------------------------- ###
@@ -72,7 +75,7 @@ if(run.sens) Sfun <- sensFun(ModCost, pars_optim_init)
 
 ## Optimize parameters
 if (run.mfit) {
-  fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method, 
+  fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
                    upper = pars_optim_upper, lower = pars_optim_lower)
 }
 
@@ -92,7 +95,7 @@ if(run.mcmc) {
     }
   jump <- abs(pars.mcmc/jfrac)
   mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, jump = jump, niter=niter, var0=var0,
-                     lower=pars_optim_lower, upper=pars_optim_upper, 
+                     lower=pars_optim_lower, upper=pars_optim_upper,
                      updatecov = udcov, burninlength = burnin)
 ## Saving work space
 save(mcmcMod, file = paste("Run_mcmc_", starttime, savetxt, ".RData", sep = ""))

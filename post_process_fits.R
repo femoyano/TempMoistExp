@@ -3,7 +3,8 @@ library(reshape2)
 library(ggplot2)
 
 # Get accumulated values to match observations and merge datasets
-data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum), by.x = c("treatment", "hour"), by.y = c("treatment", "time"))
+data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum),
+   by.x = c("treatment", "hour"), by.y = c("treatment", "time"))
 data.accum$C_R_rm <- data.accum$C_R_m / data.accum$time_accum # convert to hourly rates [gC kg-1 h-1]
 data.accum$C_R_ro <- data.accum$C_R_r  # Observed data should be already gC kg-1 h-1
 data.accum$C_dec_r <- data.accum$C_dec / data.accum$time_accum # convert to hourly rates [gC kg-1 h-1]
