@@ -8,7 +8,8 @@ output: html_document
 # Description of model
 
 The model will be modified to have enzyme production as fraction of microbial biomass (not of uptake).
-Enzyme will be produced to maintain a concentration outside the cells equal to a fixed fraction of micrbial biomass.
+
+Also changed V_D to be same for both sites and fraction of C_P variable.
 
 ## Some parameter values from literature:
 
@@ -70,7 +71,7 @@ Schimel and Weintraub 2003
 
 mc_b0: 0.00001 g C g^-1^ Soil.Minimum microbial biomass.
 
-f_de: 0.01. Fraction of microbial decay going to enzymes.
+f_me: 0.01. Fraction of microbial decay going to enzymes.
 
 f_ue: 0.01. Fraction of uptake going to enzymes. Used only if flag_mic is off.
 

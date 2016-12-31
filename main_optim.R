@@ -35,7 +35,7 @@ eq.stop    <- FALSE   # Stop at equilibrium?
 
 ### Sourced required files ====================================================
 source("flux_functions.R")
-source("Model_desolve.R")
+source("Model.R")
 source("initial_state.R")
 source(cost.fun)
 source("AccumCalc.R")
@@ -72,12 +72,13 @@ if(run.sens) Sfun <- sensFun(ModCost, pars_optim_init)
 
 ## Optimize parameters
 if (run.mfit) {
-  fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method, 
+  fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
                    upper = pars_optim_upper, lower = pars_optim_lower)
+  ## Saving work space
+  save.image(file = paste("Run_Optim_", starttime, savetxt, ".RData", sep = ""))
 }
 
-## Saving work space
-save.image(file = paste("Run_Optim_", starttime, savetxt, ".RData", sep = ""))
+
 
 ## Run Bayesian optimization
 if(run.mcmc) {
@@ -92,9 +93,9 @@ if(run.mcmc) {
     }
   jump <- abs(pars.mcmc/jfrac)
   mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, jump = jump, niter=niter, var0=var0,
-                     lower=pars_optim_lower, upper=pars_optim_upper, 
+                     lower=pars_optim_lower, upper=pars_optim_upper,
                      updatecov = udcov, burninlength = burnin)
 ## Saving work space
-save(mcmcMod, file = paste("Run_mcmc_", starttime, savetxt, ".RData", sep = ""))
+save.image(file = paste("Run_mcmc_", starttime, savetxt, ".RData", sep = ""))
 }
 
