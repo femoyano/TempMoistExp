@@ -6,8 +6,8 @@ f_CE_mz,0.0001
 f_CM_bf,0.01
 f_CM_mz,0.01
 f_de,0.01
-K_D_ref,186000
-K_U_ref,23
+K_D_ref,186
+K_U_ref,0.023
 r_ed_ref,0.00024
 r_md_ref,0.00041
 V_U_ref,0.01

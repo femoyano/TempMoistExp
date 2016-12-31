@@ -12,8 +12,8 @@ f_CM_mz,0.0371
 f_de,0.0343
 f_gr,0.538
 f_mr,0.18
-K_D_ref,59343
-K_U_ref,20
+K_D_ref,59.34
+K_U_ref,0.02
 psi_Rth,14600
 r_ed_ref,0.000172
 r_md_ref,0.000722
