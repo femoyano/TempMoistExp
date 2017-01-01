@@ -1,5 +1,6 @@
-# ModCost.R This model calculates the model residuals This
-# version calls SampleRun.R
+# ModCost.R
+# This model calculates the model residuals
+# This version calls SampleRun.R
 
 ModCost <- function(pars_optim) {
 

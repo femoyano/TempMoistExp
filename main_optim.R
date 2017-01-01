@@ -60,6 +60,9 @@ obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))
 site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
 site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 
+# Save text
+savetxt <- paste0('_dec', dec.fun, '-upt', upt.fun, '-diff', diff.fun, '_')
+
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###
 ### ----------------------------------- ###
@@ -74,11 +77,10 @@ if(run.sens) Sfun <- sensFun(ModCost, pars_optim_init)
 if (run.mfit) {
   fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
                    upper = pars_optim_upper, lower = pars_optim_lower)
-  ## Saving work space
-  save.image(file = paste("Run_Optim_", starttime, savetxt, ".RData", sep = ""))
 }
 
-
+## Saving work space
+save.image(file = paste("Run_Optim_", starttime, savetxt, ".RData", sep = ""))
 
 ## Run Bayesian optimization
 if(run.mcmc) {
@@ -96,6 +98,6 @@ if(run.mcmc) {
                      lower=pars_optim_lower, upper=pars_optim_upper,
                      updatecov = udcov, burninlength = burnin)
 ## Saving work space
-save.image(file = paste("Run_mcmc_", starttime, savetxt, ".RData", sep = ""))
+save(mcmcMod, file = paste("Run_mcmc_", starttime, savetxt, ".RData", sep = ""))
 }
 

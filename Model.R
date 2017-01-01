@@ -1,11 +1,11 @@
 #### Model.R ================================================================
 
 #### Documentation ==========================================================
-#### Main function running the model.  This version is for use
-#### with deSolve ode function. It calculates and returns the
-#### state variable rates of change.  
-#### author(s): 
-#### Fernando Moyano (fmoyano #at# uni-goettingen.de)
+# Main function running the model.
+# This version is for use with deSolve ode function. It calculates and returns
+# the state variable rates of change.
+# author(s):
+# Fernando Moyano (fmoyano #at# uni-goettingen.de)
 #### ========================================================================
 
 Model_desolve <- function(t, initial_state, pars) {
@@ -24,21 +24,19 @@ Model_desolve <- function(t, initial_state, pars) {
     moist <- Approx_moist(t_i)
 
     # Calculate temporally changing variables
-    K_D <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K, R)
-    K_U <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
-    V_D <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V, R)
-    V_U <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V, R)
-    r_md <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_d, R)
-    r_ed <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_d, R)
+    K_D   <- Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K, R)
+    K_U   <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
+    V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V, R)
+    V_U   <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V, R)
+    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_d , R)
+    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_d , R)
     fc.mod <- get.fc.mod(moist, fc)
     moist.mod <- get.moist.mod(moist)
 
-    ## Diffusion calculations
-    ## -------------------------------------- Note: for diffusion
-    ## fluxes, no need to divide by moist and depth to get
-    ## specific concentrations and multiply again for total since
-    ## they cancel out.  Diffusion modifiers for soil (texture),
-    ## temperature and carbon content: D_sm, D_tm, D_cm
+    ## Diffusion calculations  --------------------------------------
+    # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
+    # concentrations and multiply again for total since they cancel out.
+    # Diffusion modifiers for soil (texture), temperature and carbon content: D_sm, D_tm, D_cm
     D_sm <- get.D_sm(moist, ps, Rth)
     D_tm <- get.D_tm(temp, T_ref)
     D_cm <- get.D_cm(C_P, C_ref, C_max)
@@ -51,23 +49,34 @@ Model_desolve <- function(t, initial_state, pars) {
     F_ml.cd <- I_ml
 
     # Decomposition rate
-    F_cp.cd <- Decomp(C_P, C_E, V_D, K_D, moist.mod, depth, fc.mod)
+    if(dec.fun == "MM") {
+      F_cp.cd <- ReactionMM(C_P, C_E, V_D, K_D, depth, moist.mod, fc.mod)
+    }
+    if(dec.fun == "2nd") {
+      F_cp.cd <- Reaction2nd(C_P, C_E, V_D, depth, moist.mod, fc.mod)
+    }
+    if(dec.fun == "1st") {
+      F_cp.cd <- Reaction1st(C_P, V_D, fc.mod)
+    }
 
-    D_diff <- D_d * (C_D - 0)  # Concentration near cells assumed 0
+    Diff.cd <- D_d * (C_D - 0)  # Concentration near cells assumed 0
 
-    U.cd <- Uptake(D_diff, (C_M + mc), V_U, K_U, moist.mod, depth, fc.mod)  # Calculate the uptake flux
+    # Calculate the uptake flux
+    if(upt.fun == "MM") {
+      U.cd <- ReactionMM(Diff.cd, C_M, V_U, K_U, depth, moist.mod, fc.mod)
+    }
+    if(upt.fun == "2nd") {
+      U.cd <- Reaction2nd(Diff.cd, C_M, V_U, depth, moist.mod, fc.mod)
+    }
+    if(upt.fun == "1st") {
+      U.cd <- Reaction1st(Diff.cd, V_U, fc.mod)
+    }
 
-    # Microbial growth, mortality, respiration and enzyme
-    # production
-    if (flag.mic) {
+    # Microbial growth, mortality, respiration and enzyme production
+    if(flag.mic) {
       F_cd.cm <- U.cd * f_gr
-      if (flag.mmr) {
-        F_cm.cp <- C_M * r_md * (1 - f_mr - f_me)
-        F_cm.cr <- C_M * r_md * f_mr
-      } else {
-        F_cm.cp <- C_M * r_md * (1 - f_me)
-        F_cm.cr <- 0
-      }
+      F_cm.cp <- C_M * r_md * (1 - f_mr - f_me)
+      F_cm.cr <- C_M * r_md * f_mr
       F_cm.em <- C_M * r_md * f_me
       F_cd.cp <- 0
       F_cd.em <- 0

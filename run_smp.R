@@ -42,8 +42,6 @@ require(FME)
 require(plyr)
 require(reshape2)
 
-list2env(setup, envir = .GlobalEnv)
-
 ### Define time variables =====================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
@@ -59,7 +57,7 @@ tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
 runname <- "Run_final_mmr1"
-options <- paste("_mic", flag.mic, "_fcs", flag.mmu, "_mmu", flag.fcs, "_sew", flag.sew,
+options <- paste("_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
                  "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
                  "_", sep = "")
 
@@ -72,9 +70,9 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 
 ### Sourced required files ----------------------------------------------------
 source("flux_functions.R")
-source("Model_desolve.R")
+source("Model.R")
 source("initial_state.R")
-source("ModCost_SR.R")
+source("ModCost.R")
 source("AccumCalc.R")
 source("SampleRun.R")
 source("GetModelData.R")

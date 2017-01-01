@@ -1,5 +1,4 @@
-### Define the function that runs model for each sample
-### --------------------------------
+### Define the function that runs model for each sample --------------------------------
 SampleRun <- function(pars, input) {
 
   require(deSolve)

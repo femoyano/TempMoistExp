@@ -46,34 +46,22 @@ if (flag.dce) {
   } else stop("Wrong dce.fun value?")
 } else get.D_cm <- function(C_P, C_ref, C_max) 1
 
-## Decomposition flux ---------
-if (flag.mmd) {
-Decomp <- function(C_P, C_E, V_D, K_D, moist.mod, depth, fc.mod) {
-  C_P <- C_P/depth * fc.mod
-  C_E <- C_E/(moist.mod * depth)
-  F <- (V_D * C_E * C_P)/(K_D + C_P) * depth
-  }
-} else {
-  Decomp <- function(C_P, C_E, V_D, K_D, moist.mod, depth, fc.mod) {
-    C_P <- C_P/depth * fc.mod
-    C_E <- C_E/(moist.mod * depth)
-    F <- (V_D * C_E * C_P) * depth
-  }
+## Reaction kinetics ---------
+ReactionMM <- function(S, E, V, K, depth, moist.mod, fc.mod) {
+  S <- S/(depth * moist.mod)
+  E <- E/(depth * moist.mod)
+  Flux <- (V * E * S)/(K + S) * depth * fc.mod
 }
 
-## Uptake flux ---------
-if (flag.mmu) {
-  Uptake <- function(S, M, V_U, K_U, moist.mod, depth, fc.mod) {
-    M <- M/depth * fc.mod
-    S <- S/(depth * moist.mod)
-    F_U <- (V_U * S * M)/(K_U + S) * depth }
-  } else {
-    Uptake <- function(S, M, V_U, K_U, moist.mod, depth, fc.mod) {
-      M <- M/depth * fc.mod
-      S <- S/(depth * moist.mod)
-      F_U <- (V_U * S * M) * depth
-    }
-  }
+Reaction2nd <- function(S, E, V, depth, moist.mod, fc.mod) {
+  S <- S/(depth * moist.mod)
+  E <- E/(depth * moist.mod)
+  Flux <- (V * S * E) * depth * fc.mod
+}
+
+Reaction1st <- function(S, V, fc.mod) {
+  Flux <- V * S * fc.mod
+}
 
 # ==============================================================================
 # Temperature responses after Tang and Riley 2014
