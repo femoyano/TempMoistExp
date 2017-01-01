@@ -9,7 +9,7 @@ if (input$site[1] == "bare_fallow") {
   f_CM  <- pars[["f_CM_bf"]]
 } else if (input$site[1] == "maize") {
   site.data <- site.data.mz
-  f_CP  <- pars[["f_CP_bf"]]
+  f_CP  <- pars[["f_CP_mz"]]
   f_CD  <- pars[["f_CD_mz"]]
   f_CE  <- pars[["f_CE_mz"]]
   f_CM  <- pars[["f_CM_mz"]]
