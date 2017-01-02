@@ -16,7 +16,7 @@ f_CM_mz,0.01,kg kg-1 TOC
 f_me,0.01,kg kg-1
 f_mr,0.1,kg kg-1
 f_gr,0.65,kg kg-1
-f_ue,0.01,kg kg-1
+f_me,0.01,kg kg-1
 K_D_ref,100,kgC m-3
 K_U_ref,0.1,kgC m-3
 mc_0,0,kg kg-1 Soil
