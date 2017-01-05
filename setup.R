@@ -13,7 +13,7 @@ setup <- list(
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
   flag.mmr  = 1 ,  # activate microbial maintenance respiration
   dce.fun   = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun  = "hama" ,  # Options: 'hama', 'cubic'
+  diff.fun  = "cubic" ,  # Options: 'hama', 'cubic'
   dec.fun   = "MM" , # One of: 'MM', '2nd', '1st'
   upt.fun   = "1st" , # One of: 'MM', '2nd', '1st'
 
@@ -43,13 +43,13 @@ setup <- list(
 
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "parsets/pars_all_test2.csv" ,
+  pars.default.file = "parsets/pars_test2_all.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "parsets/pars_optim_test2.csv"      ,
+  pars.optim.file   = "parsets/pars_test2_optim.csv"      ,
   # csv file with bounds for optimized parameters
-  pars.bounds.file  = "parsets/pars_bounds_test2.csv" ,
+  pars.bounds.file  = "parsets/pars_test2_bounds.csv" ,
   # for single runs (run_smp.R)
-  pars.new.file = 'parsets/pars_PDME-decMM-uptk1st-hama_161231_rounds.csv'  ,
+  pars.new.file = 'parsets/pars_0101-2315mmr0_decMM-upt1st-diffcubic_mod.csv'  ,
   # for mpi runs
   pars.mpi.file = 'parsets/' ,
   # For mupliple runs using command line input

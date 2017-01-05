@@ -1,6 +1,7 @@
 library(plyr)
 library(reshape2)
 library(ggplot2)
+library(RColorBrewer)
 
 # Get accumulated values to match observations and merge datasets
 data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum),
@@ -13,21 +14,15 @@ data.accum$C_R <- NULL
 data.accum$C_R_ro <- data.accum$C_R_ro * 1000
 data.accum$C_R_rm <- data.accum$C_R_rm * 1000
 
+# Rename factor levels
+data.accum$site <- revalue(data.accum$site, c("bare_fallow" = "bare fallow"))
 
-## ------------------------------------------------- ##
-##  Do some statistics and simple comparisons      ----
-## ------------------------------------------------- ##
 
 # Get RMSE and MAE
 res <- data.accum$C_R_ro - data.accum$C_R_m
 RMSE <- sqrt(mean(res^2))
 MAE <- mean(abs(res))
 
-## ------------------------------------------------- ##
-##         Fit simple models           ----
-## ------------------------------------------------- ##
-cv <- rainbow(10, alpha = 0.5)  # heat.colors(10, alpha = 0.5)
-palette(cv)
 # define subsets of data:
 data.accum$temp.group <- interaction(data.accum$site, data.accum$temp) # create a group variable
 data.accum$moist.group <- interaction(data.accum$site, data.accum$moist_vol) # create a group variable
@@ -73,18 +68,20 @@ prefix <- "plot_"
 savedir <- file.path("plots")
 devname <- "png"
 devfun <- png
-export <- 1
+export <- 0
 opar <- par(no.readonly=TRUE)
 
-cv <- rainbow(10, alpha = 0.5)  # heat.colors(10, alpha = 0.5)
-palette(cv)
+darkcols <- brewer.pal(8, "Dark2")  # heat.colors(10, alpha = 0.5)
+palette(darkcols)
 
 # Plot accumulated model vs data --------------------------------------------------
 plotname <- paste(prefix, "accum_mod_obs.", devname, sep = "")
 plotfile <- file.path(savedir, plotname)
 if(export) devfun(file = plotfile) #, width = 5, height = 5)
-plot(data.accum$C_R_ro, data.accum$C_R_rm, col = data.accum$site,
-     xlab = "Observed Accumulated CO2 (gC)", ylab = "Modeled Accumulated CO2 (gC)")
+plot(data.accum$C_R_ro, data.accum$C_R_rm, col = data.accum$site, pch = 16,
+     xlab = expression(paste("Measured Accumulated ", CO[2], " (g C)")),
+     ylab = expression(paste("Modeled Accumulated ", CO[2], " (g C)"))
+     )
 lines(c(0,1),c(0,1))
 
 # Plot absolute values for each temp group ----------------------------------------
@@ -136,5 +133,3 @@ for(TR in c('Ea')) {
 }
 
 if(export) while(dev.cur() > 1) dev.off()
-
-
