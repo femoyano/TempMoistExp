@@ -10,39 +10,27 @@ library(RColorBrewer)
 # Get accumulated values to match observations and merge datasets
 data.accum <- merge(obs.accum, AccumCalc(mod.out, obs.accum),
    by.x = c("treatment", "hour"), by.y = c("treatment", "time"))
-
-# convert to hourly rates [gC kg-1 h-1]
+# get hourly rates [gC kg-1 h-1]
 data.accum$C_R_rm <- data.accum$C_R_m / data.accum$time_accum
-
-# Observed data should be already gC kg-1 h-1
-data.accum$C_R_ro <- data.accum$C_R_r
-
-# convert to hourly rates [gC kg-1 h-1]
 data.accum$C_dec_r <- data.accum$C_dec / data.accum$time_accum
+data.accum$C_R_ro <- data.accum$C_R_r # Observed data already gC kg-1 h-1
 data.accum$C_R <- NULL
 
+dta <- data.accum
 # Convert to mg kg-1 h-1
-data.accum$C_R_ro <- data.accum$C_R_ro * 1000
-data.accum$C_R_rm <- data.accum$C_R_rm * 1000
+dta$C_R_ro <- data.accum$C_R_ro * 1000
+dta$C_R_rm <- data.accum$C_R_rm * 1000
 
 # Rename and reorder factor levels
-data.accum$site <- revalue(data.accum$site, c("bare_fallow" = "bare fallow"))
-data.accum$site <- factor(data.accum$site, levels = c("maize", "bare fallow"))
-data.accum$soil <- data.accum$site
-data.accum$temp_group <- data.accum$temp.group
-
-# Remove outlier:
-fit.temp$Q10[fit.temp$Ea < 10] <- NA; fit.temp$Ea[fit.temp$Ea < 10] <- NA
-
-# Rename values for plotting
-fit.temp$var2 <-  revalue(fit.temp$var, 
-                  c(C_R_rm = 'SR mod', C_R_ro = "SR obs", C_dec_r = "Decomp"))
+dta$soil <- revalue(data.accum$site, c("bare_fallow" = "bare fallow"))
+dta$soil <- factor(dta$soil, levels = c("maize", "bare fallow"))
+dta$temp_group <- data.accum$temp.group
 
 # create a group variable
-data.accum$temp_group <- interaction(data.accum$soil, data.accum$temp)
+dta$temp_group <- interaction(dta$soil, dta$temp)
 
 # create a group variable
-data.accum$moist.group <- interaction(data.accum$soil, data.accum$moist_vol)
+dta$moist_group <- interaction(dta$soil, dta$moist_vol)
 
 
 ################################################################################
@@ -87,33 +75,39 @@ FitTemp <- function(df, var, set, trange) {
          moist_vol = df$moist_vol[1], Q10 = Q10, R0 = R0, A = A, Ea = Ea)
 }
 
-# for(data.accum in c(data.accum_mmr1, data.accum_mmr0cubic, data.accum_mmr0hama))
 # Fits for respired or decomposed C with temperature for different temperature ranges
-fit.temp <- ddply(data.accum, .(moist.group), .fun = FitTemp, var = "C_R_ro", 
+fit.temp <- ddply(dta, .(moist_group), .fun = FitTemp, var = "C_R_ro", 
                   set = 'obs', trange = '5-35')
-fit.temp <- rbind(fit.temp, ddply(data.accum, .(moist.group), .fun = FitTemp, 
+fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp, 
                   var = "C_R_rm", set = 'mod', trange = '5-35'))
-fit.temp <- rbind(fit.temp, ddply(data.accum, .(moist.group), .fun = FitTemp, 
+fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp, 
                   var = "C_R_ro", set = 'obs', trange = '5-20'))
-fit.temp <- rbind(fit.temp, ddply(data.accum, .(moist.group), .fun = FitTemp,
+fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp,
                   var = "C_R_rm", set = 'mod', trange = '5-20'))
-fit.temp <- rbind(fit.temp, ddply(data.accum, .(moist.group), .fun = FitTemp,
+fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp,
                   var = "C_R_ro", set = 'obs', trange = '20-35'))
-fit.temp <- rbind(fit.temp, ddply(data.accum, .(moist.group), .fun = FitTemp,
+fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp,
                   var = "C_R_rm", set = 'mod', trange = '20-35'))
-fit.temp <- rbind(fit.temp, ddply(data.accum, .(moist.group), .fun = FitTemp,
+fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp,
                   var = "C_dec_r", set = 'mod', trange = '5-35'))
-fit.temp <- rbind(fit.temp, ddply(data.accum, .(moist.group), .fun = FitTemp, 
+fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp, 
                   var = "C_dec_r", set = 'mod', trange = '5-20'))
-fit.temp <- rbind(fit.temp, ddply(data.accum, .(moist.group), .fun = FitTemp,
+fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp,
                   var = "C_dec_r", set = 'mod', trange = '20-35'))
+
+# Remove outlier:
+fit.temp$Q10[fit.temp$Ea < 10] <- NA; fit.temp$Ea[fit.temp$Ea < 10] <- NA
+
+# Rename values for plotting
+fit.temp$var2 <-  revalue(fit.temp$var, 
+                  c(C_R_rm = 'SR mod', C_R_ro = "SR obs", C_dec_r = "Decomp"))
 
 ################################################################################
 ## Plots and statistics
 ################################################################################
 
 # Get RMSE and MAE
-res <- data.accum$C_R_ro - data.accum$C_R_m
+res <- dta$C_R_ro - dta$C_R_m
 RMSE <- sqrt(mean(res^2))
 MAE <- mean(abs(res))
 
@@ -130,17 +124,7 @@ darkcols <- adjustcolor(darkcols, alpha.f = 0.6)
 palette(darkcols)
 
 # Plot accumulated model vs data -----------------------------------------------
-# plotname <- paste(prefix, "accum_mod_obs.", devname, sep = "")
-# plotfile <- file.path(savedir, plotname)
-# if(export) devfun(file = plotfile) #, width = 5, height = 5)
-# plot(data.accum$C_R_ro, data.accum$C_R_rm, col = data.accum$soil, pch = 16,
-#      xlab = expression(paste("Measured Accumulated ", CO[2], " (g C)")),
-#      ylab = expression(paste("Modeled Accumulated ", CO[2], " (g C)"))
-#      )
-# lines(c(0,1),c(0,1))
-
-# Same plot with ggplot
-ggplot(data = data.accum, aes(x = C_R_ro, y = C_R_rm, colour = soil)) +
+ggplot(data = dta, aes(x = C_R_ro, y = C_R_rm, colour = soil)) +
   xlab(expression(paste("Measured Accumulated ", CO[2], " (g C)"))) +
   ylab(expression(paste("Modeled Accumulated  ", CO[2], " (g C)"))) +
   ylim(c(0,0.6))+
@@ -157,11 +141,10 @@ ggplot(data = data.accum, aes(x = C_R_ro, y = C_R_rm, colour = soil)) +
       legend.position=c(0.12,0.9))
 
 
-# Plot absolute values for each temp group -------------------------------------
-data.accum$temp_group <- factor(data.accum$temp_group, levels = c("maize.5", 
+# Plot flux vs moisture values for each temp group -----------------------------
+dta$temp_group <- factor(dta$temp_group, levels = c("maize.5", 
   "maize.20", "maize.35", "bare fallow.5", "bare fallow.20", "bare fallow.35"))
-
-ggplot(data = data.accum) +
+ggplot(data = dta) +
   geom_smooth(aes(x = moist_vol, y = C_R_ro), color = "#1874CD32", 
               se = FALSE, size = 3) +
   geom_smooth(aes(x = moist_vol, y = C_R_rm), color = "#FF8C0032", 
@@ -169,7 +152,7 @@ ggplot(data = data.accum) +
   geom_point(aes(x = moist_vol, y = C_R_ro), color = "#1874CD") +
   geom_point(aes(x = moist_vol, y = C_R_rm), color = "#FF8C00") +
   xlab(expression(paste("Soil moisture (", m^3*m^-3,")"))) +
-  ylab(expression(paste("Respired ", CO[2], " (",mg~C~m^-3~h^-1, ")"))) +
+  ylab(expression(paste("Respired ", CO[2], " (",mg~C~kg^-1*soil~h^-1, ")"))) +
   scale_y_continuous(limits = c(0, NA)) +
   theme_bw(base_size = 12) +
   scale_color_manual(values = darkcols) +
@@ -178,8 +161,32 @@ ggplot(data = data.accum) +
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         legend.position=c(0.12,0.9)) +
-  facet_wrap("temp_group", scales = "free")
-  # facet_grid(temp~soil, scales = "free")
+  # facet_wrap("temp_group", scales = "free")
+  facet_grid(temp~soil, scales = "free")
+
+# Plot flux vs temperature for each moisture group -----------------------------
+dta$moist_bin <- dta$moist_bin <- cut(dta$moist_vol,
+                  breaks = c(0,0.05,0.1,0.2,0.45),
+                  labels = c("VWC 0-5 %", "VWC 5-10 %", "VWC 10-20 %", "VWC 10-45 %"))
+ggplot(data = dta) +
+  stat_smooth(aes(x = temp, y = C_R_ro), color = "#1874CD32", 
+              se = FALSE, size = 3, span = 1.5) +
+  stat_smooth(aes(x = temp, y = C_R_rm), color = "#FF8C0032", 
+              se = FALSE, size = 3, span = 1.5) +
+  geom_point(aes(x = temp, y = C_R_ro), color = "#1874CD") +
+  geom_point(aes(x = temp, y = C_R_rm), color = "#FF8C00") +
+  xlab(expression(paste("Soil temperature (", degree*C,")"))) +
+  ylab(expression(paste("Respired ", CO[2], " (",mg~C~kg^-1*soil~h^-1, ")"))) +
+  scale_y_continuous(limits = c(0, NA)) +
+  theme_bw(base_size = 12) +
+  scale_color_manual(values = darkcols) +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        legend.position=c(0.12,0.9)) +
+  facet_wrap("moist_bin", scales = "free_y")
+  # facet_grid(moist_bin~soil, scales = "free")
   
 ## Plot temperature sensitivities ---------------------
 PlotTR <- function(fits, TR, pal) {
@@ -200,17 +207,17 @@ PlotTR <- function(fits, TR, pal) {
     scale_linetype_manual(values=c("solid", "longdash")) +
     theme_bw(base_size = 15) +
     scale_color_manual(values=pal) +
-    geom_line(size = 1.3) +
+    geom_line(size = 1) +
     # geom_smooth(size = 1.5, span=0.3, se=FALSE) +
-    geom_point(size = 4) +
-    geom_point(size = 1.5, colour='white') +
+    geom_point(size = 3) +
+    geom_point(size = 1, colour='white') +
     ylab(ylab) +
     xlab(expression(paste("Soil moisture (", m^3*m^-3,")"))) +
     theme(legend.justification=c(1,1), legend.position=c(1,1),
           legend.box='horizontal',
           legend.background = element_rect(colour = "grey"),
           legend.title = element_blank(), 
-          legend.key.height=unit(0.7,'cm'), legend.key.width=unit(1.2,'cm'),
+          legend.key.height=unit(0.5,'cm'), legend.key.width=unit(1,'cm'),
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
           panel.background = element_blank()) +

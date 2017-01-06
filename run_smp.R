@@ -93,13 +93,6 @@ print(Sys.time() - t0)
 
 
 # ### ----------------------------------- ###
-# ###        Analysis and Plotting        ###
-# ### ----------------------------------- ###
-
-source("post_process_fits.R")
-
-
-# ### ----------------------------------- ###
 # ###        Saving work space            ###
 # ### ----------------------------------- ###
 # 
@@ -108,7 +101,7 @@ source("post_process_fits.R")
 # rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
 #    site.data.bf, site.data.mz, initial_state, obs.accum)
 # 
-# save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+save.image(file = paste(" mod_out.RData", sep = ""))
 
 
 
