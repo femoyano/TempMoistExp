@@ -1,9 +1,9 @@
-,x
+par,value
 D_d0,19
 D_e0,19
-E_K,61
-E_d,140
-E_V,88
+E_K,40
+E_e,100
+E_V,60
 f_CD_bf,6.90E-05
 f_CD_mz,8.80E-05
 f_CE_bf,0.00039
@@ -11,11 +11,9 @@ f_CE_mz,0.00058
 f_CM_bf,0.041
 f_CM_mz,0.043
 f_ue,0.025
-f_gr,0.51
 f_mr,0.02
 K_D_ref,60
 K_U_ref,0.024
-psi_Rth,14500
 r_ed_ref,0.00017
 r_md_ref,0.00057
 V_D_mz,0.19

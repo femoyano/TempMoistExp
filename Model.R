@@ -28,8 +28,8 @@ Model_desolve <- function(t, initial_state, pars) {
     K_U   <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
     V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V, R)
     V_U   <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V, R)
-    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_d , R)
-    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_d , R)
+    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_m , R)
+    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_e , R)
     fc.mod <- get.fc.mod(moist, fc)
     moist.mod <- get.moist.mod(moist)
 
@@ -42,6 +42,10 @@ Model_desolve <- function(t, initial_state, pars) {
     D_cm <- get.D_cm(C_P, C_ref, C_max)
     D_d <- D_d0 * D_sm * D_tm * D_cm
     D_e <- D_e0 * D_sm * D_tm * D_cm
+    
+    # Diffusion calculations
+    Diff.cd <- D_d * C_D
+    Diff.ce <- D_e * C_E
 
     ### Calculate all fluxes ------
     # Input rate
@@ -50,16 +54,14 @@ Model_desolve <- function(t, initial_state, pars) {
 
     # Decomposition rate
     if(dec.fun == "MM") {
-      F_cp.cd <- ReactionMM(C_P, C_E, V_D, K_D, depth, moist.mod, fc.mod)
+      F_cp.cd <- ReactionMM(C_P, Diff.ce, V_D, K_D, depth, moist.mod, fc.mod)
     }
     if(dec.fun == "2nd") {
-      F_cp.cd <- Reaction2nd(C_P, C_E, V_D, depth, moist.mod, fc.mod)
+      F_cp.cd <- Reaction2nd(C_P, Diff.ce, V_D, depth, moist.mod, fc.mod)
     }
     if(dec.fun == "1st") {
       F_cp.cd <- Reaction1st(C_P, V_D, fc.mod)
     }
-
-    Diff.cd <- D_d * (C_D - 0)  # Concentration near cells assumed 0
 
     # Calculate the uptake flux
     if(upt.fun == "MM") {

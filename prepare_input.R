@@ -27,14 +27,12 @@ b       <- 2.91 + 15.9 * clay                         # [] b parameter (Campbell
 psi_sat <- exp(6.5 - 1.3 * sand) / 1000               # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
 Rth     <- ps * (psi_sat / pars[["psi_Rth"]])^(1 / b) # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
 fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
-D_d0    <- pars[["D_0"]]        # [h-1] Diffusion conductance for dissolved C
-D_e0    <- pars[["D_0"]] / 10   # [h-1] Diffusion conductance for enzymes
 if(!flag.mmr) pars[["f_mr"]] <- 0
 # mc      <- pars[['mc_0']] * pars[["pd"]] * (1 - ps) * depth # [kgC m-2] basal microbial carbon
 
 # Add new parameters to pars
 parameters <- c(pars, V_D_ref = V_D_ref, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth,
-                Rth = Rth, fc = fc, D_d0 = D_d0, D_e0 = D_e0)
+                Rth = Rth, fc = fc)
 
 ### ----- Calculate initial C pool sizes
 
