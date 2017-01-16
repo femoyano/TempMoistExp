@@ -22,8 +22,8 @@ dta$C_R_ro <- data.accum$C_R_ro * 1000
 dta$C_R_rm <- data.accum$C_R_rm * 1000
 
 # Rename and reorder factor levels
-dta$soil <- revalue(data.accum$site, c("bare_fallow" = "bare fallow"))
-dta$soil <- factor(dta$soil, levels = c("maize", "bare fallow"))
+dta$soil <- revalue(data.accum$site, c("bare_fallow" = "bare fallow", "maize" = "cropped"))
+dta$soil <- factor(dta$soil, levels = c("cropped", "bare fallow"))
 dta$temp_group <- data.accum$temp.group
 
 # create a group variable
@@ -100,7 +100,7 @@ fit.temp$Q10[fit.temp$Ea < 10] <- NA; fit.temp$Ea[fit.temp$Ea < 10] <- NA
 
 # Rename values for plotting
 fit.temp$var2 <-  revalue(fit.temp$var, 
-                  c(C_R_rm = 'SR mod', C_R_ro = "SR obs", C_dec_r = "Decomp"))
+                  c(C_R_rm = 'R mod', C_R_ro = "R obs", C_dec_r = "P dec"))
 
 ################################################################################
 ## Plots and statistics
@@ -122,6 +122,7 @@ opar <- par(no.readonly=TRUE)
 darkcols <- brewer.pal(8, "Dark2")  # heat.colors(10, alpha = 0.5)
 darkcols <- adjustcolor(darkcols, alpha.f = 0.6)
 palette(darkcols)
+palette(grey.colors(2))
 
 # Plot accumulated model vs data -----------------------------------------------
 ggplot(data = dta, aes(x = C_R_ro, y = C_R_rm, colour = soil)) +
@@ -129,7 +130,6 @@ ggplot(data = dta, aes(x = C_R_ro, y = C_R_rm, colour = soil)) +
   ylab(expression(paste("Modeled Accumulated  ", CO[2], " (g C)"))) +
   ylim(c(0,0.6))+
   xlim(c(0,0.6))+
-  scale_fill_brewer(darkcols) +
   theme_bw(base_size = 12) +
   geom_point(size = 2) +
   geom_abline(intercept=0, slope=1) +
@@ -142,27 +142,27 @@ ggplot(data = dta, aes(x = C_R_ro, y = C_R_rm, colour = soil)) +
 
 
 # Plot flux vs moisture values for each temp group -----------------------------
-dta$temp_group <- factor(dta$temp_group, levels = c("maize.5", 
-  "maize.20", "maize.35", "bare fallow.5", "bare fallow.20", "bare fallow.35"))
+dta$temp_group <- factor(dta$temp_group, levels = c("cropped.5", 
+  "cropped.20", "cropped.35", "bare fallow.5", "bare fallow.20", "bare fallow.35"))
 ggplot(data = dta) +
-  geom_smooth(aes(x = moist_vol, y = C_R_ro), color = "#1874CD32", 
+  geom_smooth(aes(x = moist_vol, y = C_R_ro), color = "#104E8B33",
               se = FALSE, size = 3) +
-  geom_smooth(aes(x = moist_vol, y = C_R_rm), color = "#FF8C0032", 
+  geom_smooth(aes(x = moist_vol, y = C_R_rm), color = "#FF8C0033", 
               se = FALSE, size = 3) +
-  geom_point(aes(x = moist_vol, y = C_R_ro), color = "#1874CD") +
-  geom_point(aes(x = moist_vol, y = C_R_rm), color = "#FF8C00") +
+  geom_point(aes(x = moist_vol, y = C_R_ro), color = "#104E8B", size = 1.5) +
+  geom_point(aes(x = moist_vol, y = C_R_rm), color = "#FF8C00", size = 1.5) +
   xlab(expression(paste("Soil moisture (", m^3*m^-3,")"))) +
   ylab(expression(paste("Respired ", CO[2], " (",mg~C~kg^-1*soil~h^-1, ")"))) +
   scale_y_continuous(limits = c(0, NA)) +
-  theme_bw(base_size = 12) +
+  theme_bw(base_size = 15) +
   scale_color_manual(values = darkcols) +
   theme(axis.line = element_line(colour = "black"),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         legend.position=c(0.12,0.9)) +
-  # facet_wrap("temp_group", scales = "free")
-  facet_grid(temp~soil, scales = "free")
+  facet_wrap("temp_group", scales = "free")
+  # facet_grid(temp~soil, scales = "free")
 
 # Plot flux vs temperature for each moisture group -----------------------------
 dta$moist_bin <- dta$moist_bin <- cut(dta$moist_vol,
@@ -194,8 +194,8 @@ PlotTR <- function(fits, TR, pal) {
   fits <- fits[fits$trange != '5-35',]
   palette(pal)
   fits$group <- paste(fits$soil, fits$trange)
-  fits$group <- factor(fits$group, levels = c('maize 5-20', 
-                  'bare fallow 5-20', "maize 20-35", "bare fallow 20-35"))
+  fits$group <- factor(fits$group, levels = c('cropped 5-20', 
+                  'bare fallow 5-20', "cropped 20-35", "bare fallow 20-35"))
   if(TR == 'Ea') ylab <- expression(paste(E[a],
                          ' (kJ)')) else ylab <- expression(Q[10])
   plotname <- paste0(prefix, TR, '.', devname)
@@ -205,12 +205,12 @@ PlotTR <- function(fits, TR, pal) {
   p <- ggplot(data = fits, aes_string(x='moist_vol', y=TR, group='var2',
                                       colour='var2', shape='var2')) +
     scale_linetype_manual(values=c("solid", "longdash")) +
-    theme_bw(base_size = 15) +
+    theme_bw(base_size = 20) +
     scale_color_manual(values=pal) +
-    geom_line(size = 1) +
+    geom_line(size = 1.2) +
     # geom_smooth(size = 1.5, span=0.3, se=FALSE) +
-    geom_point(size = 3) +
-    geom_point(size = 1, colour='white') +
+    geom_point(size = 3.5) +
+    geom_point(size = 1.2, colour='white') +
     ylab(ylab) +
     xlab(expression(paste("Soil moisture (", m^3*m^-3,")"))) +
     theme(legend.justification=c(1,1), legend.position=c(1,1),
