@@ -21,7 +21,7 @@ setup <- list(
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 1 ,  # run modFit for optimization?
-  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
+  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
   # Observation error: name of column with error values:
   # 'C_R_gm', 'C_R_sdnorm', 'C_R_sd001', 'C_R_sd005', 'C_R_sd01', 'one' or NULL to use weight.
   SRerror  = 'one'  ,
@@ -36,20 +36,20 @@ setup <- list(
   # Choose cost function
   cost.fun  = "ModCost.R" ,
   # Choose MCMC options:
-  niter  = 50000 ,  # number of iterations
+  niter  = 30000 ,  # number of iterations
   jfrac  = 200    ,  # fraction of parameters size for jumps
-  burnin = 30000  ,  # length of burn in
+  burnin = 10000  ,  # length of burn in
   udcov  = 500    ,  # iteration period for updating covariance matrix
 
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "parsets/pars_test2_all.csv" ,
+  pars.default.file = "parsets/pars_171601_all_units_2diff.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "parsets/pars_test2_optim.csv"      ,
+  pars.optim.file   = "parsets/pars_171601-2diff-optim1.csv"      ,
   # csv file with bounds for optimized parameters
-  pars.bounds.file  = "parsets/pars_test2_bounds.csv" ,
+  pars.bounds.file  = "parsets/pars_171601_bounds_2diff.csv" ,
   # for single runs (run_smp.R)
-  pars.new.file = 'parsets/pars_0101-2315mmr0_decMM-upt1st-diffcubic_mod.csv'  ,
+  pars.new.file = 'parsets/'  ,
   # for mpi runs
   pars.mpi.file = 'parsets/' ,
   # For mupliple runs using command line input

@@ -13,9 +13,9 @@ setup <- list(
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
   flag.mmr  = 1 ,  # activate microbial maintenance respiration
   dce.fun   = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun  = "hama" ,  # Options: 'hama', 'cubic'
+  diff.fun  = "cubic" ,  # Options: 'hama', 'cubic'
   dec.fun   = "MM" , # One of: 'MM', '2nd', '1st'
-  upt.fun   = "1st" , # One of: 'MM', '2nd', '1st'
+  upt.fun   = "MM" , # One of: 'MM', '2nd', '1st'
 
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
@@ -36,20 +36,20 @@ setup <- list(
   # Choose cost function
   cost.fun  = "ModCost.R" ,
   # Choose MCMC options:
-  niter  = 50000 ,  # number of iterations
+  niter  = 30000 ,  # number of iterations
   jfrac  = 200    ,  # fraction of parameters size for jumps
-  burnin = 30000  ,  # length of burn in
+  burnin = 10000  ,  # length of burn in
   udcov  = 500    ,  # iteration period for updating covariance matrix
 
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "parsets/pars_test3_all.csv" ,
+  pars.default.file = "parsets/pars_171601_all_units_2diff.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "parsets/pars_test3_optim.csv"      ,
+  pars.optim.file   = "parsets/pars_171601-2diff-optim1.csv"      ,
   # csv file with bounds for optimized parameters
-  pars.bounds.file  = "parsets/pars_test3_bounds.csv" ,
+  pars.bounds.file  = "parsets/pars_171601_bounds_2diff.csv" ,
   # for single runs (run_smp.R)
-  pars.new.file = 'parsets/pars_1124-0251runsmp4_round.csv'  ,
+  pars.new.file = 'parsets/'  ,
   # for mpi runs
   pars.mpi.file = 'parsets/' ,
   # For mupliple runs using command line input
