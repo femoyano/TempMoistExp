@@ -3,16 +3,16 @@
 # Choose site
 if (input$site[1] == "bare_fallow") {
   site.data <- site.data.bf
-  f_CP  <- pars[["f_CP_bf"]]
-  f_CD  <- pars[["f_CD_bf"]]
-  f_CE  <- pars[["f_CE_bf"]]
-  f_CM  <- pars[["f_CM_bf"]]
+  V_D_ref <- pars[["V_D_bf"]]
+  f_CD    <- pars[["f_CD_bf"]]
+  f_CE    <- pars[["f_CE_bf"]]
+  f_CM    <- pars[["f_CM_bf"]]
 } else if (input$site[1] == "maize") {
   site.data <- site.data.mz
-  f_CP  <- pars[["f_CP_mz"]]
-  f_CD  <- pars[["f_CD_mz"]]
-  f_CE  <- pars[["f_CE_mz"]]
-  f_CM  <- pars[["f_CM_mz"]]
+  V_D_ref <- pars[["V_D_mz"]]
+  f_CD    <- pars[["f_CD_mz"]]
+  f_CE    <- pars[["f_CE_mz"]]
+  f_CM    <- pars[["f_CM_mz"]]
 } else stop("no site name match in prepare_input.R")
 
 sand   <- site.data$sand  # [kg kg^-1] clay fraction values
@@ -27,14 +27,13 @@ b       <- 2.91 + 15.9 * clay                         # [] b parameter (Campbell
 psi_sat <- exp(6.5 - 1.3 * sand) / 1000               # [kPa] saturation water potential (Cosby et al. 1984 after converting their data from cm H2O to Pa) - Alternatively: obtain from land model.
 Rth     <- ps * (psi_sat / pars[["psi_Rth"]])^(1 / b) # [m3 m-3] Threshold relative water content for mic. respiration (water retention formula from Campbell 1984)
 fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
-D_d0    <- pars[["D_0"]]        # [h-1] Diffusion conductance for dissolved C
-D_e0    <- pars[["D_0"]] / 10   # [h-1] Diffusion conductance for enzymes
+
 if(!flag.mmr) pars[["f_mr"]] <- 0
-mc      <- pars[['mc_0']] * pars[["pd"]] * (1 - ps) * depth # [kgC m-2] basal microbial carbon
+# mc      <- pars[['mc_0']] * pars[["pd"]] * (1 - ps) * depth # [kgC m-2] basal microbial carbon
 
 # Add new parameters to pars
-parameters <- c(pars, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth,
-                Rth = Rth, fc = fc, D_d0 = D_d0, D_e0 = D_e0, mc = mc)
+parameters <- c(pars, V_D_ref = V_D_ref, sand = sand, silt = silt, clay = clay, ps = ps, depth = depth,
+                Rth = Rth, fc = fc)
 
 ### ----- Calculate initial C pool sizes
 
@@ -43,7 +42,7 @@ TOC <- toc * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"
 initial_state[["C_P"]]  <- TOC * f_CP
 initial_state[["C_D"]]  <- TOC * f_CD
 initial_state[["C_E"]]  <- TOC * f_CE
-initial_state[["C_Em"]] <- TOC * f_CE
+initial_state[["C_Em"]]  <- 0
 initial_state[["C_M"]]  <- TOC * f_CM
 initial_state[["C_Rg"]]  <- 0
 initial_state[["C_Rm"]]  <- 0

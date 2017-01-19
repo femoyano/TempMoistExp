@@ -21,7 +21,7 @@ setup <- list(
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 1 ,  # run modFit for optimization?
-  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
+  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
   # Observation error: name of column with error values:
   # 'C_R_gm', 'C_R_sdnorm', 'C_R_sd001', 'C_R_sd005', 'C_R_sd01', 'one' or NULL to use weight.
   SRerror  = 'one'  ,

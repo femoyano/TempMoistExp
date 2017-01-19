@@ -14,14 +14,14 @@ setup <- list(
   flag.mmr  = 1 ,  # activate microbial maintenance respiration
   dce.fun   = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
   diff.fun  = "cubic" ,  # Options: 'hama', 'cubic'
-  dec.fun   = "MM" , # One of: 'MM', '2nd', '1st'
-  upt.fun   = "1st" , # One of: 'MM', '2nd', '1st'
+  dec.fun   = "2nd" , # One of: 'MM', '2nd', '1st'
+  upt.fun   = "MM" , # One of: 'MM', '2nd', '1st'
 
   # -------- Calibration options ----------
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 1 ,  # run modFit for optimization?
-  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
+  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
   # Observation error: name of column with error values:
   # 'C_R_gm', 'C_R_sdnorm', 'C_R_sd001', 'C_R_sd005', 'C_R_sd01', 'one' or NULL to use weight.
   SRerror  = 'one'  ,

@@ -61,7 +61,7 @@ site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
 site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 
 # Save text
-savetxt <- paste0('_dec', dec.fun, '-upt', upt.fun, '-diff', diff.fun, '_')
+savetxt2 <- paste0('_dec', dec.fun, '-upt', upt.fun, '-diff', diff.fun, '_')
 
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###
@@ -80,7 +80,7 @@ if (run.mfit) {
 }
 
 ## Saving work space
-save.image(file = paste("Run_Optim_", starttime, savetxt, ".RData", sep = ""))
+save.image(file = paste("Run_Optim_", starttime, savetxt, savetxt2, ".RData", sep = ""))
 
 ## Run Bayesian optimization
 if(run.mcmc) {
@@ -98,6 +98,6 @@ if(run.mcmc) {
                      lower=pars_optim_lower, upper=pars_optim_upper,
                      updatecov = udcov, burninlength = burnin)
 ## Saving work space
-save(mcmcMod, file = paste("Run_mcmc_", starttime, savetxt, ".RData", sep = ""))
+save(mcmcMod, file = paste("Run_mcmc_", starttime, savetxt, savetxt2, ".RData", sep = ""))
 }
 

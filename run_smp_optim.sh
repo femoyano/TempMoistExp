@@ -5,4 +5,5 @@
 #BSUB -o RUN-%J.out
 #BSUB -n 30
 #BSUB -R span[hosts=1]
-Rscript --slave "run_optim_smp_cmdarg.R" setup4
+Rscript --slave "run_optim_smp.R"
+

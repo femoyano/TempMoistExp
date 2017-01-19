@@ -28,8 +28,8 @@ Model_desolve <- function(t, initial_state, pars) {
     K_U   <- Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
     V_D   <- Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V, R)
     V_U   <- Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V, R)
-    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_d , R)
-    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_d , R)
+    r_md  <- Temp.Resp.Eq(r_md_ref, temp, T_ref, E_m , R)
+    r_ed  <- Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_e , R)
     fc.mod <- get.fc.mod(moist, fc)
     moist.mod <- get.moist.mod(moist)
 
@@ -42,6 +42,10 @@ Model_desolve <- function(t, initial_state, pars) {
     D_cm <- get.D_cm(C_P, C_ref, C_max)
     D_d <- D_d0 * D_sm * D_tm * D_cm
     D_e <- D_e0 * D_sm * D_tm * D_cm
+    
+    # Diffusion calculations
+    Diff.cd <- D_d * C_D
+    Diff.ce <- D_e * C_E
 
     ### Calculate all fluxes ------
     # Input rate
@@ -59,8 +63,6 @@ Model_desolve <- function(t, initial_state, pars) {
       F_cp.cd <- Reaction1st(C_P, V_D, fc.mod)
     }
 
-    Diff.cd <- D_d * (C_D - 0)  # Concentration near cells assumed 0
-
     # Calculate the uptake flux
     if(upt.fun == "MM") {
       U.cd <- ReactionMM(Diff.cd, C_M, V_U, K_U, depth, moist.mod, fc.mod)
@@ -74,37 +76,32 @@ Model_desolve <- function(t, initial_state, pars) {
 
     # Microbial growth, mortality, respiration and enzyme production
     if(flag.mic) {
-      F_cd.cm <- U.cd * f_gr
-      F_cm.cp <- C_M * r_md * (1 - f_mr - f_me)
+      F_cd.cm <- U.cd * f_gr * (1 - f_ue)
+      F_cm.cp <- C_M * r_md * (1 - f_mr)
       F_cm.cr <- C_M * r_md * f_mr
-      F_cm.em <- C_M * r_md * f_me
       F_cd.cp <- 0
-      F_cd.em <- 0
     } else {
       F_cd.cm <- 0
       F_cm.cp <- 0
       F_cm.cr <- 0
-      F_cm.em <- 0
       F_cd.cp <- U.cd * f_gr * (1 - f_ue)
-      F_cd.em <- U.cd * f_gr * f_ue
     }
 
-    F_cd.cr <- U.cd * (1 - f_gr)
-
     F_em.ce <- D_e * (C_Em - C_E)
+    F_cd.cr <- U.cd * (1 - f_gr)
+    F_cd.cem <- U.cd * f_gr * f_ue
 
     # Enzyme decay
-    F_em.cd <- C_Em * r_ed
     F_ce.cd <- C_E * r_ed
-
-    ## Rate of change calculation for state variables
-    ## ---------------
+    F_em.cd <- C_Em * r_ed
+    
+    ## Rate of change calculation for state variables ---------------
     dC_P <- F_sl.cp + F_cd.cp + F_cm.cp - F_cp.cd
     dC_D <- F_ml.cd + F_cp.cd + F_ce.cd + F_em.cd - F_cd.cm -
-      F_cd.cr - F_cd.cp - F_cd.em
-    dC_Em <- F_cm.em + F_cd.em - F_em.ce - F_em.cd
+            F_cd.cr - F_cd.cp  - F_cd.em
     dC_E <- F_em.ce - F_ce.cd
-    dC_M <- F_cd.cm - F_cm.cp - F_cm.cr - F_cm.em
+    dC_Em <- F_cd.em - F_em.ce - F_em.cd
+    dC_M <- F_cd.cm - F_cm.cp - F_cm.cr
     dC_Rg <- F_cd.cr
     dC_Rm <- F_cm.cr
 
