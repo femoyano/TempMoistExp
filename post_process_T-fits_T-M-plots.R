@@ -116,7 +116,7 @@ prefix <- "plot_"
 savedir <- file.path("plots")
 devname <- "png"
 devfun <- png
-export <- 0
+export <- 1
 opar <- par(no.readonly=TRUE)
 
 darkcols <- brewer.pal(8, "Dark2")  # heat.colors(10, alpha = 0.5)
@@ -125,7 +125,10 @@ palette(darkcols)
 palette(grey.colors(2))
 
 # Plot accumulated model vs data -----------------------------------------------
-ggplot(data = dta, aes(x = C_R_ro, y = C_R_rm, colour = soil)) +
+plotname <- paste0(prefix, "accum_mod_obs.", devname)
+plotfile <- file.path(savedir, plotname)
+if(export) devfun(file = plotfile, width = 500, height = 500)
+p <- ggplot(data = dta, aes(x = C_R_ro, y = C_R_rm, colour = soil)) +
   xlab(expression(paste("Measured Accumulated ", CO[2], " (g C)"))) +
   ylab(expression(paste("Modeled Accumulated  ", CO[2], " (g C)"))) +
   ylim(c(0,0.6))+
@@ -139,12 +142,17 @@ ggplot(data = dta, aes(x = C_R_ro, y = C_R_rm, colour = soil)) +
       panel.grid.minor = element_blank(),
       panel.background = element_blank(),
       legend.position=c(0.12,0.9))
+	  
+print(p)
 
 
 # Plot flux vs moisture values for each temp group -----------------------------
+plotname <- paste0(prefix, "moist-resp.", devname)
+plotfile <- file.path(savedir, plotname)
+if(export) devfun(file = plotfile, width = 1000, height = 700) #, width = 5, height = 5)
 dta$temp_group <- factor(dta$temp_group, levels = c("cropped.5", 
   "cropped.20", "cropped.35", "bare fallow.5", "bare fallow.20", "bare fallow.35"))
-ggplot(data = dta) +
+p <- ggplot(data = dta) +
   geom_smooth(aes(x = moist_vol, y = C_R_ro), color = "#104E8B33",
               se = FALSE, size = 3) +
   geom_smooth(aes(x = moist_vol, y = C_R_rm), color = "#FF8C0033", 
@@ -163,12 +171,17 @@ ggplot(data = dta) +
         legend.position=c(0.12,0.9)) +
   facet_wrap("temp_group", scales = "free")
   # facet_grid(temp~soil, scales = "free")
+  
+    print(p)
 
 # Plot flux vs temperature for each moisture group -----------------------------
+plotname <- paste0(prefix, "temp-resp.", devname)
+plotfile <- file.path(savedir, plotname)
+if(export) devfun(file = plotfile, width = 700, height = 700)
 dta$moist_bin <- dta$moist_bin <- cut(dta$moist_vol,
                   breaks = c(0,0.05,0.1,0.2,0.45),
                   labels = c("VWC 0-5 %", "VWC 5-10 %", "VWC 10-20 %", "VWC 10-45 %"))
-ggplot(data = dta) +
+p <- ggplot(data = dta) +
   stat_smooth(aes(x = temp, y = C_R_ro), color = "#1874CD32", 
               se = FALSE, size = 3, span = 1.5) +
   stat_smooth(aes(x = temp, y = C_R_rm), color = "#FF8C0032", 
@@ -188,6 +201,8 @@ ggplot(data = dta) +
   facet_wrap("moist_bin", scales = "free_y")
   # facet_grid(moist_bin~soil, scales = "free")
   
+  print(p)
+  
 ## Plot temperature sensitivities ---------------------
 PlotTR <- function(fits, TR, pal) {
   # browser()
@@ -200,7 +215,7 @@ PlotTR <- function(fits, TR, pal) {
                          ' (kJ)')) else ylab <- expression(Q[10])
   plotname <- paste0(prefix, TR, '.', devname)
   plotfile <- file.path(savedir, plotname)
-  if(export) devfun(file = plotfile, width = 1200, height = 600)
+  if(export) devfun(file = plotfile, width = 800, height = 800)
   
   p <- ggplot(data = fits, aes_string(x='moist_vol', y=TR, group='var2',
                                       colour='var2', shape='var2')) +
