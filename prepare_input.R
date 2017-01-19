@@ -42,10 +42,10 @@ TOC <- toc * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"
 initial_state[["C_P"]]  <- TOC * f_CP
 initial_state[["C_D"]]  <- TOC * f_CD
 initial_state[["C_E"]]  <- TOC * f_CE
-initial_state[["C_Em"]]  <- 0
+initial_state[["C_Em"]] <- TOC * f_CE
 initial_state[["C_M"]]  <- TOC * f_CM
-initial_state[["C_Rg"]]  <- 0
-initial_state[["C_Rm"]]  <- 0
+initial_state[["C_Rg"]] <- 0
+initial_state[["C_Rm"]] <- 0
 
 
 ### ----- Extract data

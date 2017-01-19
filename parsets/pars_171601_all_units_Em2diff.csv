@@ -1,10 +1,10 @@
 par,value,unit
 C_max,500,kgC m-3
 C_ref,10,kgC m-3
-D_d0,19,
+D_d0,19,h-1
 D_e0,19,h-1
 E_e,100,kJ
-E_m,110,kJ
+E_m,70,kJ
 E_K,35,kJ
 E_V,70,kJ
 f_CD_bf,0.0001,kg kg-1 TOC
@@ -13,8 +13,7 @@ f_CE_bf,0.0001,kg kg-1 TOC
 f_CE_mz,0.0001,kg kg-1 TOC
 f_CM_bf,0.01,kg kg-1 TOC
 f_CM_mz,0.01,kg kg-1 TOC
-f_de,0.01,kg kg-1
-f_dr,0.1,kg kg-1
+f_mr,0.1,kg kg-1
 f_gr,0.5,kg kg-1
 f_ue,0.01,kg kg-1
 K_D_ref,100,kgC m-3
