@@ -1,0 +1,31 @@
+par,value,unit
+C_max,500,kgC m-3
+C_ref,10,kgC m-3
+D_d0,19,h-1
+D_e0,19,h-1
+E_e,140,kJ
+E_m,60,kJ
+E_K,60,kJ
+E_V,88,kJ
+f_CD_bf,6.90E-05,kg kg-1 TOC
+f_CD_mz,8.80E-05,kg kg-1 TOC
+f_CE_bf,0.00039,kg kg-1 TOC
+f_CE_mz,0.00058,kg kg-1 TOC
+f_CM_bf,0.041,kg kg-1 TOC
+f_CM_mz,0.043,kg kg-1 TOC
+f_mr,0.02,kg kg-1
+f_gr,0.5,kg kg-1
+f_ue,0.01,kg kg-1
+K_D_ref,60,kgC m-3
+K_U_ref,1,kgC m-3
+mc_0,0.00001,kg kg-1 Soil
+pd,2700,kgC m-3
+psi_fc,33,kPa
+psi_Rth,15000,kPa
+R,0.008314,kJ mol-1 K_1
+r_ed_ref,0.00017,h-1
+r_md_ref,0.00057,h-1
+T_ref,293.15,K
+V_D_bf,0.19,h-1
+V_D_mz,0.32,h-1
+V_U_ref,0.016,h-1
