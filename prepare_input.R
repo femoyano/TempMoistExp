@@ -39,7 +39,7 @@ parameters <- c(pars, V_D_ref = V_D_ref, sand = sand, silt = silt, clay = clay, 
 
 # Assign the pool sizes
 TOC <- toc * parameters[["pd"]] * (1 - parameters[["ps"]]) * parameters[["depth"]]
-initial_state[["C_P"]]  <- TOC * f_CP
+initial_state[["C_P"]]  <- TOC * (1 - f_CD - f_CE * 2 - f_CM)
 initial_state[["C_D"]]  <- TOC * f_CD
 initial_state[["C_E"]]  <- TOC * f_CE
 initial_state[["C_Em"]] <- TOC * f_CE

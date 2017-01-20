@@ -89,7 +89,7 @@ Model_desolve <- function(t, initial_state, pars) {
 
     F_em.ce <- D_e * (C_Em - C_E)
     F_cd.cr <- U.cd * (1 - f_gr)
-    F_cd.cem <- U.cd * f_gr * f_ue
+    F_cd.em <- U.cd * f_gr * f_ue
 
     # Enzyme decay
     F_ce.cd <- C_E * r_ed
