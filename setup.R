@@ -43,11 +43,11 @@ setup <- list(
 
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "parsets/pars_171601_all_units_Em2diff.csv" ,
+  pars.default.file = "parsets/pars_Em2dif_all_units.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "parsets/pars_171601-Em2diff-optim1.csv"      ,
+  pars.optim.file   = "parsets/pars_Em2diff-optim1.csv"      ,
   # csv file with bounds for optimized parameters
-  pars.bounds.file  = "parsets/pars_171601_bounds_Em2diff.csv" ,
+  pars.bounds.file  = "parsets/pars_Em2dif_bounds.csv" ,
   # for single runs (run_smp.R)
   pars.new.file = 'parsets/pars_0101-2315_Em2dif.csv'  ,
   # for mpi runs

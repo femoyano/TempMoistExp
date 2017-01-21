@@ -101,7 +101,7 @@ print(Sys.time() - t0)
 # rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
 #    site.data.bf, site.data.mz, initial_state, obs.accum)
 # 
-save.image(file = paste(" mod_out.RData", sep = ""))
+# save.image(file = paste(" mod_out.RData", sep = ""))
 
-
+source("post_process_T-fits_T-M-plots.R")
 

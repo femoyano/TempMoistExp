@@ -45,7 +45,6 @@ Model_desolve <- function(t, initial_state, pars) {
     
     # Diffusion calculations
     Diff.cd <- D_d * C_D
-    Diff.ce <- D_e * C_E
 
     ### Calculate all fluxes ------
     # Input rate
