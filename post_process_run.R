@@ -10,7 +10,7 @@ cores = detectCores()
 cat("Cores detected:", cores, "\n")
 registerDoParallel(cores = cores)
 
-load('Optim_1215-1352_mmu0-hama-one.RData')
+load('Run_Optim_0120-2357_decMM-upt1st-diffcubic_.RData')
 ## ------------------------------------ ##
 ##  Check parameter sensitivities     ----
 ## ------------------------------------ ##
@@ -34,4 +34,4 @@ source("GetModelData.R")
 # Get model output with optimized parameters
 system.time(mod.out <- GetModelData(pars))
 
-source('post_process_fits.R')
+source('post_process_T-fits_T-M-plots.R')

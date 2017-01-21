@@ -177,10 +177,10 @@ p <- ggplot(data = dta) +
 # Plot flux vs temperature for each moisture group -----------------------------
 plotname <- paste0(prefix, "temp-resp.", devname)
 plotfile <- file.path(savedir, plotname)
-if(export) devfun(file = plotfile, width = 700, height = 700)
+if(export) devfun(file = plotfile, width = 1000, height = 700)
 dta$moist_bin <- dta$moist_bin <- cut(dta$moist_vol,
-                  breaks = c(0,0.05,0.1,0.2,0.45),
-                  labels = c("VWC 0-5 %", "VWC 5-10 %", "VWC 10-20 %", "VWC 10-45 %"))
+                  breaks = c(0,0.05,0.1,0.2,0.3,0.4,0.5),
+                  labels = c("VWC 0-5 %", "VWC 5-10 %", "VWC 10-20 %", "VWC 20-30 %", "VWC 30-40 %", "VWC 40-50 %"))
 p <- ggplot(data = dta) +
   stat_smooth(aes(x = temp, y = C_R_ro), color = "#1874CD32", 
               se = FALSE, size = 3, span = 1.5) +

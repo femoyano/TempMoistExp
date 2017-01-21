@@ -26,11 +26,12 @@ if (flag.sew) {
 
 ## Functions to calculate diffusion depending on options -----
 if (diff.fun == "hama") {
-  get.D_sm <- function(moist, ps, Rth) if (moist <= Rth) 
-    D_sm <- 0 else D_sm <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
-} else if (diff.fun == "cubic") {
+  get.D_sm <- function(moist, ps, Rth) if (moist <= Rth) {D_sm <- 0} else
+     D_sm <- (ps - Rth)^1.5 * ((moist - Rth)/(ps - Rth))^2.5
+}
+if (diff.fun == "cubic") {
   get.D_sm <- function(moist, ps, Rth) D_sm <- moist^3
-} else stop("Wrong diff.fun value?")
+}
 
 if (flag.dte) {
   get.D_tm <- function(temp, T_ref) temp^8/T_ref^8

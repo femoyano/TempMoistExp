@@ -104,4 +104,4 @@ print(Sys.time() - t0)
 # save.image(file = paste(" mod_out.RData", sep = ""))
 
 source("post_process_T-fits_T-M-plots.R")
-
+print(pars)
