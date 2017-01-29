@@ -37,12 +37,12 @@ Model_desolve <- function(t, initial_state, pars) {
     # Note: for diffusion fluxes, no need to divide by moist and depth to get specific
     # concentrations and multiply again for total since they cancel out.
     # Diffusion modifiers for soil (texture), temperature and carbon content: D_sm, D_tm, D_cm
-    D_sm <- get.D_sm(moist, ps, Rth)
+    D_sm <- get.D_sm(moist, ps, Rth, b, p1, p2)
     D_tm <- get.D_tm(temp, T_ref)
     D_cm <- get.D_cm(C_P, C_ref, C_max)
     D_d <- D_d0 * D_sm * D_tm * D_cm
     D_e <- D_e0 * D_sm * D_tm * D_cm
-    
+
     # Diffusion calculations
     Diff.cd <- D_d * C_D
 
@@ -93,7 +93,7 @@ Model_desolve <- function(t, initial_state, pars) {
     # Enzyme decay
     F_ce.cd <- C_E * r_ed
     F_em.cd <- C_Em * r_ed
-    
+
     ## Rate of change calculation for state variables ---------------
     dC_P <- F_sl.cp + F_cd.cp + F_cm.cp - F_cp.cd
     dC_D <- F_ml.cd + F_cp.cd + F_ce.cd + F_em.cd - F_cd.cm -

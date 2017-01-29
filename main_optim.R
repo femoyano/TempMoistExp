@@ -46,12 +46,10 @@ source("SampleRun.R")
 pars_default <- read.csv(pars.default.file, row.names = 1)
 pars_default <- setNames(pars_default[[1]], row.names(pars_default))
 
-pars_optim_init <- read.csv(pars.optim.file, row.names = 1)
-pars_optim_init <- setNames(pars_optim_init[[1]], row.names(pars_optim_init))
-
-pars_bounds <- read.csv(pars.bounds.file, row.names = 1)
-pars_optim_lower <- setNames(pars_bounds[[1]], row.names(pars_bounds))
-pars_optim_upper <- setNames(pars_bounds[[2]], row.names(pars_bounds))
+pars_optim       <- read.csv(pars.optim.file, row.names = 1)
+pars_optim_init  <- setNames(pars_optim[[1]], row.names(pars_optim))
+pars_optim_lower <- setNames(pars_optim[[2]], row.names(pars_optim))
+pars_optim_upper <- setNames(pars_optim[[3]], row.names(pars_optim))
 
 # Input Setup =================================================================
 input_path    <- file.path("..","input_data")

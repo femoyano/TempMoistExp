@@ -30,18 +30,10 @@ if (diff.fun == "hama") {
      D_sm <- (ps - Rth)^p1 * ((moist - Rth) / (ps - Rth))^p2 # p1=1.5, p2=2.5
   }
 }
-if (diff.fun == "oles1") {
-  get.D_sm <- function(moist, ps, Rth, b, p1, p2) {
-    if (moist < 0.022*b) {D_sm <- 0} else
-    D_sm <- p1 * moist * (moist - 0.022 * b) / (ps - 0.022 * b) # p1=0.45
-  }
+if (diff.fun == "archie") {
+  get.D_sm <- function(moist, ps, Rth, b, p1, p2) D_sm <- ps^p1 * (moist/ps)^p2  # p1=1.3-2.25, p2=2-2.5
 }
-if (diff.fun == "oles2") {
-  get.D_sm <- function(moist, ps, Rth, b, p1, p2) {
-    D_sm <- p1 * moist * (moist / ps)^(p2*b) # p1=0.45, p2=0.3
-  }
-}
-if (diff.fun == "cubic") {
+if (diff.fun == "power") {
   get.D_sm <- function(moist, ps, Rth, b, p1, p2) D_sm <- moist^p1  # p1=3
 }
 if (diff.fun == "MQ") {
@@ -53,10 +45,17 @@ if (diff.fun == "PC") {
 if (diff.fun == "sade") {
   get.D_sm <- function(moist, ps, Rth, b, p1, p2) D_sm <- p1*(moist/ps)^p2  # p1=0.73, p2=1.98
 }
-if (diff.fun == "archie") {
-  get.D_sm <- function(moist, ps, Rth, b, p1, p2) D_sm <- ps^p1 * (moist/ps)^p2  # p1=1.3-2.25, p2=2-2.5
+if (diff.fun == "oles1") {
+  get.D_sm <- function(moist, ps, Rth, b, p1, p2) {
+    if (moist < 0.022*b) {D_sm <- 0} else
+    D_sm <- p1 * moist * (moist - 0.022 * b) / (ps - 0.022 * b) # p1=0.45
+  }
 }
-
+if (diff.fun == "oles2") {
+  get.D_sm <- function(moist, ps, Rth, b, p1, p2) {
+    D_sm <- p1 * moist * (moist / ps)^(p2*b) # p1=0.45, p2=0.3
+  }
+}
 
 ## Other factors affectign diffusion diffusion -----
 if (flag.dte) {
