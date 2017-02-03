@@ -1,5 +1,5 @@
 par,value
-D_d0,1.37
+D_d0,1.4
 E_e,10
 E_K,90
 E_m,10
@@ -11,7 +11,7 @@ f_CE_bf,0.00039
 f_CE_mz,0.00058
 f_CM_bf,0.041
 f_CM_mz,0.043
-f_gr,0.7
+f_gr,0.6
 f_mp,1
 f_ue,0.025
 K_D_ref,60
@@ -21,11 +21,10 @@ pd,2700
 psi_fc,33
 psi_Rth,15000
 R,0.008314
-r_ed_ref,0.00017
+r_ed_ref,0.0002
 r_md_ref,0.002
-r_mr_ref,0.000036
+r_mr_ref,0.00004
 T_ref,293.15
 V_D_bf,0.46
 V_D_mz,0.3
 V_U_ref,0.09
-V_D_ref,0.3
