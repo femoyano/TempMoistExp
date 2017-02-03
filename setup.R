@@ -13,7 +13,7 @@ setup <- list(
   flag.dce  = 0 ,  # diffusivity carbon effect on/off
   flag.mmr  = 1 ,  # activate microbial maintenance respiration
   dce.fun   = "exp"   ,  # diffusivity carbon function: 'exp' = exponential, 'lin' = linear
-  diff.fun  = "cubic" ,  # Options: 'hama', 'cubic'
+  diff.fun  = "hama" ,  # Options: 'hama', 'cubic'
   dec.fun   = "MM" , # One of: 'MM', '2nd', '1st'
   upt.fun   = "1st" , # One of: 'MM', '2nd', '1st'
 
@@ -21,7 +21,7 @@ setup <- list(
   run.test  = 0 ,  # run model cost once as test?
   run.sens  = 0 ,  # run FME sensitivity analysis?
   run.mfit  = 1 ,  # run modFit for optimization?
-  run.mcmc  = 1 ,  # run Markov Chain Monte Carlo?
+  run.mcmc  = 0 ,  # run Markov Chain Monte Carlo?
   # Observation error: name of column with error values:
   # 'C_R_gm', 'C_R_sdnorm', 'C_R_sd001', 'C_R_sd005', 'C_R_sd01', 'one' or NULL to use weight.
   SRerror  = 'one'  ,
@@ -43,13 +43,13 @@ setup <- list(
 
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "parsets/pars_Em2dif_all_units.csv" ,
+  pars.default.file = "parsets/pars4_good_hama_all.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "parsets/pars_Em2diff-optim1.csv"      ,
+  pars.optim.file   = "parsets/"    ,
   # csv file with bounds for optimized parameters
-  pars.bounds.file  = "parsets/pars_Em2dif_bounds.csv" ,
+  pars.bounds.file  = "parsets/" ,
   # for single runs (run_smp.R)
-  pars.new.file = 'parsets/pars_0101-2315_Em2dif.csv'  ,
+  pars.new.file = 'parsets/pars4_good_hama_all.csv'  ,
   # for mpi runs
   pars.mpi.file = 'parsets/' ,
   # For mupliple runs using command line input

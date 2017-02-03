@@ -11,4 +11,4 @@ Test_2
 - MM: Michaelis-Menten: V * diff * C_M / (K + diff)
 
 submit with:
-bsub -a openmp -q fat -W 10:00 -o RUN-%J.out -n 30 -R span[hosts=1] Rscript --slave run_optim_smp.R
+bsub -a openmp -q fat -W 24:00 -o RUN-%J.out -n 30 -R span[hosts=1] Rscript --slave run_optim_smp_cmdarg.R setup1

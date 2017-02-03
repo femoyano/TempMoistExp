@@ -1,0 +1,21 @@
+par,value,unit
+D_0,12,h-1
+E_e,90,kJ
+E_K,80,kJ
+E_m,90,kJ
+E_V,90,kJ
+f_gr,0.7,kg kg-1
+f_mr,0.015,kg kg-1
+f_ue,0.025,kg kg-1
+K_D_ref,60,kgC m-3
+pd,2700,kgC m-3
+psi_fc,33,kPa
+psi_Rth,15000,kPa
+R,0.008314,kJ mol-1 K_1
+r_ed_ref,0.00018,h-1
+r_md_ref,0.0012,h-1
+T_ref,293.15,K
+V_D_ref,0.3,h-1
+V_U_ref,0.005,h-1
+p1,2.15,
+p2,0,
