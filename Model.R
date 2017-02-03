@@ -15,7 +15,7 @@ Model_desolve <- function(t, initial_state, pars) {
 
     # set time used for interpolating input data.
     t_i <- t
-    if (spinup) t_i <- t%%end  # this causes spinups to repeat the input data
+    # if (spinup) t_i <- t%%end  # this causes spinups to repeat the input data
 
     # Calculate the input and forcing at time t
     I_sl <- Approx_I_sl(t_i)
@@ -89,7 +89,7 @@ Model_desolve <- function(t, initial_state, pars) {
 
     ## Rate of change calculation for state variables ---------------
     dC_P <- F_slcp + F_cmcp - F_cpcd
-    dC_D <- F_mlcd + F_cpcd + F_cecd + F_emcd + F_cmcd- F_cdcm - F_cdcr - F_cdem
+    dC_D <- F_mlcd + F_cpcd + F_cecd + F_emcd + F_cmcd - F_cdcm - F_cdcr - F_cdem
     dC_E <- F_emce - F_cecd
     dC_Em <- F_cdem - F_emce - F_emcd
     dC_M <- F_cdcm - F_cmcp - F_cmcr - F_cmcd

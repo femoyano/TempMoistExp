@@ -27,7 +27,7 @@ sec      <- 1        # seconds in a second!
 t_step     <- "hour"  # Model time step (as string). Important when using stepwise run.
 t_save     <- "hour"  # save time step (only for stepwise model?)
 ode.method <- "lsoda"  # see ode function
-flag.des   <- 1       # Cannot be changed: model crashes when doing stepwise.
+flag_des   <- 1       # Cannot be changed: model crashes when doing stepwise.
 tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
@@ -37,7 +37,7 @@ eq.stop    <- FALSE   # Stop at equilibrium?
 source("flux_functions.R")
 source("Model.R")
 source("initial_state.R")
-source(cost.fun)
+source(cost_fun)
 source("AccumCalc.R")
 source("ParsReplace.R")
 source("SampleRun.R")
@@ -59,7 +59,7 @@ site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
 site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 
 # Save text
-savetxt2 <- paste0('_dec', dec.fun, '-upt', upt.fun, '-diff', diff.fun, '_')
+savetxt2 <- paste0('_dec', dec_fun, '-upt', upt_fun, '-diff', diff_fun, '_')
 
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###
