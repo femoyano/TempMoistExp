@@ -56,19 +56,18 @@ fitArrfun <- function(df, Ea) {
 
 # Fit a temprature function to each moisture subgroup and plot
 FitTemp <- function(df, var, set, trange) {
-  # browser()
   texc <- -99; if(trange=='5-20') texc <- 35; if(trange=='20-35') texc <- 5
   df <- df[df$temp!=texc,]
   df$x <- df[[var]]
-  fitExp <- try(fitExpfun(df, 1))
-  if(class(fitExp)=="try-error") fitExp <- try(fitExpfun(df, 3))
-  if(class(fitExp)=="try-error") fitExp <- try(fitExpfun(df, 6))
+  fitExp <- try(fitExpfun(df, 5))
+  if(class(fitExp)=="try-error") fitExp <- try(fitExpfun(df, 2))
   if(class(fitExp)!="try-error") {
     Q10 = coef(fitExp)[[2]]; R0 = coef(fitExp)[[1]]} else {Q10 = NA; R0 = NA
     }
-  fitArr <- try(fitArrfun(df, 150))
-  if(class(fitArr)=="try-error") fitArr <- try(fitArrfun(df, 60))
+  fitArr <- try(fitArrfun(df, 120))
+  if(class(fitArr)=="try-error") fitArr <- try(fitArrfun(df, 30))
   if(class(fitArr)!="try-error") {
+    
     A = coef(fitArr)[[1]]; Ea = coef(fitArr)[[2]]} else {A = NA; Ea = NA
     }
   out <- data.frame(set = set, trange = trange, soil = df$soil[1], var = var, 
@@ -95,8 +94,6 @@ fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp,
 fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp,
                   var = "C_dec_r", set = 'mod', trange = '20-35'))
 
-# Remove outlier:
-fit.temp$Q10[fit.temp$Ea < 10] <- NA; fit.temp$Ea[fit.temp$Ea < 10] <- NA
 
 # Rename values for plotting
 fit.temp$var2 <-  revalue(fit.temp$var, 
