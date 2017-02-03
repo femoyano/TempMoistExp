@@ -51,14 +51,14 @@ sec      <- 1        # seconds in a second!
 t_step     <- "hour"  # Model time step (as string). Important when using stepwise run.
 t_save     <- "hour"  # save time step (only for stepwise model?)
 ode.method <- "lsoda"  # see ode function
-flag.des   <- 1       # Cannot be changed: model crashes when doing stepwise.
+flag_des   <- 1       # Cannot be changed: model crashes when doing stepwise.
 tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
 runname <- "Run_final_mmr1"
-options <- paste("_mic", flag.mic, "_fcs", flag.fcs, "_sew", flag.sew,
-                 "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
+options <- paste("_mic", flag_mic, "_fcs", flag_fcs, "_sew", flag_sew,
+                 "_dte", flag_dte, "_dce", flag_dce, "_", dce_fun, "_", diff_fun,
                  "_", sep = "")
 
 # Input Setup -----------------------------------------------------------------

@@ -29,7 +29,7 @@ Rth     <- ps * (psi_sat / pars[["psi_Rth"]])^(1 / b) # [m3 m-3] Threshold relat
 fc      <- ps * (psi_sat / pars[["psi_fc"]])^(1 / b)  # [m3 m-3] Field capacity relative water content (water retention formula from Campbell 1984) - Alternatively: obtain from land model.
 D_e0    <- pars[["D_d0"]] #/ 10
 
-if(!flag.mmr) pars[["f_mr"]] <- 0
+if(!flag_mmr) pars[["f_mr"]] <- 0
 # mc      <- pars[['mc_0']] * pars[["pd"]] * (1 - ps) * depth # [kgC m-2] basal microbial carbon
 
 # Add new parameters to pars

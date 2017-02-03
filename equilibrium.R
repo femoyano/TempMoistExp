@@ -12,7 +12,7 @@ dec_fun   = "MM" # One of: 'MM', '2nd', '1st'
 upt_fun   = "1st" # One of: 'MM', '2nd', '1st'
 
 # Temp function
-Temp.Resp.Eq <- function(k_ref, temp, T_ref, E, R) {
+TempRespEq <- function(k_ref, temp, T_ref, E, R) {
   k_ref*exp(-E/R*(1/temp - 1/T_ref))
 }
 
@@ -40,7 +40,7 @@ D_sm = (ps - Rth)^1.5*((moist - Rth)/(ps - Rth))^2.5
 # Calculate end variables
 K_D = Temp.Resp.Eq(K_D_ref, temp, T_ref, E_K, R)
 V_D = Temp.Resp.Eq(V_D_ref, temp, T_ref, E_V, R)
-K_U = Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
+if(upt_fun == "MM") K_U = Temp.Resp.Eq(K_U_ref, temp, T_ref, E_K, R)
 V_U = Temp.Resp.Eq(V_U_ref, temp, T_ref, E_V, R)
 r_md = Temp.Resp.Eq(r_md_ref, temp, T_ref, E_d, R)
 r_ed = Temp.Resp.Eq(r_ed_ref, temp, T_ref, E_d, R)
@@ -53,12 +53,12 @@ mc = mc_0 * pd * (1 - ps) * z  # [kgC m-3] basal microbial carbon
 
 
 # For all:
-# flag.mmr = 1 , # microbial maintenance respiration
-# flag.mic = 1 , # simulate microbial pool explicitly
-# flag.fcs = 0 , # scale C_P and M to field capacity (with max at fc)
-# flag.sew = 0 , # calculate C_E and C_D concentration in water
-# flag.dte = 0 , # diffusivity temperature effect on/off
-# flag.dce = 0 , # diffusivity carbon effect on/off
+# flag_mmr = 1 , # microbial maintenance respiration
+# flag_mic = 1 , # simulate microbial pool explicitly
+# flag_fcs = 0 , # scale C_P and M to field capacity (with max at fc)
+# flag_sew = 0 , # calculate C_E and C_D concentration in water
+# flag_dte = 0 , # diffusivity temperature effect on/off
+# flag_dce = 0 , # diffusivity carbon effect on/off
 
 # ---------------------
 # Options:
