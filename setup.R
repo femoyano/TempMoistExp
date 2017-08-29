@@ -43,13 +43,13 @@ setup <- list(
 
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "parsets/pars4_good_power_all_test.csv" ,
+  pars.default.file = "parsets/pars5.csv" ,
   # csv file with initial valeus for optimized parameters
   pars.optim.file   = "parsets/"    ,
   # csv file with bounds for optimized parameters
   pars.bounds.file  = "parsets/" ,
   # for single runs (run_smp.R)
-  pars.new.file = 'parsets/pars5_test.csv'  ,
+  pars.new.file = 'parsets/pars5.csv'  ,
   # for mpi runs
   pars.mpi.file = 'parsets/' ,
   # For mupliple runs using command line input

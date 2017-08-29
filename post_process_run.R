@@ -10,7 +10,7 @@ cores = detectCores()
 cat("Cores detected:", cores, "\n")
 registerDoParallel(cores = cores)
 
-load('Run_Optim_0120-2357_decMM-upt1st-diffcubic_.RData')
+# load('Run_Optim_0120-2357_decMM-upt1st-diffcubic_.RData')
 ## ------------------------------------ ##
 ##  Check parameter sensitivities     ----
 ## ------------------------------------ ##
