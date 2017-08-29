@@ -42,8 +42,6 @@ require(FME)
 require(plyr)
 require(reshape2)
 
-list2env(setup, envir = .GlobalEnv)
-
 ### Define time variables =====================================================
 year     <- 31104000 # seconds in a year
 hour     <- 3600     # seconds in an hour
@@ -53,14 +51,14 @@ sec      <- 1        # seconds in a second!
 t_step     <- "hour"  # Model time step (as string). Important when using stepwise run.
 t_save     <- "hour"  # save time step (only for stepwise model?)
 ode.method <- "lsoda"  # see ode function
-flag.des   <- 1       # Cannot be changed: model crashes when doing stepwise.
+flag_des   <- 1       # Cannot be changed: model crashes when doing stepwise.
 tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
 eq.stop    <- FALSE   # Stop at equilibrium?
 runname <- "Run_final_mmr1"
-options <- paste("_mic", flag.mic, "_fcs", flag.mmu, "_mmu", flag.fcs, "_sew", flag.sew,
-                 "_dte", flag.dte, "_dce", flag.dce, "_", dce.fun, "_", diff.fun,
+options <- paste("_mic", flag_mic, "_fcs", flag_fcs, "_sew", flag_sew,
+                 "_dte", flag_dte, "_dce", flag_dce, "_", dce_fun, "_", diff_fun,
                  "_", sep = "")
 
 # Input Setup -----------------------------------------------------------------
@@ -72,9 +70,9 @@ site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
 
 ### Sourced required files ----------------------------------------------------
 source("flux_functions.R")
-source("Model_desolve.R")
+source("Model.R")
 source("initial_state.R")
-source("ModCost_SR.R")
+source("ModCost.R")
 source("AccumCalc.R")
 source("SampleRun.R")
 source("GetModelData.R")
@@ -95,13 +93,6 @@ print(Sys.time() - t0)
 
 
 # ### ----------------------------------- ###
-# ###        Analysis and Plotting        ###
-# ### ----------------------------------- ###
-
-source("post_process_fits.R")
-
-
-# ### ----------------------------------- ###
 # ###        Saving work space            ###
 # ### ----------------------------------- ###
 # 
@@ -110,7 +101,7 @@ source("post_process_fits.R")
 # rm(list=names(setup), year, hour, sec, tstep, tsave, spinup, eq.stop, input.all,
 #    site.data.bf, site.data.mz, initial_state, obs.accum)
 # 
-# save.image(file = paste(runname, options, savetime, ".RData", sep = ""))
+# save.image(file = paste(" mod_out.RData", sep = ""))
 
-
-
+source("post_process_T-fits_T-M-plots.R")
+print(pars)

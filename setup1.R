@@ -1,6 +1,6 @@
 setup <- list(
   runinfo = "Description of this run",
-  savetxt = "", # this apends to output file
+  savetxt = "setup1", # this apends to output file
   # savetxt   <- paste("_mic", flag_mic, "_fcs", flag_fcs, "_sew", flag_sew,
   #                  "_dte", flag_dte, "_dce", flag_dce, "_", dce_fun, "_", diff_fun,
   #                  "_", mf.method, "_", cost.type, "-", sep = "")
@@ -43,13 +43,13 @@ setup <- list(
 
   # -------- Parameter options ----------
   # csv file with default parameters
-  pars.default.file = "parsets/pars5.csv" ,
+  pars.default.file = "parsets/pars_all.csv" ,
   # csv file with initial valeus for optimized parameters
-  pars.optim.file   = "parsets/"    ,
+  pars.optim.file   = "parsets/pars_optim_1.csv"    ,
   # csv file with bounds for optimized parameters
   pars.bounds.file  = "parsets/" ,
   # for single runs (run_smp.R)
-  pars.new.file = 'parsets/pars5.csv'  ,
+  pars.new.file = 'parsets/pars4_good_power_all_test.csv'  ,
   # for mpi runs
   pars.mpi.file = 'parsets/' ,
   # For mupliple runs using command line input

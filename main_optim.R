@@ -27,7 +27,7 @@ sec      <- 1        # seconds in a second!
 t_step     <- "hour"  # Model time step (as string). Important when using stepwise run.
 t_save     <- "hour"  # save time step (only for stepwise model?)
 ode.method <- "lsoda"  # see ode function
-flag.des   <- 1       # Cannot be changed: model crashes when doing stepwise.
+flag_des   <- 1       # Cannot be changed: model crashes when doing stepwise.
 tstep      <- get(t_step)
 tsave      <- get(t_save)
 spinup     <- FALSE
@@ -35,9 +35,9 @@ eq.stop    <- FALSE   # Stop at equilibrium?
 
 ### Sourced required files ====================================================
 source("flux_functions.R")
-source("Model_desolve.R")
+source("Model.R")
 source("initial_state.R")
-source(cost.fun)
+source(cost_fun)
 source("AccumCalc.R")
 source("ParsReplace.R")
 source("SampleRun.R")
@@ -46,12 +46,10 @@ source("SampleRun.R")
 pars_default <- read.csv(pars.default.file, row.names = 1)
 pars_default <- setNames(pars_default[[1]], row.names(pars_default))
 
-pars_optim_init <- read.csv(pars.optim.file, row.names = 1)
-pars_optim_init <- setNames(pars_optim_init[[1]], row.names(pars_optim_init))
-
-pars_bounds <- read.csv(pars.bounds.file, row.names = 1)
-pars_optim_lower <- setNames(pars_bounds[[1]], row.names(pars_bounds))
-pars_optim_upper <- setNames(pars_bounds[[2]], row.names(pars_bounds))
+pars_optim       <- read.csv(pars.optim.file, row.names = 1)
+pars_optim_init  <- setNames(pars_optim[[1]], row.names(pars_optim))
+pars_optim_lower <- setNames(pars_optim[[2]], row.names(pars_optim))
+pars_optim_upper <- setNames(pars_optim[[3]], row.names(pars_optim))
 
 # Input Setup =================================================================
 input_path    <- file.path("..","input_data")
@@ -59,6 +57,9 @@ input.all     <- read.csv(file.path(input_path, "mtdata_model_input.csv"))
 obs.accum     <- read.csv(file.path(input_path, "mtdata_co2.csv"))
 site.data.mz  <- read.csv(file.path(input_path, "site_Closeaux.csv"))
 site.data.bf  <- read.csv(file.path(input_path, "site_BareFallow42p.csv"))
+
+# Save text
+savetxt2 <- paste0('_dec', dec_fun, '-upt', upt_fun, '-diff', diff_fun, '_')
 
 ### ----------------------------------- ###
 ###      Optimization/Calibration       ###
@@ -72,12 +73,12 @@ if(run.sens) Sfun <- sensFun(ModCost, pars_optim_init)
 
 ## Optimize parameters
 if (run.mfit) {
-  fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method, 
+  fitMod <- modFit(f = ModCost, p = pars_optim_init, method = mf.method,
                    upper = pars_optim_upper, lower = pars_optim_lower)
 }
 
 ## Saving work space
-save.image(file = paste("Run_Optim_", starttime, savetxt, ".RData", sep = ""))
+save.image(file = paste("Run_Optim_", starttime, savetxt, savetxt2, ".RData", sep = ""))
 
 ## Run Bayesian optimization
 if(run.mcmc) {
@@ -92,9 +93,9 @@ if(run.mcmc) {
     }
   jump <- abs(pars.mcmc/jfrac)
   mcmcMod <- modMCMC(f=ModCost, p=pars.mcmc, jump = jump, niter=niter, var0=var0,
-                     lower=pars_optim_lower, upper=pars_optim_upper, 
+                     lower=pars_optim_lower, upper=pars_optim_upper,
                      updatecov = udcov, burninlength = burnin)
 ## Saving work space
-save(mcmcMod, file = paste("Run_mcmc_", starttime, savetxt, ".RData", sep = ""))
+save(mcmcMod, file = paste("Run_mcmc_", starttime, savetxt, savetxt2, ".RData", sep = ""))
 }
 
