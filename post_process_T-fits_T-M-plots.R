@@ -106,7 +106,7 @@ fit.temp <- rbind(fit.temp, ddply(dta, .(moist_group), .fun = FitTemp,
 ################################################################################
 
 # Get RMSE and MAE
-res <- dta$C_R_ro - dta$C_R_m
+res <- dta$C_R_ro - dta$C_R_rm
 RMSE <- sqrt(mean(res^2))
 MAE <- mean(abs(res))
 lmmod <- lm(dta$C_R_ro~dta$C_R_rm)
